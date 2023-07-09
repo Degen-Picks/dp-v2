@@ -2,8 +2,8 @@ import React, {
   FC,
   HTMLAttributes,
   useEffect,
-  useLayoutEffect,
-  useRef,
+  // useLayoutEffect,
+  // useRef,
   useState,
 } from "react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ const ImageShimmer: FC<Props> = ({
     <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
     </svg>`;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setImageSrc(src);
   }, [src]);
 
