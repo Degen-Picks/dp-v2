@@ -2,26 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: bingodilan;
+  font-style: normal;
+  src: url("../../public/fonts/BingoDilan.otf") format("opentype");
+  font-display: swap;
+}
+@font-face {
+  font-family: pressura-b;
+  font-style: normal;
+  src: url("../../public/fonts/GT-Pressura-Bold-Trial.otf") format("opentype");
+  font-display: swap;
+}
+@font-face {
+  font-family: pressura-r;
+  font-style: normal;
+  src: url("../../public/fonts/GT-Pressura-Regular-Trial.otf")
+    format("opentype");
+  font-display: swap;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/* Sets top level div background */
+@layer base {
+  body {
+    @apply bg-light;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+* {
+  font-family: "pressura-r", monospace;
+  padding: 0;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.rotate {
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.blob {
+  background: rgba(255, 82, 82, 1);
+  border-radius: 50%;
+  margin: 10px 10px 10px 0px;
+  height: 5px;
+  width: 5px;
+
+  box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+  transform: scale(1);
+  animation: pulse 2s infinite;
+}
+
+input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: "#bdbdbd";
+  opacity: 0.7; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: "#bdbdbd";
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: "#bdbdbd";
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+  }
 }
