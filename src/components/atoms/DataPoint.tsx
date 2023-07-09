@@ -1,11 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { InView } from "react-intersection-observer";
 
 // fun count-up animations
-const easeOutQuad = (t) => t * (2 - t);
+const easeOutQuad = (t: number) => t * (2 - t);
 const frameDuration = 1000 / 60;
 
-const CountUpAnimation = ({ children, duration = 3000 }) => {
+interface AnimationProps {
+  children: string;
+  duration?: number;
+}
+const CountUpAnimation: FC<AnimationProps> = ({
+  children,
+  duration = 3000,
+}) => {
   const countTo = parseInt(children, 10);
   const [count, setCount] = useState(0);
 
@@ -21,12 +28,20 @@ const CountUpAnimation = ({ children, duration = 3000 }) => {
         clearInterval(counter);
       }
     }, frameDuration);
+
+    // cleanup function
+    return () => clearInterval(counter);
   }, [countTo, duration]);
 
   return Math.floor(count);
 };
 
-const DataPoint = ({ title, value }) => {
+interface Props {
+  title: string;
+  value: string;
+}
+
+const DataPoint: FC<Props> = ({ title, value }) => {
   const ref = useRef();
 
   return (

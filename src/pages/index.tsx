@@ -105,15 +105,15 @@ const Landing = () => {
                 <>
                   <DataPoint
                     title="games hosted"
-                    value={statData?.gamesHosted}
+                    value={statData?.gamesHosted!}
                   />
                   <DataPoint
                     title="unique players"
-                    value={statData?.uniquePlayers}
+                    value={statData?.uniquePlayers!}
                   />
                   <DataPoint
                     title="total DUST volume"
-                    value={statData?.totalVolume}
+                    value={statData?.totalVolume!}
                   />
                 </>
               )}

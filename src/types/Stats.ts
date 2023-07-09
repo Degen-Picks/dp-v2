@@ -1,7 +1,7 @@
 export interface Stats {
   _id?: string;
-  gamesHosted: number;
-  uniquePlayers: number;
-  totalVolume: number;
+  gamesHosted: string;
+  uniquePlayers: string;
+  totalVolume: string;
   __v?: number;
 }

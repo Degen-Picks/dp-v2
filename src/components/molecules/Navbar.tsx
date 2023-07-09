@@ -12,7 +12,7 @@ const Navbar = () => {
     if (router.isReady) {
       setMounted(true);
     }
-  }, []);
+  }, [router.isReady]);
 
   if (!mounted) return null;
 

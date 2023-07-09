@@ -4,10 +4,11 @@ import { useState, useEffect, FC } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { FallbackImage, Twitter } from "@/components";
+import { TwitterObject } from "@/types";
 
 const TwitterLoginButton: FC = () => {
   const { publicKey } = useWallet();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<TwitterObject | null>();
   const [isTwitterLinked, setIsTwitterLinked] = useState<boolean>(false);
 
   const wallet = useWallet();
@@ -22,11 +23,9 @@ const TwitterLoginButton: FC = () => {
         return;
       }
 
-      const data = await res.json();
-      console.log("data for typing", data);
+      const data: TwitterObject = await res.json();
 
-      setUserData(data || {}); // For on load, no flash blue to white or vice versa
-      // matt.sol if ur reading this, i <3 u, wassup
+      setUserData(data || {});
 
       if (data.twitterData && data.twitterData !== null) {
         setIsTwitterLinked(true);
@@ -151,7 +150,7 @@ const TwitterLoginButton: FC = () => {
       toast.success("Twitter unlinked.");
 
       setIsTwitterLinked(false);
-      setUserData({});
+      setUserData(null);
     } catch (err) {
       console.log(err);
     }
@@ -175,7 +174,7 @@ const TwitterLoginButton: FC = () => {
           } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
           rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 sm:border-transparent group`}
         >
-          {!isTwitterLinked ? (
+          {!isTwitterLinked || !userData ? (
             <>
               <div className="hidden sm:flex items-center justify-center gap-2 px-2">
                 <Twitter color="white" />
@@ -196,7 +195,7 @@ const TwitterLoginButton: FC = () => {
               <div className="sm:hidden flex items-center justify-center">
                 <div className="border border-light flex items-center justify-center rounded-full w-[50px] h-[50px] overflow-hidden">
                   <FallbackImage
-                    src={userData.twitterData.profileImage}
+                    src={userData?.twitterData.profileImage}
                     fallbackSrc={"/images/icons/user-alt.svg"}
                     width={50}
                     height={50}
@@ -207,14 +206,14 @@ const TwitterLoginButton: FC = () => {
               <div className="hidden sm:flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
                 <div className="border border-light flex items-center justify-center rounded-full w-[35px] h-[35px] overflow-hidden">
                   <FallbackImage
-                    src={userData.twitterData.profileImage}
+                    src={userData?.twitterData.profileImage}
                     fallbackSrc={"/images/icons/user-alt.svg"}
                     width={35}
                     height={35}
                     alt="Twitter Profile Image"
                   />
                 </div>
-                <p className="font-base-b">{userData.twitterData.username}</p>
+                <p className="font-base-b">{userData?.twitterData.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">
                 <p className="text-[#E1233D]">Unlink Twitter</p>
