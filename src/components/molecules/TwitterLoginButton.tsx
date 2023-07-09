@@ -177,7 +177,7 @@ const TwitterLoginButton: FC = () => {
           {!isTwitterLinked || !userData ? (
             <>
               <div className="hidden sm:flex items-center justify-center gap-2 px-2">
-                <Twitter color="white" />
+                <Twitter className="fill-white w-4" />
                 <p>Link Twitter</p>
               </div>
 

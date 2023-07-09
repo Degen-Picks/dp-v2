@@ -28,9 +28,9 @@ const Footer: FC = () => {
           <p className="text-base md:text-xl text-secondary md:text-black pb-3">
             Follow us
           </p>
-          <div className="flex space-x-2">
-            <Twitter className="fill-black" />
-            <Discord className="fill-black" />
+          <div className="flex gap-2">
+            <Twitter className="fill-black h-6" />
+            <Discord className="fill-black h-6" />
           </div>
         </div>
         <div className="text-secondary">© 2023 Degen Picks</div>
