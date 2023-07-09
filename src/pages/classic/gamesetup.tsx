@@ -15,13 +15,17 @@ import {
 } from "../../utils/adminApiUtil";
 import { getAssets } from "../../utils/apiUtil";
 import toast from "react-hot-toast";
+import { ClassicGameOptions, League, LeaguesArray } from "@/types";
+import { useRouter } from "next/router";
 
-function getCollections(collections) {
-  return collections.map((collection) => collection.league);
+function getCollections(collections: any) {
+  return collections.map((collection: any) => collection.league);
 }
 
-function getLeagueTeams(leagues, league) {
-  return leagues.find((e) => e.league === league)?.options.map((e) => e.name);
+function getLeagueTeams(leagues: any, league: any) {
+  return leagues
+    .find((e: any) => e.league === league)
+    ?.options.map((e: any) => e.name);
 }
 
 const GameSetup = () => {
@@ -29,7 +33,7 @@ const GameSetup = () => {
   const wallet = useWallet();
   const { publicKey } = wallet;
 
-  const [gameDetails, setGameDetails] = useState({
+  const [gameDetails, setGameDetails] = useState<ClassicGameOptions>({
     league: "",
     team1Name: "",
     team1Record: "",
@@ -46,9 +50,11 @@ const GameSetup = () => {
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
 
-  const [assets, setAssets] = useState([]);
-  const [leagues, setLeagues] = useState([]);
-  const [collections, setCollections] = useState([]);
+  const [assets, setAssets] = useState<LeaguesArray>([]);
+  const [leagues, setLeagues] = useState<LeaguesArray>([]);
+  const [collections, setCollections] = useState<LeaguesArray>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     const newGameDetails = { ...gameDetails };
@@ -95,15 +101,20 @@ const GameSetup = () => {
   useEffect(() => {
     const fetchAssets = async () => {
       const assets = await getAssets();
+      if (assets === null) {
+        setAssets([]);
+        return;
+      } else {
+        setAssets(assets);
+      }
 
       const leagues = assets.filter(
-        (asset) => !asset.league.includes("collection")
+        (asset: League) => !asset.league.includes("collection")
       );
-      const collection = assets.filter((asset) =>
+      const collection = assets.filter((asset: League) =>
         asset.league.includes("collection")
       );
 
-      setAssets(assets);
       setLeagues(leagues);
       setCollections(collection);
     };
@@ -117,8 +128,8 @@ const GameSetup = () => {
 
     try {
       await createClassic(gameDetails, assets);
-
       toast.success("Game created successfully!");
+      router.push("/classic");
     } catch (err: any) {
       toast.error(err.message || "Error contacting server. Try again later.");
     } finally {
@@ -139,7 +150,7 @@ const GameSetup = () => {
       publicKey.toString(),
       Buffer.from(tx).toString("hex")
     );
-
+    toast.success("Verification successful");
     setVerified(verified);
   };
 

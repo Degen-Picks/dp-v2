@@ -1,5 +1,5 @@
 import { generalConfig } from "@/configs";
-import { Pickem, Wager } from "@/types";
+import { LeaguesArray, Pickem, Wager, Stats } from "@/types";
 
 export async function getWagers() {
   try {
@@ -25,7 +25,7 @@ export async function getStats() {
   try {
     const response = await fetch(`${generalConfig.apiUrl}/api/stats`);
     const stats = await response.json();
-    return stats.data;
+    return stats.data as Stats;
   } catch (err) {
     return null;
   }
@@ -35,7 +35,7 @@ export async function getAssets() {
   try {
     const response = await fetch(`${generalConfig.apiUrl}/api/assets`);
     const assets = await response.json();
-    return assets.data;
+    return assets.data as LeaguesArray;
   } catch (err) {
     return null;
   }
