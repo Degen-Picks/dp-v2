@@ -24,6 +24,7 @@ export interface GameInfoClass {
   description: string;
   league: string;
   finalScore: string;
+  metadata?: any;
 }
 
 export interface Team {

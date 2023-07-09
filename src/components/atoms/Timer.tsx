@@ -28,10 +28,8 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
         setTimeRemaining(days + "d " + hours + "h " + minutes + "m");
       }
     };
-
-    calculateTimeRemaining();
-
     const interval = setInterval(calculateTimeRemaining, 60000);
+    calculateTimeRemaining();
 
     return () => clearInterval(interval);
   }, [gameTime]);
