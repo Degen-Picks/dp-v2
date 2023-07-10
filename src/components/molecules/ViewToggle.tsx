@@ -115,7 +115,8 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
   useEffect(() => {
     if (
       publicKey &&
-      adminWallets &&
+      adminWallets !== undefined &&
+      adminWallets?.length > 0 &&
       adminWallets.includes(publicKey.toBase58())
     ) {
       setIsAdmin(true);
@@ -131,7 +132,7 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
         <div
           className={`${
             isAdmin ? "w-[333px]" : "w-[255px]"
-          } w-[333px] h-[60px] bg-[#EEEEEE] flex items-center justify-between px-[5px] rounded-lg`}
+          } h-[60px] bg-[#EEEEEE] flex items-center justify-between px-[5px] rounded-lg`}
         >
           <div
             className={`${
