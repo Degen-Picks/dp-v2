@@ -40,7 +40,7 @@ const RulesModal: FC<Props> = ({ showModal, setShowModal, gameType }) => {
                     className="absolute right-6 top-6"
                     onClick={() => setShowModal(false)}
                   >
-                    <Close color="black" />
+                    <Close className="fill-black" />
                   </button>
                 </div>
                 {/* body */}

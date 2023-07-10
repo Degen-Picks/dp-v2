@@ -304,7 +304,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const buttonDisabled =
     isBroke ||
-    winningTeam === null ||
+    winningTeam === undefined ||
     dustBet === null ||
     dustBet < 1 ||
     agree === false ||
@@ -319,7 +319,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         /* betting is over and you didn't pick */
       }
       return "Picks closed - game live";
-    } else if (winningTeam === null && picksOpened) {
+    } else if (winningTeam === undefined && picksOpened) {
       {
         /* forgot to pick a winning team */
       }
@@ -365,7 +365,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       return "F*ck it, we ball";
     }
 
-    return "Waiting for game to open";
+    // return "Waiting for game to open";
   };
 
   const pickHandler = (teamNum: number) => {
@@ -818,8 +818,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                     <Divider />
 
                     <div
-                      className={`my-2 w-full text-left text-sm sm:text-body-md ${
-                        !success && "hover:cursor-pointer"
+                      className={`my-2 w-fit mr-auto text-left text-sm sm:text-body-md ${
+                        !success && "cursor-pointer"
                       }`}
                       onClick={() => !success && setAgree(!agree)}
                     >
