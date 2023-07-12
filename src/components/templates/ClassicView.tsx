@@ -67,7 +67,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   // wallet variables
   const { connection } = useConnection();
-  const { publicKey } = useWallet();
+  const { publicKey, signTransaction } = useWallet();
 
   const pickFee = 0.069;
 
@@ -110,92 +110,97 @@ const Classic: FC<Props> = ({ gameId }) => {
   });
 
   // create and process dust txn
-  // const handlePayDust = async () => {
-  //   if (!gameData) return;
-  //   const toastId = toast.loading("Processing Transaction...");
-  //   setTxnLoading(true);
-  //   if (!isBroke) {
-  //     const team = gameData.team1.teamName === winningTeam ? "team1" : "team2";
-  //     const selectionId = gameData[team].id;
-  //     const escrowPublicKey = gameData[team].publicKey;
+  const handlePayDust = async () => {
+    if (!gameData || !publicKey) return;
+    const toastId = toast.loading("Processing Transaction...");
+    setTxnLoading(true);
+    if (!isBroke) {
+      const team = gameData.team1.teamName === winningTeam ? "team1" : "team2";
+      const selectionId = gameData[team].id;
+      const escrowPublicKey = gameData[team].publicKey;
 
-  //     // Send dust to our wallet
-  //     const txHash = await sendDustTransaction(
-  //       publicKey,
-  //       signTransaction,
-  //       connection,
-  //       dustBet,
-  //       escrowPublicKey
-  //     );
+      // Send dust to our wallet
+      const txHash = await sendDustTransaction(
+        publicKey,
+        signTransaction,
+        connection,
+        dustBet,
+        escrowPublicKey
+      );
 
-  //     // Check tx went through
-  //     if (txHash && (await sendPlaceBet(txHash, selectionId, 0))) {
-  //       toast.success("Success!", {
-  //         id: toastId,
-  //       });
+      // Check tx went through
+      if (txHash && (await sendPlaceBet(txHash, selectionId, 0))) {
+        toast.success("Success!", {
+          id: toastId,
+        });
 
-  //       // Load fresh game data
-  //       await loadGameData();
+        // Load fresh game data
+        await loadGameData();
 
-  //       // update txn hash
-  //       setTxn(txHash);
+        // update txn hash
+        setTxn(txHash);
 
-  //       // show success UX
-  //       setSuccess(true);
-  //       setAgree(true);
-  //       // document.body.scrollTop = document.documentElement.scrollTop = 0;
-  //     } else {
-  //       toast.error("Transaction cancelled or failed.", {
-  //         id: toastId,
-  //       });
-  //     }
-  //   } else {
-  //     toast.error("Insufficient DUST balance.", {
-  //       id: toastId,
-  //     });
-  //   }
-  //   setTxnLoading(false);
-  // };
+        // show success UX
+        setSuccess(true);
+        setAgree(true);
+        // document.body.scrollTop = document.documentElement.scrollTop = 0;
+      } else {
+        toast.error("Transaction cancelled or failed.", {
+          id: toastId,
+        });
+      }
+    } else {
+      toast.error("Insufficient DUST balance.", {
+        id: toastId,
+      });
+    }
+    setTxnLoading(false);
+  };
 
-  // const sendPlaceBet = async (signature, selectionId, retries) => {
-  //   try {
-  //     const headers = new Headers();
-  //     headers.append("Content-Type", "application/json");
+  const sendPlaceBet = async (
+    signature: string,
+    selectionId: string,
+    retries: number
+  ): Promise<any> => {
+    if (!gameData || !publicKey) return;
+    try {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
 
-  //     const requestOptions = {
-  //       method: "POST",
-  //       headers: headers,
-  //       body: JSON.stringify({
-  //         wagerId: gameData.gameInfo.id,
-  //         selectionId,
-  //         signature,
-  //         publicKey: publicKey.toString(),
-  //       }),
-  //     };
+      const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          wagerId: gameData.gameInfo.id,
+          selectionId,
+          signature,
+          publicKey: publicKey.toString(),
+        }),
+      };
 
-  //     const response = await fetch(
-  //       `${generalConfig.apiUrl}/api/placeBet`,
-  //       requestOptions
-  //     );
-  //     const body = await response.json();
+      const response = await fetch(
+        `${generalConfig.apiUrl}/api/placeBet`,
+        requestOptions
+      );
+      const body = await response.json();
 
-  //     if (response.status === 200) {
-  //       return true;
-  //     } else {
-  //       if (body.message === "Invalid transaction signature" || retries < 5) {
-  //         console.log("Should retry!");
+      if (response.status === 200) {
+        return true;
+      } else {
+        if (body.message === "Invalid transaction signature" || retries < 5) {
+          console.log("Should retry!");
 
-  //         await sleep(1000);
-  //         return await sendPlaceBet(signature, selectionId, retries + 1);
-  //       }
-  //       toast.error(body.message);
-  //       return false;
-  //     }
-  //   } catch (err) {
-  //     console.log(`Error placing bet ${err}`);
-  //     return false;
-  //   }
-  // };
+          await sleep(1000);
+          return await sendPlaceBet(signature, selectionId, retries + 1);
+        }
+        toast.error(body.message);
+        return false;
+      }
+    } catch (err) {
+      console.log(`Error placing bet ${err}`);
+      return false;
+    }
+  };
 
   const loadGameData = async () => {
     try {
