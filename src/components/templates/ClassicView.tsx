@@ -519,7 +519,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     }
 
     fetchWalletData();
-  }, [publicKey, dustBet]);
+  }, [publicKey, dustBet, connection]);
 
   // show modal whenever a wallet is connected
   useEffect(() => {
@@ -620,7 +620,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       setRewardEstimate(estimatedReward);
     };
     estimateRewards();
-  }, [dustBet, gameData, winningTeam]);
+  }, [dustBet, gameData, winningTeam, success]);
 
   // update final winner
   useEffect(() => {
