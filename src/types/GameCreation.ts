@@ -32,7 +32,7 @@ export type ClassicGameBody = {
 
 export type ClassicGameCreateResponse = {
   statusCode: number;
-  body: string;
+  body: any;
 };
 
 export type TeamOption = {

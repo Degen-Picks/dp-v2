@@ -125,11 +125,12 @@ const GameSetup = () => {
   const handleCreateGame = async () => {
     const toastId = toast.loading("Creating game...");
     setLoading(true);
-
     try {
-      await createClassic(gameDetails, assets);
+      const { body } = await createClassic(gameDetails, assets);
+      const gameId = body.data._id;
+
       toast.success("Game created successfully!");
-      router.push("/classic");
+      router.push(`/classic/${gameId}`);
     } catch (err: any) {
       toast.error(err.message || "Error contacting server. Try again later.");
     } finally {
