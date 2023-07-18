@@ -3,8 +3,11 @@ import {
   ClassicGameBody,
   ClassicGameCreateResponse,
   ClassicGameOptions,
+  GameInfo,
   League,
   LeaguesArray,
+  ServerResponse,
+  Team,
   TeamOption,
 } from "@/types";
 
@@ -122,61 +125,143 @@ export async function createClassic(
 }
 
 export async function fetchNonce(publicKey: string): Promise<string> {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
-  const requestOptions = {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({ publicKey }),
-  };
+    const requestOptions = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ publicKey }),
+    };
 
-  const response = await fetch(
-    `${generalConfig.apiUrl}/api/generateNonce`,
-    requestOptions
-  );
+    const response = await fetch(
+      `${generalConfig.apiUrl}/api/generateNonce`,
+      requestOptions
+    );
 
-  const body = await response.json();
-  return body.nonce;
+    const body = await response.json();
+    return body.nonce;
+  } catch {
+    return "";
+  }
 }
 
 export async function confirmSignature(
   publicKey: string,
   signedMessage: string
 ): Promise<boolean> {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
-  const requestOptions: RequestInit = {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({ publicKey, signedMessage }),
-    credentials: "include",
-  };
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ publicKey, signedMessage }),
+      credentials: "include",
+    };
 
-  const response = await fetch(
-    `${generalConfig.apiUrl}/api/login`,
-    requestOptions
-  );
+    const response = await fetch(
+      `${generalConfig.apiUrl}/api/login`,
+      requestOptions
+    );
 
-  const body = await response.json();
-  return body.verified;
+    const body = await response.json();
+    return body.verified;
+  } catch {
+    return false;
+  }
 }
 
 export async function getLoginStatus(): Promise<boolean> {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
-  const requestOptions: RequestInit = {
-    method: "GET",
-    headers: headers,
-    credentials: "include",
-  };
+    const requestOptions: RequestInit = {
+      method: "GET",
+      headers: headers,
+      credentials: "include",
+    };
 
-  const response = await fetch(
-    `${generalConfig.apiUrl}/protected/status`,
-    requestOptions
-  );
+    const response = await fetch(
+      `${generalConfig.apiUrl}/protected/status`,
+      requestOptions
+    );
 
-  return response.status === 200;
+    return response.status === 200;
+  } catch {
+    return false;
+  }
+}
+
+export async function refundClassic(game: GameInfo): Promise<ServerResponse> {
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        wagerId: game.gameInfo.id,
+      }),
+      credentials: "include",
+    };
+
+    const response = await fetch(
+      `${generalConfig.apiUrl}/protected/cancelWager`,
+      requestOptions
+    );
+
+    const body = await response.json();
+
+    return {
+      success: response.status === 200,
+      message: body.message,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Error refunding",
+    };
+  }
+}
+
+export async function airdropClassic(
+  game: GameInfo,
+  winner: Team
+): Promise<ServerResponse> {
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        wagerId: game.gameInfo.id,
+        selectionId: winner.id,
+      }),
+      credentials: "include",
+    };
+
+    const response = await fetch(
+      `${generalConfig.apiUrl}/protected/declareWinner`,
+      requestOptions
+    );
+
+    const body = await response.json();
+
+    return {
+      success: response.status === 200,
+      message: body.message,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Error airdropping",
+    };
+  }
 }

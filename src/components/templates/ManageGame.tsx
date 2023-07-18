@@ -1,19 +1,22 @@
-import { GameInfo } from "@/types";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
+import { airdropClassic, refundClassic } from "@/utils";
+import toast from "react-hot-toast";
+import { GameInfo, Team } from "../../types";
 
 interface Props {
-  gameData: any;
-  loadGameData: () => Promise<GameInfo | null | undefined>;
+  gameData: GameInfo;
+  loadGameData: () => Promise<GameInfo | undefined | null>;
 }
 
 const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
-  const [selectedTeam, setSelectedTeam] = useState<string | undefined>();
+  const [selectedTeam, setSelectedTeam] = useState<Team | undefined>(undefined);
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   // TODO: import final selected winner and setSelectedTeam in useEffect
-  // then, if airdrops occurred, set that team's border/bg color to green
+  // then, if airdrops occurred, set that team's border/bg color to green and disable select
 
   useEffect(() => {
     // Ensures gameData state is up-to-date
@@ -25,10 +28,72 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, []);
 
   useEffect(() => {
+    if (gameData.gameInfo.status === "cancelled") {
+      setIsRefunded(true);
+      return;
+    }
+
+    if (gameData.gameInfo.status === "completed") {
+      gameData.team1.winner === true
+        ? setSelectedTeam(gameData.team1)
+        : setSelectedTeam(gameData.team2);
+
+      setIsAirdropped(true);
+      return;
+    }
+  }, [gameData]);
+
+  useEffect(() => {
     if (isRefunded) {
       setSelectedTeam(undefined);
     }
   }, [isRefunded]);
+
+  const handleCancelGame = async () => {
+    const toastId = toast.loading("Cancelling game...");
+    setLoading(true);
+
+    const { success, message } = await refundClassic(gameData);
+
+    success === true ? toast.success("Game cancelled!") : toast.error(message);
+
+    // Refresh game data
+    await loadGameData();
+
+    setIsRefunded(success);
+
+    toast.dismiss(toastId);
+    setLoading(false);
+  };
+
+  const handleAirDrop = async () => {
+    if (selectedTeam === undefined) {
+      toast.error("Please select a winner first!");
+      return;
+    }
+
+    if (gameData.gameInfo.status !== "closed") {
+      toast.error("Game must be closed to airdrop winners!");
+      return;
+    }
+
+    const toastId = toast.loading("Declaring winner...");
+    setLoading(true);
+
+    const { success, message } = await airdropClassic(gameData, selectedTeam);
+
+    success === true
+      ? toast.success("Winner declared and initiated airdrop!")
+      : toast.error(message);
+
+    // Refresh game data
+    await loadGameData();
+
+    setIsAirdropped(success);
+
+    toast.dismiss(toastId);
+    setLoading(false);
+  };
 
   return (
     <div className="w-full">
@@ -46,16 +111,16 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
         <div className="w-full relative">
           <div
             className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2 ${
-              selectedTeam === gameData.team1.teamName
+              selectedTeam?.teamName === gameData.team1.teamName
                 ? "border-link bg-[#7808FF1A]/10"
                 : "border-transparent bg-white"
             } flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500`}
             onClick={() => {
-              if (selectedTeam === gameData.team1.teamName) {
+              if (selectedTeam?.teamName === gameData.team1.teamName) {
                 setSelectedTeam(undefined);
               } else {
-                setSelectedTeam(gameData.team1.teamName);
+                setSelectedTeam(gameData.team1);
               }
             }}
           >
@@ -74,16 +139,16 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
         <div className="w-full relative">
           <div
             className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2 ${
-              selectedTeam === gameData.team2.teamName
+              selectedTeam?.teamName === gameData.team2.teamName
                 ? "border-link bg-[#7808FF1A]/10"
                 : "border-transparent bg-white"
             } flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500`}
             onClick={() => {
-              if (selectedTeam === gameData.team2.teamName) {
+              if (selectedTeam?.teamName === gameData.team2.teamName) {
                 setSelectedTeam(undefined);
               } else {
-                setSelectedTeam(gameData.team2.teamName);
+                setSelectedTeam(gameData.team2);
               }
             }}
           >
@@ -104,13 +169,16 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             Winners airdropped!
           </p>
         ) : (
-          <div
-            className={`mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
+          <button
+            className={`${
+              isRefunded && "hidden"
+            } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
             hover:scale-[1.02] transition-transform ease-in-out duration-500 flex items-center justify-center`}
-            // onClick={}
+            onClick={handleAirDrop}
+            disabled={isRefunded || isAirdropped || loading}
           >
             <p className="font-base-b text-white">Airdrop winners</p>
-          </div>
+          </button>
         )}
 
         {isRefunded ? (
@@ -121,13 +189,16 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             Picks refunded.
           </p>
         ) : (
-          <p
-            className="font-base-b text-incorrect text-center h-[50px] 
-            flex items-center justify-center cursor-pointer z-50"
-            // onClick={}
+          <button
+            className={`${
+              isAirdropped && "hidden"
+            } font-base-b text-incorrect text-center h-[50px] 
+            flex items-center justify-center cursor-pointer z-50`}
+            onClick={handleCancelGame}
+            disabled={isRefunded || isAirdropped || loading}
           >
             Cancel game
-          </p>
+          </button>
         )}
       </div>
     </div>

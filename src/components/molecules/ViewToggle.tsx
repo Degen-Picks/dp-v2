@@ -1,5 +1,6 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { getLoginStatus } from "@/utils";
 
 interface IconProps {
   fill: string;
@@ -110,20 +111,18 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
     setToggleConfig(newToggleConfig);
   };
 
-  const adminWallets = process.env.NEXT_PUBLIC_ADMIN?.split(",");
-
   useEffect(() => {
-    if (
-      publicKey &&
-      adminWallets !== undefined &&
-      adminWallets?.length > 0 &&
-      adminWallets.includes(publicKey.toBase58())
-    ) {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
+    async function loginAdmin() {
+      if (!publicKey) return;
+
+      // TODO: Get login status by public key
+      // (currently gets from just cookie session), get specific "role"
+      const isAdmin = await getLoginStatus();
+      setIsAdmin(isAdmin);
     }
-  }, [publicKey, adminWallets]);
+
+    loginAdmin();
+  }, [publicKey]);
 
   return (
     <>

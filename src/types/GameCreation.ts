@@ -49,3 +49,8 @@ export type League = {
 };
 
 export type LeaguesArray = League[];
+
+export type ServerResponse = {
+  success: boolean;
+  message: string;
+};
