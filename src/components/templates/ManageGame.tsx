@@ -95,6 +95,34 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
     setLoading(false);
   };
 
+  const getStyles = (team: 1 | 2) => {
+    if (isAirdropped) {
+      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
+        return "border-correct bg-white";
+      } else if (
+        selectedTeam?.teamName === gameData.team2.teamName &&
+        team === 2
+      ) {
+        return "border-correct bg-white";
+      } else {
+        return "border-transparent bg-white";
+      }
+    } else if (isRefunded) {
+      return "border-transparent bg-white";
+    } else {
+      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
+        return "border-link bg-[#7808FF1A]/10";
+      } else if (
+        selectedTeam?.teamName === gameData.team2.teamName &&
+        team === 2
+      ) {
+        return "border-link bg-[#7808FF1A]/10";
+      } else {
+        return "border-transparent bg-white";
+      }
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="my-10 pb-10 lg:pb-0">
@@ -109,13 +137,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       </div>
       <div className="w-full flex flex-col items-center justify-center gap-5">
         <div className="w-full relative">
-          <div
-            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2 ${
-              selectedTeam?.teamName === gameData.team1.teamName
-                ? "border-link bg-[#7808FF1A]/10"
-                : "border-transparent bg-white"
-            } flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500`}
+          <button
+            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
+            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
+            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
+            disabled:cursor-default ${getStyles(1)}`}
+            disabled={isRefunded || isAirdropped || loading}
             onClick={() => {
               if (selectedTeam?.teamName === gameData.team1.teamName) {
                 setSelectedTeam(undefined);
@@ -131,19 +158,18 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
               alt={gameData.team1.teamName}
             />
             <p className="font-base-b">{gameData.team1.teamName}</p>
-          </div>
+          </button>
           <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
             Team 1
           </p>
         </div>
         <div className="w-full relative">
-          <div
-            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2 ${
-              selectedTeam?.teamName === gameData.team2.teamName
-                ? "border-link bg-[#7808FF1A]/10"
-                : "border-transparent bg-white"
-            } flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500`}
+          <button
+            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
+            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
+            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
+            disabled:cursor-default ${getStyles(2)}`}
+            disabled={isRefunded || isAirdropped || loading}
             onClick={() => {
               if (selectedTeam?.teamName === gameData.team2.teamName) {
                 setSelectedTeam(undefined);
@@ -159,7 +185,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
               alt={gameData.team2.teamName}
             />
             <p className="font-base-b text-black">{gameData.team2.teamName}</p>
-          </div>
+          </button>
           <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
             Team 2
           </p>
@@ -186,7 +212,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             className="font-base-b text-incorrect text-center h-[50px] 
             flex items-center justify-center"
           >
-            Picks refunded.
+            Picks refunded successfully.
           </p>
         ) : (
           <button
