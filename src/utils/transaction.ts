@@ -12,7 +12,7 @@ import {
   TransactionSignature,
 } from "@solana/web3.js";
 import { getUnixTs, sleep } from "./various";
-import utilConfig from "../configs/util.config"
+import { utilConfig } from "@/configs";
 import log from "loglevel";
 
 interface BlockhashAndFeeCalculator {
@@ -61,7 +61,7 @@ export async function sendSignedTransaction({
   sendingMessage?: string;
   sentMessage?: string;
   successMessage?: string;
-  timeout?: number;   
+  timeout?: number;
 }): Promise<{ txid: string; slot: number }> {
   const rawTransaction = signedTransaction.serialize();
   const startTime = getUnixTs();
@@ -102,7 +102,7 @@ export async function sendSignedTransaction({
     }
 
     slot = confirmation?.slot || 0;
-  } catch (err) {
+  } catch (err: any) {
     log.error("Timeout Error caught", err);
     if (err.timeout) {
       throw new Error("Timed out awaiting confirmation on transaction");

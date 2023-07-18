@@ -1,7 +1,7 @@
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { sendTransactionWithRetryWithKeypair } from "./transaction.js";
+import { sendTransactionWithRetryWithKeypair } from "@/utils";
 import getOrCreateAssociatedTokenAccount from "../composables/getOrCreateAssociatedTokenAccount";
 import createTransferInstruction from "../composables/createTransferInstructions";
 import { utilConfig } from "@/configs";
