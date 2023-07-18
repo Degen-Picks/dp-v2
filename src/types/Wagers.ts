@@ -9,7 +9,7 @@ export interface Wager {
   endDate: number;
   gameDate: number;
   metadata: any[];
-  description?: string;
+  description: string;
 }
 
 export interface Selection {

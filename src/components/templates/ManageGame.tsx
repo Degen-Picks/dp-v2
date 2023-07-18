@@ -15,8 +15,11 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
-  // TODO: import final selected winner and setSelectedTeam in useEffect
-  // then, if airdrops occurred, set that team's border/bg color to green and disable select
+  const isDisabled =
+    gameData.gameInfo.status === "active" ||
+    loading ||
+    isRefunded ||
+    isAirdropped;
 
   useEffect(() => {
     // Ensures gameData state is up-to-date
@@ -142,7 +145,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
             disabled:cursor-default ${getStyles(1)}`}
-            disabled={isRefunded || isAirdropped || loading}
+            disabled={isDisabled}
             onClick={() => {
               if (selectedTeam?.teamName === gameData.team1.teamName) {
                 setSelectedTeam(undefined);
@@ -169,7 +172,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
             disabled:cursor-default ${getStyles(2)}`}
-            disabled={isRefunded || isAirdropped || loading}
+            disabled={isDisabled}
             onClick={() => {
               if (selectedTeam?.teamName === gameData.team2.teamName) {
                 setSelectedTeam(undefined);
@@ -201,19 +204,32 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
             hover:scale-[1.02] transition-transform ease-in-out duration-500 flex items-center justify-center`}
             onClick={handleAirDrop}
-            disabled={isRefunded || isAirdropped || loading}
+            disabled={isDisabled}
           >
             <p className="font-base-b text-white">Airdrop winners</p>
           </button>
         )}
 
         {isRefunded ? (
-          <p
-            className="font-base-b text-incorrect text-center h-[50px] 
-            flex items-center justify-center"
-          >
-            Picks refunded successfully.
-          </p>
+          <>
+            <p
+              className="font-base-b text-incorrect text-center
+              flex items-center justify-center"
+            >
+              <span className="text-xl">🪄</span>&nbsp;This game was
+              refunded&nbsp;
+              <span className="text-xl">🪄</span>
+            </p>
+            {/* TODO: get tx link */}
+            <a
+              // href={`https://solscan.io/tx/${gameData.gameInfo.metadata[0].txId}`}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-base-b text-center flex items-center justify-center text-link underline"
+            >
+              See it on the blockchain
+            </a>
+          </>
         ) : (
           <button
             className={`${
@@ -221,7 +237,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             } font-base-b text-incorrect text-center h-[50px] 
             flex items-center justify-center cursor-pointer z-50`}
             onClick={handleCancelGame}
-            disabled={isRefunded || isAirdropped || loading}
+            disabled={isDisabled}
           >
             Cancel game
           </button>
