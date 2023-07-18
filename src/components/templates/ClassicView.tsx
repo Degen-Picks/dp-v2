@@ -202,7 +202,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     }
   };
 
-  const loadGameData = async () => {
+  const loadGameData = async (): Promise<GameInfo | undefined | null> => {
     try {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -905,7 +905,7 @@ const Classic: FC<Props> = ({ gameId }) => {
           <ActivityFeed gameData={gameData} />
         )}
         {toggleConfig.selected === "option3" && (
-          <ManageGame gameData={gameData} />
+          <ManageGame gameData={gameData} loadGameData={loadGameData} />
         )}
       </div>
       {/* modal window - legal jargon */}

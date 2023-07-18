@@ -1,17 +1,28 @@
+import { GameInfo } from "@/types";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 
 interface Props {
   gameData: any;
+  loadGameData: () => Promise<GameInfo | null | undefined>;
 }
 
-const ManageGame: FC<Props> = ({ gameData }) => {
+const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const [selectedTeam, setSelectedTeam] = useState<string | undefined>();
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
 
   // TODO: import final selected winner and setSelectedTeam in useEffect
   // then, if airdrops occurred, set that team's border/bg color to green
+
+  useEffect(() => {
+    // Ensures gameData state is up-to-date
+    async function load() {
+      await loadGameData();
+    }
+
+    load();
+  }, []);
 
   useEffect(() => {
     if (isRefunded) {
