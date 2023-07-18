@@ -769,7 +769,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
                       valid={picksOpened && !picksFinished}
-                      gameCompleted={finalWinner !== null}
+                      gameStatus={gameData.gameInfo.status}
                     />
 
                     {/* divider */}

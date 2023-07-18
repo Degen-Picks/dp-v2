@@ -17,7 +17,7 @@ interface VProps {
   handlePicks: any;
   pickedTeams: any;
   valid: boolean;
-  gameCompleted: boolean;
+  gameStatus: string;
 }
 
 const TeamBox: FC<TProps> = ({
@@ -64,7 +64,7 @@ const ClassicVersusBox: FC<VProps> = ({
   handlePicks,
   pickedTeams,
   valid,
-  gameCompleted,
+  gameStatus,
 }) => {
   const [active1, setActive1] = useState<boolean>(false);
   const [active2, setActive2] = useState<boolean>(false);
@@ -97,11 +97,11 @@ const ClassicVersusBox: FC<VProps> = ({
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
                 : "border-transparent"
               : active1
-              ? !gameCompleted
-                ? "border-secondary !bg-border"
-                : pickData.team1.winner
-                ? "border-correct !bg-[#E8F5E9]"
-                : "border-incorrect !bg-[#FFEBEE]"
+              ? gameStatus === "completed"
+                ? pickData.team1.winner
+                  ? "border-correct !bg-[#E8F5E9]"
+                  : "border-incorrect !bg-[#FFEBEE]"
+                : "border-secondary !bg-border"
               : "border-transparent"
           }`}
           // 5 - results are in + correct + active1 = green (border-correct bg-[#E8F5E9])
@@ -139,11 +139,11 @@ const ClassicVersusBox: FC<VProps> = ({
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
                 : "border-transparent"
               : active2
-              ? !gameCompleted
-                ? "border-secondary !bg-border"
-                : pickData.team2.winner
-                ? "border-correct !bg-[#E8F5E9]"
-                : "border-incorrect !bg-[#FFEBEE]"
+              ? gameStatus === "completed"
+                ? pickData.team2.winner
+                  ? "border-correct !bg-[#E8F5E9]"
+                  : "border-incorrect !bg-[#FFEBEE]"
+                : "border-secondary !bg-border"
               : "border-transparent"
           }`}
           onClick={() => {
