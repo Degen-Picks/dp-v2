@@ -216,9 +216,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
               className="font-base-b text-incorrect text-center
               flex items-center justify-center"
             >
-              <span className="text-xl">🪄</span>&nbsp;This game was
-              refunded&nbsp;
-              <span className="text-xl">🪄</span>
+              Game refunded successfully.
             </p>
             {/* TODO: get tx link */}
             <a

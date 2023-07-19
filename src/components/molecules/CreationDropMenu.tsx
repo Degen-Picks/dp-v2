@@ -30,8 +30,8 @@ const CreationDropMenu: FC<Props> = ({
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
   const clickHandler = (item: string) => {
-    const newGameDetails = { ...gameDetails };
-    newGameDetails[accessor] = item;
+    const newGameDetails: ClassicGameOptions = { ...gameDetails };
+    newGameDetails[accessor as keyof ClassicGameOptions] = item;
     setGameDetails(newGameDetails);
     setIsOpen(false);
   };
@@ -71,18 +71,23 @@ const CreationDropMenu: FC<Props> = ({
             onClick={() => setIsOpen(!isOpen)}
             disabled={disabled}
           >
-            {gameDetails[accessor] && gameDetails[accessor] !== "" ? (
+            {gameDetails[accessor as keyof ClassicGameOptions] &&
+            gameDetails[accessor as keyof ClassicGameOptions] !== "" ? (
               <div className="flex items-center gap-3">
                 {icon && (
                   <Image
-                    src={fetchIcon(gameDetails[accessor])}
+                    src={fetchIcon(
+                      gameDetails[
+                        accessor as keyof ClassicGameOptions
+                      ] as string
+                    )}
                     width={30}
                     height={30}
                     alt="team or token icon"
                   />
                 )}
                 <p className="text-primary font-base-b">
-                  {gameDetails[accessor]}
+                  {gameDetails[accessor as keyof ClassicGameOptions]}
                 </p>
               </div>
             ) : (
