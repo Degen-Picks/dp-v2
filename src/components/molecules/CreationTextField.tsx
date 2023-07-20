@@ -4,7 +4,7 @@ import { ClassicGameOptions } from "../../types";
 interface Props {
   gameDetails: ClassicGameOptions;
   setGameDetails: Dispatch<SetStateAction<ClassicGameOptions>>;
-  accessor: string;
+  accessor: keyof ClassicGameOptions;
   title?: string;
   placeholder?: string;
   fullWidth?: boolean;
@@ -40,7 +40,7 @@ const CreationTextField: FC<Props> = ({
           ${textLeft ? "text-left px-4" : "text-center"}`}
           type={type}
           onChange={(e) => {
-            const newGameDetails = { ...gameDetails };
+            const newGameDetails: ClassicGameOptions = { ...gameDetails };
             newGameDetails[accessor] = e.target.value;
             setGameDetails(newGameDetails);
           }}

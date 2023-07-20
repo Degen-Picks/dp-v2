@@ -44,7 +44,7 @@ const Landing = () => {
   };
 
   const loadStatData = async () => {
-    const statData: Stats = await getStats();
+    const statData: Stats | null = await getStats();
     if (statData === null) return;
 
     const { gamesHosted, uniquePlayers, totalVolume } = statData;

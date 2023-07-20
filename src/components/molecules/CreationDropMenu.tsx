@@ -7,7 +7,7 @@ interface Props {
   list: string[];
   gameDetails: ClassicGameOptions;
   setGameDetails: Dispatch<SetStateAction<ClassicGameOptions>>;
-  accessor: string;
+  accessor: keyof ClassicGameOptions;
   title: string;
   placeholder?: string;
   disabled?: boolean;
@@ -37,16 +37,17 @@ const CreationDropMenu: FC<Props> = ({
   };
 
   const fetchIcon = (item: string) => {
-    if (accessor === "token") {
-      switch (item) {
-        case "DUST":
-          return "/images/icons/dust_square.svg";
-        case "SOL":
-          return "/images/icons/solana.svg";
-      }
-    } else if (accessor === "team1Name" || accessor === "team2Name") {
-      // do stuff
+    // if (accessor === "token") {
+    switch (item) {
+      case "DUST":
+        return "/images/icons/dust_square.svg";
+      case "SOL":
+        return "/images/icons/solana.svg";
+      default:
+        return "/images/icons/dust_square.svg";
     }
+    // } else if (accessor === "team1Name" || accessor === "team2Name") {
+    // do stuff
   };
 
   return (

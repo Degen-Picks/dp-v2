@@ -564,6 +564,14 @@ const Classic: FC<Props> = ({ gameId }) => {
           setSuccess(true);
           setAgree(true);
 
+          if (gameData.gameInfo.status === "cancelled") {
+            if (userPick.transferData.signature) {
+              setAirdropTxn(userPick.transferData.signature);
+            }
+            console.log("CANCELLED");
+            return;
+          }
+
           const pickedTeam =
             gameData.team1.id === userPickId ? "team1" : "team2";
           const otherTeam = pickedTeam === "team1" ? "team2" : "team1";
@@ -850,7 +858,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     {/* 4. fuck it we ball - send dust */}
                     {!success ? (
                       <button
-                        // onClick={() => !buttonDisabled && handlePayDust()}
+                        onClick={() => !buttonDisabled && handlePayDust()}
                         disabled={buttonDisabled}
                         className={`${
                           buttonDisabled
