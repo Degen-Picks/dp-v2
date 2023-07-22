@@ -63,7 +63,7 @@ export function getDayTime(date: Date) {
   const year = date.getFullYear();
   const time = new Date().toString().split(" ")[4];
 
-  console.log("time", time);
+  // console.log("time", time);
   return `${month} ${day}, ${year} ${time}`;
 }
 

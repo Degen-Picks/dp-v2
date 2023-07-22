@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
 import { sleep } from "../../utils";
-import { GameInfo, Team } from "@/types";
+import { GameInfo, Team, Wager } from "@/types";
 import { ToggleConfig } from "../molecules/ViewToggle";
 
 interface Props {
@@ -235,10 +235,12 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       if (currentWager === null) {
         // Pick wager based on open time
-        const liveGames = body.filter((wager: any) => wager.status === "live");
+        const liveGames = body.filter(
+          (wager: Wager) => wager.status === "live"
+        );
         if (liveGames.length > 0) {
           currentWager = liveGames.sort(
-            (a: any, b: any) => a.startDate - b.startDate
+            (a: Wager, b: Wager) => a.startDate - b.startDate
           )[0];
         } else {
           currentWager = body.reverse()[0];

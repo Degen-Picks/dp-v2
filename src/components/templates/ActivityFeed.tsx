@@ -52,7 +52,6 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
       })
       .then(function (response: any) {
         const placedBets = response.data.data.reverse();
-        console.log("needs typing", response.data);
         const data = [];
         let id = 0;
 
