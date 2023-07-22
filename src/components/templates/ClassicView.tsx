@@ -858,7 +858,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                     <Divider />
 
                     {/* 4. fuck it we ball - send dust */}
-                    {!success ? (
+                    {!success &&
+                    gameData?.gameInfo?.status !== "cancelled" &&
+                    gameData?.gameInfo?.status !== "completed" ? (
                       <button
                         onClick={() => !buttonDisabled && handlePayDust()}
                         disabled={buttonDisabled}
@@ -873,7 +875,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       </button>
                     ) : (
                       <div className="bg-light text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
-                        {!finalWinner ? (
+                        {!finalWinner && dustBet && winningTeam && success ? (
                           <>
                             <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
                             <a
@@ -885,7 +887,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                               See it on the blockchain
                             </a>
                           </>
-                        ) : finalWinner === winningTeam ? (
+                        ) : finalWinner === winningTeam && winAmount ? (
                           <>
                             <p className="font-base-b">{`🏆 LFG! You won ${winAmount} DUST 🏆`}</p>
                             <a
@@ -897,10 +899,30 @@ const Classic: FC<Props> = ({ gameId }) => {
                               See it on the blockchain
                             </a>
                           </>
-                        ) : (
+                        ) : winningTeam && finalWinner !== winningTeam ? (
                           <>
                             <p className="font-base-b">L</p>
                             <p>... we all take &apos;em</p>
+                          </>
+                        ) : null}
+                        {/* if we get here, user has not bet on this game */}
+                        {!winningTeam &&
+                          gameData?.gameInfo?.status === "completed" && (
+                            <p className="font-base-b">{`Game over! Winners have been successfully airdropped!`}</p>
+                          )}
+                        {gameData?.gameInfo?.status === "cancelled" && (
+                          <>
+                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                            <a
+                              className={`${
+                                winningTeam && airdropTxn ? "block" : "hidden"
+                              } text-base underline text-link hover:text-linkHover`}
+                              href={`https://solscan.io/tx/${airdropTxn}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              See it on the blockchain
+                            </a>
                           </>
                         )}
                       </div>

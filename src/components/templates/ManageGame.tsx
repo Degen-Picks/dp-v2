@@ -141,7 +141,9 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       <div className="w-full flex flex-col items-center justify-center gap-5">
         <div className="w-full relative">
           <button
-            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
+            className={`${
+              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
+            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
             flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
             disabled:cursor-default ${getStyles(1)}`}
@@ -168,7 +170,9 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
         </div>
         <div className="w-full relative">
           <button
-            className={`w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
+            className={`${
+              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
+            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
             flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
             transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
             disabled:cursor-default ${getStyles(2)}`}
