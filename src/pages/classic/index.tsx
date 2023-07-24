@@ -22,7 +22,7 @@ export const PropSection: FC<Props> = ({
   gameTime,
 }) => {
   return (
-    <Link passHref href={`/classic/${encodeURI(slug)}`}>
+    <Link className="w-full" passHref href={`/classic/${encodeURI(slug)}`}>
       <div
         className="relative bg-white py-3 md:h-[100px] w-full md:w-[620px] mx-auto 
         cursor-pointer hover:scale-[1.02] transition-transform ease-in-out duration-500"
