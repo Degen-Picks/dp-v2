@@ -7,9 +7,9 @@ const ConnectButton = () => {
 
   return (
     <>
-      <div className="sm:hidden">
+      <div className="relative sm:hidden bg-black z-50">
         <WalletMultiButton
-          className="!bg-black !relative !w-[60px] !h-[60px] !p-0 !rounded-none flex justify-center !z-50 !font-base"
+          className="!w-[60px] !h-[60px] !p-0 !rounded-none flex justify-center !font-base"
           startIcon={undefined}
         >
           <Image
@@ -20,9 +20,12 @@ const ConnectButton = () => {
           />
         </WalletMultiButton>
       </div>
-      <div className="hidden sm:block">
+      <div
+        className="hidden sm:block !bg-black !relative !w-full
+        md:!px-0 !h-auto !rounded-none !z-50 !font-base"
+      >
         <WalletMultiButton
-          className="!bg-black !relative !w-auto md:!w-[168px] md:!px-0 !h-auto !rounded-none flex justify-center !z-50 !font-base"
+          className="!w-auto md:!w-[168px] !flex !justify-center"
           startIcon={undefined}
         >
           {publicKey
