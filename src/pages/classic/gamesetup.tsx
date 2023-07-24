@@ -73,7 +73,8 @@ const GameSetup = () => {
       gameDetails.title !== "" &&
       gameDetails.gameTime !== "" &&
       gameDetails.collection !== "" &&
-      gameDetails.token !== ""
+      gameDetails.token !== "" &&
+      gameDetails.team1Name !== gameDetails.team2Name
     ) {
       if (gameDetails.league !== "custom") {
         if (gameDetails.team1Record !== "" && gameDetails.team2Record !== "") {
