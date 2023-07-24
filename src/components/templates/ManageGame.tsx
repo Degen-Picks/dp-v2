@@ -216,23 +216,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
         )}
 
         {isRefunded ? (
-          <>
-            <p
-              className="font-base-b text-incorrect text-center
+          <p
+            className="font-base-b text-incorrect text-center
               flex items-center justify-center"
-            >
-              Game refunded successfully.
-            </p>
-            {/* TODO: get tx link */}
-            <a
-              // href={`https://solscan.io/tx/${gameData.gameInfo.metadata[0].txId}`}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="font-base-b text-center flex items-center justify-center text-link underline"
-            >
-              See it on the blockchain
-            </a>
-          </>
+          >
+            Game refunded successfully.
+          </p>
         ) : (
           <button
             className={`${
