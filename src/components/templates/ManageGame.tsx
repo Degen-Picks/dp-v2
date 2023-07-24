@@ -229,7 +229,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             } font-base-b text-incorrect text-center h-[50px] 
             flex items-center justify-center cursor-pointer z-50`}
             onClick={handleCancelGame}
-            disabled={isDisabled}
+            disabled={isRefunded || isAirdropped}
           >
             Cancel game
           </button>
