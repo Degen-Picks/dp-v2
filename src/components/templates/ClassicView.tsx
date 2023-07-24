@@ -25,6 +25,14 @@ interface Props {
   gameId: string | string[];
 }
 
+export enum GameStatus {
+  PREGAME = "pregame",
+  OPEN = "open",
+  CLOSED = "closed",
+  AIRDROPPED = "airdropped",
+  CANCELLED = "cancelled",
+}
+
 const Classic: FC<Props> = ({ gameId }) => {
   //state variables
   const [gameCountdown, setGameCountdown] = useState<string>("Loading...");
@@ -43,9 +51,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   const [winAmount, setWinAmount] = useState<number>(0);
   const [airdropTxn, setAirdropTxn] = useState<string>();
   const [pickRefresh, setPickRefresh] = useState<boolean>(false);
-
-  const [picksOpened, setPicksOpened] = useState<boolean>(false);
-  const [picksFinished, setPicksFinished] = useState<boolean>(false);
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.OPEN);
 
   const [utcPickDate, setUtcPickDate] = useState<number>(); // Date picks open
   const [utcGameDate, setUtcGameDate] = useState<number>(); // Date picks close
@@ -299,7 +305,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       setUtcPickDate(currentWager.startDate + 5000);
 
       if (parsed.gameInfo.status === "cancelled") {
-        setPicksFinished(true);
+        setGameStatus(GameStatus.CANCELLED);
       }
 
       return parsed;
@@ -316,22 +322,21 @@ const Classic: FC<Props> = ({ gameId }) => {
     dustBet < 1 ||
     agree === false ||
     txnLoading ||
-    !picksOpened ||
-    picksFinished;
+    gameStatus !== GameStatus.OPEN;
 
   // updates button text based current state
   const buttonHandler = () => {
-    if (!picksOpened && !success) {
+    if (gameStatus !== GameStatus.OPEN && !success) {
       {
         /* betting is over and you didn't pick */
       }
       return "Picks closed - game live";
-    } else if (winningTeam === undefined && picksOpened) {
+    } else if (winningTeam === undefined && gameStatus === GameStatus.OPEN) {
       {
         /* forgot to pick a winning team */
       }
       return "Select a winning team";
-    } else if (isBroke && winningTeam && picksOpened) {
+    } else if (isBroke && winningTeam && gameStatus === GameStatus.OPEN) {
       {
         /* broke but picked a team */
       }
@@ -340,7 +345,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       !isBroke &&
       winningTeam &&
       (dustBet === null || dustBet < 1 || !rewardEstimate) &&
-      picksOpened
+      gameStatus === GameStatus.OPEN
     ) {
       {
         /* not broke, picked a team, invalid dust bet */
@@ -352,7 +357,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       !agree &&
       dustBet !== null &&
       dustBet >= 1 &&
-      picksOpened
+      gameStatus === GameStatus.OPEN
     ) {
       {
         /* not broke, picked a team, valid bet, checkbox unclicked */
@@ -364,7 +369,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       dustBet !== null &&
       dustBet >= 1 &&
       agree &&
-      picksOpened
+      gameStatus === GameStatus.OPEN
     ) {
       {
         /* not broke, picked a team, valid dust bet */
@@ -377,9 +382,17 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const pickHandler = (teamNum: number) => {
     if (teamNum === 1) {
-      setWinningTeam(gameData.team1.teamName);
+      setWinningTeam(
+        winningTeam === gameData.team1.teamName
+          ? undefined
+          : gameData.team1.teamName
+      );
     } else {
-      setWinningTeam(gameData.team2.teamName);
+      setWinningTeam(
+        winningTeam === gameData.team2.teamName
+          ? undefined
+          : gameData.team2.teamName
+      );
     }
   };
 
@@ -412,8 +425,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         clearInterval(interval);
         setGameCountdown("Picks closed.");
 
-        setPicksOpened(false);
-        setPicksFinished(true);
+        setGameStatus(GameStatus.CLOSED);
       }
     }, 1000);
 
@@ -453,7 +465,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         const response = await loadGameData();
 
         if (response !== null) {
-          setPicksOpened(true);
+          setGameStatus(GameStatus.OPEN);
 
           startGameDateCountdown();
         }
@@ -468,9 +480,9 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (new Date().getTime() > utcGameDate) {
         setGameCountdown("Picks closed.");
 
-        setPicksFinished(true);
+        setGameStatus(GameStatus.CLOSED);
       } else if (new Date().getTime() > utcPickDate) {
-        setPicksOpened(true);
+        setGameStatus(GameStatus.OPEN);
 
         startGameDateCountdown();
       } else {
@@ -482,7 +494,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   // Refresh game data
   useEffect(() => {
     let interval: any = null;
-    if (picksOpened && !pickRefresh) {
+    if (gameStatus === GameStatus.OPEN && !pickRefresh) {
       setPickRefresh(true);
 
       interval = setInterval(async () => {
@@ -494,7 +506,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     }
 
     return () => clearInterval(interval);
-  }, [picksOpened]);
+  }, [gameStatus]);
 
   useEffect(() => {
     async function loadPick() {
@@ -595,13 +607,13 @@ const Classic: FC<Props> = ({ gameId }) => {
     };
 
     const fetchUserPick = async () => {
-      if (publicKey && (picksOpened || picksFinished)) {
+      if (publicKey && gameStatus === GameStatus.PREGAME) {
         await loadUserPick(gameData.gameInfo.id);
       }
     };
 
     fetchUserPick();
-  }, [publicKey, picksOpened, picksFinished, gameData]);
+  }, [publicKey, gameStatus, gameData]);
 
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
@@ -718,10 +730,6 @@ const Classic: FC<Props> = ({ gameId }) => {
                     {gameData.gameInfo.title}
                   </div>
                 </div>
-              </div>
-            )}
-            {(picksOpened || picksFinished) && !loading && (
-              <div>
                 <div className="h-[50px] w-fit bg-white px-6 mx-auto flex items-center justify-center text-center text-link font-base-b">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -735,16 +743,20 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
 
-            {!picksOpened && !picksFinished && !loading && (
+            {gameStatus === GameStatus.PREGAME && !loading && (
               <div className="text-center mt-8 sm:text-lg">
                 Our next game opens for picks in: {pickCountdown}
               </div>
             )}
-            {(picksOpened || picksFinished) && !loading && (
-              <div className={`${!picksOpened && "mb-32 sm:mb-0"}`}>
+            {gameStatus !== GameStatus.PREGAME && !loading && (
+              <div
+                className={`${
+                  gameStatus !== GameStatus.OPEN && "mb-32 sm:mb-0"
+                }`}
+              >
                 <RewardPool
                   gameData={gameData}
-                  picksOpened={picksOpened}
+                  picksOpened={gameStatus === GameStatus.OPEN}
                   gameType={"degen"}
                 />
               </div>
@@ -778,7 +790,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       success={success}
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
-                      valid={picksOpened && !picksFinished}
+                      valid={gameStatus === GameStatus.OPEN}
                       gameStatus={gameData.gameInfo.status}
                     />
 
@@ -793,7 +805,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       <form className="w-full relative">
                         <input
                           type="number"
-                          disabled={success || picksFinished}
+                          disabled={success || gameStatus === GameStatus.CLOSED}
                           min="1"
                           max="1000000"
                           value={dustBet}
