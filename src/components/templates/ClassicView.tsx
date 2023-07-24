@@ -830,9 +830,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                       </div>
                     </div>
 
-                    {winningTeam !== null &&
-                      finalWinner === null &&
-                      dustBet !== null &&
+                    {winningTeam !== undefined &&
+                      finalWinner === undefined &&
                       dustBet >= 1 && (
                         <div className="w-full mt-4 py-3 px-4 bg-container text-center text-sm sm:text-base">
                           <div>Potential payout (highly volatile)</div>
