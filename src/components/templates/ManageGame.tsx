@@ -16,7 +16,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const [loading, setLoading] = useState(false);
 
   const isDisabled =
-    gameData.gameInfo.status === "active" ||
+    gameData.gameInfo.status !== "closed" ||
     loading ||
     isRefunded ||
     isAirdropped;
@@ -206,7 +206,8 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
             className={`${
               isRefunded && "hidden"
             } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
-            hover:scale-[1.02] transition-transform ease-in-out duration-500 flex items-center justify-center`}
+            hover:scale-[1.02] transition-transform ease-in-out duration-500 flex 
+            items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100`}
             onClick={handleAirDrop}
             disabled={isDisabled}
           >
