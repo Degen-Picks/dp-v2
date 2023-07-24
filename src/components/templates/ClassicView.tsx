@@ -806,9 +806,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         <input
                           type="number"
                           disabled={
-                            success ||
-                            gameStatus === GameStatus.CLOSED ||
-                            loading
+                            success || gameStatus !== GameStatus.OPEN || loading
                           }
                           min="1"
                           max="1000000"
@@ -856,7 +854,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                       <input
                         type="checkbox"
                         checked={!!agree}
-                        disabled={success || loading}
+                        disabled={
+                          success || loading || gameStatus !== GameStatus.OPEN
+                        }
                         onChange={() => setAgree(!agree)}
                         className="mr-2 accent-link hover:accent-linkHover"
                       />
