@@ -875,7 +875,11 @@ const Classic: FC<Props> = ({ gameId }) => {
                       </button>
                     ) : (
                       <div className="bg-light text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
-                        {!finalWinner && dustBet && winningTeam && success ? (
+                        {!finalWinner &&
+                        dustBet &&
+                        winningTeam &&
+                        success &&
+                        gameData?.gameInfo?.status !== "cancelled" ? (
                           <>
                             <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
                             <a
@@ -899,7 +903,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                               See it on the blockchain
                             </a>
                           </>
-                        ) : winningTeam && finalWinner !== winningTeam ? (
+                        ) : winningTeam &&
+                          finalWinner !== winningTeam &&
+                          gameData?.gameInfo?.status !== "cancelled" ? (
                           <>
                             <p className="font-base-b">L</p>
                             <p>... we all take &apos;em</p>
