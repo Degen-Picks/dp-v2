@@ -899,7 +899,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                             <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
-                              href={`https://solscan.io/tx/${txn}`}
+                              href={`https://explorer.solana.com/tx/${txn}${
+                                generalConfig.useDevNet ? "?cluster=devnet" : ""
+                              }`}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -911,7 +913,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                             <p className="font-base-b">{`🏆 LFG! You won ${winAmount} DUST 🏆`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
-                              href={`https://solscan.io/tx/${airdropTxn}`}
+                              href={`https://explorer.solana.com/tx/${airdropTxn}${
+                                generalConfig.useDevNet ? "?cluster=devnet" : ""
+                              }`}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -938,7 +942,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                               className={`${
                                 winningTeam && airdropTxn ? "block" : "hidden"
                               } text-base underline text-link hover:text-linkHover`}
-                              href={`https://solscan.io/tx/${airdropTxn}`}
+                              href={`https://explorer.solana.com/tx/${airdropTxn}${
+                                generalConfig.useDevNet ? "?cluster=devnet" : ""
+                              }`}
                               target="_blank"
                               rel="noreferrer"
                             >
