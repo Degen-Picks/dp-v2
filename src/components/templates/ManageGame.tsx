@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
-import { airdropClassic, refundClassic } from "@/utils";
+import { airdropClassic, handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   gameData: GameInfo;
@@ -14,6 +15,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const wallet = useWallet();
 
   const isDisabled =
     gameData.gameInfo.status !== "closed" ||
@@ -53,6 +55,9 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, [isRefunded]);
 
   const handleCancelGame = async () => {
+    const confirmation = await handleConfirmAction(wallet, "Are you sure you want to cancel this game?");
+    if (!confirmation) return;
+
     const toastId = toast.loading("Cancelling game...");
     setLoading(true);
 
@@ -79,6 +84,9 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       toast.error("Game must be closed to airdrop winners!");
       return;
     }
+
+    const confirmation = await handleConfirmAction(wallet, `Are you sure you want to declare ${selectedTeam.teamName} as the winner?`);
+    if (!confirmation) return;
 
     const toastId = toast.loading("Declaring winner...");
     setLoading(true);

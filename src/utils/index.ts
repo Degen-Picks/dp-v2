@@ -5,3 +5,4 @@ export * from "./getDustBalance";
 export * from "./sendDustTransaction";
 export * from "./transaction";
 export * from "./various";
+export * from "./walletUtils";

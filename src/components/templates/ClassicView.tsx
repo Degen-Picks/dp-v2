@@ -298,15 +298,16 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       setGameData(parsed);
 
+      if (parsed.gameInfo.status === "cancelled") {
+        setGameStatus(GameStatus.CANCELLED);
+        setGameCountdown("Picks cancelled.");
+      }
+
       // Cut end date short to include last second picks
       setUtcGameDate(currentWager.endDate - 5000);
 
       // Add a little buffer so backend has time to update
       setUtcPickDate(currentWager.startDate + 5000);
-
-      if (parsed.gameInfo.status === "cancelled") {
-        setGameStatus(GameStatus.CANCELLED);
-      }
 
       return parsed;
     } catch (err) {
@@ -477,6 +478,8 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   useEffect(() => {
     if (utcPickDate !== undefined && utcGameDate !== undefined) {
+      if(gameStatus === GameStatus.CANCELLED) return;
+
       if (new Date().getTime() > utcGameDate) {
         setGameCountdown("Picks closed.");
 

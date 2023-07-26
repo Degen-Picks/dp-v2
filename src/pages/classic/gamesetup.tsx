@@ -17,6 +17,7 @@ import { getAssets } from "../../utils/apiUtil";
 import toast from "react-hot-toast";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
 import { useRouter } from "next/router";
+import { handleConfirmAction, handleLogin } from "@/utils";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.league);
@@ -127,6 +128,9 @@ const GameSetup = () => {
     const toastId = toast.loading("Creating game...");
     setLoading(true);
     try {
+      const confirm = await handleConfirmAction(wallet, "Are you sure you want to create this game?");
+      if(!confirm) throw new Error("User cancelled");
+
       const { body } = await createClassic(gameDetails, assets);
       const gameId = body.data._id;
 
@@ -140,23 +144,14 @@ const GameSetup = () => {
     }
   };
 
-  const handleLogin = async () => {
-    if (!wallet.signMessage || !publicKey) return;
-
-    const nonce = await fetchNonce(publicKey.toString());
-
-    if (nonce.length <= 0) return;
-
-    const tx = await wallet.signMessage(Buffer.from(nonce));
-    const verified = await confirmSignature(
-      publicKey.toString(),
-      Buffer.from(tx).toString("hex")
-    );
-    toast.success("Verification successful");
-    setVerified(verified);
+  const handleLoginPrompt = async () => {
+    const status = await handleLogin(wallet);
+    status && toast.success("Verification successful");
+    setVerified(status);
   };
 
   if (!verified) {
+    // TODO: Send user back if not verified
     return (
       <div className="w-full min-h-screen">
         <Navbar />
@@ -177,7 +172,7 @@ const GameSetup = () => {
               <div className="w-1/2">
                 <button
                   className="w-full h-12 bg-black text-white rounded-lg font-bold text-lg"
-                  onClick={handleLogin}
+                  onClick={handleLoginPrompt}
                 >
                   Login
                 </button>
