@@ -493,7 +493,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
     }
   }, [utcPickDate, utcGameDate]);
-
+ 
   // Refresh game data
   useEffect(() => {
     let interval: any = null;
