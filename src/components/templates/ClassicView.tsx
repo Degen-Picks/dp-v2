@@ -300,7 +300,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       if (parsed.gameInfo.status === "cancelled") {
         setGameStatus(GameStatus.CANCELLED);
-        setGameCountdown("Picks cancelled.");
+        setGameCountdown("Picks refunded.");
       }
 
       // Cut end date short to include last second picks
