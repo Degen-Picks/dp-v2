@@ -73,7 +73,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
     toast.dismiss(toastId);
     setLoading(false);
   };
-
+ 
   const handleAirDrop = async () => {
     if (selectedTeam === undefined) {
       toast.error("Please select a winner first!");
