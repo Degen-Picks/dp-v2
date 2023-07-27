@@ -3,8 +3,8 @@ export const generalConfig = {
   // Change to deployed base url (no slashes or protocols, EI: http: or https:)
   baseUrl: "degenpicks.xyz",
   apiUrl: "https://api.degenpicks.xyz",
-  useDevAPI: true,
-  useDevNet: true,
+  useDevAPI: false,
+  useDevNet: false,
 
   tweetText(winningTeam: string, losingTeam: string, roundedBetAmount: string) {
     return `I picked ${winningTeam} to beat ${losingTeam} with ${roundedBetAmount} DUST on @degenpicksxyz \n\nMake your pick 👇 \n\ndegenpicks.xyz/classic`;
