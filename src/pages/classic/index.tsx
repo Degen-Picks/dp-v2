@@ -100,7 +100,7 @@ const GameQueue = () => {
     <div className="relative bg-light w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       <Navbar />
       {/* Fixed y00ts pfps */}
-      <div className={`lg:fixed absolute -bottom-2 -left-14 sm:left-0 z-10`}>
+      <div className={`lg:fixed absolute -bottom-2 -left-14 sm:left-0 z-0`}>
         <Image
           src="/images/landing/matt.png"
           width={800 * 0.25}
@@ -108,7 +108,7 @@ const GameQueue = () => {
           alt="matt wuz here"
         />
       </div>
-      <div className={`lg:fixed absolute -bottom-2 -right-14 sm:right-0 z-10`}>
+      <div className={`lg:fixed absolute -bottom-2 -right-14 sm:right-0 z-0`}>
         <Image
           src="/images/landing/h.png"
           width={800 * 0.25}
@@ -137,7 +137,7 @@ const GameQueue = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-5 items-start w-[90%] md:w-fit mx-auto justify-center mb-20">
+        <div className="flex flex-col gap-5 items-start w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
           <GameFilter
             activeFilter={activeFilter}
             setActiveFilter={setActiveFilter}
@@ -206,7 +206,7 @@ const GameQueue = () => {
         </div>
       )}
 
-      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-secondary">
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-secondary z-50">
         © Degen Picks 2023
       </p>
     </div>

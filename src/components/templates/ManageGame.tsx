@@ -55,7 +55,10 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, [isRefunded]);
 
   const handleCancelGame = async () => {
-    const confirmation = await handleConfirmAction(wallet, "Are you sure you want to cancel this game?");
+    const confirmation = await handleConfirmAction(
+      wallet,
+      "Are you sure you want to cancel this game?"
+    );
     if (!confirmation) return;
 
     const toastId = toast.loading("Cancelling game...");
@@ -73,7 +76,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
     toast.dismiss(toastId);
     setLoading(false);
   };
- 
+
   const handleAirDrop = async () => {
     if (selectedTeam === undefined) {
       toast.error("Please select a winner first!");
@@ -85,7 +88,10 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       return;
     }
 
-    const confirmation = await handleConfirmAction(wallet, `Are you sure you want to declare ${selectedTeam.teamName} as the winner?`);
+    const confirmation = await handleConfirmAction(
+      wallet,
+      `Are you sure you want to declare ${selectedTeam.teamName} as the winner?`
+    );
     if (!confirmation) return;
 
     const toastId = toast.loading("Declaring winner...");
@@ -109,12 +115,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const getStyles = (team: 1 | 2) => {
     if (isAirdropped) {
       if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
-        return "border-correct bg-white";
+        return "border-correct bg-[#E8F5E9]";
       } else if (
         selectedTeam?.teamName === gameData.team2.teamName &&
         team === 2
       ) {
-        return "border-correct bg-white";
+        return "border-correct bg-[#E8F5E9]";
       } else {
         return "border-transparent bg-white";
       }
@@ -136,14 +142,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
 
   return (
     <div className="w-full">
-      <div className="my-10 pb-10 lg:pb-0">
-        <div className="w-fit mx-auto lg:mb-0">
-          <div className=" font-pressura text-center">
-            {gameData.gameInfo.title}
-          </div>
-          <div className="font-bingodilan text-center text-3xl text-black">
-            Manage Game
-          </div>
+      <div className="w-fit max-w-[620px] mx-auto my-10">
+        <div className="font-pressura text-center">
+          {gameData.gameInfo.description}
+        </div>
+        <div className="font-bingodilan text-center text-3xl text-black">
+          {gameData.gameInfo.title}
         </div>
       </div>
       <div className="w-full flex flex-col items-center justify-center gap-5">
@@ -215,7 +219,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
               isRefunded && "hidden"
             } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
             hover:scale-[1.02] transition-transform ease-in-out duration-500 flex 
-            items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100`}
+            items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-70`}
             onClick={handleAirDrop}
             disabled={isDisabled}
           >

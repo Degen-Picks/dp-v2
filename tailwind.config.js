@@ -58,10 +58,10 @@ module.exports = {
       keyframes: {
         "slide-down": {
           "0%": { height: "0px" },
-          "100%": { height: "38px" },
+          "100%": { height: "45px" },
         },
         "slide-up": {
-          "0%": { height: "38px" },
+          "0%": { height: "45px" },
           "100%": { height: "0px" },
         },
       },

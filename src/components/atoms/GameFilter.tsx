@@ -41,10 +41,12 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
             ? "animate-slide-down transition-height"
             : "animate-slide-up transition-height h-0"
         } overflow-hidden origin-top-right absolute right-0 w-full h-full 
-        cursor-pointer shadow-lg bg-white px-6 mb-2`}
+        cursor-pointer shadow-lg bg-white`}
       >
         <li
-          className={`${activeFilter && "hidden"} w-full`}
+          className={`${
+            activeFilter && "hidden"
+          } w-full hover:bg-slate-50 px-7 py-3`}
           onClick={() => {
             setActiveFilter(true);
             setIsOpen(false);
@@ -53,7 +55,9 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
           Active games
         </li>
         <li
-          className={`${!activeFilter && "hidden"} w-full`}
+          className={`${
+            !activeFilter && "hidden"
+          } w-full hover:bg-slate-50 px-7 py-3`}
           onClick={() => {
             setActiveFilter(false);
             setIsOpen(false);

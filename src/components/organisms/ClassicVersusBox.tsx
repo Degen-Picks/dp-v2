@@ -12,12 +12,13 @@ interface TProps {
 }
 
 interface VProps {
-  pickData: GameInfo;
+  gameData: GameInfo;
   success: boolean;
   handlePicks: any;
   pickedTeams: any;
   valid: boolean;
   gameStatus: string;
+  finalWinner: string | undefined;
 }
 
 const TeamBox: FC<TProps> = ({
@@ -59,12 +60,13 @@ const TeamBox: FC<TProps> = ({
 );
 
 const ClassicVersusBox: FC<VProps> = ({
-  pickData,
+  gameData,
   success,
   handlePicks,
   pickedTeams,
   valid,
   gameStatus,
+  finalWinner,
 }) => {
   const [active1, setActive1] = useState<boolean>(false);
   const [active2, setActive2] = useState<boolean>(false);
@@ -72,9 +74,9 @@ const ClassicVersusBox: FC<VProps> = ({
   useEffect(() => {
     if (!success) return;
 
-    if (pickedTeams.includes(pickData.team1.teamName)) {
+    if (pickedTeams.includes(gameData.team1.teamName)) {
       setActive1(true);
-    } else if (pickedTeams.includes(pickData.team2.teamName)) {
+    } else if (pickedTeams.includes(gameData.team2.teamName)) {
       setActive2(true);
     }
   }, [pickedTeams]);
@@ -98,14 +100,15 @@ const ClassicVersusBox: FC<VProps> = ({
                 : "border-transparent"
               : active1
               ? gameStatus === "completed"
-                ? pickData.team1.winner
+                ? gameData.team1.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
                 : "border-secondary !bg-border"
               : "border-transparent"
           }`}
-          // 5 - results are in + correct + active1 = green (border-correct bg-[#E8F5E9])
-          // 6 - results are in + incorrect + active1 = red (border-incorrect bg-[#FFEBEE])
+          // 7 - results are in + correct + active1 = green (border-correct bg-[#E8F5E9])
+          // 8 - results are in + incorrect + active1 = red (border-incorrect bg-[#FFEBEE])
+          // 9 - results are in + not picked + finalWinner === team1 = green (border-correct bg-[#E8F5E9])
 
           onClick={() => {
             if (!success && valid) {
@@ -117,16 +120,16 @@ const ClassicVersusBox: FC<VProps> = ({
                 setActive2(false);
               }
 
-              // handlePicks(pickData.team1.teamName, id);
+              // handlePicks(gameData.team1.teamName, id);
               handlePicks(1);
             }
           }}
         >
           <TeamBox
             active={active1}
-            teamImg={pickData.team1.teamLogo}
-            teamName={pickData.team1.teamName}
-            teamRecord={pickData.team1.record}
+            teamImg={gameData.team1.teamLogo}
+            teamName={gameData.team1.teamName}
+            teamRecord={gameData.team1.record}
             success={success}
             valid={valid}
           />
@@ -140,7 +143,7 @@ const ClassicVersusBox: FC<VProps> = ({
                 : "border-transparent"
               : active2
               ? gameStatus === "completed"
-                ? pickData.team2.winner
+                ? gameData.team2.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
                 : "border-secondary !bg-border"
@@ -156,16 +159,16 @@ const ClassicVersusBox: FC<VProps> = ({
                 setActive1(false);
               }
 
-              // handlePicks(pickData.team2.teamName, id);
+              // handlePicks(gameData.team2.teamName, id);
               handlePicks(2);
             }
           }}
         >
           <TeamBox
             active={active2}
-            teamImg={pickData.team2.teamLogo}
-            teamName={pickData.team2.teamName}
-            teamRecord={pickData.team2.record}
+            teamImg={gameData.team2.teamLogo}
+            teamName={gameData.team2.teamName}
+            teamRecord={gameData.team2.record}
             success={success}
             valid={valid}
           />
