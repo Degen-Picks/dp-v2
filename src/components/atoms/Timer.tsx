@@ -56,7 +56,7 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
       ) : status === "upcoming" ? (
         <p className="text-sm text-secondary font-base-b">Loading</p>
       ) : (
-        <p className="text-sm text-link">{timeRemaining}</p>
+        <p className="text-sm text-link font-base-b">{timeRemaining}</p>
       )}
     </div>
   );

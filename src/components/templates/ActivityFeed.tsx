@@ -124,12 +124,12 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
       ) : (
         <>
           {/* logo section */}
-          <div className="my-8 pb-10 lg:pb-0">
-            <div className="w-fit mx-auto lg:mb-0">
-              <div className=" font-pressura text-center">Picks Classic</div>
-              <div className="font-bingodilan text-center text-3xl text-black">
-                Activity Feed
-              </div>
+          <div className="w-fit max-w-[620px] mx-auto my-10">
+            <div className="font-pressura text-center">
+              {gameData.gameInfo.description}
+            </div>
+            <div className="font-bingodilan text-center text-3xl text-black">
+              {gameData.gameInfo.title}
             </div>
           </div>
           <div className="flex flex-col items-center gap-4 mb-8">

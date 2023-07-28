@@ -22,17 +22,19 @@ const ConnectButton = () => {
       </div>
       <div
         className="hidden sm:block !bg-black !relative !w-full
-        md:!px-0 !h-auto !rounded-none !z-50 !font-base"
+        md:!px-0 !h-auto !rounded-none !z-50"
       >
         <WalletMultiButton
           className="!w-auto md:!w-[168px] !flex !justify-center"
           startIcon={undefined}
         >
-          {publicKey
-            ? publicKey.toBase58().slice(0, 4) +
-              " ... " +
-              publicKey.toBase58().slice(-4)
-            : "Connect Wallet"}
+          <p className="!font-base !text-base !whitespace-nowrap">
+            {publicKey
+              ? publicKey.toBase58().slice(0, 4) +
+                " ... " +
+                publicKey.toBase58().slice(-4)
+              : "Connect Wallet"}
+          </p>
         </WalletMultiButton>
       </div>
     </>

@@ -161,7 +161,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
                     {fireHandler(betRatio.team1)}
                   </div>
                   <div className="text-center text-secondary">
-                    <p className="px-3">reward</p>
+                    <p className="px-3">level</p>
                   </div>
                   <div className="w-[80px] text-left pl-2">
                     {fireHandler(betRatio.team2)}
@@ -173,7 +173,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
                     {multiplier.team1}
                   </div>
                   <div className="relative z-50 text-center text-secondary">
-                    <p className="px-3">payout</p>
+                    <p className="px-3">reward</p>
                     <div className="group absolute -right-1 top-1/2 -translate-y-1/2">
                       <QuestionIcon fill="#651FFF" />
                       <div
@@ -181,7 +181,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
                         text-black bg-container rounded-lg opacity-0 group-hover:opacity-100 
                         transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
                       >
-                        Your payout is determined by the multiplier. Multipliers
+                        Your reward is determined by the multiplier. Multipliers
                         are highly volatile when the pool is live, and lock when
                         the pool closes.
                       </div>

@@ -60,7 +60,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const [toggleConfig, setToggleConfig] = useState<ToggleConfig>({
     option1: {
-      title: "Picks Classic",
+      title: "Pick",
     },
     option2: {
       title: "Activity",
@@ -114,6 +114,8 @@ const Classic: FC<Props> = ({ gameId }) => {
       winner: false,
     },
   });
+
+  const rulesDisabled = success || loading || gameStatus !== GameStatus.OPEN;
 
   // create and process dust txn
   const handlePayDust = async () => {
@@ -327,11 +329,18 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   // updates button text based current state
   const buttonHandler = () => {
-    if (gameStatus !== GameStatus.OPEN && !success) {
+    if (
+      gameStatus !== GameStatus.OPEN &&
+      !success &&
+      gameStatus !== GameStatus.PREGAME
+    ) {
       {
         /* betting is over and you didn't pick */
       }
-      return "Picks closed - game live";
+      return "Picks closed";
+    } else if (gameStatus === GameStatus.PREGAME) {
+      // game just created, waiting to start...
+      return "Picks open soon...";
     } else if (winningTeam === undefined && gameStatus === GameStatus.OPEN) {
       {
         /* forgot to pick a winning team */
@@ -478,7 +487,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   useEffect(() => {
     if (utcPickDate !== undefined && utcGameDate !== undefined) {
-      if(gameStatus === GameStatus.CANCELLED) return;
+      if (gameStatus === GameStatus.CANCELLED) return;
 
       if (new Date().getTime() > utcGameDate) {
         setGameCountdown("Picks closed.");
@@ -493,7 +502,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
     }
   }, [utcPickDate, utcGameDate]);
- 
+
   // Refresh game data
   useEffect(() => {
     let interval: any = null;
@@ -562,45 +571,52 @@ const Classic: FC<Props> = ({ gameId }) => {
           }),
         };
 
-        const response = await fetch(
-          `${generalConfig.apiUrl}/api/getUserWager`,
-          requestOptions
-        );
-        const body = await response.json();
+        try {
+          const response = await fetch(
+            `${generalConfig.apiUrl}/api/getUserWager`,
+            requestOptions
+          );
+          const body = await response.json();
 
-        if (response.status === 200 && body.data.length >= 1) {
-          const userPick = body.data[0];
-          const userPickAmount = userPick.amounts[0];
-          const userPickId = userPick.selectionId;
+          if (response.status === 200 && body.data.length >= 1) {
+            const userPick = body.data[0];
+            const userPickAmount = userPick.amounts[0];
+            const userPickId = userPick.selectionId;
 
-          setTxn(userPickAmount.signature);
+            setTxn(userPickAmount.signature);
 
-          setDustBet(userPickAmount.amount);
+            setDustBet(userPickAmount.amount);
 
-          setSuccess(true);
-          setAgree(true);
+            setSuccess(true);
+            setAgree(true);
 
-          if (gameData.gameInfo.status === "cancelled") {
-            if (userPick.transferData.signature) {
-              setAirdropTxn(userPick.transferData.signature);
+            if (gameData.gameInfo.status === "cancelled") {
+              if (userPick.transferData.signature) {
+                setAirdropTxn(userPick.transferData.signature);
+              }
+              return;
             }
-            return;
+
+            const pickedTeam =
+              gameData.team1.id === userPickId ? "team1" : "team2";
+            const otherTeam = pickedTeam === "team1" ? "team2" : "team1";
+
+            setWinningTeam(gameData[pickedTeam].teamName);
+
+            console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
+
+            if (userPick.winAmount === -1) {
+              setFinalWinner(gameData[otherTeam].teamName);
+              setWinAmount(-1);
+            } else if (userPick.transferData?.signature) {
+              setAirdropTxn(userPick.transferData.signature);
+              setFinalWinner(gameData[pickedTeam].teamName);
+              setWinAmount(userPick.transferData.amount);
+            }
           }
-
-          const pickedTeam =
-            gameData.team1.id === userPickId ? "team1" : "team2";
-          const otherTeam = pickedTeam === "team1" ? "team2" : "team1";
-
-          setWinningTeam(gameData[pickedTeam].teamName);
-
-          if (userPick.winAmount === -1) {
-            setFinalWinner(gameData[otherTeam].teamName);
-            setWinAmount(-1);
-          } else if (userPick.transferData?.signature) {
-            setAirdropTxn(userPick.transferData.signature);
-            setFinalWinner(gameData[pickedTeam].teamName);
-            setWinAmount(userPick.transferData.amount);
-          }
+        } catch (err) {
+          console.log(`Error fetching user pick ${err}`);
+          return;
         }
       } catch (err) {
         console.log(`Error loading user pick ${err}`);
@@ -615,6 +631,11 @@ const Classic: FC<Props> = ({ gameId }) => {
 
     fetchUserPick();
   }, [publicKey, gameStatus, gameData]);
+
+  // test
+  useEffect(() => {
+    console.log(gameData);
+  }, [gameData]);
 
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
@@ -727,7 +748,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             {/* logo section */}
             {!loading && (
               <div>
-                <div className="w-fit mx-auto mb-8">
+                <div className="w-fit max-w-[620px] mx-auto mb-8">
                   <div className="font-pressura text-center">
                     {gameData.gameInfo.description}
                   </div>
@@ -789,12 +810,13 @@ const Classic: FC<Props> = ({ gameId }) => {
                     </p>
 
                     <ClassicVersusBox
-                      pickData={gameData}
+                      gameData={gameData}
                       success={success}
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
                       valid={gameStatus === GameStatus.OPEN}
                       gameStatus={gameData.gameInfo.status}
+                      finalWinner={finalWinner}
                     />
 
                     {/* divider */}
@@ -839,7 +861,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       finalWinner === undefined &&
                       dustBet >= 1 && (
                         <div className="w-full mt-4 py-3 px-4 bg-container text-center text-sm sm:text-base">
-                          <div>Potential payout (highly volatile)</div>
+                          <div>Potential reward (highly volatile)</div>
                           <div className="font-base-b">
                             {rewardEstimate || "N/A"} DUST
                           </div>
@@ -852,14 +874,14 @@ const Classic: FC<Props> = ({ gameId }) => {
                       className={`my-2 w-fit mr-auto text-left text-sm sm:text-body-md ${
                         !success && "cursor-pointer"
                       }`}
-                      onClick={() => !success && setAgree(!agree)}
+                      onClick={() =>
+                        !success && !rulesDisabled && setAgree(!agree)
+                      }
                     >
                       <input
                         type="checkbox"
                         checked={!!agree}
-                        disabled={
-                          success || loading || gameStatus !== GameStatus.OPEN
-                        }
+                        disabled={rulesDisabled}
                         onChange={() => setAgree(!agree)}
                         className="mr-2 accent-link hover:accent-linkHover"
                       />
@@ -898,6 +920,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         winningTeam &&
                         success &&
                         gameData?.gameInfo?.status !== "cancelled" ? (
+                          // you picked a team, game in progress
                           <>
                             <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
                             <a
@@ -912,6 +935,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                             </a>
                           </>
                         ) : finalWinner === winningTeam && winAmount ? (
+                          // you picked the winning team
                           <>
                             <p className="font-base-b">{`🏆 LFG! You won ${winAmount} DUST 🏆`}</p>
                             <a
@@ -928,23 +952,17 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : winningTeam &&
                           finalWinner !== winningTeam &&
                           gameData?.gameInfo?.status !== "cancelled" ? (
+                          // you picked the incorrect team
                           <>
                             <p className="font-base-b">L</p>
                             <p>... we all take &apos;em</p>
                           </>
-                        ) : null}
-                        {/* if we get here, user has not bet on this game */}
-                        {!winningTeam &&
-                          gameData?.gameInfo?.status === "completed" && (
-                            <p className="font-base-b">{`Game over! Winners have been successfully airdropped!`}</p>
-                          )}
-                        {gameData?.gameInfo?.status === "cancelled" && (
+                        ) : winningTeam &&
+                          gameData?.gameInfo?.status === "cancelled" ? (
                           <>
                             <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
                             <a
-                              className={`${
-                                winningTeam && airdropTxn ? "block" : "hidden"
-                              } text-base underline text-link hover:text-linkHover`}
+                              className={`text-base underline text-link hover:text-linkHover`}
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -954,7 +972,16 @@ const Classic: FC<Props> = ({ gameId }) => {
                               See it on the blockchain
                             </a>
                           </>
-                        )}
+                        ) : null}
+                        {/* if we get here, user has not bet on this game */}
+                        {winningTeam === undefined &&
+                          gameData?.gameInfo?.status === "completed" && (
+                            <p className="font-base-b">{`Game over! Winners have been airdropped.`}</p>
+                          )}
+                        {winningTeam === undefined &&
+                          gameData?.gameInfo?.status === "cancelled" && (
+                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                          )}
                       </div>
                     )}
                   </div>
