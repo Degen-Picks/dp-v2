@@ -32,7 +32,7 @@ const RulesModal: FC<Props> = ({ showModal, setShowModal, gameType }) => {
                         ? `Degen Picks (Classic)`
                         : `JB's Sunday Pick'em`}
                     </p>
-                    <div className="font-bingodilan text-center text-[22px] sm:text-[36px] text-black">
+                    <div className="font-base-b text-center text-[22px] sm:text-[36px] text-black">
                       Rules
                     </div>
                   </div>

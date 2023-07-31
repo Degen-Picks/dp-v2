@@ -17,7 +17,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center items-center space-y-5 lg:space-y-0 lg:space-x-5 my-8">
+    <div className="flex flex-col lg:flex-row justify-center items-center space-y-5 lg:space-y-0 lg:space-x-5 my-20">
       {/* option 1 - degen picks OG */}
       <div
         className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] rounded-xl text-center 
@@ -25,7 +25,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
         onClick={() => handleClick("classic")}
       >
         <div className="h-full flex flex-col justify-center">
-          <div className="font-bingodilan text-3xl text-black mt-4">
+          <div className="font-base-b text-3xl text-black mt-4">
             Degen Picks
             <br />
             (Classic)
@@ -67,7 +67,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
         // onClick={() => handleClick("degen")}
       >
         <div className="h-full flex flex-col justify-center sm:pb-0">
-          <div className="font-bingodilan text-3xl mt-4 px-3 text-black">
+          <div className="font-base-b text-3xl mt-4 px-3 text-black">
             JB&apos;s NFL
             <br />
             Pick&apos;em

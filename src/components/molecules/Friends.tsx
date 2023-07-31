@@ -2,10 +2,10 @@ import { Friend } from "@/components";
 
 const Friends = () => (
   <div className="my-12 pb-10 max-w-[1000px] mx-auto">
-    <div className="font-bingodilan text-3xl text-black text-center pt-16">
+    <div className="font-base-b text-3xl text-black text-center pt-16">
       Built different by the DeGods community
     </div>
-    <p className="text-center text-secondary text-xl py-8">and friends.</p>
+    <p className="text-center text-secondary text-xl py-4">and friends.</p>
     <div className="flex overflow-x-scroll gap-3 lg:gap-6 mb-4 py-6 px-10 lg:px-0">
       <Friend
         link="https://twitter.com/NinetiesNFT"

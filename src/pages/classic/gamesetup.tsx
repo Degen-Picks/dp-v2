@@ -119,8 +119,11 @@ const GameSetup = () => {
     const toastId = toast.loading("Creating game...");
     setLoading(true);
     try {
-      const confirm = await handleConfirmAction(wallet, "Are you sure you want to create this game?");
-      if(!confirm) throw new Error("User cancelled");
+      const confirm = await handleConfirmAction(
+        wallet,
+        "Are you sure you want to create this game?"
+      );
+      if (!confirm) throw new Error("User cancelled");
 
       if(wagerUser!.twitterData === null) {
         throw new Error("You must link your Twitter account to create a game.");
@@ -139,6 +142,49 @@ const GameSetup = () => {
     }
   };
 
+<<<<<<< Updated upstream
+=======
+  const handleLoginPrompt = async () => {
+    const status = await handleLogin(wallet);
+    status && toast.success("Verification successful");
+    setVerified(status);
+  };
+
+  if (!verified) {
+    // TODO: Send user back if not verified
+    return (
+      <div className="w-full min-h-screen">
+        <Navbar />
+        <div className="sm:w-[400px] mx-auto pb-20">
+          <div className="my-8">
+            <div className="w-fit mx-auto lg:mb-0">
+              <div className=" font-base text-center">Picks Classic</div>
+              <div className="font-base-b text-center text-3xl text-black">
+                Game Setup
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="w-full flex items-center gap-5">
+              <div className="w-1/2">
+                <BackButton />
+              </div>
+              <div className="w-1/2">
+                <button
+                  className="w-full h-12 bg-black text-white rounded-lg font-bold text-lg"
+                  onClick={handleLoginPrompt}
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+>>>>>>> Stashed changes
   return (
     <div className="w-full min-h-screen">
       <Navbar />
@@ -151,8 +197,8 @@ const GameSetup = () => {
       <div className="sm:w-[400px] mx-auto pb-20">
         <div className="my-8">
           <div className="w-fit mx-auto lg:mb-0">
-            <div className=" font-pressura text-center">Picks Classic</div>
-            <div className="font-bingodilan text-center text-3xl text-black">
+            <div className=" font-base text-center">Picks Classic</div>
+            <div className="font-base-b text-center text-3xl text-black">
               Game Setup
             </div>
           </div>

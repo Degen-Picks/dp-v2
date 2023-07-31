@@ -3,23 +3,13 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: bingodilan;
-  font-style: normal;
-  src: url("../../public/fonts/BingoDilan.otf") format("opentype");
-  font-display: swap;
+  font-family: pixel;
+  src: url("/fonts/PixelOperator.ttf") format("truetype");
 }
+
 @font-face {
-  font-family: pressura-b;
-  font-style: normal;
-  src: url("../../public/fonts/GT-Pressura-Bold-Trial.otf") format("opentype");
-  font-display: swap;
-}
-@font-face {
-  font-family: pressura-r;
-  font-style: normal;
-  src: url("../../public/fonts/GT-Pressura-Regular-Trial.otf")
-    format("opentype");
-  font-display: swap;
+  font-family: pixel-bold;
+  src: url("/fonts/PixelOperator-Bold.ttf") format("truetype");
 }
 
 /* Sets top level div background */
@@ -30,7 +20,7 @@
 }
 
 * {
-  font-family: "pressura-r", monospace;
+  font-family: pixel;
   padding: 0;
   margin: 0;
 }

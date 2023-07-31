@@ -119,7 +119,7 @@ const GameQueue = () => {
       <div className="md:max-w-[1000px] text-center w-[90%] md:w-[3/4] mx-auto mt-10 lg:mt-0">
         <div className="w-fit mx-auto pb-16">
           <p className="text-base">Picks Classic</p>
-          <p className="text-[30px] font-bingodilan">Featured Games</p>
+          <p className="text-[30px] font-base-b">Featured Games</p>
         </div>
       </div>
       {loading ? (
@@ -132,7 +132,7 @@ const GameQueue = () => {
               alt="nipple spinner"
             />
           </div>
-          <p className="text-xl font-pressura text-center w-fit mx-auto py-10">
+          <p className="text-xl font-base text-center w-fit mx-auto py-10">
             Loading ...
           </p>
         </div>

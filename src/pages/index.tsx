@@ -90,7 +90,7 @@ const Landing = () => {
         <div className="text-center sm:max-w-[1000px] sm:mx-auto">
           <div className="w-[90%] md:w-[3/4] mx-auto py-20 sm:pb-20 border-b border-border">
             <div className="w-fit mx-auto sm:my-12">
-              <div className="font-bingodilan text-3xl text-black">
+              <div className="font-base-b text-3xl text-black">
                 Join your favorite internet anons
               </div>
               <div className="text-[18px] lg:text-xl px-8 mt-4 text-secondary max-w-[620px]">

@@ -143,10 +143,10 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   return (
     <div className="w-full">
       <div className="w-fit max-w-[620px] mx-auto my-10">
-        <div className="font-pressura text-center">
+        <div className="font-base text-center">
           {gameData.gameInfo.description}
         </div>
-        <div className="font-bingodilan text-center text-3xl text-black">
+        <div className="font-base-b text-center text-3xl text-black">
           {gameData.gameInfo.title}
         </div>
       </div>

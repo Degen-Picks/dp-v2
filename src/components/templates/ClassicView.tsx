@@ -745,7 +745,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     alt="nipple spinner"
                   />
                 </div>
-                <p className="text-xl font-pressura text-center w-fit mx-auto py-10">
+                <p className="text-xl font-base text-center w-fit mx-auto py-10">
                   Loading ...
                 </p>
               </div>
@@ -755,10 +755,10 @@ const Classic: FC<Props> = ({ gameId }) => {
             {!loading && (
               <div>
                 <div className="w-fit max-w-[620px] mx-auto mb-8">
-                  <div className="font-pressura text-center">
+                  <div className="font-base text-center">
                     {gameData.gameInfo.description}
                   </div>
-                  <div className="font-bingodilan text-center text-3xl text-black">
+                  <div className="font-base-b text-center text-3xl text-black">
                     {gameData.gameInfo.title}
                   </div>
                 </div>

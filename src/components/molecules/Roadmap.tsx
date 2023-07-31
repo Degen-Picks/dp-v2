@@ -6,7 +6,7 @@ const Roadmap = () => {
   return (
     <div className="py-20 sm:pt-20 sm:pb-32 w-fit mx-auto px-10">
       <div className="text-left pb-10">
-        <p className="font-bingodilan text-3xl">Roadmap</p>
+        <p className="font-base-b text-3xl">Roadmap</p>
         <p className="text-secondary text-xl pt-4">Hold onto your nips.</p>
       </div>
       <div className="border-l-2 border-black">
