@@ -54,6 +54,7 @@ function getMetadata(assets: LeaguesArray, collection: string) {
   return metadata;
 }
 
+// TODO: Move to apiUtil
 export async function createClassic(
   options: ClassicGameOptions,
   assets: LeaguesArray
@@ -105,7 +106,7 @@ export async function createClassic(
   };
 
   const response = await fetch(
-    `${generalConfig.apiUrl}/protected/createWager`,
+    `${generalConfig.apiUrl}/api/createWager`,
     requestOptions
   );
 
@@ -144,55 +145,6 @@ export async function fetchNonce(publicKey: string): Promise<string> {
     return body.nonce;
   } catch {
     return "";
-  }
-}
-
-export async function confirmSignature(
-  publicKey: string,
-  signedMessage: string
-): Promise<boolean> {
-  try {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({ publicKey, signedMessage }),
-      credentials: "include",
-    };
-
-    const response = await fetch(
-      `${generalConfig.apiUrl}/api/login`,
-      requestOptions
-    );
-
-    const body = await response.json();
-    return body.verified;
-  } catch {
-    return false;
-  }
-}
-
-export async function getLoginStatus(): Promise<boolean> {
-  try {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    const requestOptions: RequestInit = {
-      method: "GET",
-      headers: headers,
-      credentials: "include",
-    };
-
-    const response = await fetch(
-      `${generalConfig.apiUrl}/protected/status`,
-      requestOptions
-    );
-
-    return response.status === 200;
-  } catch {
-    return false;
   }
 }
 

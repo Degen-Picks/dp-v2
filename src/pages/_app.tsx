@@ -19,6 +19,7 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
+import { WagerUserContextProvider } from "@/components/stores/WagerUserStore";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -88,13 +89,15 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           content={`https://${generalConfig.baseUrl}/images/meta.png`}
         />
       </Head>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>
-            <Component {...pageProps} />
-          </WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      <WagerUserContextProvider>      
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              <Component {...pageProps} />
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </WagerUserContextProvider>
       <Toaster />
     </>
   );

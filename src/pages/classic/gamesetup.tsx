@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   BackButton,
   Navbar,
@@ -8,16 +8,15 @@ import {
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../../utils/dateUtil";
 import {
-  confirmSignature,
   createClassic,
   fetchNonce,
-  getLoginStatus,
 } from "../../utils/adminApiUtil";
-import { getAssets } from "../../utils/apiUtil";
+import { getAssets, getLoginStatus } from "../../utils/apiUtil";
 import toast from "react-hot-toast";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
 import { useRouter } from "next/router";
-import { handleConfirmAction, handleLogin } from "@/utils";
+import { handleConfirmAction } from "@/utils";
+import { WagerUserContext, WagerUserContextType } from "@/components/stores/WagerUserStore";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.league);
@@ -30,6 +29,8 @@ function getLeagueTeams(leagues: any, league: any) {
 }
 
 const GameSetup = () => {
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
+
   // wallet variables
   const wallet = useWallet();
   const { publicKey } = wallet;
@@ -49,7 +50,6 @@ const GameSetup = () => {
 
   const [validGame, setValidGame] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [verified, setVerified] = useState(false);
 
   const [assets, setAssets] = useState<LeaguesArray>([]);
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
@@ -92,15 +92,6 @@ const GameSetup = () => {
   }, [gameDetails]);
 
   useEffect(() => {
-    async function checkLoginStatus() {
-      const loginStatus = await getLoginStatus();
-      setVerified(loginStatus);
-    }
-
-    publicKey && checkLoginStatus();
-  }, [publicKey]);
-
-  useEffect(() => {
     const fetchAssets = async () => {
       const assets = await getAssets();
       if (assets === null) {
@@ -131,6 +122,10 @@ const GameSetup = () => {
       const confirm = await handleConfirmAction(wallet, "Are you sure you want to create this game?");
       if(!confirm) throw new Error("User cancelled");
 
+      if(wagerUser!.twitterData === null) {
+        throw new Error("You must link your Twitter account to create a game.");
+      }
+
       const { body } = await createClassic(gameDetails, assets);
       const gameId = body.data._id;
 
@@ -144,49 +139,15 @@ const GameSetup = () => {
     }
   };
 
-  const handleLoginPrompt = async () => {
-    const status = await handleLogin(wallet);
-    status && toast.success("Verification successful");
-    setVerified(status);
-  };
-
-  if (!verified) {
-    // TODO: Send user back if not verified
-    return (
-      <div className="w-full min-h-screen">
-        <Navbar />
-        <div className="sm:w-[400px] mx-auto pb-20">
-          <div className="my-8">
-            <div className="w-fit mx-auto lg:mb-0">
-              <div className=" font-pressura text-center">Picks Classic</div>
-              <div className="font-bingodilan text-center text-3xl text-black">
-                Game Setup
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-5">
-            <div className="w-full flex items-center gap-5">
-              <div className="w-1/2">
-                <BackButton />
-              </div>
-              <div className="w-1/2">
-                <button
-                  className="w-full h-12 bg-black text-white rounded-lg font-bold text-lg"
-                  onClick={handleLoginPrompt}
-                >
-                  Login
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full min-h-screen">
       <Navbar />
+
+      {(!wagerUser || !wagerUser?.roles.includes("CREATOR")) ? (
+        <div className="w-full h-screen flex justify-center items-center">
+          <div className="text-3xl font-bold">You are not authorized to view this page.</div>
+        </div>
+      ) : (
       <div className="sm:w-[400px] mx-auto pb-20">
         <div className="my-8">
           <div className="w-fit mx-auto lg:mb-0">
@@ -320,6 +281,7 @@ const GameSetup = () => {
           </button>
         </div>
       </div>
+      )}
     </div>
   );
 };

@@ -130,6 +130,7 @@ const TwitterLoginButton: FC = () => {
 
       const tx = await wallet.signMessage(Buffer.from(nonce));
 
+      // TODO: DEPRECATE CONFIRM SIGNATURE, MOVE TO LOGIN 
       const { verified } = await confirmSignature(
         publicKey.toString(),
         Buffer.from(tx).toString("hex"),

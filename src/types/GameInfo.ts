@@ -1,3 +1,5 @@
+import { WagerUser } from "./Wagers";
+
 export interface Activity {
   id: number;
   name: string;
@@ -25,6 +27,7 @@ export interface GameInfoClass {
   league: string;
   finalScore: string;
   metadata?: any;
+  creator: WagerUser | null;
 }
 
 export interface Team {

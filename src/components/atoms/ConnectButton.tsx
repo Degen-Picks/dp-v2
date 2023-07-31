@@ -1,9 +1,39 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Image from "next/image";
+import { useContext, useEffect } from "react";
+import { login, logout } from "@/utils";
+import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
 
 const ConnectButton = () => {
-  const { publicKey } = useWallet();
+  const { wagerUser, setWagerUser } = useContext(WagerUserContext) as WagerUserContextType;
+
+  const wallet = useWallet();
+  const { publicKey } = wallet;
+
+  useEffect(() => {
+    async function load() {
+      const loginUser = await login(wallet);
+      setWagerUser(loginUser);
+    }
+   
+    if(publicKey) {
+      load();
+    }
+  }, [publicKey]);
+
+  // Logout on disconnect/wallet change
+  useEffect(() => {
+    async function load() {
+      const logoutUser = await logout();
+      console.log("Logged out", logoutUser)
+      setWagerUser(null);
+    }
+
+    if (!publicKey) {
+      load();
+    }
+  }, [publicKey]);
 
   return (
     <>

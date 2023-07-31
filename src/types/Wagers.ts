@@ -23,3 +23,20 @@ export interface Selection {
   nftImageUrl: string;
   _id: string;
 }
+
+export type TwitterData = {
+  id: string;
+  username: string;
+  displayName: string;
+  profileImage: string;
+}
+
+type Roles = Role[];
+type Role = 'ADMIN' | 'CREATOR' | 'DEFAULT';
+
+export type WagerUser = {
+    publicKey: string;
+    twitterData: TwitterData | null;
+    roles: Roles;
+}
+

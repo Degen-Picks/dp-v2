@@ -1,6 +1,7 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getLoginStatus } from "@/utils";
+import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
 
 interface IconProps {
   fill: string;
@@ -95,10 +96,12 @@ export type ToggleConfig = {
 interface Props {
   toggleConfig: ToggleConfig;
   setToggleConfig: Dispatch<SetStateAction<ToggleConfig>>;
-  view: "classic" | "pickem";
+  view: "classic" | "pickem"
+  ownsGame: boolean;
 }
 
-const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
+const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }) => {
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
   const [isAdmin, setIsAdmin] = useState(false);
   const { publicKey } = useWallet();
 
@@ -111,18 +114,14 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
     setToggleConfig(newToggleConfig);
   };
 
-  useEffect(() => {
-    async function loginAdmin() {
-      if (!publicKey) return;
-
-      // TODO: Get login status by public key
-      // (currently gets from just cookie session), get specific "role"
-      const isAdmin = await getLoginStatus();
-      setIsAdmin(isAdmin);
+  useEffect(() => { 
+    if (wagerUser && wagerUser.roles.includes("ADMIN") || ownsGame) {
+      setIsAdmin(true);
+    } else {
+      handleClick("option1");
+      setIsAdmin(false);
     }
-
-    loginAdmin();
-  }, [publicKey]);
+  }, [wagerUser, ownsGame]);
 
   return (
     <>
