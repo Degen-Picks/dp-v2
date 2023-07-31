@@ -45,11 +45,11 @@ const RulesModal: FC<Props> = ({ showModal, setShowModal, gameType }) => {
                 </div>
                 {/* body */}
                 <div className="py-8 text-left">
-                  <p className="text-sm sm:text-body-md pb-2 font-base-b">
+                  <p className="text-sm sm:text-base pb-2 font-base-b">
                     How it works:
                   </p>
                   {gameType === "classic" ? (
-                    <div className="flex flex-col md:flex-row md:justify-between text-sm sm:text-body-md">
+                    <div className="flex flex-col md:flex-row md:justify-between text-sm sm:text-base">
                       <ul className="px-3">
                         <li className="pb-1">
                           👉 The pool is shared among winning picks (losers get
@@ -86,7 +86,7 @@ const RulesModal: FC<Props> = ({ showModal, setShowModal, gameType }) => {
                       </ul>
                     </div>
                   ) : (
-                    <div className="flex flex-col md:flex-row md:justify-between text-sm sm:text-body-md">
+                    <div className="flex flex-col md:flex-row md:justify-between text-sm sm:text-base">
                       <ul className="px-3">
                         <li className="pb-1">
                           👉 1st/2nd/3rd split the pool 65/25/10

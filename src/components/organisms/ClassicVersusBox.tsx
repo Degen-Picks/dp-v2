@@ -29,7 +29,7 @@ const TeamBox: FC<TProps> = ({
   valid,
 }) => (
   <div
-    className={`sm:w-[249px] h-[100px] py-3 sm:py-0 sm:px-0 hover:cursor-pointer
+    className={`sm:w-[249px] h-[90px] py-3 sm:py-0 sm:px-0 hover:cursor-pointer
     bg-${active ? "[#6E17FF/10]" : "light"} ${
       !valid && "sm:hover:cursor-not-allowed"
     }
@@ -47,13 +47,13 @@ const TeamBox: FC<TProps> = ({
         >
           {teamName}
         </div>
-        <div
+        {/* <div
           className={`${
             active ? "font-base-b" : "font-base text-secondary"
           } text-[10px] sm:text-xs`}
         >
           {teamRecord}
-        </div>
+        </div> */}
       </div>
     </div>
   </div>

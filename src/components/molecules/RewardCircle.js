@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
 
@@ -45,17 +44,19 @@ const CircularProgressWithLabel = (props) => {
         >
           <CircularProgress
             variant="determinate"
-            size={80}
+            size={60}
             theme={theme1}
             {...props}
             sx={{ position: "absolute", zIndex: 2 }}
+            thickness={2.5}
           />
           <CircularProgress
             variant="determinate"
-            size={80}
+            size={60}
             theme={theme2}
             value={100}
             sx={{ position: "absolute", zIndex: 1 }}
+            thickness={2.5}
           />
         </Box>
         <p className="text-lg flex items-center justify-center text-center">

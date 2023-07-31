@@ -809,11 +809,11 @@ const Classic: FC<Props> = ({ gameId }) => {
                 {/* betting box */}
                 <div className="bg-white w-5/6 md:w-[620px] mx-auto">
                   {/* header */}
-                  <div className="relative h-[50px] flex items-center justify-center bg-container">
+                  {/* <div className="relative h-[50px] flex items-center justify-center bg-container">
                     <p className="font-base-b text-center text-containerHead">
                       {`Make your pick`}
                     </p>
-                  </div>
+                  </div> */}
                   {/* betting = four components */}
                   <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
                     {/* 1. pick winner */}
@@ -836,7 +836,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
                     {/* 2. throw some dust on it */}
                     <p className="text-left mr-auto py-2 sm:text-lg">
-                      Throw down on it...
+                      Throw down on it
                     </p>
                     <div className="w-full">
                       <form className="w-full relative">
@@ -856,14 +856,14 @@ const Classic: FC<Props> = ({ gameId }) => {
                         />
                         <div className="absolute left-2 top-[10px]">
                           <Image
-                            src="/images/icons/dust.png"
+                            src="/images/icons/dust_square2.png"
                             height={30}
                             width={30}
                             alt="dust icon"
                           />
                         </div>
                       </form>
-                      <div className="w-full pt-1 text-sm sm:text-body-md text-right text-secondary">
+                      <div className="w-full pt-1 text-sm sm:text-lg text-right text-secondary">
                         Balance: {Math.floor(Number(dustBalance * 1000)) / 1000}{" "}
                         DUST
                       </div>
@@ -883,8 +883,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                     <Divider />
 
                     <div
-                      className={`my-2 w-fit mr-auto text-left text-sm sm:text-body-md ${
-                        !success && "cursor-pointer"
+                      className={`my-2 w-fit mr-auto text-left text-sm sm:text-base ${
+                        !success && "cursor-pointer disabled:cursor-default"
                       }`}
                       onClick={() =>
                         !success && !rulesDisabled && setAgree(!agree)
