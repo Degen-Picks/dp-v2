@@ -158,7 +158,9 @@ const GameQueue = () => {
                 width={200}
                 height={200}
               />
-              <p className="text-center text-base">No active games available</p>
+              <p className="text-center text-[22px] font-base-b pt-5">
+                No games right now.
+              </p>
             </div>
           )}
           {/* live games always go first, sorted by date */}

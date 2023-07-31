@@ -20,7 +20,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
     <div className="flex flex-col lg:flex-row justify-center items-center space-y-5 lg:space-y-0 lg:space-x-5 my-20">
       {/* option 1 - degen picks OG */}
       <div
-        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] rounded-xl text-center 
+        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
         bg-white border-2 border-black/30 lg:hover:cursor-pointer lg:hover:border-link"
         onClick={() => handleClick("classic")}
       >
@@ -62,7 +62,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
       </div>
       {/* option 2 - JB pickem */}
       <div
-        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] rounded-2xl text-center 
+        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
         bg-white border-2 border-black/30 lg:cursor-not-allowed opacity-60"
         // onClick={() => handleClick("degen")}
       >

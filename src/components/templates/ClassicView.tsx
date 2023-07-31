@@ -20,7 +20,10 @@ import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
 import { sleep } from "../../utils";
 import { GameInfo, Wager } from "@/types";
 import { ToggleConfig } from "../molecules/ViewToggle";
-import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 interface Props {
   gameId: string | string[];
@@ -91,7 +94,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       description: "",
       league: "",
       finalScore: "",
-      creator: null
+      creator: null,
     },
     team1: {
       teamName: "TBD",
@@ -725,7 +728,10 @@ const Classic: FC<Props> = ({ gameId }) => {
           toggleConfig={toggleConfig}
           setToggleConfig={setToggleConfig}
           view="classic"
-          ownsGame={wagerUser !== null && (wagerUser.publicKey === gameData.gameInfo.creator?.publicKey)}
+          ownsGame={
+            wagerUser !== null &&
+            wagerUser.publicKey === gameData.gameInfo.creator?.publicKey
+          }
         />
 
         {toggleConfig.selected === "option1" && (
@@ -805,7 +811,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                   {/* header */}
                   <div className="relative h-[50px] flex items-center justify-center bg-container">
                     <p className="font-base-b text-center text-containerHead">
-                      {`⬇️ Make your pick ⬇️`}
+                      {`Make your pick`}
                     </p>
                   </div>
                   {/* betting = four components */}

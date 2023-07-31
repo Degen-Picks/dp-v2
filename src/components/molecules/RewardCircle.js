@@ -7,7 +7,7 @@ import { createTheme } from "@mui/material/styles";
 const theme1 = createTheme({
   palette: {
     primary: {
-      main: "#651FFF",
+      main: "#000000",
     },
   },
 });
@@ -58,23 +58,12 @@ const CircularProgressWithLabel = (props) => {
             sx={{ position: "absolute", zIndex: 1 }}
           />
         </Box>
-        <Typography
-          variant="caption"
-          component="div"
-          color="text.secondary"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <p className="text-lg flex items-center justify-center text-center">
           {`${Math.round(props.value)}%`}
-        </Typography>
+        </p>
       </Box>
-      <Box sx={{ textAlign: "center", paddingTop: "40px" }}>
-        <Typography component="div" color="#616161">
-          {props.team}
-        </Typography>
+      <Box sx={{ textAlign: "center", paddingTop: "20px" }}>
+        <p className="font-base text-lg text-secondary">{props.team}</p>
       </Box>
     </>
   );

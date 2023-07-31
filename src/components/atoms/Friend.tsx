@@ -16,7 +16,7 @@ const Friend: FC<Props> = ({ link, image, name, type }) => (
         width={200}
         height={200}
         alt={name}
-        className="border border-container rounded-md hover:border-link overflow-hidden"
+        className="border-2 border-container hover:border-link overflow-hidden"
       />
     </a>
     <p className="text-center font-base-b group-hover:text-link">{name}</p>
