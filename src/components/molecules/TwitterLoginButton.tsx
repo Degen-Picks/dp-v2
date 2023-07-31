@@ -4,11 +4,11 @@ import { useState, useEffect, FC } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { FallbackImage, Twitter } from "@/components";
-import { TwitterObject } from "@/types";
+import { WagerUser } from "@/types";
 
 const TwitterLoginButton: FC = () => {
   const { publicKey } = useWallet();
-  const [userData, setUserData] = useState<TwitterObject | null>();
+  const [userData, setUserData] = useState<WagerUser | null>();
   const [isTwitterLinked, setIsTwitterLinked] = useState<boolean>(false);
 
   const wallet = useWallet();
@@ -23,7 +23,7 @@ const TwitterLoginButton: FC = () => {
         return;
       }
 
-      const data: TwitterObject = await res.json();
+      const data: WagerUser = await res.json();
 
       setUserData(data || {});
 
@@ -196,7 +196,7 @@ const TwitterLoginButton: FC = () => {
               <div className="sm:hidden flex items-center justify-center">
                 <div className="border border-light flex items-center justify-center rounded-full w-[50px] h-[50px] overflow-hidden">
                   <FallbackImage
-                    src={userData?.twitterData.profileImage}
+                    src={userData?.twitterData!.profileImage}
                     fallbackSrc={"/images/icons/user-alt.svg"}
                     width={50}
                     height={50}
@@ -207,14 +207,14 @@ const TwitterLoginButton: FC = () => {
               <div className="hidden sm:flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
                 <div className="border border-light flex items-center justify-center rounded-full w-[35px] h-[35px] overflow-hidden">
                   <FallbackImage
-                    src={userData?.twitterData.profileImage}
+                    src={userData?.twitterData!.profileImage}
                     fallbackSrc={"/images/icons/user-alt.svg"}
                     width={35}
                     height={35}
                     alt="Twitter Profile Image"
                   />
                 </div>
-                <p className="font-base-b">{userData?.twitterData.username}</p>
+                <p className="font-base-b">{userData?.twitterData!.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">
                 <p className="text-[#E1233D]">Unlink Twitter</p>

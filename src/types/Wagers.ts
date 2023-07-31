@@ -1,3 +1,5 @@
+import { TwitterData } from "./TwitterData";
+
 export interface Wager {
   finalScore: string;
   league: string;
@@ -22,13 +24,6 @@ export interface Selection {
   winnerImageUrl: string;
   nftImageUrl: string;
   _id: string;
-}
-
-export type TwitterData = {
-  id: string;
-  username: string;
-  displayName: string;
-  profileImage: string;
 }
 
 type Roles = Role[];
