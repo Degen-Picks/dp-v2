@@ -7,7 +7,7 @@ import {
   Navbar,
   DataPoint,
 } from "@/components";
-import { getWagers, getPickems, getStats } from "../utils/apiUtil";
+import { getWagers, getPickems, getStats } from "../utils/api/apiUtil";
 import { Pickem, Stats, Wager } from "@/types";
 
 const Landing = () => {

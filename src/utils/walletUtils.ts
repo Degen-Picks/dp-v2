@@ -1,6 +1,5 @@
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { fetchNonce } from "./adminApiUtil";
-import { confirmSignature } from "./apiUtil";
+import { confirmSignature, fetchNonce } from "./api/apiUtil";
 import { WagerUser } from "@/types";
 
 export const handleConfirmAction = async (wallet: WalletContextState, message: string): Promise<boolean> => {

@@ -306,7 +306,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       setGameData(parsed);
 
       if (parsed.gameInfo.status === "cancelled") {
-        setGameStatus(GameStatus.CANCELLED);
+        setGameStatus(GameStatus.CANCELLED); 
         setGameCountdown("Picks refunded.");
       }
 
@@ -629,6 +629,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     };
 
     const fetchUserPick = async () => {
+      // TODO: Test this condition, old was publicKey && (picksOpened || picksFinished
       if (publicKey && gameStatus === GameStatus.PREGAME) {
         await loadUserPick(gameData.gameInfo.id);
       }

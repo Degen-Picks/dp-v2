@@ -45,6 +45,7 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
 
   const axios = require("axios");
 
+  // TODO: Move to apiUtil
   const loadActivities = async () => {
     await axios
       .post(`${generalConfig.apiUrl}/api/activityFeed`, {

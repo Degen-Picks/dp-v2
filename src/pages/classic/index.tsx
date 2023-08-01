@@ -2,7 +2,7 @@ import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getWagers } from "../../utils/apiUtil";
+import { getWagers } from "../../utils/api/apiUtil";
 import { Navbar, GameFilter, Timer } from "@/components";
 import { Wager } from "@/types";
 
