@@ -4,13 +4,15 @@ import { airdropClassic, handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { GameStatus } from "./ClassicView";
 
 interface Props {
   gameData: GameInfo;
   loadGameData: () => Promise<GameInfo | undefined | null>;
+  gameStatus: GameStatus;
 }
 
-const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
+const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | undefined>(undefined);
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
@@ -18,7 +20,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   const wallet = useWallet();
 
   const isDisabled =
-    gameData.gameInfo.status !== "closed" ||
+    gameStatus !== GameStatus.CLOSED ||
     loading ||
     isRefunded ||
     isAirdropped;
@@ -33,12 +35,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, []);
 
   useEffect(() => {
-    if (gameData.gameInfo.status === "cancelled") {
+    if (gameStatus === GameStatus.CANCELLED) {
       setIsRefunded(true);
       return;
     }
 
-    if (gameData.gameInfo.status === "completed") {
+    if (gameStatus === GameStatus.AIRDROPPED) {
       gameData.team1.winner === true
         ? setSelectedTeam(gameData.team1)
         : setSelectedTeam(gameData.team2);
@@ -46,7 +48,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       setIsAirdropped(true);
       return;
     }
-  }, [gameData]);
+  }, [gameData, gameStatus]);
 
   useEffect(() => {
     if (isRefunded) {
@@ -83,7 +85,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       return;
     }
 
-    if (gameData.gameInfo.status !== "closed") {
+    if (gameStatus !== GameStatus.CLOSED) {
       toast.error("Game must be closed to airdrop winners!");
       return;
     }

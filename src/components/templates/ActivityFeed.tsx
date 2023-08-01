@@ -3,8 +3,10 @@ import Image from "next/image";
 import { ActivityItem } from "@/components";
 import { Activity, GameInfo } from "@/types";
 import { generalConfig } from "@/configs";
+import { GameStatus } from "./ClassicView";
 interface Props {
   gameData: GameInfo;
+  gameStatus: GameStatus;
 }
 
 const dateFromObjectId = (objectId: string) => {
@@ -38,7 +40,7 @@ const getUserImage = (placedBet: any) => {
   }
 };
 
-const ActivityFeed: FC<Props> = ({ gameData }) => {
+const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activityRefresh, setActivityRefresh] = useState(false);
@@ -88,7 +90,7 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
       interval = setInterval(async () => {
         await loadActivities();
 
-        if (gameData.gameInfo.status !== "live") {
+        if (gameStatus === GameStatus.OPEN) {
           clearInterval(interval);
         }
       }, 5000);

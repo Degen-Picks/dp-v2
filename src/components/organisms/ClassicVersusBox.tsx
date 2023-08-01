@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { GameInfo } from "../../types/GameInfo";
+import { GameStatus } from "../templates/ClassicView";
 
 interface TProps {
   active: boolean;
@@ -17,7 +18,7 @@ interface VProps {
   handlePicks: any;
   pickedTeams: any;
   valid: boolean;
-  gameStatus: string;
+  gameStatus: GameStatus;
   finalWinner: string | undefined;
 }
 
@@ -99,7 +100,7 @@ const ClassicVersusBox: FC<VProps> = ({
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
                 : "border-transparent"
               : active1
-              ? gameStatus === "completed"
+              ? gameStatus === GameStatus.AIRDROPPED
                 ? gameData.team1.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
@@ -142,7 +143,7 @@ const ClassicVersusBox: FC<VProps> = ({
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
                 : "border-transparent"
               : active2
-              ? gameStatus === "completed"
+              ? gameStatus === GameStatus.AIRDROPPED
                 ? gameData.team2.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
