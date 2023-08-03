@@ -14,19 +14,16 @@ export interface ClassicGameOptions {
 export type ClassicGameBody = {
   title: string;
   description: string;
+  league: string;
+  collectionName: string;
   selection1: string;
   selection1Record: string;
-  selection1img: string;
-  selection1winnerImg: string;
-  selection1nftImg: string;
   selection2: string;
   selection2Record: string;
-  selection2img: string;
-  selection2winnerImg: string;
-  selection2nftImg: string;
   startDate: number;
   endDate: number;
   gameDate: number;
+  token: string;
   metadata: any[];
 };
 
