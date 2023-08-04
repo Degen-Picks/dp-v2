@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getWagers } from "../../utils/apiUtil";
-import { Navbar, GameFilter, Timer } from "@/components";
+import { Navbar, GameFilter, Timer, VerifiedBadge } from "@/components";
 import { Wager } from "@/types";
 
 interface Props {
@@ -24,37 +24,32 @@ export const PropSection: FC<Props> = ({
   return (
     <Link className="w-full" passHref href={`/classic/${encodeURI(slug)}`}>
       <div
-        className="relative bg-white py-3 md:h-[100px] w-full md:w-[620px] mx-auto 
+        className="relative bg-white py-3 h-[200px] w-[90%] md:w-[380px] mx-auto 
         cursor-pointer hover:scale-[1.02] transition-transform ease-in-out duration-500"
       >
-        <div className="flex items-center justify-center h-full">
-          <div className="w-2/3 mx-auto md:w-auto md:max-w-[300px]">
-            <p className="text-center text-base">{description}</p>
-            <p className="text-center text-xl text-primary font-base-b">
-              {title}
-            </p>
-            <div className="pt-4 md:hidden flex items-center justify-center gap-2">
-              <Timer status={status} gameTime={gameTime} />
-              {/* TODO: set up for multiple currencies */}
-              <Image
-                src="/images/icons/dust_square.png"
-                width={30}
-                height={30}
-                alt="dust"
-              />
+        <div className="flex flex-col items-center gap-[10px] justify-center h-full px-8">
+          <p className="text-center text-lg">{description}</p>
+          <p className="text-center text-2xl text-primary font-base-b">
+            {title}
+          </p>
+          <div className="flex items-center justify-center gap-2 mt-[10px]">
+            {/* TODO: add creator here */}
+            <div className="flex items-center gap-1">
+              <VerifiedBadge />
+              <p className="uppercase">degen picks team</p>
             </div>
+            <div className="h-5 w-[1px] bg-secondary" />
+            <Timer status={status} gameTime={gameTime} />
+            {/* TODO: set up for multiple currencies */}
           </div>
         </div>
-        <div className="hidden md:flex absolute top-1/2 -translate-y-1/2 right-6 items-center gap-2">
-          <Timer status={status} gameTime={gameTime} />
-          {/* TODO: set up for multiple currencies */}
-          <Image
-            src="/images/icons/dust_square.png"
-            width={30}
-            height={30}
-            alt="dust"
-          />
-        </div>
+        <Image
+          src="/images/icons/dust_square2.png"
+          width={30}
+          height={30}
+          alt="dust"
+          className="absolute top-3 right-3"
+        />
       </div>
     </Link>
   );
@@ -100,7 +95,7 @@ const GameQueue = () => {
     <div className="relative bg-light w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       <Navbar />
       {/* Fixed y00ts pfps */}
-      <div className={`lg:fixed absolute -bottom-2 -left-14 sm:left-0 z-0`}>
+      {/* <div className={`lg:fixed absolute -bottom-2 -left-14 sm:left-0 z-0`}>
         <Image
           src="/images/landing/matt.png"
           width={800 * 0.25}
@@ -115,13 +110,13 @@ const GameQueue = () => {
           height={1012 * 0.25}
           alt="h was here"
         />
-      </div>
-      <div className="md:max-w-[1000px] text-center w-[90%] md:w-[3/4] mx-auto mt-10 lg:mt-0">
+      </div> */}
+      {/* <div className="md:max-w-[1000px] text-center w-[90%] md:w-[3/4] mx-auto mt-10 lg:mt-0">
         <div className="w-fit mx-auto pb-16">
           <p className="text-base">Picks Classic</p>
           <p className="text-[30px] font-base-b">Featured Games</p>
         </div>
-      </div>
+      </div> */}
       {loading ? (
         <div className="w-fit mx-auto mt-20">
           <div className="rotate">
@@ -137,11 +132,19 @@ const GameQueue = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-5 items-start w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
-          <GameFilter
-            activeFilter={activeFilter}
-            setActiveFilter={setActiveFilter}
-          />
+        <div className="flex flex-col gap-5 items-center w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
+          <div className="hidden md:absolute top-10 left-1/2 -translate-x-1/2">
+            <GameFilter
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+          </div>
+          <div className="md:hidden mt-6">
+            <GameFilter
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+          </div>
           {games?.filter(
             (game) =>
               (activeFilter === true &&
@@ -164,13 +167,38 @@ const GameQueue = () => {
             </div>
           )}
           {/* live games always go first, sorted by date */}
-          {games
-            ?.filter(
-              (game: Wager) => activeFilter === true && game.status === "live"
-            )
-            .reverse()
-            .map(
-              (game, index) => {
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-20">
+            {games
+              ?.filter(
+                (game: Wager) => activeFilter === true && game.status === "live"
+              )
+              .reverse()
+              .map(
+                (game, index) => {
+                  return (
+                    <PropSection
+                      key={index}
+                      title={game.title}
+                      slug={game._id}
+                      description={game.description}
+                      status={game.status}
+                      gameTime={game.endDate}
+                    />
+                  );
+                }
+                // now, sort upcoming games by date
+              )}
+            {games
+              ?.filter(
+                (game) =>
+                  (activeFilter === true &&
+                    (game.status === "closed" || game.status === "upcoming")) ||
+                  (activeFilter === false &&
+                    (game.status === "completed" ||
+                      game.status === "cancelled"))
+              )
+              .reverse()
+              .map((game, index) => {
                 return (
                   <PropSection
                     key={index}
@@ -181,30 +209,8 @@ const GameQueue = () => {
                     gameTime={game.endDate}
                   />
                 );
-              }
-              // now, sort upcoming games by date
-            )}
-          {games
-            ?.filter(
-              (game) =>
-                (activeFilter === true &&
-                  (game.status === "closed" || game.status === "upcoming")) ||
-                (activeFilter === false &&
-                  (game.status === "completed" || game.status === "cancelled"))
-            )
-            .reverse()
-            .map((game, index) => {
-              return (
-                <PropSection
-                  key={index}
-                  title={game.title}
-                  slug={game._id}
-                  description={game.description}
-                  status={game.status}
-                  gameTime={game.endDate}
-                />
-              );
-            })}
+              })}
+          </div>
         </div>
       )}
 

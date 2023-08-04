@@ -29,7 +29,7 @@ module.exports = {
         "body-2xl": "1.5rem",
       },
       colors: {
-        light: "#F5F5F5",
+        light: "#ECEAEC",
         dark: "#181925",
         primary: "black",
         secondary: "#616161",

@@ -5,6 +5,7 @@ const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const Twitter = dynamic(() => import("./@icons/Twitter"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
+const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 
 // atoms
 const BackButton = dynamic(() => import("./atoms/BackButton"));
@@ -51,6 +52,7 @@ export {
   Discord,
   Twitter,
   QuestionIcon,
+  VerifiedBadge,
 
   // atoms
   BackButton,

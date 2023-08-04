@@ -7,6 +7,7 @@ interface Props {
 
 const Timer: FC<Props> = ({ status, gameTime }) => {
   const [timeRemaining, setTimeRemaining] = useState("");
+  const [closeToEnd, setCloseToEnd] = useState(false);
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
@@ -24,8 +25,18 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
         var minutes = Math.floor(
           (gameDistance % (1000 * 60 * 60)) / (1000 * 60)
         );
+        var seconds = Math.floor((gameDistance % (1000 * 60)) / 1000);
 
-        setTimeRemaining(days + "d " + hours + "h " + minutes + "m");
+        if (days === 0 && hours < 1) {
+          setCloseToEnd(true);
+          setTimeRemaining(minutes + "m " + seconds + "s");
+        } else if (days === 0 && hours >= 1) {
+          setCloseToEnd(false);
+          setTimeRemaining(hours + "h " + minutes + "m");
+        } else {
+          setCloseToEnd(false);
+          setTimeRemaining(days + "d " + hours + "h " + minutes + "m");
+        }
       }
     };
     const interval = setInterval(calculateTimeRemaining, 60000);
@@ -35,12 +46,12 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
   }, [gameTime]);
 
   return (
-    <div className="bg-light h-30 px-2 py-1 rounded-md flex items-center justify-center">
+    <div className="flex items-center justify-center">
       {status === "closed" ? (
-        <p className="text-sm text-secondary font-base-b">Picks Closed</p>
+        <p className="text-base text-primary">Picks Closed</p>
       ) : status === "completed" ? (
         <div className="flex items-center gap-1">
-          <p className="text-sm text-correct font-base-b">Airdrops</p>
+          <p className="text-correct">Airdrops</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="10"
@@ -52,11 +63,13 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
           </svg>
         </div>
       ) : status === "cancelled" ? (
-        <p className="text-sm text-incorrect font-base-b">Refunded</p>
+        <p className="text-incorrect">Refunded</p>
       ) : status === "upcoming" ? (
-        <p className="text-sm text-secondary font-base-b">Loading</p>
+        <p className="text-secondary">Loading</p>
       ) : (
-        <p className="text-sm text-link font-base-b">{timeRemaining}</p>
+        <p className={`${closeToEnd ? "text-incorrect" : "text-link"}`}>
+          {timeRemaining}
+        </p>
       )}
     </div>
   );
