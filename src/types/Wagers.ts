@@ -11,6 +11,7 @@ export interface Wager {
   endDate: number;
   gameDate: number;
   metadata: any[];
+  creator: WagerUser;
   description: string;
 }
 
@@ -27,11 +28,10 @@ export interface Selection {
 }
 
 type Roles = Role[];
-type Role = 'ADMIN' | 'CREATOR' | 'DEFAULT';
+type Role = "ADMIN" | "CREATOR" | "DEFAULT";
 
 export type WagerUser = {
-    publicKey: string;
-    twitterData: TwitterData | null;
-    roles: Roles;
-}
-
+  publicKey: string;
+  twitterData: TwitterData | null;
+  roles: Roles;
+};

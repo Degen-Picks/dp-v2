@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getWagers } from "../../utils/apiUtil";
 import { Navbar, GameFilter, Timer, VerifiedBadge } from "@/components";
-import { Wager } from "@/types";
+import { Wager, WagerUser } from "@/types";
 
 interface Props {
   title: string;
@@ -12,6 +12,7 @@ interface Props {
   slug: string;
   status: string;
   gameTime: number;
+  creator: WagerUser;
 }
 
 export const PropSection: FC<Props> = ({
@@ -20,6 +21,7 @@ export const PropSection: FC<Props> = ({
   slug,
   status,
   gameTime,
+  creator,
 }) => {
   return (
     <Link className="w-full" passHref href={`/classic/${encodeURI(slug)}`}>
@@ -133,7 +135,7 @@ const GameQueue = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-5 items-center w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
-          <div className="hidden md:absolute top-10 left-1/2 -translate-x-1/2">
+          <div className="hidden md:block absolute top-10 left-1/2 -translate-x-1/2">
             <GameFilter
               activeFilter={activeFilter}
               setActiveFilter={setActiveFilter}
@@ -175,6 +177,7 @@ const GameQueue = () => {
               .reverse()
               .map(
                 (game, index) => {
+                  console.log("game", game);
                   return (
                     <PropSection
                       key={index}
@@ -183,6 +186,7 @@ const GameQueue = () => {
                       description={game.description}
                       status={game.status}
                       gameTime={game.endDate}
+                      creator={game.creator}
                     />
                   );
                 }
@@ -207,6 +211,7 @@ const GameQueue = () => {
                     description={game.description}
                     status={game.status}
                     gameTime={game.endDate}
+                    creator={game.creator}
                   />
                 );
               })}
