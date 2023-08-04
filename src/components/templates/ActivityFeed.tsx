@@ -2,7 +2,8 @@ import { useState, FC, useEffect } from "react";
 import Image from "next/image";
 import { ActivityItem } from "@/components";
 import { Activity, GameInfo } from "@/types";
-import { generalConfig } from "@/configs";
+import { generalConfig, smallClickAnimation } from "@/configs";
+import { motion } from "framer-motion";
 interface Props {
   gameData: GameInfo;
 }
@@ -42,41 +43,49 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activityRefresh, setActivityRefresh] = useState(false);
+  const [page, setPage] = useState(1);
 
   const axios = require("axios");
 
   const loadActivities = async () => {
-    await axios
-      .post(`${generalConfig.apiUrl}/api/activityFeed`, {
-        wagerId: gameData.gameInfo.id,
-      })
-      .then(function (response: any) {
-        const placedBets = response.data.data.reverse();
-        const data = [];
-        let id = 0;
-
-        for (const placedBet of placedBets) {
-          const formatted: Activity = {
-            id,
-            name: getName(placedBet),
-            time: dateFromObjectId(placedBet._id),
-            dustBet: placedBet.amounts[0].amount,
-            teamImage: getTeamImage(placedBet, gameData),
-            userImage: getUserImage(placedBet),
-            twitterName: placedBet.user?.twitterData?.username,
-          };
-
-          data.push(formatted);
-          id++;
+    const ITEMS_PER_PAGE = 5;
+    try {
+      const response = await axios.post(
+        `${generalConfig.apiUrl}/api/activityFeed`,
+        {
+          wagerId: gameData.gameInfo.id,
+          limit: ITEMS_PER_PAGE,
+          page: page,
         }
-        if (activities !== data) {
-          // this means that the data has changed
-          setActivities(data);
-        }
-      })
-      .catch(function (error: any) {
-        console.log(error);
-      });
+      );
+
+      const placedBets = response.data.data.reverse();
+      const data: Activity[] = [];
+
+      let id = (page - 1) * ITEMS_PER_PAGE;
+
+      for (const placedBet of placedBets) {
+        const formatted = {
+          id,
+          name: getName(placedBet),
+          time: dateFromObjectId(placedBet._id),
+          dustBet: placedBet.amounts[0].amount,
+          teamImage: getTeamImage(placedBet, gameData),
+          userImage: getUserImage(placedBet),
+          twitterName: placedBet.user?.twitterData?.username,
+        };
+
+        data.push(formatted);
+        id++;
+      }
+
+      if (activities !== data) {
+        // this means that the data has changes
+        setActivities((prevActivities) => [...prevActivities, ...data]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -137,6 +146,13 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
               <ActivityItem item={item} key={index} />
             ))}
           </div>
+          <motion.button
+            {...smallClickAnimation}
+            className="text-link"
+            onClick={() => setPage(page + 1)}
+          >
+            Load More
+          </motion.button>
         </>
       )}
     </div>
