@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { GameMetadata } from "@/components";
+import { BackButton, GameMetadata } from "@/components";
 import { GameInfo } from "@/types";
 import { GameStatus } from "../templates/ClassicView";
 
@@ -10,8 +10,9 @@ interface Props {
 
 const ClassicHero: FC<Props> = ({ gameData, gameStatus }) => {
   return (
-    <div>
-      <div className="w-fit max-w-[480px] mx-auto mb-8">
+    <div className="w-full max-w-[620px] mx-auto mb-8">
+      <BackButton />
+      <div className="w-full max-w-[480px] mx-auto pt-3">
         <div className="font-base text-center text-lg">
           {gameData.gameInfo.description}
         </div>

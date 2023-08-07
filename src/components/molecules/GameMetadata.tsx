@@ -12,7 +12,7 @@ interface Props {
 const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
   const Divider = <div className="w-[1px] h-9 bg-[#A89FA8]" />;
   return (
-    <div className="w-fit mx-auto flex items-center gap-4">
+    <div className="w-fit mx-auto flex items-center gap-4 mt-5">
       {/* TODO: add creator here */}
       <div className="flex items-center gap-1">
         <VerifiedBadge />

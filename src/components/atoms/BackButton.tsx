@@ -6,8 +6,8 @@ const BackButton: FC = () => {
 
   return (
     <div
-      className="flex items-center gap-2 cursor-pointer h-[50px] w-[100px] px-2 mx-3"
-      onClick={() => router.back()}
+      className="flex items-center gap-2 cursor-pointer h-[50px] w-[100px]"
+      onClick={() => router.push("/classic")}
     >
       <svg
         width="15"
@@ -21,7 +21,7 @@ const BackButton: FC = () => {
           fill="#7808FF"
         />
       </svg>
-      <p className="text-link font-base-b">Back</p>
+      <p className="text-link text-lg">All games</p>
     </div>
   );
 };
