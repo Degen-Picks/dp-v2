@@ -28,6 +28,7 @@ const CreationTextField = dynamic(
   () => import("./molecules/CreationTextField")
 );
 const Friends = dynamic(() => import("./molecules/Friends"));
+const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
 const Navbar = dynamic(() => import("./molecules/Navbar"));
 const RewardCircle = dynamic(() => import("./molecules/RewardCircle"));
@@ -74,6 +75,7 @@ export {
   CreationDropMenu,
   CreationTextField,
   Friends,
+  GameMetadata,
   GameOptions,
   Navbar,
   RewardCircle,

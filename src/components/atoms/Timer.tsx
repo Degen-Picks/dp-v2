@@ -46,7 +46,7 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
   }, [gameTime]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center whitespace-nowrap">
       {status === "closed" ? (
         <p className="text-base text-primary">Picks Closed</p>
       ) : status === "completed" ? (

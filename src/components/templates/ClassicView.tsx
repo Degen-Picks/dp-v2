@@ -9,6 +9,7 @@ import {
   ActivityFeed,
   ManageGame,
   RulesModal,
+  GameMetadata,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -41,7 +42,6 @@ const Classic: FC<Props> = ({ gameId }) => {
   const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
 
   //state variables
-  const [gameCountdown, setGameCountdown] = useState<string>("Loading...");
   const [pickCountdown, setPickCountdown] = useState<string>("Loading...");
   const [winningTeam, setWinningTeam] = useState<string>();
   const [dustBet, setDustBet] = useState<number>(33);
@@ -66,7 +66,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const [toggleConfig, setToggleConfig] = useState<ToggleConfig>({
     option1: {
-      title: "Pick",
+      title: "Game",
     },
     option2: {
       title: "Activity",
@@ -85,16 +85,20 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const [gameData, setGameData] = useState<GameInfo>({
     gameInfo: {
-      dateStr: "TBD",
+      description: "",
+      endDate: 0,
+      finalScore: "",
+      gameDate: 0,
+      league: "",
+      metadata: "",
+      // selections: "",
+      startDate: 0,
+      status: "",
+      title: "",
+      id: "",
+      dateStr: "",
       timeStr: "",
       dayTime: "",
-      status: "",
-      id: "",
-      title: "",
-      description: "",
-      league: "",
-      finalScore: "",
-      creator: null,
     },
     team1: {
       teamName: "TBD",
@@ -233,7 +237,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       );
       const body = await response.json();
 
-      console.log("typing needed: ", body);
+      // console.log("typing needed: ", body);
 
       if (body.length === 0) return;
 
@@ -268,17 +272,21 @@ const Classic: FC<Props> = ({ gameId }) => {
       // TODO make sure same as init
       const parsed = {
         gameInfo: {
+          description: currentWager.description,
+          endDate: currentWager.endDate,
+          finalScore: currentWager.finalScore,
+          gameDate: currentWager.gameDate,
+          league: currentWager.league,
+          metadata: currentWager.metadata,
+          // selections: currentWager.selected,
+          startDate: currentWager.startDate,
+          status: currentWager.status,
+          title: currentWager.title,
+          creator: currentWager.creator,
+          id: currentWager._id,
           dateStr: getDateStr(gameDate),
           timeStr: getTimeStr(gameDate),
           dayTime: getDayTime(gameDate),
-          status: currentWager.status,
-          id: currentWager._id,
-          title: currentWager.title,
-          description: currentWager.description,
-          league: currentWager.league,
-          finalScore: currentWager.finalScore,
-          metadata: currentWager.metadata,
-          creator: currentWager.creator,
         },
         team1: {
           teamName: currentWager.selections[0].title,
@@ -310,7 +318,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       if (parsed.gameInfo.status === "cancelled") {
         setGameStatus(GameStatus.CANCELLED);
-        setGameCountdown("Picks refunded.");
+        // setGameCountdown("Picks refunded.");
       }
 
       // Cut end date short to include last second picks
@@ -425,24 +433,9 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (utcGameDate === undefined) return;
       var gameDistance = utcGameDate - now;
 
-      // time calculations for days, hours, minutes and seconds (game time - bets closed)
-      var days = Math.floor(gameDistance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (gameDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      var minutes = Math.floor((gameDistance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((gameDistance % (1000 * 60)) / 1000);
-
-      // display the result
-      setGameCountdown(
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-      );
-
       // if the count down is finished, write some text
       if (gameDistance < 0) {
         clearInterval(interval);
-        setGameCountdown("Picks closed.");
-
         setGameStatus(GameStatus.CLOSED);
       }
     }, 1000);
@@ -498,12 +491,9 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (gameStatus === GameStatus.CANCELLED) return;
 
       if (new Date().getTime() > utcGameDate) {
-        setGameCountdown("Picks closed.");
-
         setGameStatus(GameStatus.CLOSED);
       } else if (new Date().getTime() > utcPickDate) {
         setGameStatus(GameStatus.OPEN);
-
         startGameDateCountdown();
       } else {
         startPickDateCountdown();
@@ -760,26 +750,15 @@ const Classic: FC<Props> = ({ gameId }) => {
             {/* logo section */}
             {!loading && (
               <div>
-                <div className="w-fit max-w-[620px] mx-auto mb-8">
-                  <div className="font-base text-center">
+                <div className="w-fit max-w-[480px] mx-auto mb-8">
+                  <div className="font-base text-center text-lg">
                     {gameData.gameInfo.description}
                   </div>
-                  <div className="font-base-b text-center text-3xl text-black">
+                  <div className="font-base-b text-center text-[32px] leading-[33px] text-black">
                     {gameData.gameInfo.title}
                   </div>
                 </div>
-                {gameStatus !== GameStatus.PREGAME && (
-                  <div className="h-[50px] w-fit bg-white px-6 mx-auto flex items-center justify-center text-center text-link font-base-b">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                      className="fill-link w-5 h-5 pr-2"
-                    >
-                      <path d="M272 0C289.7 0 304 14.33 304 32C304 49.67 289.7 64 272 64H256V98.45C293.5 104.2 327.7 120 355.7 143L377.4 121.4C389.9 108.9 410.1 108.9 422.6 121.4C435.1 133.9 435.1 154.1 422.6 166.6L398.5 190.8C419.7 223.3 432 262.2 432 304C432 418.9 338.9 512 224 512C109.1 512 16 418.9 16 304C16 200 92.32 113.8 192 98.45V64H176C158.3 64 144 49.67 144 32C144 14.33 158.3 0 176 0L272 0zM248 192C248 178.7 237.3 168 224 168C210.7 168 200 178.7 200 192V320C200 333.3 210.7 344 224 344C237.3 344 248 333.3 248 320V192z" />
-                    </svg>
-                    {gameCountdown}
-                  </div>
-                )}
+                <GameMetadata gameStatus={gameStatus} gameData={gameData} />
               </div>
             )}
 

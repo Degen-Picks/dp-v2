@@ -1,7 +1,17 @@
-import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getLoginStatus } from "@/utils";
-import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 interface IconProps {
   fill: string;
@@ -96,11 +106,16 @@ export type ToggleConfig = {
 interface Props {
   toggleConfig: ToggleConfig;
   setToggleConfig: Dispatch<SetStateAction<ToggleConfig>>;
-  view: "classic" | "pickem"
+  view: "classic" | "pickem";
   ownsGame: boolean;
 }
 
-const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }) => {
+const ViewToggle: FC<Props> = ({
+  toggleConfig,
+  setToggleConfig,
+  view,
+  ownsGame,
+}) => {
   const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
   const [isAdmin, setIsAdmin] = useState(false);
   const { publicKey } = useWallet();
@@ -114,8 +129,8 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }
     setToggleConfig(newToggleConfig);
   };
 
-  useEffect(() => { 
-    if (wagerUser && wagerUser.roles.includes("ADMIN") || ownsGame) {
+  useEffect(() => {
+    if ((wagerUser && wagerUser.roles.includes("ADMIN")) || ownsGame) {
       setIsAdmin(true);
     } else {
       handleClick("option1");
@@ -127,20 +142,15 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }
     <>
       {/* desktop toggle */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 hidden lg:block">
-        <div
-          className={`${
-            isAdmin ? "w-[333px]" : "w-[255px]"
-          } h-[60px] bg-[#EEEEEE] flex items-center justify-between px-[5px] rounded-lg`}
-        >
+        <div className={`h-[30px] flex items-center gap-6`}>
           <div
             className={`${
-              toggleConfig.selected === "option1"
-                ? "bg-white font-base-b text-link hover:text-linkHover"
-                : "text-secondary font-base hover:text-black/70"
-            } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm `}
+              toggleConfig.selected === "option1" && "bg-primary text-white"
+            } w-[70px] h-[30px] flex flex-col items-center justify-center 
+            hover:cursor-pointer hover:opacity-80`}
             onClick={() => handleClick("option1")}
           >
-            {view === "pickem" && (
+            {/* {view === "pickem" && (
               <FootballIcon
                 fill={`${
                   toggleConfig.selected === "option1" ? "link" : "secondary"
@@ -153,19 +163,18 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }
                   toggleConfig.selected === "option1" ? "link" : "secondary"
                 }`}
               />
-            )}
+            )} */}
 
             {toggleConfig.option1.title}
           </div>
           <div
             className={`${
-              toggleConfig.selected === "option2"
-                ? "bg-white font-base-b text-link hover:text-linkHover"
-                : "text-secondary font-base hover:text-black/70"
-            } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm`}
+              toggleConfig.selected === "option2" && "bg-primary text-white"
+            } w-[70px] h-[30px] flex flex-col items-center justify-center 
+            hover:cursor-pointer hover:opacity-80`}
             onClick={() => handleClick("option2")}
           >
-            {view === "pickem" && (
+            {/* {view === "pickem" && (
               <TrophyIcon
                 fill={`${
                   toggleConfig.selected === "option2" ? "link" : "secondary"
@@ -178,16 +187,15 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view, ownsGame }
                   toggleConfig.selected === "option2" ? "link" : "secondary"
                 }`}
               />
-            )}
+            )} */}
             {toggleConfig.option2.title}
           </div>
           {toggleConfig.option3 && isAdmin === true ? (
             <div
               className={`${
-                toggleConfig.selected === "option3"
-                  ? "bg-white font-base-b text-link hover:text-linkHover"
-                  : "text-secondary font-base hover:text-black/70"
-              } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm`}
+                toggleConfig.selected === "option3" && "bg-primary text-white"
+              } w-[70px] h-[30px] flex flex-col items-center justify-center 
+            hover:cursor-pointer hover:opacity-80`}
               onClick={() => handleClick("option3")}
             >
               <ManageIcon

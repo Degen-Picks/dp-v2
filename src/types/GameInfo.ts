@@ -17,17 +17,21 @@ export interface GameInfo {
 }
 
 export interface GameInfoClass {
+  description: string;
+  endDate: number;
+  finalScore: string;
+  gameDate: number;
+  league: string;
+  metadata?: any;
+  // selections: any[];
+  startDate: number;
+  status: string;
+  title: string;
+  creator?: WagerUser | null;
   dateStr: string;
   timeStr: string;
   dayTime: string;
-  status: string;
   id: string;
-  title: string;
-  description: string;
-  league: string;
-  finalScore: string;
-  metadata?: any;
-  creator: WagerUser | null;
 }
 
 export interface Team {
