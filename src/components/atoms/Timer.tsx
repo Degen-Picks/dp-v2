@@ -27,19 +27,19 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
         );
         var seconds = Math.floor((gameDistance % (1000 * 60)) / 1000);
 
-        if (days === 0 && hours < 1) {
-          setCloseToEnd(true);
-          setTimeRemaining(minutes + "m " + seconds + "s");
-        } else if (days === 0 && hours >= 1) {
+        if (days === 0 && hours >= 1) {
           setCloseToEnd(false);
           setTimeRemaining(hours + "h " + minutes + "m");
+        } else if (days === 0 && hours < 1) {
+          setTimeRemaining(minutes + "m " + seconds + "s");
+          setCloseToEnd(true);
         } else {
-          setCloseToEnd(false);
           setTimeRemaining(days + "d " + hours + "h " + minutes + "m");
+          setCloseToEnd(false);
         }
       }
     };
-    const interval = setInterval(calculateTimeRemaining, 60000);
+    const interval = setInterval(calculateTimeRemaining, 1000);
     calculateTimeRemaining();
 
     return () => clearInterval(interval);

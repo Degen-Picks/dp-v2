@@ -169,40 +169,13 @@ const GameQueue = () => {
             </div>
           )}
           {/* live games always go first, sorted by date */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-20">
-            {games
-              ?.filter(
-                (game: Wager) => activeFilter === true && game.status === "live"
-              )
-              .reverse()
-              .map(
-                (game, index) => {
-                  console.log("game", game);
-                  return (
-                    <PropSection
-                      key={index}
-                      title={game.title}
-                      slug={game._id}
-                      description={game.description}
-                      status={game.status}
-                      gameTime={game.endDate}
-                      creator={game.creator}
-                    />
-                  );
-                }
-                // now, sort upcoming games by date
-              )}
-            {games
-              ?.filter(
-                (game) =>
-                  (activeFilter === true &&
-                    (game.status === "closed" || game.status === "upcoming")) ||
-                  (activeFilter === false &&
-                    (game.status === "completed" ||
-                      game.status === "cancelled"))
-              )
-              .reverse()
-              .map((game, index) => {
+          {games
+            ?.filter(
+              (game: Wager) => activeFilter === true && game.status === "live"
+            )
+            .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
+            .map(
+              (game, index) => {
                 return (
                   <PropSection
                     key={index}
@@ -214,8 +187,51 @@ const GameQueue = () => {
                     creator={game.creator}
                   />
                 );
-              })}
-          </div>
+              }
+              // now, sort upcoming games by date
+            )}
+          {games
+            ?.filter(
+              (game) =>
+                activeFilter === true &&
+                (game.status === "closed" || game.status === "upcoming")
+            )
+            .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
+            .map((game, index) => {
+              return (
+                <PropSection
+                  key={index}
+                  title={game.title}
+                  slug={game._id}
+                  description={game.description}
+                  status={game.status}
+                  gameTime={game.endDate}
+                  creator={game.creator}
+                />
+              );
+            })}
+
+          {/* past games always rendered in reverse order from newest to oldest */}
+          {games
+            ?.filter(
+              (game) =>
+                activeFilter === false &&
+                (game.status === "completed" || game.status === "cancelled")
+            )
+            .reverse()
+            .map((game, index) => {
+              return (
+                <PropSection
+                  key={index}
+                  title={game.title}
+                  slug={game._id}
+                  description={game.description}
+                  status={game.status}
+                  gameTime={game.endDate}
+                  creator={game.creator}
+                />
+              );
+            })}
         </div>
       )}
 
