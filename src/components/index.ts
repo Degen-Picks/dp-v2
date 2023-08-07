@@ -40,6 +40,7 @@ const TwitterLoginButton = dynamic(
 const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 
 // organisms
+const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 
@@ -85,6 +86,7 @@ export {
   ViewToggle,
 
   // organisms
+  ClassicHero,
   ClassicVersusBox,
   RewardPool,
 

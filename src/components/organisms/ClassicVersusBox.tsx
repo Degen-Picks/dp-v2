@@ -4,9 +4,9 @@ import { GameInfo } from "../../types/GameInfo";
 
 interface TProps {
   active: boolean;
-  teamImg: string;
+  teamImg?: string;
   teamName: string;
-  teamRecord: string;
+  teamRecord?: string;
   valid: boolean;
   success: boolean;
 }
@@ -36,10 +36,17 @@ const TeamBox: FC<TProps> = ({
     `}
   >
     <div className="flex flex-col text-center h-full justify-center w-fit mx-auto">
-      <div className="mx-auto w-[35px] h-[35px]">
-        <Image src={teamImg} width={30} height={30} alt={`${teamName} logo`} />
-      </div>
-      <div className="">
+      {teamImg && teamImg !== "" && (
+        <div className="mx-auto w-[35px] h-[35px]">
+          <Image
+            src={teamImg}
+            width={30}
+            height={30}
+            alt={`${teamName} logo`}
+          />
+        </div>
+      )}
+      <div>
         <div
           className={`${
             active ? "font-base-b" : "font-base text-secondary"
@@ -47,13 +54,15 @@ const TeamBox: FC<TProps> = ({
         >
           {teamName}
         </div>
-        {/* <div
-          className={`${
-            active ? "font-base-b" : "font-base text-secondary"
-          } text-[10px] sm:text-xs`}
-        >
-          {teamRecord}
-        </div> */}
+        {teamRecord !== "" && (
+          <div
+            className={`${
+              active ? "font-base-b" : "font-base text-secondary"
+            } text-[10px] sm:text-xs`}
+          >
+            {teamRecord}
+          </div>
+        )}
       </div>
     </div>
   </div>
@@ -127,9 +136,9 @@ const ClassicVersusBox: FC<VProps> = ({
         >
           <TeamBox
             active={active1}
-            teamImg={gameData.team1.teamLogo}
+            teamImg={gameData.team1?.teamLogo}
             teamName={gameData.team1.teamName}
-            teamRecord={gameData.team1.record}
+            teamRecord={gameData.team1?.record}
             success={success}
             valid={valid}
           />

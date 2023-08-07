@@ -10,6 +10,8 @@ import {
   ManageGame,
   RulesModal,
   GameMetadata,
+  QuestionIcon,
+  ClassicHero,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -749,17 +751,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             {/* logo section */}
             {!loading && (
-              <div>
-                <div className="w-fit max-w-[480px] mx-auto mb-8">
-                  <div className="font-base text-center text-lg">
-                    {gameData.gameInfo.description}
-                  </div>
-                  <div className="font-base-b text-center text-[32px] leading-[33px] text-black">
-                    {gameData.gameInfo.title}
-                  </div>
-                </div>
-                <GameMetadata gameStatus={gameStatus} gameData={gameData} />
-              </div>
+              <ClassicHero gameData={gameData} gameStatus={gameStatus} />
             )}
 
             {gameStatus === GameStatus.PREGAME && !loading && (
@@ -851,8 +843,22 @@ const Classic: FC<Props> = ({ gameId }) => {
                     {winningTeam !== undefined &&
                       finalWinner === undefined &&
                       dustBet >= 1 && (
-                        <div className="w-full mt-4 py-3 px-4 bg-container text-center text-sm sm:text-base">
-                          <div>Potential reward (highly volatile)</div>
+                        <div className="w-full mt-4 py-3 px-4 bg-light text-center text-sm sm:text-base">
+                          <p className="relative">
+                            Potential reward (highly volatile)
+                          </p>
+                          {/* <div className="group absolute right-0 top-1/2 -translate-y-1/2">
+                            <QuestionIcon fill="#651FFF" />
+                            <div
+                              className="z-50 absolute left-1/2 -translate-x-1/2 sm:bottom-1/2 sm:left-full sm:translate-x-0 ml-2 px-2 py-1 text-sm w-[200px] sm:w-[250px]
+                              text-containerHead bg-container rounded-lg opacity-0 group-hover:opacity-100 
+                              transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
+                            >
+                              Your reward is determined by the multiplier.
+                              Multipliers are highly volatile when the pool is
+                              live, and lock when the pool closes.
+                            </div>
+                          </div> */}
                           <div className="font-base-b">
                             {rewardEstimate || "N/A"} DUST
                           </div>
@@ -982,10 +988,14 @@ const Classic: FC<Props> = ({ gameId }) => {
           </div>
         )}
         {toggleConfig.selected === "option2" && (
-          <ActivityFeed gameData={gameData} />
+          <ActivityFeed gameData={gameData} gameStatus={gameStatus} />
         )}
         {toggleConfig.selected === "option3" && (
-          <ManageGame gameData={gameData} loadGameData={loadGameData} />
+          <ManageGame
+            gameData={gameData}
+            gameStatus={gameStatus}
+            loadGameData={loadGameData}
+          />
         )}
       </div>
       {/* modal window - legal jargon */}

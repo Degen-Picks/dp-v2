@@ -1,11 +1,13 @@
 import { useState, FC, useEffect } from "react";
 import Image from "next/image";
-import { ActivityItem } from "@/components";
+import { ActivityItem, ClassicHero } from "@/components";
 import { Activity, GameInfo } from "@/types";
 import { generalConfig, smallClickAnimation } from "@/configs";
 import { motion } from "framer-motion";
+import { GameStatus } from "./ClassicView";
 interface Props {
   gameData: GameInfo;
+  gameStatus: GameStatus;
 }
 
 const dateFromObjectId = (objectId: string) => {
@@ -31,6 +33,13 @@ const getTeamImage = (placedBet: any, gameData: GameInfo) => {
     : gameData.team2.teamLogo;
 };
 
+const getTeamName = (placedBet: any, gameData: GameInfo) => {
+  console.log(placedBet, gameData);
+  return placedBet.selectionId === gameData.team1.id
+    ? gameData.team1.teamName
+    : gameData.team2.teamName;
+};
+
 const getUserImage = (placedBet: any) => {
   if (placedBet.user && placedBet.user?.twitterData?.profileImage) {
     return placedBet.user.twitterData.profileImage;
@@ -39,7 +48,7 @@ const getUserImage = (placedBet: any) => {
   }
 };
 
-const ActivityFeed: FC<Props> = ({ gameData }) => {
+const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activityRefresh, setActivityRefresh] = useState(false);
@@ -70,6 +79,7 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
           name: getName(placedBet),
           time: dateFromObjectId(placedBet._id),
           dustBet: placedBet.amounts[0].amount,
+          teamName: getTeamName(placedBet, gameData),
           teamImage: getTeamImage(placedBet, gameData),
           userImage: getUserImage(placedBet),
           twitterName: placedBet.user?.twitterData?.username,
@@ -133,13 +143,8 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
       ) : (
         <>
           {/* logo section */}
-          <div className="w-fit max-w-[620px] mx-auto my-10">
-            <div className="font-base text-center">
-              {gameData.gameInfo.description}
-            </div>
-            <div className="font-base-b text-center text-3xl text-black">
-              {gameData.gameInfo.title}
-            </div>
+          <div className="my-10">
+            <ClassicHero gameData={gameData} gameStatus={gameStatus} />
           </div>
           <div className="flex flex-col items-center gap-4 mb-8">
             {activities.map((item, index) => (

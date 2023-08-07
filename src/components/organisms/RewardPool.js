@@ -174,20 +174,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
                   </div>
                   <div className="relative z-50 text-center">
                     <p className="px-3 text-[#A89FA8]">reward</p>
-                    <div className="group absolute -right-1 top-1/2 -translate-y-1/2">
-                      <QuestionIcon fill="#651FFF" />
-                      <div
-                        className="z-50 absolute left-1/2 -translate-x-1/2 sm:bottom-1/2 sm:left-full sm:translate-x-0 ml-2 px-2 py-1 text-sm w-[200px] sm:w-[250px]
-                        text-containerHead bg-container rounded-lg opacity-0 group-hover:opacity-100 
-                        transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
-                      >
-                        Your reward is determined by the multiplier. Multipliers
-                        are highly volatile when the pool is live, and lock when
-                        the pool closes.
-                      </div>
-                    </div>
                   </div>
-
                   <div className="w-[80px] text-left pl-2">
                     {multiplier.team2}
                   </div>

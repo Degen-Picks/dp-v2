@@ -4,13 +4,16 @@ import { airdropClassic, handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { GameStatus } from "./ClassicView";
+import { ClassicHero } from "@/components";
 
 interface Props {
   gameData: GameInfo;
+  gameStatus: GameStatus;
   loadGameData: () => Promise<GameInfo | undefined | null>;
 }
 
-const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
+const ManageGame: FC<Props> = ({ gameData, gameStatus, loadGameData }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | undefined>(undefined);
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
@@ -142,14 +145,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
 
   return (
     <div className="w-full">
-      <div className="w-fit max-w-[620px] mx-auto my-10">
-        <div className="font-base text-center">
-          {gameData.gameInfo.description}
-        </div>
-        <div className="font-base-b text-center text-3xl text-black">
-          {gameData.gameInfo.title}
-        </div>
-      </div>
+      <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       <div className="w-full flex flex-col items-center justify-center gap-5">
         <div className="w-full relative">
           <button

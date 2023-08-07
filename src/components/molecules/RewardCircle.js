@@ -6,7 +6,7 @@ import { createTheme } from "@mui/material/styles";
 const theme1 = createTheme({
   palette: {
     primary: {
-      main: "#000000",
+      main: "#651FFF",
     },
   },
 });
@@ -59,7 +59,7 @@ const CircularProgressWithLabel = (props) => {
             thickness={2.5}
           />
         </Box>
-        <p className="text-lg flex items-center justify-center text-center">
+        <p className="text-lg flex items-center justify-center text-center text-link">
           {`${Math.round(props.value)}%`}
         </p>
       </Box>

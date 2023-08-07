@@ -6,6 +6,7 @@ export interface Activity {
   time: Date;
   dustBet: number;
   teamImage: string;
+  teamName: string;
   userImage: string;
   twitterName?: string;
 }
