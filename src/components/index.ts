@@ -3,7 +3,9 @@ import dynamic from "next/dynamic";
 // icons
 const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
+const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
+const TwitterFooter = dynamic(() => import("./@icons/TwitterFooter"));
 const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 
 // atoms
@@ -30,6 +32,7 @@ const CreationTextField = dynamic(
 const Friends = dynamic(() => import("./molecules/Friends"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
+const MobileMenu = dynamic(() => import("./molecules/MobileMenu"));
 const Navbar = dynamic(() => import("./molecules/Navbar"));
 const RewardCircle = dynamic(() => import("./molecules/RewardCircle"));
 const Roadmap = dynamic(() => import("./molecules/Roadmap"));
@@ -53,7 +56,9 @@ export {
   // icons
   Close,
   Discord,
+  DiscordFooter,
   QuestionIcon,
+  TwitterFooter,
   VerifiedBadge,
 
   // atoms
@@ -78,6 +83,7 @@ export {
   Friends,
   GameMetadata,
   GameOptions,
+  MobileMenu,
   Navbar,
   RewardCircle,
   Roadmap,

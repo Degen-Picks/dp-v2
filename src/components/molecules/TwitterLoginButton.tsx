@@ -163,8 +163,6 @@ const TwitterLoginButton: FC = () => {
     }
   }, [publicKey]);
 
-  // test commit
-
   return (
     <>
       {publicKey && (
@@ -178,40 +176,18 @@ const TwitterLoginButton: FC = () => {
           rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 group`}
         >
           {!isTwitterLinked || !userData ? (
-            <>
-              <div className="hidden sm:flex items-center justify-center gap-2 px-2">
-                <Image
-                  src="/images/icons/x.png"
-                  width={30}
-                  height={30}
-                  alt="twitter icon"
-                />
-                <p className="text-lg">Link</p>
-              </div>
-
-              <div className="sm:hidden h-full flex items-center">
-                <Image
-                  src="/images/icons/user.svg"
-                  width={20}
-                  height={20}
-                  alt="user icon"
-                />
-              </div>
-            </>
+            <div className="flex items-center justify-center gap-2 px-2">
+              <Image
+                src="/images/icons/x.png"
+                width={30}
+                height={30}
+                alt="twitter icon"
+              />
+              <p className="text-lg">Link</p>
+            </div>
           ) : (
             <div>
-              <div className="sm:hidden flex items-center justify-center">
-                <div className="border border-light flex items-center justify-center rounded-full w-[50px] h-[50px] overflow-hidden">
-                  <FallbackImage
-                    src={userData?.twitterData!.profileImage}
-                    fallbackSrc={"/images/icons/user-alt.svg"}
-                    width={50}
-                    height={50}
-                    alt="Twitter Profile Image"
-                  />
-                </div>
-              </div>
-              <div className="hidden sm:flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
+              <div className="flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
                 <div className="border border-light flex items-center justify-center rounded-full w-[35px] h-[35px] overflow-hidden">
                   <FallbackImage
                     src={userData?.twitterData!.profileImage}
@@ -221,7 +197,7 @@ const TwitterLoginButton: FC = () => {
                     alt="Twitter Profile Image"
                   />
                 </div>
-                <p className="font-base-b">{userData?.twitterData!.username}</p>
+                <p className="text-lg">{userData?.twitterData!.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">
                 <p className="text-[#E1233D]">Unlink Twitter/X</p>

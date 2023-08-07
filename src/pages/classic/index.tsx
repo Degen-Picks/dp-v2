@@ -244,16 +244,18 @@ const GameQueue = () => {
             </div>
           )}
           {/* live games always go first, sorted by date */}
-          <div
-            className={`w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-14`}
-          >
-            {activeLiveGames}
-            {activeClosedUpcomingGames}
-          </div>
-          {/* past games always go last, sorted by date */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-20">
-            {pastGames}
-          </div>
+          {activeFilter === true ? (
+            <div
+              className={`w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-14`}
+            >
+              {activeLiveGames}
+              {activeClosedUpcomingGames}
+            </div>
+          ) : (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-20">
+              {pastGames}
+            </div>
+          )}
         </div>
       )}
 

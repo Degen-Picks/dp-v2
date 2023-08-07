@@ -9,7 +9,7 @@ interface Props {
 
 const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
   return (
-    <div className="relative w-[200px] h-[30px] flex items-center z-50">
+    <div className="relative w-[200px] h-[30px] flex items-center z-40">
       <motion.button
         className={`w-1/2 h-full flex items-center justify-center ${
           activeFilter ? "bg-primary text-white" : "bg-transparent text-primary"
