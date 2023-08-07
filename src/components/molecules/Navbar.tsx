@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="flex justify-between py-4 max-w-[1600px] mx-auto px-4 sm:px-10">
         <Link href="/">
           <Image
-            src="/images/logos/basketball.png"
+            src="/images/logo_new.png"
             width={80}
             height={80}
             alt="degen picks logo"
