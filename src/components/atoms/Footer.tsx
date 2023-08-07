@@ -29,7 +29,14 @@ const Footer: FC = () => {
             Follow us
           </p>
           <div className="flex gap-2">
-            <Twitter className="fill-black h-6" />
+            <a
+              href="https://twitter.com/degenpicksXYZ"
+              target="_blank"
+              rel="noreferrer"
+              className="py-2 pr-2 md:p-2 hover:opacity-50"
+            >
+              <Twitter className="fill-black h-6" />
+            </a>
             <Discord className="fill-black h-6" />
           </div>
         </div>

@@ -130,7 +130,7 @@ const TwitterLoginButton: FC = () => {
 
       const tx = await wallet.signMessage(Buffer.from(nonce));
 
-      // TODO: DEPRECATE CONFIRM SIGNATURE, MOVE TO LOGIN 
+      // TODO: DEPRECATE CONFIRM SIGNATURE, MOVE TO LOGIN
       const { verified } = await confirmSignature(
         publicKey.toString(),
         Buffer.from(tx).toString("hex"),
@@ -170,16 +170,16 @@ const TwitterLoginButton: FC = () => {
           onClick={isTwitterLinked ? handleTwitterUnlink : handleTwitterLogin}
           className={`${
             isTwitterLinked
-              ? "bg-white text-black font-base-b sm:hover:border-[#E1233D] sm:py-2"
-              : "bg-light sm:bg-[#53A8E7] text-white sm:py-1"
+              ? "sm:hover:border-[#E1233D] sm:py-2"
+              : "sm:py-1 border-black bg-white"
           } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
-          rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 sm:border-transparent group`}
+          rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 group`}
         >
           {!isTwitterLinked || !userData ? (
             <>
               <div className="hidden sm:flex items-center justify-center gap-2 px-2">
-                <Twitter className="fill-white w-4" />
-                <p>Link Twitter</p>
+                <Twitter className="fill-white" width="30px" />
+                <p className="text-lg">Link</p>
               </div>
 
               <div className="sm:hidden h-full flex items-center">
@@ -217,7 +217,7 @@ const TwitterLoginButton: FC = () => {
                 <p className="font-base-b">{userData?.twitterData!.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">
-                <p className="text-[#E1233D]">Unlink Twitter</p>
+                <p className="text-[#E1233D]">Unlink Twitter/X</p>
               </div>
             </div>
           )}
