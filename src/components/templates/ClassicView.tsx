@@ -769,11 +769,11 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
             {!publicKey && !loading && (
-              <div className="w-fit mx-auto text-center sm:mt-12 mb-20 sm:mb-32 md:mt-12 md:mb-0">
+              <div className="w-fit mx-auto text-center sm:mt-5 mb-20 sm:mb-32 md:mt-5 md:mb-0">
                 Connect wallet to play.
               </div>
             )}
-            {publicKey && !loading && <div className="pb-8 pt-2" />}
+            {publicKey && !loading && <div className="pb-8" />}
             {/* second area / betting section */}
             {publicKey && (
               <div className="z-10 h-auto w-full relative overflow-hidden">

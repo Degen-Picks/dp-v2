@@ -20,6 +20,7 @@ const GameFilter = dynamic(() => import("./atoms/GameFilter"));
 const ImageShimmer = dynamic(() => import("./atoms/ImageShimmer"));
 const RoadmapObject = dynamic(() => import("./atoms/RoadmapObject"));
 const Timer = dynamic(() => import("./atoms/Timer"));
+const TwitterShare = dynamic(() => import("./atoms/TwitterShare"));
 
 // molecules
 const ActivityItem = dynamic(() => import("./molecules/ActivityItem"));
@@ -70,6 +71,7 @@ export {
   ImageShimmer,
   RoadmapObject,
   Timer,
+  TwitterShare,
 
   // molecules
   ActivityItem,

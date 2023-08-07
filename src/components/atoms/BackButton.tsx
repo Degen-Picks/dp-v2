@@ -1,3 +1,5 @@
+import { smallClickAnimation } from "@/configs";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
@@ -5,7 +7,8 @@ const BackButton: FC = () => {
   const router = useRouter();
 
   return (
-    <div
+    <motion.button
+      {...smallClickAnimation}
       className="flex items-center gap-2 cursor-pointer h-[50px] w-[100px]"
       onClick={() => router.push("/classic")}
     >
@@ -22,7 +25,7 @@ const BackButton: FC = () => {
         />
       </svg>
       <p className="text-link text-lg">All games</p>
-    </div>
+    </motion.button>
   );
 };
 

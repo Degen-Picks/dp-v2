@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RewardCircle, QuestionIcon } from "@/components";
+import { RewardCircle, TwitterShare } from "@/components";
 
 const renderPlace = (thisPlace) => {
   switch (thisPlace) {
@@ -102,7 +102,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
   return (
     <div>
       {/* reward pool outer container */}
-      <div className="bg-white w-5/6 md:w-[620px] mx-auto mt-10">
+      <div className="relative bg-white w-5/6 md:w-[620px] mx-auto mt-10">
         {/* title on top */}
         {/* <div className="relative h-[50px] flex items-center justify-center text-center text-containerHead bg-container">
           <p className="font-base-b text-sm sm:text-base">
@@ -119,6 +119,9 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
             </div>
           )}
         </div> */}
+        <div className="absolute right-0 -top-12">
+          <TwitterShare />
+        </div>
         {gameType === "degen" ? (
           <>
             <div className="flex flex-row justify-evenly items-center pb-5 pt-8">
