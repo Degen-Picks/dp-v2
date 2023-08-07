@@ -91,7 +91,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
 
       if (activities !== data) {
         // this means that the data has changes
-        setActivities((prevActivities) => [...prevActivities, ...data]);
+        setActivities([...data]);
       }
     } catch (error) {
       console.log(error);
