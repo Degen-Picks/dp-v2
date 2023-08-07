@@ -8,6 +8,7 @@ const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
 const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 
 // atoms
+const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
@@ -55,6 +56,7 @@ export {
   VerifiedBadge,
 
   // atoms
+  AlertBanner,
   BackButton,
   ConnectButton,
   DataPoint,
