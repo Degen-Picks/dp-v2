@@ -728,7 +728,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
         {toggleConfig.selected === "option1" && (
           <div
-            className={`px-4 pt-10 flex flex-col justify-between ${
+            className={`px-4 pt-16 flex flex-col justify-between ${
               showModal && "overflow-hidden"
             }`}
           >

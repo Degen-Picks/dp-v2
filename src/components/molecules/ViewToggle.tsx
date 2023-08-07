@@ -118,7 +118,6 @@ const ViewToggle: FC<Props> = ({
 }) => {
   const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
   const [isAdmin, setIsAdmin] = useState(false);
-  const { publicKey } = useWallet();
 
   const handleClick = (tab: "option1" | "option2" | "option3") => {
     if (tab === "option3" && isAdmin === false) return;
@@ -141,7 +140,7 @@ const ViewToggle: FC<Props> = ({
   return (
     <>
       {/* desktop toggle */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 hidden lg:block">
+      <div className="absolute top-24 sm:top-8 left-1/2 -translate-x-1/2">
         <div className={`h-[30px] flex items-center gap-6`}>
           <div
             className={`${
@@ -210,7 +209,7 @@ const ViewToggle: FC<Props> = ({
       </div>
 
       {/* mobile toggle (tabs) */}
-      <div className="w-full lg:hidden mt-[1px] h-[50px]">
+      {/* <div className="w-full lg:hidden mt-[1px] h-[50px]">
         <div className="w-full h-full bg-white flex items-center justify-between px-[5px]">
           <div
             className={`${
@@ -245,7 +244,7 @@ const ViewToggle: FC<Props> = ({
             </div>
           ) : null}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

@@ -125,7 +125,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   }, []);
 
   return (
-    <div className="activity-feed">
+    <div className="w-full pt-6 px-4 sm:px-0">
       {loading ? (
         <div className="w-fit mx-auto mt-20">
           <div className="rotate">

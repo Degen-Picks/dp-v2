@@ -16,7 +16,8 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
       {/* TODO: add creator here */}
       <div className="flex items-center gap-1">
         <VerifiedBadge />
-        <p className="uppercase text-lg">degen picks team</p>
+        <p className="hidden sm:block uppercase text-lg">degen picks team</p>
+        <p className="sm:hidden uppercase text-lg">dp team</p>
       </div>
       {gameStatus !== GameStatus.PREGAME && (
         <div className="flex items-center gap-4">
@@ -27,16 +28,18 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
           />
         </div>
       )}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         {Divider}
         {/* TODO: add other currencies */}
-        <Image
-          src="/images/icons/dust_square2.png"
-          width={30}
-          height={30}
-          alt="currency"
-        />
-        <p className="text-lg">DUST</p>
+        <div className="flex items-center gap-2">
+          <Image
+            src="/images/icons/dust_square2.png"
+            width={30}
+            height={30}
+            alt="currency"
+          />
+          <p className="hidden sm:blocl text-lg">DUST</p>
+        </div>
       </div>
     </div>
   );
