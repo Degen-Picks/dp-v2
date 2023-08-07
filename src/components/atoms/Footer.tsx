@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Twitter, Discord } from "@/components";
+import { Discord } from "@/components";
+import Image from "next/image";
 
 const Footer: FC = () => {
   return (
@@ -35,7 +36,12 @@ const Footer: FC = () => {
               rel="noreferrer"
               className="py-2 pr-2 md:p-2 hover:opacity-50"
             >
-              <Twitter className="fill-black h-6" />
+              <Image
+                src="/images/icons/x.png"
+                width={24}
+                height={24}
+                alt="twitter"
+              />
             </a>
             <Discord className="fill-black h-6" />
           </div>
