@@ -3,7 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect, FC } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { FallbackImage, Twitter } from "@/components";
+import { FallbackImage } from "@/components";
 import { WagerUser } from "@/types";
 
 const TwitterLoginButton: FC = () => {
@@ -178,7 +178,12 @@ const TwitterLoginButton: FC = () => {
           {!isTwitterLinked || !userData ? (
             <>
               <div className="hidden sm:flex items-center justify-center gap-2 px-2">
-                <Twitter className="fill-white" width="30px" />
+                <Image
+                  src="/images/icons/x.png"
+                  width={30}
+                  height={30}
+                  alt="twitter icon"
+                />
                 <p className="text-lg">Link</p>
               </div>
 

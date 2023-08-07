@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 // icons
 const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
-const Twitter = dynamic(() => import("./@icons/Twitter"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
 const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 
@@ -54,7 +53,6 @@ export {
   // icons
   Close,
   Discord,
-  Twitter,
   QuestionIcon,
   VerifiedBadge,
 
