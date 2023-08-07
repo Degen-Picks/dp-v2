@@ -1,22 +1,9 @@
 import { generalConfig } from "@/configs";
-import { LeaguesArray, League, TeamOption, ClassicGameOptions, ClassicGameCreateResponse, ClassicGameBody } from "@/types";
-import { getAssets } from "@/utils";
-
-function getMetadata() {
-    const metadata = [
-      {
-        is_hidden: false,
-      },
-    ];
-  
-    return metadata;
-}
+import { ClassicGameOptions, ClassicGameCreateResponse, ClassicGameBody } from "@/types";
   
 export default async function createClassic(
     options: ClassicGameOptions
   ): Promise<ClassicGameCreateResponse> {
-    const metadata = getMetadata();
-  
     const startDate = new Date().getTime() + 1000 * 60;
     const endDate = new Date(options.gameTime).getTime();
   
@@ -33,7 +20,7 @@ export default async function createClassic(
       endDate: endDate,
       gameDate: endDate,
       token: options.token,
-      metadata: metadata,
+      metadata: [],
     };
   
     const headers = new Headers();
