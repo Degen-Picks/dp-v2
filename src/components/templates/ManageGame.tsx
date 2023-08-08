@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
-import { airdropClassic, handleConfirmAction, refundClassic } from "@/utils";
+import { handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { GameStatus } from "./ClassicView";
+import { airdropClassic } from "@/utils/api/classic/airdrop";
 
 interface Props {
   gameData: GameInfo;
