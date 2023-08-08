@@ -19,8 +19,7 @@ export default async function createClassic(
       startDate: startDate,
       endDate: endDate,
       gameDate: endDate,
-      token: options.token,
-      metadata: [],
+      token: options.token
     };
   
     const headers = new Headers();

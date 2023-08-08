@@ -24,7 +24,6 @@ export type ClassicGameBody = {
   endDate: number;
   gameDate: number;
   token: string;
-  metadata: any[];
 };
 
 export type ClassicGameCreateResponse = {
