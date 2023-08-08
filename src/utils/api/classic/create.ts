@@ -4,7 +4,6 @@ import { ClassicGameOptions, ClassicGameCreateResponse, ClassicGameBody } from "
 export default async function createClassic(
     options: ClassicGameOptions
   ): Promise<ClassicGameCreateResponse> {
-    const startDate = new Date().getTime() + 1000 * 60;
     const endDate = new Date(options.gameTime).getTime();
   
     const createBody: ClassicGameBody = {
@@ -16,8 +15,6 @@ export default async function createClassic(
       selection1Record: options.team1Record || " ",
       selection2: options.team2Name,
       selection2Record: options.team2Record || " ",
-      startDate: startDate,
-      endDate: endDate,
       gameDate: endDate,
       token: options.token
     };

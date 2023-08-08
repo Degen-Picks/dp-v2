@@ -20,8 +20,6 @@ export type ClassicGameBody = {
   selection1Record: string;
   selection2: string;
   selection2Record: string;
-  startDate: number;
-  endDate: number;
   gameDate: number;
   token: string;
 };

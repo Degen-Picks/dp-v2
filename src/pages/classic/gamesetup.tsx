@@ -119,10 +119,6 @@ const GameSetup = () => {
       const confirm = await handleConfirmAction(wallet, "Are you sure you want to create this game?");
       if(!confirm) throw new Error("User cancelled");
 
-      if(wagerUser!.twitterData === null) {
-        throw new Error("You must link your Twitter account to create a game.");
-      }
-
       const { body } = await createClassic(gameDetails);
       const gameId = body.data._id;
 
