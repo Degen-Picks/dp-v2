@@ -4,6 +4,8 @@ import {
   Navbar,
   CreationDropMenu,
   CreationTextField,
+  Divider,
+  RulesModal,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../../utils/dateUtil";
@@ -54,6 +56,8 @@ const GameSetup = () => {
   const [assets, setAssets] = useState<LeaguesArray>([]);
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
+  const [agree, setAgree] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
 
@@ -157,153 +161,183 @@ const GameSetup = () => {
   }, [gameDetails.league, gameDetails.team1Name, gameDetails.team2Name]);
 
   return (
-    <div className="w-full min-h-screen">
-      <Navbar />
+    <>
+      <div className="w-full min-h-screen">
+        <Navbar />
 
-      {!wagerUser || !wagerUser?.roles.includes("CREATOR") ? (
-        <div className="w-full h-screen flex justify-center items-center">
-          <div className="text-3xl font-bold">
-            You are not authorized to view this page.
+        {!wagerUser || !wagerUser?.roles.includes("CREATOR") ? (
+          <div className="w-full h-full flex justify-center items-center mt-20">
+            <div className="text-2xl font-bold">
+              You are not authorized to view this page.
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="relative sm:w-[400px] mx-auto pb-20">
-          <div className="absolute -left-32 -top-14">
-            <BackButton text="All games" route="/classic" />
-          </div>
-          <div className="my-12">
-            <div className="w-fit mx-auto lg:mb-0">
-              <div className="font-base-b text-center text-3xl text-black">
-                Game Setup
+        ) : (
+          <div className="relative sm:w-[400px] mx-auto pb-20">
+            <div className="absolute -left-32 -top-14">
+              <BackButton text="All games" route="/classic" />
+            </div>
+            <div className="my-12">
+              <div className="w-fit mx-auto lg:mb-0">
+                <div className="font-base-b text-center text-3xl text-black">
+                  Game Setup
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-5">
-            <CreationDropMenu
-              list={leagues.map((league) => league.league)}
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="league"
-              title="League"
-            />
-            <div className="w-full flex items-center gap-5">
-              {gameDetails.league === "custom" ? (
+            <div className="flex flex-col gap-5">
+              <CreationDropMenu
+                list={leagues.map((league) => league.league)}
+                gameDetails={gameDetails}
+                setGameDetails={setGameDetails}
+                accessor="league"
+                title="League"
+              />
+              <div className="w-full flex items-center gap-5">
+                {gameDetails.league === "custom" ? (
+                  <CreationTextField
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team1Name"
+                    placeholder="ex: Buffalo Bills"
+                    fullWidth={true}
+                    textLeft={true}
+                    title="Team 1 / Record (optional)"
+                  />
+                ) : (
+                  <CreationDropMenu
+                    list={getLeagueTeams(leagues, gameDetails.league)}
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team1Name"
+                    title="Team 1 / Record (optional)"
+                    disabled={gameDetails.league === ""}
+                    // icon={true}
+                  />
+                )}
                 <CreationTextField
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
-                  accessor="team1Name"
-                  placeholder="ex: Buffalo Bills"
-                  fullWidth={true}
-                  textLeft={true}
-                  title="Team 1 / Record (optional)"
+                  accessor="team1Record"
+                  placeholder="0-0"
+                  fullWidth={false}
                 />
-              ) : (
-                <CreationDropMenu
-                  list={getLeagueTeams(leagues, gameDetails.league)}
-                  gameDetails={gameDetails}
-                  setGameDetails={setGameDetails}
-                  accessor="team1Name"
-                  title="Team 1 / Record (optional)"
-                  disabled={gameDetails.league === ""}
-                  // icon={true}
-                />
-              )}
-              <CreationTextField
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="team1Record"
-                placeholder="0-0"
-                fullWidth={false}
-              />
-            </div>
-            <div className="w-full flex items-center gap-5">
-              {gameDetails.league === "custom" ? (
+              </div>
+              <div className="w-full flex items-center gap-5">
+                {gameDetails.league === "custom" ? (
+                  <CreationTextField
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team2Name"
+                    placeholder="ex: New York Jets"
+                    fullWidth={true}
+                    textLeft={true}
+                    title="Team 2 / Record (optional)"
+                  />
+                ) : (
+                  <CreationDropMenu
+                    list={getLeagueTeams(leagues, gameDetails.league)}
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team2Name"
+                    title="Team 2 / Record (optional)"
+                    disabled={gameDetails.league === ""}
+                    // icon={true}
+                  />
+                )}
                 <CreationTextField
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
-                  accessor="team2Name"
-                  placeholder="ex: New York Jets"
-                  fullWidth={true}
-                  textLeft={true}
-                  title="Team 2 / Record (optional)"
+                  accessor="team2Record"
+                  placeholder="0-0"
+                  fullWidth={false}
                 />
-              ) : (
-                <CreationDropMenu
-                  list={getLeagueTeams(leagues, gameDetails.league)}
-                  gameDetails={gameDetails}
-                  setGameDetails={setGameDetails}
-                  accessor="team2Name"
-                  title="Team 2 / Record (optional)"
-                  disabled={gameDetails.league === ""}
-                  // icon={true}
-                />
-              )}
+              </div>
               <CreationTextField
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}
-                accessor="team2Record"
-                placeholder="0-0"
-                fullWidth={false}
+                accessor="description"
+                placeholder="-"
+                fullWidth={true}
+                textLeft={true}
+                title="Headline"
+                disabled={headlineDisabled}
+              />
+              <CreationTextField
+                gameDetails={gameDetails}
+                setGameDetails={setGameDetails}
+                accessor="title"
+                placeholder="ex: Monday Night Football (Week 1)"
+                fullWidth={true}
+                textLeft={true}
+                title="Title"
+              />
+              <CreationTextField
+                gameDetails={gameDetails}
+                setGameDetails={setGameDetails}
+                accessor="gameTime"
+                placeholder="mm/dd/yy --:-- PM"
+                fullWidth={true}
+                textLeft={true}
+                title={`Game time (${getTimezoneStr(new Date())})`}
+                type="datetime-local"
+              />
+              <CreationDropMenu
+                list={getCollections(collections)}
+                gameDetails={gameDetails}
+                setGameDetails={setGameDetails}
+                accessor="collection"
+                title="Collection"
+              />
+              <CreationDropMenu
+                list={["DUST"]}
+                gameDetails={gameDetails}
+                setGameDetails={setGameDetails}
+                accessor="token"
+                title="Token"
+                icon={true}
               />
             </div>
-            <CreationTextField
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="description"
-              placeholder="-"
-              fullWidth={true}
-              textLeft={true}
-              title="Headline"
-              disabled={headlineDisabled}
-            />
-            <CreationTextField
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="title"
-              placeholder="ex: Monday Night Football (Week 1)"
-              fullWidth={true}
-              textLeft={true}
-              title="Title"
-            />
-            <CreationTextField
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="gameTime"
-              placeholder="mm/dd/yy --:-- PM"
-              fullWidth={true}
-              textLeft={true}
-              title={`Game time (${getTimezoneStr(new Date())})`}
-              type="datetime-local"
-            />
-            <CreationDropMenu
-              list={getCollections(collections)}
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="collection"
-              title="Collection"
-            />
-            <CreationDropMenu
-              list={["DUST"]}
-              gameDetails={gameDetails}
-              setGameDetails={setGameDetails}
-              accessor="token"
-              title="Token"
-              icon={true}
-            />
+            <div className="py-2 w-full flex flex-col">
+              <Divider />
+              <div
+                className="my-2 w-fit mr-auto text-left text-sm sm:text-base cursor-pointer"
+                onClick={() => setAgree(!agree)}
+              >
+                <input
+                  type="checkbox"
+                  checked={!!agree}
+                  onChange={() => setAgree(!agree)}
+                  className="mr-2 accent-link hover:accent-linkHover"
+                />
+                You agree to{" "}
+                <span
+                  className="text-link hover:text-linkHover underline font-bold hover:cursor-pointer transition-all duration-150"
+                  onClick={() => setShowModal(true)}
+                >
+                  the rules
+                </span>
+                .
+              </div>
+              <Divider />
+            </div>
+            <div className="w-full flex justify-between">
+              <button
+                className="h-[50px] w-full bg-black text-white
+              px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
+                onClick={handleCreateGame}
+                disabled={!publicKey || !validGame || loading}
+              >
+                Create game
+              </button>
+            </div>
           </div>
-          <div className="w-full flex justify-between mt-10">
-            <button
-              className="h-[50px] w-full bg-black text-white
-            px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
-              onClick={handleCreateGame}
-              disabled={!publicKey || !validGame || loading}
-            >
-              Create game
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <RulesModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        gameType="classic"
+      />
+    </>
   );
 };
 
