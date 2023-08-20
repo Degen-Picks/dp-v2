@@ -933,7 +933,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
+                            <p className="font-base-b">{`Success! You picked ${winningTeam} with ${dustBet} DUST.`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${txn}${
@@ -948,7 +948,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : finalWinner === winningTeam && winAmount ? (
                           // you picked the winning team
                           <>
-                            <p className="font-base-b">{`🏆 LFG! You won ${winAmount} DUST 🏆`}</p>
+                            <p className="font-base-b">{`LFG! You won ${winAmount} DUST!`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
@@ -971,7 +971,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : winningTeam &&
                           gameData?.gameInfo?.status === "cancelled" ? (
                           <>
-                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                            <p className="font-base-b">{`This game was refunded.`}</p>
                             <a
                               className={`text-base underline text-link hover:text-linkHover`}
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
@@ -991,7 +991,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           )}
                         {winningTeam === undefined &&
                           gameData?.gameInfo?.status === "cancelled" && (
-                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                            <p className="font-base-b">{`This game was refunded.`}</p>
                           )}
                       </div>
                     )}
