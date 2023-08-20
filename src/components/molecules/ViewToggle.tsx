@@ -12,6 +12,8 @@ import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
+import { motion } from "framer-motion";
+import { smallClickAnimation } from "@/configs";
 
 interface IconProps {
   fill: string;
@@ -142,11 +144,11 @@ const ViewToggle: FC<Props> = ({
       {/* desktop toggle */}
       <div className="absolute top-24 sm:top-8 left-1/2 -translate-x-1/2">
         <div className={`h-[30px] flex items-center gap-6`}>
-          <div
+          <motion.button
             className={`${
               toggleConfig.selected === "option1" && "bg-primary text-white"
-            } w-[70px] h-[30px] flex flex-col items-center justify-center 
-            hover:cursor-pointer hover:opacity-80`}
+            } w-[70px] h-[30px] flex flex-col items-center justify-center`}
+            {...smallClickAnimation}
             onClick={() => handleClick("option1")}
           >
             {/* {view === "pickem" && (
@@ -165,12 +167,12 @@ const ViewToggle: FC<Props> = ({
             )} */}
 
             {toggleConfig.option1.title}
-          </div>
-          <div
+          </motion.button>
+          <motion.button
             className={`${
               toggleConfig.selected === "option2" && "bg-primary text-white"
-            } w-[70px] h-[30px] flex flex-col items-center justify-center 
-            hover:cursor-pointer hover:opacity-80`}
+            } w-[70px] h-[30px] flex flex-col items-center justify-center`}
+            {...smallClickAnimation}
             onClick={() => handleClick("option2")}
           >
             {/* {view === "pickem" && (
@@ -188,13 +190,13 @@ const ViewToggle: FC<Props> = ({
               />
             )} */}
             {toggleConfig.option2.title}
-          </div>
+          </motion.button>
           {toggleConfig.option3 && isAdmin === true ? (
-            <div
+            <motion.button
               className={`${
                 toggleConfig.selected === "option3" && "bg-primary text-white"
-              } w-[70px] h-[30px] flex flex-col items-center justify-center 
-            hover:cursor-pointer hover:opacity-80`}
+              } w-[70px] h-[30px] flex flex-col items-center justify-center`}
+              {...smallClickAnimation}
               onClick={() => handleClick("option3")}
             >
               <ManageIcon
@@ -203,7 +205,7 @@ const ViewToggle: FC<Props> = ({
                 }`}
               />
               {toggleConfig.option3.title}
-            </div>
+            </motion.button>
           ) : null}
         </div>
       </div>
