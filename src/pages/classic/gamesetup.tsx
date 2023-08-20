@@ -50,7 +50,7 @@ const GameSetup = () => {
 
   const [validGame, setValidGame] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [headlineDisabled, setHeadlineDisabled] = useState(true);
   const [assets, setAssets] = useState<LeaguesArray>([]);
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
@@ -141,6 +141,20 @@ const GameSetup = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (gameDetails.league === "custom") {
+      setHeadlineDisabled(false);
+    } else {
+      setHeadlineDisabled(true);
+      if (!!gameDetails.team1Name && !!gameDetails.team2Name) {
+        setGameDetails({
+          ...gameDetails,
+          description: `${gameDetails.team1Name} vs. ${gameDetails.team2Name}`,
+        });
+      }
+    }
+  }, [gameDetails.league, gameDetails.team1Name, gameDetails.team2Name]);
 
   return (
     <div className="w-full min-h-screen">
@@ -235,20 +249,21 @@ const GameSetup = () => {
             <CreationTextField
               gameDetails={gameDetails}
               setGameDetails={setGameDetails}
-              accessor="title"
-              placeholder="ex: Buffalo Bills @ New York Jets"
+              accessor="description"
+              placeholder="-"
               fullWidth={true}
               textLeft={true}
-              title="Title"
+              title="Headline"
+              disabled={headlineDisabled}
             />
             <CreationTextField
               gameDetails={gameDetails}
               setGameDetails={setGameDetails}
-              accessor="description"
+              accessor="title"
               placeholder="ex: Monday Night Football (Week 1)"
               fullWidth={true}
               textLeft={true}
-              title="Description (optional)"
+              title="Title"
             />
             <CreationTextField
               gameDetails={gameDetails}

@@ -10,6 +10,7 @@ interface Props {
   fullWidth?: boolean;
   textLeft?: boolean;
   type?: string;
+  disabled?: boolean;
 }
 
 const CreationTextField: FC<Props> = ({
@@ -21,6 +22,7 @@ const CreationTextField: FC<Props> = ({
   fullWidth = true,
   textLeft = false,
   type = "text",
+  disabled = false,
 }) => {
   return (
     <div className={`relative h-full ${fullWidth ? "w-full" : "w-[80px]"}`}>
@@ -36,8 +38,9 @@ const CreationTextField: FC<Props> = ({
         <input
           className={`w-full h-full bg-white text-primary hover:bg-gray-50 
           flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-link font-base-b
+          focus:border-link font-base-b disabled:cursor-not-allowed
           ${textLeft ? "text-left px-4" : "text-center"}`}
+          disabled={disabled}
           type={type}
           onChange={(e) => {
             const newGameDetails: ClassicGameOptions = { ...gameDetails };
