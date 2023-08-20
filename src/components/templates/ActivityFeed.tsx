@@ -126,7 +126,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   }, []);
 
   return (
-    <div className="w-full pt-6 px-4 sm:px-0">
+    <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
       {loading ? (
         <div className="w-fit mx-auto mt-20">
           <div className="rotate">
@@ -147,11 +147,13 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
           <div className="my-10">
             <ClassicHero gameData={gameData} gameStatus={gameStatus} />
           </div>
+          {/* activity feed */}
           <div className="flex flex-col items-center gap-4 mb-8">
             {activities.map((item, index) => (
               <ActivityItem item={item} key={index} />
             ))}
           </div>
+          {/* TODO: how to check if there are more activities? */}
           <motion.button
             {...smallClickAnimation}
             className="text-link"
