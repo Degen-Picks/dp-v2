@@ -68,10 +68,10 @@ const ActivityItem: FC<Props> = ({ item }) => {
           <p className="text-sm text-secondary">{timeAgo(item.time)}</p>
         </div>
       </div>
-      <div className="flex flex-col items-end gap-1 text-sm">
+      <div className="flex flex-col items-end gap-1">
         <p>{item.teamName}</p>
         {/* round to whole numbers */}
-        <p>{Math.ceil(item.dustBet * 100) / 100} DUST</p>
+        <p className="text-sm">{Math.ceil(item.dustBet * 100) / 100} DUST</p>
       </div>
     </div>
   );
