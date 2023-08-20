@@ -170,10 +170,10 @@ const TwitterLoginButton: FC = () => {
           onClick={isTwitterLinked ? handleTwitterUnlink : handleTwitterLogin}
           className={`${
             isTwitterLinked
-              ? "sm:hover:border-[#E1233D] sm:py-2"
-              : "sm:py-1 border-black bg-white"
+              ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
+              : "sm:py-1 sm:border border-black bg-white"
           } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
-          rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 group`}
+          rounded-full sm:rounded-none items-center sm:gap-2 group`}
         >
           {!isTwitterLinked || !userData ? (
             <div className="flex items-center justify-center gap-2 px-2">
