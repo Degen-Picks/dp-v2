@@ -31,8 +31,8 @@ const Navbar = () => {
           <Link href="/">
             <Image
               src="/images/logo_new.png"
-              width={isMobile ? 50 : 80}
-              height={isMobile ? 50 : 80}
+              width={50}
+              height={50}
               alt="degen picks logo"
               priority
             />
