@@ -196,14 +196,14 @@ const GameQueue = () => {
       </div> */}
       {loading ? (
         <div className="w-fit mx-auto mt-20">
-          <div className="rotate">
+          {/* <div className="rotate">
             <Image
               src="/images/pickem/nipple.png"
               width={100}
               height={100}
               alt="nipple spinner"
             />
-          </div>
+          </div> */}
           <p className="text-xl font-base text-center w-fit mx-auto py-10">
             Loading ...
           </p>
