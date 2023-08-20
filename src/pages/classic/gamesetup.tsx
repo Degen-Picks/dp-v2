@@ -153,10 +153,12 @@ const GameSetup = () => {
           </div>
         </div>
       ) : (
-        <div className="sm:w-[400px] mx-auto pb-20">
-          <div className="my-8">
+        <div className="relative sm:w-[400px] mx-auto pb-20">
+          <div className="absolute -left-32 -top-14">
+            <BackButton text="All games" route="/classic" />
+          </div>
+          <div className="my-12">
             <div className="w-fit mx-auto lg:mb-0">
-              <div className=" font-base text-center">Picks Classic</div>
               <div className="font-base-b text-center text-3xl text-black">
                 Game Setup
               </div>
@@ -275,7 +277,6 @@ const GameSetup = () => {
             />
           </div>
           <div className="w-full flex justify-between mt-10">
-            <BackButton />
             <button
               className="h-[50px] w-full bg-black text-white
             px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"

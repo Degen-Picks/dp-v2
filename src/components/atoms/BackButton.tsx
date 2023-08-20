@@ -3,14 +3,19 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
-const BackButton: FC = () => {
+interface Props {
+  text: string;
+  route: string;
+}
+
+const BackButton: FC<Props> = ({ text, route }) => {
   const router = useRouter();
 
   return (
     <motion.button
       {...smallClickAnimation}
       className="flex items-center gap-2 cursor-pointer h-[50px] w-[100px]"
-      onClick={() => router.push("/classic")}
+      onClick={() => router.push(route)}
     >
       <svg
         width="15"
@@ -24,7 +29,7 @@ const BackButton: FC = () => {
           fill="#7808FF"
         />
       </svg>
-      <p className="text-link text-lg">All games</p>
+      <p className="text-link text-lg">{text}</p>
     </motion.button>
   );
 };

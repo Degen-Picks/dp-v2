@@ -11,7 +11,7 @@ interface Props {
 const ClassicHero: FC<Props> = ({ gameData, gameStatus }) => {
   return (
     <div className="w-full max-w-[620px] mx-auto mb-8">
-      <BackButton />
+      <BackButton text="All games" route="/classic" />
       <div className="w-full max-w-[480px] mx-auto pt-3">
         <div className="font-base text-center text-lg">
           {gameData.gameInfo.description}
