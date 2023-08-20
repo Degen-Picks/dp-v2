@@ -56,6 +56,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
 
   const axios = require("axios");
 
+  // TODO: Move to apiUtil
   const loadActivities = async () => {
     const ITEMS_PER_PAGE = 5;
     try {
@@ -106,7 +107,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
       interval = setInterval(async () => {
         await loadActivities();
 
-        if (gameData.gameInfo.status !== "live") {
+        if (gameStatus === GameStatus.OPEN) {
           clearInterval(interval);
         }
       }, 5000);

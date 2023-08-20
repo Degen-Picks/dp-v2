@@ -18,7 +18,9 @@ const ConnectButton = () => {
   useEffect(() => {
     async function load() {
       const loginUser = await login(wallet);
-      setWagerUser(loginUser);
+      if(loginUser !== null) {
+        setWagerUser(loginUser);
+      }
     }
 
     if (publicKey) {

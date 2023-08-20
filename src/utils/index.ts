@@ -1,5 +1,5 @@
-export * from "./adminApiUtil";
-export * from "./apiUtil";
+export * from "./adminApi/adminApiUtil";
+export * from "./api/apiUtil";
 export * from "./dateUtil";
 export * from "./getDustBalance";
 export * from "./sendDustTransaction";

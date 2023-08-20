@@ -7,8 +7,7 @@ import {
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../../utils/dateUtil";
-import { createClassic } from "../../utils/adminApiUtil";
-import { getAssets } from "../../utils/apiUtil";
+import { getAssets, getLoginStatus } from "../../utils/api/apiUtil";
 import toast from "react-hot-toast";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
 import { useRouter } from "next/router";
@@ -17,6 +16,7 @@ import {
   WagerUserContext,
   WagerUserContextType,
 } from "@/components/stores/WagerUserStore";
+import createClassic from "@/utils/api/classic/create";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.league);
@@ -129,7 +129,7 @@ const GameSetup = () => {
         throw new Error("You must link your Twitter account to create a game.");
       }
 
-      const { body } = await createClassic(gameDetails, assets);
+      const { body } = await createClassic(gameDetails);
       const gameId = body.data._id;
 
       toast.success("Game created successfully!");

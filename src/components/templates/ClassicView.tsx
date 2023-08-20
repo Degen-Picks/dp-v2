@@ -33,10 +33,10 @@ interface Props {
 }
 
 export enum GameStatus {
-  PREGAME = "pregame",
-  OPEN = "open",
+  PREGAME = "upcoming",
+  OPEN = "live",
   CLOSED = "closed",
-  AIRDROPPED = "airdropped",
+  AIRDROPPED = "completed",
   CANCELLED = "cancelled",
 }
 
@@ -239,8 +239,6 @@ const Classic: FC<Props> = ({ gameId }) => {
       );
       const body = await response.json();
 
-      // console.log("typing needed: ", body);
-
       if (body.length === 0) return;
 
       let currentWager = null;
@@ -316,12 +314,28 @@ const Classic: FC<Props> = ({ gameId }) => {
         },
       };
 
-      setGameData(parsed);
+      let newGameStatus: GameStatus = GameStatus.PREGAME;
 
-      if (parsed.gameInfo.status === "cancelled") {
-        setGameStatus(GameStatus.CANCELLED);
-        // setGameCountdown("Picks refunded.");
+      switch (parsed.gameInfo.status) {
+        case "upcoming":
+          newGameStatus = GameStatus.PREGAME;
+          break;
+        case "live":
+          newGameStatus = GameStatus.OPEN;
+          break;
+        case "closed":
+          newGameStatus = GameStatus.CLOSED;
+          break;
+        case "completed":
+          newGameStatus = GameStatus.AIRDROPPED;
+          break;
+        case "cancelled":
+          newGameStatus = GameStatus.CANCELLED;
+          break;
       }
+
+      setGameStatus(newGameStatus);
+      setGameData(parsed);
 
       // Cut end date short to include last second picks
       setUtcGameDate(currentWager.endDate - 5000);
@@ -427,7 +441,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   // timer for countdown to game time (bets closed)
   // set and update a countdown timer every second
   const startGameDateCountdown = () => {
-    const interval = setInterval(() => {
+    const countdownLogic = () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -440,14 +454,17 @@ const Classic: FC<Props> = ({ gameId }) => {
         clearInterval(interval);
         setGameStatus(GameStatus.CLOSED);
       }
-    }, 1000);
+    };
+
+    countdownLogic();
+    const interval = setInterval(countdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
 
   // same countdown logic as before but with picks opening
   const startPickDateCountdown = () => {
-    const interval = setInterval(async () => {
+    const countdownLogic = async () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -483,14 +500,20 @@ const Classic: FC<Props> = ({ gameId }) => {
           startGameDateCountdown();
         }
       }
-    }, 1000);
+    };
+
+    countdownLogic();
+    const interval = setInterval(countdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
 
   useEffect(() => {
-    if (utcPickDate !== undefined && utcGameDate !== undefined) {
-      if (gameStatus === GameStatus.CANCELLED) return;
+    if (!loading && utcPickDate !== undefined && utcGameDate !== undefined) {
+      if (gameStatus === GameStatus.CANCELLED) {
+        // setGameStatus("Picks refunded.");
+        return;
+      }
 
       if (new Date().getTime() > utcGameDate) {
         setGameStatus(GameStatus.CLOSED);
@@ -501,7 +524,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         startPickDateCountdown();
       }
     }
-  }, [utcPickDate, utcGameDate]);
+  }, [loading, utcPickDate, utcGameDate, gameStatus]);
 
   // Refresh game data
   useEffect(() => {
@@ -511,7 +534,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       interval = setInterval(async () => {
         const refreshed = await loadGameData();
-        if (refreshed && refreshed.gameInfo.status !== "live") {
+        if (refreshed && gameStatus !== GameStatus.OPEN) {
           clearInterval(interval);
         }
       }, 7500);
@@ -549,12 +572,12 @@ const Classic: FC<Props> = ({ gameId }) => {
   // show modal whenever a wallet is connected
   useEffect(() => {
     if (publicKey) {
-      if (gameData.gameInfo.status === "live") setShowModal(true);
+      if (gameStatus === GameStatus.OPEN) setShowModal(true);
     } else {
       setShowModal(false);
       setSuccess(false);
     }
-  }, [publicKey, gameData.gameInfo.status]);
+  }, [publicKey, gameStatus]);
 
   useEffect(() => {
     const loadUserPick = async (wagerId: string) => {
@@ -590,7 +613,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             setSuccess(true);
             setAgree(true);
 
-            if (gameData.gameInfo.status === "cancelled") {
+            if (gameStatus === GameStatus.CANCELLED) {
               if (userPick.transferData.signature) {
                 setAirdropTxn(userPick.transferData.signature);
               }
@@ -624,18 +647,13 @@ const Classic: FC<Props> = ({ gameId }) => {
     };
 
     const fetchUserPick = async () => {
-      if (publicKey && gameStatus === GameStatus.PREGAME) {
+      if (!loading && publicKey && gameStatus !== GameStatus.PREGAME) {
         await loadUserPick(gameData.gameInfo.id);
       }
     };
 
     fetchUserPick();
-  }, [publicKey, gameStatus, gameData]);
-
-  // test
-  useEffect(() => {
-    console.log(gameData);
-  }, [gameData]);
+  }, [publicKey, gameStatus, gameData, loading]);
 
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
@@ -669,18 +687,14 @@ const Classic: FC<Props> = ({ gameId }) => {
   // update final winner
   useEffect(() => {
     // check if game is over
-    if (gameData.gameInfo.status === "completed") {
+    if (gameStatus === GameStatus.AIRDROPPED) {
       setFinalWinner(
         gameData.team1.winner
           ? gameData.team1.teamName
           : gameData.team2.teamName
       );
     }
-  }, [gameData]);
-
-  useEffect(() => {
-    console.log(gameStatus);
-  }, [gameStatus]);
+  }, [gameData, gameStatus]);
 
   return (
     <>
@@ -798,7 +812,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
                       valid={gameStatus === GameStatus.OPEN}
-                      gameStatus={gameData.gameInfo.status}
+                      gameStatus={gameStatus}
                       finalWinner={finalWinner}
                     />
 
@@ -993,8 +1007,8 @@ const Classic: FC<Props> = ({ gameId }) => {
         {toggleConfig.selected === "option3" && (
           <ManageGame
             gameData={gameData}
-            gameStatus={gameStatus}
             loadGameData={loadGameData}
+            gameStatus={gameStatus}
           />
         )}
       </div>

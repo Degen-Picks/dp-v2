@@ -1,7 +1,7 @@
 import { generalConfig } from "@/configs";
 import { LeaguesArray, Pickem, Wager, Stats, WagerUser } from "@/types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
-import { handleWalletLogin } from "./walletUtils";
+import { handleWalletLogin } from "../walletUtils";
 
 export async function getWagers() {
   try {
@@ -131,5 +131,28 @@ export async function logout() {
     return body;
   } catch {
     return null;
+  }
+}
+
+export async function fetchNonce(publicKey: string): Promise<string> {
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const requestOptions = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ publicKey }),
+    };
+
+    const response = await fetch(
+      `${generalConfig.apiUrl}/api/generateNonce`,
+      requestOptions
+    );
+
+    const body = await response.json();
+    return body.nonce;
+  } catch {
+    return "";
   }
 }
