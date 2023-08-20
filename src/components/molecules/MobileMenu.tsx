@@ -87,12 +87,15 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
             {publicKey && <TwitterLoginButton />}
             <div className="flex items-center gap-3 text-primary">
               <a
-                href="https://twitter.com/MickeyDeGods"
+                href="https://twitter.com/degenpicksxyz"
                 rel="noreferrer noopener"
               >
                 <TwitterFooter />
               </a>
-              <a href="https://discord.gg/3qJtqzQJ" rel="noreferrer noopener">
+              <a
+                href="https://discord.gg/discord.gg/ZvH7z4ZkZG"
+                rel="noreferrer noopener"
+              >
                 <DiscordFooter />
               </a>
             </div>
