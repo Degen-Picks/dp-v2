@@ -80,7 +80,8 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                   )}
                 </div>
                 <div className="absolute bottom-3 right-0">
-                  {Object.values(ModalView).indexOf(modalView) !== 2 && (
+                  {Object.values(ModalView).indexOf(modalView) !==
+                    Object.values(ModalView).length - 1 && (
                     <ForwardButton
                       text="Next"
                       handleClick={() =>
