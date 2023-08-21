@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { GameStatus } from "../templates/ClassicView";
 import { GameInfo } from "@/types";
-import { Timer, VerifiedBadge } from "@/components";
+import { FallbackImage, Timer, VerifiedBadge } from "@/components";
 import Image from "next/image";
 
 interface Props {
@@ -13,12 +13,26 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
   const Divider = <div className="w-[1px] h-9 bg-[#A89FA8]" />;
   return (
     <div className="w-fit mx-auto flex items-center gap-4 mt-5">
-      {/* TODO: add creator here */}
-      <div className="flex items-center gap-1">
-        <VerifiedBadge />
-        <p className="hidden sm:block uppercase text-lg">degen picks team</p>
-        <p className="sm:hidden uppercase text-lg">dp team</p>
-      </div>
+      {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
+        <div className="flex items-center gap-1">
+          <VerifiedBadge />
+          <p className="uppercase">degen picks team</p>
+        </div>
+      ) : gameData?.gameInfo?.creator?.twitterData ? (
+        <div className="flex items-center gap-2">
+          <FallbackImage
+            src={gameData?.gameInfo?.creator.twitterData.profileImage}
+            fallbackSrc={"/images/icons/user-alt.svg"}
+            width={24}
+            height={24}
+            alt="user image"
+          />
+          <p className="uppercase">
+            {gameData?.gameInfo?.creator?.twitterData?.username}
+          </p>
+        </div>
+      ) : null}
+
       {gameStatus !== GameStatus.PREGAME && (
         <div className="flex items-center gap-4">
           {Divider}

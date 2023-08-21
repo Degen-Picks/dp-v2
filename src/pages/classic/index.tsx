@@ -9,6 +9,7 @@ import {
   Timer,
   VerifiedBadge,
   AlertBanner,
+  FallbackImage,
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
 
@@ -41,12 +42,25 @@ export const PropSection: FC<Props> = ({
             {title}
           </p>
           <div className="flex items-center justify-center gap-2 mt-[10px]">
-            {/* TODO: add creator here */}
-            <div className="flex items-center gap-1">
-              <VerifiedBadge />
-              <p className="uppercase">degen picks team</p>
-            </div>
-            <div className="h-5 w-[1px] bg-secondary" />
+            {creator?.roles?.includes("ADMIN") ? (
+              <div className="flex items-center gap-1">
+                <VerifiedBadge />
+                <p className="uppercase">degen picks team</p>
+                <div className="h-5 w-[1px] bg-secondary" />
+              </div>
+            ) : creator?.twitterData ? (
+              <div className="flex items-center gap-2">
+                <FallbackImage
+                  src={creator.twitterData.profileImage}
+                  fallbackSrc={"/images/icons/user-alt.svg"}
+                  width={24}
+                  height={24}
+                  alt="user image"
+                />
+                <p className="uppercase">{creator?.twitterData?.username}</p>
+                <div className="h-5 w-[1px] bg-secondary" />
+              </div>
+            ) : null}
             <Timer status={status} gameTime={gameTime} />
             {/* TODO: set up for multiple currencies */}
           </div>
