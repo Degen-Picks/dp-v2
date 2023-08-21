@@ -174,7 +174,10 @@ const GameSetup = () => {
         ) : (
           <div className="relative sm:w-[400px] mx-auto pb-20">
             <div className="absolute -left-32 -top-14">
-              <BackButton text="All games" route="/classic" />
+              <BackButton
+                text="All games"
+                handleClick={() => router.push("/classic")}
+              />
             </div>
             <div className="my-12">
               <div className="w-fit mx-auto lg:mb-0">
@@ -332,11 +335,7 @@ const GameSetup = () => {
           </div>
         )}
       </div>
-      <RulesModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        gameType="classic"
-      />
+      <RulesModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };

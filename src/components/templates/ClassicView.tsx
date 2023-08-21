@@ -1013,11 +1013,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         )}
       </div>
       {/* modal window - legal jargon */}
-      <RulesModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        gameType="classic"
-      />
+      <RulesModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };

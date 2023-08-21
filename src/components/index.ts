@@ -7,6 +7,7 @@ const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
 const TwitterFooter = dynamic(() => import("./@icons/TwitterFooter"));
 const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
+const WarningIcon = dynamic(() => import("./@icons/WarningIcon"));
 
 // atoms
 const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
@@ -16,10 +17,12 @@ const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
 const Footer = dynamic(() => import("./atoms/Footer"));
+const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
 const ImageShimmer = dynamic(() => import("./atoms/ImageShimmer"));
 const RoadmapObject = dynamic(() => import("./atoms/RoadmapObject"));
+const StepCircle = dynamic(() => import("./atoms/StepCircle"));
 const Timer = dynamic(() => import("./atoms/Timer"));
 const TwitterShare = dynamic(() => import("./atoms/TwitterShare"));
 
@@ -32,11 +35,15 @@ const CreationTextField = dynamic(
 const Friends = dynamic(() => import("./molecules/Friends"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
+const HowItWorksView = dynamic(() => import("./molecules/HowItWorksView"));
+const LinkTwitterView = dynamic(() => import("./molecules/LinkTwitterView"));
 const MobileMenu = dynamic(() => import("./molecules/MobileMenu"));
 const Navbar = dynamic(() => import("./molecules/Navbar"));
+const PlayResponsiblyView = dynamic(
+  () => import("./molecules/PlayResponsiblyView")
+);
 const RewardCircle = dynamic(() => import("./molecules/RewardCircle"));
 const Roadmap = dynamic(() => import("./molecules/Roadmap"));
-const RulesModal = dynamic(() => import("./molecules/RulesModal"));
 const TwitterLoginButton = dynamic(
   () => import("./molecules/TwitterLoginButton")
 );
@@ -46,6 +53,7 @@ const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
+const RulesModal = dynamic(() => import("./organisms/RulesModal"));
 
 // templates
 const ActivityFeed = dynamic(() => import("./templates/ActivityFeed"));
@@ -60,6 +68,7 @@ export {
   QuestionIcon,
   TwitterFooter,
   VerifiedBadge,
+  WarningIcon,
 
   // atoms
   AlertBanner,
@@ -69,10 +78,12 @@ export {
   Divider,
   FallbackImage,
   Footer,
+  ForwardButton,
   Friend,
   GameFilter,
   ImageShimmer,
   RoadmapObject,
+  StepCircle,
   Timer,
   TwitterShare,
 
@@ -83,11 +94,13 @@ export {
   Friends,
   GameMetadata,
   GameOptions,
+  HowItWorksView,
+  LinkTwitterView,
   MobileMenu,
   Navbar,
+  PlayResponsiblyView,
   RewardCircle,
   Roadmap,
-  RulesModal,
   TwitterLoginButton,
   ViewToggle,
 
@@ -95,6 +108,7 @@ export {
   ClassicHero,
   ClassicVersusBox,
   RewardPool,
+  RulesModal,
 
   // templates
   ActivityFeed,
