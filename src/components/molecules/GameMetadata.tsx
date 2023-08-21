@@ -26,7 +26,9 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
           className="flex items-center gap-2"
           onClick={() =>
             window.open(
-              `https://twitter.com/${gameData?.gameInfo?.creator?.twitterData?.username}`
+              `https://twitter.com/${gameData?.gameInfo?.creator?.twitterData?.username}`,
+              "_blank",
+              "noopener noreferrer"
             )
           }
         >

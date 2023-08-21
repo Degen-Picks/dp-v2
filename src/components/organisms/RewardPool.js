@@ -120,7 +120,9 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
           )}
         </div> */}
         <div className="absolute right-0 -top-12">
-          <TwitterShare />
+          <TwitterShare
+            url={`https://degenpicks.xyz/classic/${gameData.gameInfo.id}`}
+          />
         </div>
         {gameType === "degen" ? (
           <>
