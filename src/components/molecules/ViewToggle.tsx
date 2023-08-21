@@ -199,11 +199,11 @@ const ViewToggle: FC<Props> = ({
               {...smallClickAnimation}
               onClick={() => handleClick("option3")}
             >
-              <ManageIcon
+              {/* <ManageIcon
                 fill={`${
                   toggleConfig.selected === "option3" ? "link" : "secondary"
                 }`}
-              />
+              /> */}
               {toggleConfig.option3.title}
             </motion.button>
           ) : null}
