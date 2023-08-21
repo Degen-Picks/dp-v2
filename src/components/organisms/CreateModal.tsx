@@ -3,6 +3,7 @@ import {
   BackButton,
   Close,
   ForwardButton,
+  LinkTwitterView,
   RunYourPoolView,
   StepCircle,
   TermsView,
@@ -17,6 +18,7 @@ interface ModalProps {
 export enum CreateModalView {
   RunYourPool = "runyourpool",
   Terms = "terms",
+  LinkTwitter = "linktwitter",
 }
 
 const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
@@ -60,6 +62,7 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                 {/* content body */}
                 <RunYourPoolView modalView={modalView} />
                 <TermsView modalView={modalView} />
+                <LinkTwitterView modalView={modalView} />
                 {/* footer */}
                 <div className="absolute bottom-3 left-12">
                   {Object.values(CreateModalView).indexOf(modalView) !== 0 && (
@@ -100,6 +103,10 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                   <StepCircle
                     filled={modalView === CreateModalView.Terms}
                     onClick={() => setModalView(CreateModalView.Terms)}
+                  />
+                  <StepCircle
+                    filled={modalView === CreateModalView.LinkTwitter}
+                    onClick={() => setModalView(CreateModalView.LinkTwitter)}
                   />
                 </div>
               </div>

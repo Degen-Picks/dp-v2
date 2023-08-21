@@ -2,15 +2,16 @@ import { FC } from "react";
 import { TwitterLoginButton } from "@/components";
 import { ModalView } from "../organisms/RulesModal";
 import Image from "next/image";
+import { CreateModalView } from "../organisms/CreateModal";
 
 interface Props {
-  modalView: ModalView;
+  modalView: ModalView | CreateModalView;
 }
 
 const LinkTwitterView: FC<Props> = ({ modalView }) => {
   return (
     <div
-      className={`${modalView === ModalView.LinkTwitter ? "block" : "hidden"}
+      className={`${modalView === "linktwitter" ? "block" : "hidden"}
       w-full pt-4 pb-8 text-center gap-5
       flex flex-col items-center justify-center`}
     >
