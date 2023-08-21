@@ -3,6 +3,8 @@ import { GameStatus } from "../templates/ClassicView";
 import { GameInfo } from "@/types";
 import { FallbackImage, Timer, VerifiedBadge } from "@/components";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { smallClickAnimation } from "@/configs";
 
 interface Props {
   gameStatus: GameStatus;
@@ -19,7 +21,15 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
           <p className="uppercase">degen picks team</p>
         </div>
       ) : gameData?.gameInfo?.creator?.twitterData ? (
-        <div className="flex items-center gap-2">
+        <motion.button
+          {...smallClickAnimation}
+          className="flex items-center gap-2"
+          onClick={() =>
+            window.open(
+              `https://twitter.com/${gameData?.gameInfo?.creator?.twitterData?.username}`
+            )
+          }
+        >
           <FallbackImage
             src={gameData?.gameInfo?.creator.twitterData.profileImage}
             fallbackSrc={"/images/icons/user-alt.svg"}
@@ -27,10 +37,8 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
             height={24}
             alt="user image"
           />
-          <p className="uppercase">
-            {gameData?.gameInfo?.creator?.twitterData?.username}
-          </p>
-        </div>
+          <p>{gameData?.gameInfo?.creator?.twitterData?.username}</p>
+        </motion.button>
       ) : null}
 
       {gameStatus !== GameStatus.PREGAME && (

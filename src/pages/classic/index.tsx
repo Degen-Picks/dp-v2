@@ -57,7 +57,7 @@ export const PropSection: FC<Props> = ({
                   height={24}
                   alt="user image"
                 />
-                <p className="uppercase">{creator?.twitterData?.username}</p>
+                <p>{creator?.twitterData?.username}</p>
                 <div className="h-5 w-[1px] bg-secondary" />
               </div>
             ) : null}
