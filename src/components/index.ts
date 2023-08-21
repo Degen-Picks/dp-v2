@@ -44,6 +44,8 @@ const PlayResponsiblyView = dynamic(
 );
 const RewardCircle = dynamic(() => import("./molecules/RewardCircle"));
 const Roadmap = dynamic(() => import("./molecules/Roadmap"));
+const RunYourPoolView = dynamic(() => import("./molecules/RunYourPoolView"));
+const TermsView = dynamic(() => import("./molecules/TermsView"));
 const TwitterLoginButton = dynamic(
   () => import("./molecules/TwitterLoginButton")
 );
@@ -52,6 +54,7 @@ const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 // organisms
 const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
+const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
 
@@ -101,12 +104,15 @@ export {
   PlayResponsiblyView,
   RewardCircle,
   Roadmap,
+  RunYourPoolView,
+  TermsView,
   TwitterLoginButton,
   ViewToggle,
 
   // organisms
   ClassicHero,
   ClassicVersusBox,
+  CreateModal,
   RewardPool,
   RulesModal,
 

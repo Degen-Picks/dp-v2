@@ -22,7 +22,7 @@ const PlayResponsiblyView: FC<Props> = ({ modalView }) => {
         Degen Picks™ pools are semi-trustless and community run, so make sure to
         DYOR.
       </p>
-      <div className="w-full flex items-center justify-center gap-4">
+      <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4">
         <div className="w-[200px] flex flex-col items-start gap-4 text-lg">
           <div className="flex items-center gap-2">
             <WarningIcon />

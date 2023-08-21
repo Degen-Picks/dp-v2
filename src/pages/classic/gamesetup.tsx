@@ -5,7 +5,7 @@ import {
   CreationDropMenu,
   CreationTextField,
   Divider,
-  RulesModal,
+  CreateModal,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../../utils/dateUtil";
@@ -335,7 +335,7 @@ const GameSetup = () => {
           </div>
         )}
       </div>
-      <RulesModal showModal={showModal} setShowModal={setShowModal} />
+      <CreateModal showModal={showModal} setShowModal={setShowModal} />
     </>
   );
 };

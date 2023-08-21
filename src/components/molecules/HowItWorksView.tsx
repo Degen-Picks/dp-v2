@@ -7,7 +7,7 @@ interface StepProps {
 }
 
 const RuleStep: FC<StepProps> = ({ num, instructions }) => (
-  <div className="bg-light w-[155px] h-[85px] flex flex-col items-center justify-center">
+  <div className="bg-light w-full md:w-[155px] h-[85px] flex flex-col items-center justify-center">
     <p className="text-secondary text-sm">{`Step ${num}`}</p>
     <p className="text-primary text-center px-2 -mt-1">{instructions}</p>
   </div>
@@ -39,7 +39,7 @@ const HowItWorksView: FC<HowItWorksViewProps> = ({ modalView }) => {
         </a>
         .
       </p>
-      <div className="w-full flex items-center justify-center gap-4">
+      <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4">
         <RuleStep num={1} instructions="Pick a side and make a wager" />
         <RuleStep num={2} instructions="Odds lock when the pool closes" />
         <RuleStep num={3} instructions="Payouts airdropped to winners" />

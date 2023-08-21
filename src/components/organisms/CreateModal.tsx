@@ -3,10 +3,9 @@ import {
   BackButton,
   Close,
   ForwardButton,
-  HowItWorksView,
-  LinkTwitterView,
-  PlayResponsiblyView,
+  RunYourPoolView,
   StepCircle,
+  TermsView,
 } from "@/components";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 
@@ -15,19 +14,18 @@ interface ModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export enum ModalView {
-  HowItWorks = "howitworks",
-  PlayResponsibly = "playresponsibly",
-  LinkTwitter = "linktwitter",
+export enum CreateModalView {
+  RunYourPool = "runyourpool",
+  Terms = "terms",
 }
 
 const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
-  const [modalView, setModalView] = useState(ModalView.HowItWorks);
+  const [modalView, setModalView] = useState(CreateModalView.RunYourPool);
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, () => {
     setShowModal(false);
-    setModalView(ModalView.HowItWorks);
+    setModalView(CreateModalView.RunYourPool);
   });
 
   return (
@@ -53,25 +51,25 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                     className="absolute right-6 top-6"
                     onClick={() => {
                       setShowModal(false);
-                      setModalView(ModalView.HowItWorks);
+                      setModalView(CreateModalView.RunYourPool);
                     }}
                   >
                     <Close className="fill-black" />
                   </button>
                 </div>
                 {/* content body */}
-                <HowItWorksView modalView={modalView} />
-                <PlayResponsiblyView modalView={modalView} />
-                <LinkTwitterView modalView={modalView} />
+                <RunYourPoolView modalView={modalView} />
+                <TermsView modalView={modalView} />
                 {/* footer */}
                 <div className="absolute bottom-3 left-12">
-                  {Object.values(ModalView).indexOf(modalView) !== 0 && (
+                  {Object.values(CreateModalView).indexOf(modalView) !== 0 && (
                     <BackButton
                       text="Back"
                       handleClick={() =>
                         setModalView(
-                          Object.values(ModalView)[
-                            Object.values(ModalView).indexOf(modalView) - 1
+                          Object.values(CreateModalView)[
+                            Object.values(CreateModalView).indexOf(modalView) -
+                              1
                           ]
                         )
                       }
@@ -79,14 +77,15 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                   )}
                 </div>
                 <div className="absolute bottom-3 right-0">
-                  {Object.values(ModalView).indexOf(modalView) !==
-                    Object.values(ModalView).length - 1 && (
+                  {Object.values(CreateModalView).indexOf(modalView) !==
+                    Object.values(CreateModalView).length - 1 && (
                     <ForwardButton
                       text="Next"
                       handleClick={() =>
                         setModalView(
-                          Object.values(ModalView)[
-                            Object.values(ModalView).indexOf(modalView) + 1
+                          Object.values(CreateModalView)[
+                            Object.values(CreateModalView).indexOf(modalView) +
+                              1
                           ]
                         )
                       }
@@ -95,16 +94,12 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
                 </div>
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2">
                   <StepCircle
-                    filled={modalView === ModalView.HowItWorks}
-                    onClick={() => setModalView(ModalView.HowItWorks)}
+                    filled={modalView === CreateModalView.RunYourPool}
+                    onClick={() => setModalView(CreateModalView.RunYourPool)}
                   />
                   <StepCircle
-                    filled={modalView === ModalView.PlayResponsibly}
-                    onClick={() => setModalView(ModalView.PlayResponsibly)}
-                  />
-                  <StepCircle
-                    filled={modalView === ModalView.LinkTwitter}
-                    onClick={() => setModalView(ModalView.LinkTwitter)}
+                    filled={modalView === CreateModalView.Terms}
+                    onClick={() => setModalView(CreateModalView.Terms)}
                   />
                 </div>
               </div>
