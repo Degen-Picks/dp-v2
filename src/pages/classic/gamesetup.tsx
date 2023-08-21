@@ -57,7 +57,7 @@ const GameSetup = () => {
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
   const [agree, setAgree] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
 
   const router = useRouter();
 
@@ -309,7 +309,7 @@ const GameSetup = () => {
                   type="checkbox"
                   checked={!!agree}
                   onChange={() => setAgree(!agree)}
-                  className="mr-2 accent-link hover:accent-linkHover"
+                  className="mr-2 accent-link hover:accent-linkHover cursor-pointer"
                 />
                 You agree to{" "}
                 <span
@@ -325,9 +325,9 @@ const GameSetup = () => {
             <div className="w-full flex justify-between">
               <button
                 className="h-[50px] w-full bg-black text-white
-              px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
+                px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
                 onClick={handleCreateGame}
-                disabled={!publicKey || !validGame || loading}
+                disabled={!publicKey || !validGame || loading || !agree}
               >
                 Create game
               </button>

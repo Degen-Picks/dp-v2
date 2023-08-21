@@ -57,7 +57,7 @@ const ActivityItem: FC<Props> = ({ item }) => {
               href={`https://twitter.com/${item.twitterName}`}
               target="_blank"
               rel="noreferrer"
-              className="font-base-b hover:text-linkHover 
+              className="font-base-b hover:text-link 
               transition-colors ease-in-out duration-300"
             >
               {item.name}

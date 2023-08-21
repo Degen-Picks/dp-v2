@@ -570,14 +570,14 @@ const Classic: FC<Props> = ({ gameId }) => {
   }, [publicKey, dustBet, connection]);
 
   // show modal whenever a wallet is connected
-  useEffect(() => {
-    if (publicKey) {
-      if (gameStatus === GameStatus.OPEN) setShowModal(true);
-    } else {
-      setShowModal(false);
-      setSuccess(false);
-    }
-  }, [publicKey, gameStatus]);
+  // useEffect(() => {
+  //   if (publicKey) {
+  //     if (gameStatus === GameStatus.OPEN) setShowModal(true);
+  //   } else {
+  //     setShowModal(false);
+  //     setSuccess(false);
+  //   }
+  // }, [publicKey, gameStatus]);
 
   useEffect(() => {
     const loadUserPick = async (wagerId: string) => {

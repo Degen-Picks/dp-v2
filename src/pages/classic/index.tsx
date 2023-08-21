@@ -115,13 +115,26 @@ const GameQueue = () => {
       // now, sort upcoming games by date
     );
 
-  const activeClosedUpcomingGames = games
-    ?.filter(
-      (game) =>
-        activeFilter === true &&
-        (game.status === "closed" || game.status === "upcoming")
-    )
-    .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
+  const activeClosedGames = games
+    ?.filter((game) => activeFilter === true && game.status === "closed")
+    .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
+    .map((game, index) => {
+      return (
+        <PropSection
+          key={index}
+          title={game.title}
+          slug={game._id}
+          description={game.description}
+          status={game.status}
+          gameTime={game.endDate}
+          creator={game.creator}
+        />
+      );
+    });
+
+  const activeUpcomingGames = games
+    ?.filter((game) => activeFilter === true && game.status === "upcoming")
+    .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
       return (
         <PropSection
@@ -249,10 +262,11 @@ const GameQueue = () => {
               className={`w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-14`}
             >
               {activeLiveGames}
-              {activeClosedUpcomingGames}
+              {activeUpcomingGames}
+              {activeClosedGames}
             </div>
           ) : (
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-20">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5 mt-10 md:mt-14">
               {pastGames}
             </div>
           )}
