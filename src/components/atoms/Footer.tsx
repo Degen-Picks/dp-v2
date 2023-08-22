@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Twitter, Discord } from "@/components";
+import { Discord } from "@/components";
+import Image from "next/image";
 
 const Footer: FC = () => {
   return (
@@ -29,7 +30,19 @@ const Footer: FC = () => {
             Follow us
           </p>
           <div className="flex gap-2">
-            <Twitter className="fill-black h-6" />
+            <a
+              href="https://twitter.com/degenpicksXYZ"
+              target="_blank"
+              rel="noreferrer"
+              className="py-2 pr-2 md:p-2 hover:opacity-50"
+            >
+              <Image
+                src="/images/icons/x.png"
+                width={24}
+                height={24}
+                alt="twitter"
+              />
+            </a>
             <Discord className="fill-black h-6" />
           </div>
         </div>

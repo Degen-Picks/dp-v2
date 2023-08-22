@@ -5,12 +5,13 @@ import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { GameStatus } from "./ClassicView";
+import { ClassicHero } from "@/components";
 import { airdropClassic } from "@/utils/api/classic/airdrop";
 
 interface Props {
   gameData: GameInfo;
-  loadGameData: () => Promise<GameInfo | undefined | null>;
   gameStatus: GameStatus;
+  loadGameData: () => Promise<GameInfo | undefined | null>;
 }
 
 const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
@@ -21,10 +22,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const wallet = useWallet();
 
   const isDisabled =
-    gameStatus !== GameStatus.CLOSED ||
-    loading ||
-    isRefunded ||
-    isAirdropped;
+    gameStatus !== GameStatus.CLOSED || loading || isRefunded || isAirdropped;
 
   useEffect(() => {
     // Ensures gameData state is up-to-date
@@ -145,14 +143,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
 
   return (
     <div className="w-full">
-      <div className="w-fit max-w-[620px] mx-auto my-10">
-        <div className="font-pressura text-center">
-          {gameData.gameInfo.description}
-        </div>
-        <div className="font-bingodilan text-center text-3xl text-black">
-          {gameData.gameInfo.title}
-        </div>
-      </div>
+      <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       <div className="w-full flex flex-col items-center justify-center gap-5">
         <div className="w-full relative">
           <button

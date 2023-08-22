@@ -5,9 +5,9 @@ import { GameStatus } from "../templates/ClassicView";
 
 interface TProps {
   active: boolean;
-  teamImg: string;
+  teamImg?: string;
   teamName: string;
-  teamRecord: string;
+  teamRecord?: string;
   valid: boolean;
   success: boolean;
 }
@@ -20,6 +20,7 @@ interface VProps {
   valid: boolean;
   gameStatus: GameStatus;
   finalWinner: string | undefined;
+  hideImage: boolean;
 }
 
 const TeamBox: FC<TProps> = ({
@@ -30,17 +31,26 @@ const TeamBox: FC<TProps> = ({
   valid,
 }) => (
   <div
-    className={`sm:w-[249px] h-[100px] py-3 sm:py-0 sm:px-0 hover:cursor-pointer
+    className={`sm:w-[249px] ${
+      teamImg === "" ? "h-[50px]" : "h-[90px]"
+    } py-3 sm:py-0 sm:px-0 hover:cursor-pointer
     bg-${active ? "[#6E17FF/10]" : "light"} ${
       !valid && "sm:hover:cursor-not-allowed"
     }
     `}
   >
     <div className="flex flex-col text-center h-full justify-center w-fit mx-auto">
-      <div className="mx-auto w-[35px] h-[35px]">
-        <Image src={teamImg} width={30} height={30} alt={`${teamName} logo`} />
-      </div>
-      <div className="">
+      {teamImg && teamImg !== "" && (
+        <div className="mx-auto w-[35px] h-[35px]">
+          <Image
+            src={teamImg}
+            width={30}
+            height={30}
+            alt={`${teamName} logo`}
+          />
+        </div>
+      )}
+      <div>
         <div
           className={`${
             active ? "font-base-b" : "font-base text-secondary"
@@ -48,13 +58,15 @@ const TeamBox: FC<TProps> = ({
         >
           {teamName}
         </div>
-        <div
-          className={`${
-            active ? "font-base-b" : "font-base text-secondary"
-          } text-[10px] sm:text-xs`}
-        >
-          {teamRecord}
-        </div>
+        {teamRecord !== "" && (
+          <div
+            className={`${
+              active ? "font-base-b" : "font-base text-secondary"
+            } text-[10px] sm:text-xs`}
+          >
+            {teamRecord}
+          </div>
+        )}
       </div>
     </div>
   </div>
@@ -68,6 +80,7 @@ const ClassicVersusBox: FC<VProps> = ({
   valid,
   gameStatus,
   finalWinner,
+  hideImage,
 }) => {
   const [active1, setActive1] = useState<boolean>(false);
   const [active2, setActive2] = useState<boolean>(false);
@@ -128,9 +141,9 @@ const ClassicVersusBox: FC<VProps> = ({
         >
           <TeamBox
             active={active1}
-            teamImg={gameData.team1.teamLogo}
+            teamImg={!hideImage ? gameData.team1?.teamLogo : ""}
             teamName={gameData.team1.teamName}
-            teamRecord={gameData.team1.record}
+            teamRecord={gameData.team1?.record}
             success={success}
             valid={valid}
           />
@@ -167,7 +180,7 @@ const ClassicVersusBox: FC<VProps> = ({
         >
           <TeamBox
             active={active2}
-            teamImg={gameData.team2.teamLogo}
+            teamImg={!hideImage ? gameData.team2.teamLogo : ""}
             teamName={gameData.team2.teamName}
             teamRecord={gameData.team2.record}
             success={success}
@@ -179,7 +192,7 @@ const ClassicVersusBox: FC<VProps> = ({
           className="absolute bg-white rounded-full w-[25px] h-[25px]
           left-1/2 -translate-x-1/2 text-center"
         >
-          <p className="h-full flex items-center justify-center text-xs text-secondary">
+          <p className="h-full flex items-center justify-center text-sm text-secondary">
             vs
           </p>
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RewardCircle, QuestionIcon } from "@/components";
+import { RewardCircle, TwitterShare } from "@/components";
 
 const renderPlace = (thisPlace) => {
   switch (thisPlace) {
@@ -35,17 +35,17 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
     team2: "1.0x",
   });
 
-  const fireHandler = (ratio) => {
-    if (ratio <= 33.3 && ratio > 0) {
-      return "🔥🔥🔥";
-    } else if (ratio > 33.3 && ratio <= 66.6) {
-      return "🔥🔥";
-    } else if (ratio > 66.6) {
-      return "🔥";
-    } else {
-      return "-";
-    }
-  };
+  // const fireHandler = (ratio) => {
+  //   if (ratio <= 33.3 && ratio > 0) {
+  //     return "🔥🔥🔥";
+  //   } else if (ratio > 33.3 && ratio <= 66.6) {
+  //     return "🔥🔥";
+  //   } else if (ratio > 66.6) {
+  //     return "🔥";
+  //   } else {
+  //     return "-";
+  //   }
+  // };
 
   useEffect(() => {
     if (gameType === "degen") {
@@ -102,9 +102,9 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
   return (
     <div>
       {/* reward pool outer container */}
-      <div className="bg-white w-5/6 md:w-[620px] mx-auto mt-10">
+      <div className="relative bg-white w-5/6 md:w-[620px] mx-auto mt-10">
         {/* title on top */}
-        <div className="relative h-[50px] flex items-center justify-center text-center text-containerHead bg-container">
+        {/* <div className="relative h-[50px] flex items-center justify-center text-center text-containerHead bg-container">
           <p className="font-base-b text-sm sm:text-base">
             {`${gameData?.gameInfo?.dateStr} @ ${gameData?.gameInfo?.timeStr}` ??
               "Reward Pool"}
@@ -118,10 +118,15 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               Final
             </div>
           )}
+        </div> */}
+        <div className="absolute right-0 -top-12">
+          <TwitterShare
+            url={`https://degenpicks.xyz/classic/${gameData.gameInfo.id}`}
+          />
         </div>
         {gameType === "degen" ? (
           <>
-            <div className="flex flex-row justify-evenly items-center py-10">
+            <div className="flex flex-row justify-evenly items-center pb-5 pt-8">
               {/* team 1 spread */}
               <div className="hidden md:block w-[150px]">
                 <RewardCircle
@@ -130,65 +135,52 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
                 />
               </div>
               {/* reward data table */}
-              <div className="flex flex-col justify-between w-[340px] h-fit text-sm sm:text-body-md">
+              <div className="flex flex-col justify-between w-[340px] h-fit text-sm sm:text-base">
                 {/* vol */}
                 <div className="flex flex-row justify-between pb-3">
-                  <div className="w-[80px] text-right pr-2 font-base-b">
+                  <div className="w-[80px] text-right pr-2">
                     {Math.floor(gameData.team1.dustVol * 100) / 100}
                   </div>
-                  <div className="text-center text-secondary">
-                    <p className="px-3">volume</p>
+                  <div className="text-cente">
+                    <p className="px-3 text-[#A89FA8]">volume</p>
                   </div>
-                  <div className="w-[80px] text-left pl-2 font-base-b">
+                  <div className="w-[80px] text-left pl-2">
                     {Math.floor(gameData.team2.dustVol * 100) / 100}
                   </div>
                 </div>
                 {/* unique wallets */}
                 <div className="flex flex-row justify-between pb-3">
-                  <div className="w-[80px] text-right pr-2 font-base-b">
+                  <div className="w-[80px] text-right pr-2">
                     {gameData.team1.uniqueWallets}
                   </div>
-                  <div className="text-center text-secondary">
-                    <p className="px-3">players</p>
+                  <div className="text-cente">
+                    <p className="px-3 text-[#A89FA8]">players</p>
                   </div>
-                  <div className="w-[80px] text-left pl-2 font-base-b">
+                  <div className="w-[80px] text-left pl-2">
                     {gameData.team2.uniqueWallets}
                   </div>
                 </div>
                 {/* reward level */}
-                <div className="flex flex-row justify-between pb-3">
+                {/* <div className="flex flex-row justify-between pb-3">
                   <div className="w-[80px] text-right pr-2">
                     {fireHandler(betRatio.team1)}
                   </div>
-                  <div className="text-center text-secondary">
-                    <p className="px-3">level</p>
+                  <div className="text-center">
+                    <p className="px-3 text-[#A89FA8]">level</p>
                   </div>
                   <div className="w-[80px] text-left pl-2">
                     {fireHandler(betRatio.team2)}
                   </div>
-                </div>
+                </div> */}
                 {/* reward multiplier */}
                 <div className="flex flex-row justify-between sm:pb-3">
-                  <div className="w-[80px] text-right pr-2 font-base-b">
+                  <div className="w-[80px] text-right pr-2">
                     {multiplier.team1}
                   </div>
-                  <div className="relative z-50 text-center text-secondary">
-                    <p className="px-3">reward</p>
-                    <div className="group absolute -right-1 top-1/2 -translate-y-1/2">
-                      <QuestionIcon fill="#651FFF" />
-                      <div
-                        className="z-50 absolute left-1/2 -translate-x-1/2 sm:bottom-1/2 sm:left-full sm:translate-x-0 ml-2 px-2 py-1 text-sm w-[200px] sm:w-[250px]
-                        text-black bg-container rounded-lg opacity-0 group-hover:opacity-100 
-                        transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
-                      >
-                        Your reward is determined by the multiplier. Multipliers
-                        are highly volatile when the pool is live, and lock when
-                        the pool closes.
-                      </div>
-                    </div>
+                  <div className="relative z-50 text-center">
+                    <p className="px-3 text-[#A89FA8]">reward</p>
                   </div>
-
-                  <div className="w-[80px] text-left pl-2 font-base-b">
+                  <div className="w-[80px] text-left pl-2">
                     {multiplier.team2}
                   </div>
                 </div>

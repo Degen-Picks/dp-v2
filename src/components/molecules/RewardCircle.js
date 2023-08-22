@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
 
@@ -45,36 +44,27 @@ const CircularProgressWithLabel = (props) => {
         >
           <CircularProgress
             variant="determinate"
-            size={80}
+            size={60}
             theme={theme1}
             {...props}
             sx={{ position: "absolute", zIndex: 2 }}
+            thickness={2.5}
           />
           <CircularProgress
             variant="determinate"
-            size={80}
+            size={60}
             theme={theme2}
             value={100}
             sx={{ position: "absolute", zIndex: 1 }}
+            thickness={2.5}
           />
         </Box>
-        <Typography
-          variant="caption"
-          component="div"
-          color="text.secondary"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <p className="text-lg flex items-center justify-center text-center text-link">
           {`${Math.round(props.value)}%`}
-        </Typography>
+        </p>
       </Box>
-      <Box sx={{ textAlign: "center", paddingTop: "40px" }}>
-        <Typography component="div" color="#616161">
-          {props.team}
-        </Typography>
+      <Box sx={{ textAlign: "center", paddingTop: "20px" }}>
+        <p className="font-base text-lg text-secondary">{props.team}</p>
       </Box>
     </>
   );

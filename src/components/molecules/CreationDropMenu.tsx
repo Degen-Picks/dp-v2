@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { ClassicGameOptions } from "../../types";
+import { ClassicGameOptions, League } from "../../types";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 import React, { Dispatch, FC, SetStateAction, useRef, useState } from "react";
 
 interface Props {
+  league: League | undefined;
   list: string[];
   gameDetails: ClassicGameOptions;
   setGameDetails: Dispatch<SetStateAction<ClassicGameOptions>>;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const CreationDropMenu: FC<Props> = ({
+  league,
   list,
   gameDetails,
   setGameDetails,
@@ -37,19 +39,27 @@ const CreationDropMenu: FC<Props> = ({
   };
 
   const fetchIcon = (item: string) => {
-    // if (accessor === "token") {
-    switch (item) {
-      case "DUST":
-        return "/images/icons/dust_square.svg";
-      case "SOL":
-        return "/images/icons/solana.svg";
-      case "USDC":
-        return "/images/icons/usdc.svg";
-      default:
-        return "/images/icons/dust_square.svg";
+    var urlPath: string = "";
+    if (accessor === "token") {
+      switch (item) {
+        case "DUST":
+          urlPath = "/images/icons/dust_square.svg";
+          break;
+        case "SOL":
+          urlPath = "/images/icons/solana.svg";
+          break;
+        case "USDC":
+          urlPath = "/images/icons/usdc.svg";
+          break;
+        default:
+          urlPath = "/images/icons/dust_square.svg";
+          break;
+      }
+    } else if (accessor === "team1Name" || accessor === "team2Name") {
+      urlPath =
+        league?.options?.find((team) => team.name === item)?.imageUrl ?? "";
     }
-    // } else if (accessor === "team1Name" || accessor === "team2Name") {
-    // do stuff
+    return urlPath;
   };
 
   return (
@@ -65,7 +75,7 @@ const CreationDropMenu: FC<Props> = ({
           <button
             type="button"
             className="flex items-center justify-between w-full bg-white 
-            px-4 py-2 font-base-b hover:bg-gray-50 focus:outline-none 
+            px-4 py-2 hover:bg-gray-50 focus:outline-none 
             focus:ring-2 disabled:hover:bg-white disabled:hover:cursor-not-allowed
             focus:ring-link focus:ring-offset-2 focus:ring-offset-gray-100"
             id="options-menu"
@@ -77,19 +87,22 @@ const CreationDropMenu: FC<Props> = ({
             {gameDetails[accessor as keyof ClassicGameOptions] &&
             gameDetails[accessor as keyof ClassicGameOptions] !== "" ? (
               <div className="flex items-center gap-3">
-                {icon && (
-                  <Image
-                    src={fetchIcon(
-                      gameDetails[
-                        accessor as keyof ClassicGameOptions
-                      ] as string
-                    )}
-                    width={30}
-                    height={30}
-                    alt="team or token icon"
-                  />
-                )}
-                <p className="text-primary font-base-b">
+                {icon &&
+                  fetchIcon(
+                    gameDetails[accessor as keyof ClassicGameOptions] as string
+                  ) !== "" && (
+                    <Image
+                      src={fetchIcon(
+                        gameDetails[
+                          accessor as keyof ClassicGameOptions
+                        ] as string
+                      )}
+                      width={30}
+                      height={30}
+                      alt="team or token icon"
+                    />
+                  )}
+                <p className="text-primary">
                   {gameDetails[accessor as keyof ClassicGameOptions]}
                 </p>
               </div>
@@ -120,7 +133,7 @@ const CreationDropMenu: FC<Props> = ({
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {list.map((item, index) => (
+              {list?.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => clickHandler(item)}

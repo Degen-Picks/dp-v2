@@ -1,12 +1,16 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
-import Image from "next/image";
 import { useContext, useEffect } from "react";
 import { login, logout } from "@/utils";
-import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 const ConnectButton = () => {
-  const { wagerUser, setWagerUser } = useContext(WagerUserContext) as WagerUserContextType;
+  const { wagerUser, setWagerUser } = useContext(
+    WagerUserContext
+  ) as WagerUserContextType;
 
   const wallet = useWallet();
   const { publicKey } = wallet;
@@ -18,8 +22,8 @@ const ConnectButton = () => {
         setWagerUser(loginUser);
       }
     }
-   
-    if(publicKey) {
+
+    if (publicKey) {
       load();
     }
   }, [publicKey]);
@@ -28,7 +32,7 @@ const ConnectButton = () => {
   useEffect(() => {
     async function load() {
       const logoutUser = await logout();
-      console.log("Logged out", logoutUser)
+      console.log("Logged out", logoutUser);
       setWagerUser(null);
     }
 
@@ -38,38 +42,23 @@ const ConnectButton = () => {
   }, [publicKey]);
 
   return (
-    <>
-      <div className="relative sm:hidden bg-black z-50">
-        <WalletMultiButton
-          className="!w-[60px] !h-[60px] !p-0 !rounded-none flex justify-center !font-base"
-          startIcon={undefined}
-        >
-          <Image
-            src="/images/icons/wallet.svg"
-            width={20}
-            height={20}
-            alt="wallet icon"
-          />
-        </WalletMultiButton>
-      </div>
-      <div
-        className="hidden sm:block !bg-black !relative !w-full
+    <div
+      className="!bg-black !relative !w-full flex items-center justify-center
         md:!px-0 !h-auto !rounded-none !z-50"
+    >
+      <WalletMultiButton
+        className="!w-full md:!w-[168px] !flex !justify-center"
+        // startIcon={undefined}
       >
-        <WalletMultiButton
-          className="!w-auto md:!w-[168px] !flex !justify-center"
-          startIcon={undefined}
-        >
-          <p className="!font-base !text-base !whitespace-nowrap">
-            {publicKey
-              ? publicKey.toBase58().slice(0, 4) +
-                " ... " +
-                publicKey.toBase58().slice(-4)
-              : "Connect Wallet"}
-          </p>
-        </WalletMultiButton>
-      </div>
-    </>
+        <p className="!font-base !text-lg !whitespace-nowrap">
+          {publicKey
+            ? publicKey.toBase58().slice(0, 4) +
+              " ... " +
+              publicKey.toBase58().slice(-4)
+            : "Connect"}
+        </p>
+      </WalletMultiButton>
+    </div>
   );
 };
 

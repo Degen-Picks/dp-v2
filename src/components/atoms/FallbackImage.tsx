@@ -20,13 +20,15 @@ const FallbackImage: FC<Props> = ({ src, fallbackSrc, width, height, alt }) => {
   };
 
   return (
-    <img
-      src={imageSrc}
-      onError={handleError}
-      width={finalWidth}
-      height={finalHeight}
-      alt={alt}
-    />
+    <div className="rounded-full overflow-hidden">
+      <img
+        src={imageSrc}
+        onError={handleError}
+        width={finalWidth}
+        height={finalHeight}
+        alt={alt}
+      />
+    </div>
   );
 };
 

@@ -57,7 +57,7 @@ const ActivityItem: FC<Props> = ({ item }) => {
               href={`https://twitter.com/${item.twitterName}`}
               target="_blank"
               rel="noreferrer"
-              className="font-base-b hover:text-linkHover 
+              className="font-base-b hover:text-link 
               transition-colors ease-in-out duration-300"
             >
               {item.name}
@@ -69,7 +69,7 @@ const ActivityItem: FC<Props> = ({ item }) => {
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">
-        <Image src={item.teamImage} width={30} height={30} alt="team image" />
+        <p>{item.teamName}</p>
         {/* round to whole numbers */}
         <p className="text-sm">{Math.ceil(item.dustBet * 100) / 100} DUST</p>
       </div>

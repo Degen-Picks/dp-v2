@@ -3,7 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect, FC } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { FallbackImage, Twitter } from "@/components";
+import { FallbackImage } from "@/components";
 import { WagerUser } from "@/types";
 
 const TwitterLoginButton: FC = () => {
@@ -130,7 +130,7 @@ const TwitterLoginButton: FC = () => {
 
       const tx = await wallet.signMessage(Buffer.from(nonce));
 
-      // TODO: DEPRECATE CONFIRM SIGNATURE, MOVE TO LOGIN 
+      // TODO: DEPRECATE CONFIRM SIGNATURE, MOVE TO LOGIN
       const { verified } = await confirmSignature(
         publicKey.toString(),
         Buffer.from(tx).toString("hex"),
@@ -170,41 +170,24 @@ const TwitterLoginButton: FC = () => {
           onClick={isTwitterLinked ? handleTwitterUnlink : handleTwitterLogin}
           className={`${
             isTwitterLinked
-              ? "bg-white text-black font-base-b sm:hover:border-[#E1233D] sm:py-2"
-              : "bg-light sm:bg-[#53A8E7] text-white sm:py-1"
+              ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
+              : "sm:py-1 sm:border border-black bg-white"
           } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
-          rounded-full sm:rounded-none items-center sm:gap-2 sm:border-2 sm:border-transparent group`}
+          rounded-full sm:rounded-none items-center sm:gap-2 group`}
         >
           {!isTwitterLinked || !userData ? (
-            <>
-              <div className="hidden sm:flex items-center justify-center gap-2 px-2">
-                <Twitter className="fill-white w-4" />
-                <p>Link Twitter</p>
-              </div>
-
-              <div className="sm:hidden h-full flex items-center">
-                <Image
-                  src="/images/icons/user.svg"
-                  width={20}
-                  height={20}
-                  alt="user icon"
-                />
-              </div>
-            </>
+            <div className="flex items-center justify-center gap-2 px-2">
+              <Image
+                src="/images/icons/x.png"
+                width={30}
+                height={30}
+                alt="twitter icon"
+              />
+              <p className="text-lg">Link</p>
+            </div>
           ) : (
             <div>
-              <div className="sm:hidden flex items-center justify-center">
-                <div className="border border-light flex items-center justify-center rounded-full w-[50px] h-[50px] overflow-hidden">
-                  <FallbackImage
-                    src={userData?.twitterData!.profileImage}
-                    fallbackSrc={"/images/icons/user-alt.svg"}
-                    width={50}
-                    height={50}
-                    alt="Twitter Profile Image"
-                  />
-                </div>
-              </div>
-              <div className="hidden sm:flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
+              <div className="flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
                 <div className="border border-light flex items-center justify-center rounded-full w-[35px] h-[35px] overflow-hidden">
                   <FallbackImage
                     src={userData?.twitterData!.profileImage}
@@ -214,10 +197,10 @@ const TwitterLoginButton: FC = () => {
                     alt="Twitter Profile Image"
                   />
                 </div>
-                <p className="font-base-b">{userData?.twitterData!.username}</p>
+                <p className="text-lg">{userData?.twitterData!.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">
-                <p className="text-[#E1233D]">Unlink Twitter</p>
+                <p className="text-[#E1233D]">Unlink Twitter/X</p>
               </div>
             </div>
           )}
