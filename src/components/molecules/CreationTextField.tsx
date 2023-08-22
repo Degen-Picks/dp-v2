@@ -29,7 +29,7 @@ const CreationTextField: FC<Props> = ({
       {title && (
         <p
           className="absolute -translate-x-[290px] w-[250px] top-1/2 -translate-y-1/2
-        text-secondary whitespace-nowrap text-right"
+          text-secondary whitespace-nowrap text-right"
         >
           {title}
         </p>
@@ -38,7 +38,7 @@ const CreationTextField: FC<Props> = ({
         <input
           className={`w-full h-full bg-white text-primary hover:bg-gray-50 
           flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-link font-base-b disabled:cursor-not-allowed
+          focus:border-link disabled:cursor-not-allowed disabled:text-disabled
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
           type={type}

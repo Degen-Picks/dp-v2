@@ -18,7 +18,9 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
       {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
         <div className="flex items-center gap-1">
           <VerifiedBadge />
-          <p className="uppercase">degen picks team</p>
+          <p className="uppercase hover:text-link cursor-pointer">
+            degen picks team
+          </p>
         </div>
       ) : gameData?.gameInfo?.creator?.twitterData ? (
         <motion.button
@@ -39,7 +41,9 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
             height={24}
             alt="user image"
           />
-          <p>{gameData?.gameInfo?.creator?.twitterData?.username}</p>
+          <p className="hover:text-link">
+            {gameData?.gameInfo?.creator?.twitterData?.username}
+          </p>
         </motion.button>
       ) : null}
 

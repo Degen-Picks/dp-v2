@@ -63,7 +63,7 @@ const CreationDropMenu: FC<Props> = ({
           <button
             type="button"
             className="flex items-center justify-between w-full bg-white 
-            px-4 py-2 font-base-b hover:bg-gray-50 focus:outline-none 
+            px-4 py-2 hover:bg-gray-50 focus:outline-none 
             focus:ring-2 disabled:hover:bg-white disabled:hover:cursor-not-allowed
             focus:ring-link focus:ring-offset-2 focus:ring-offset-gray-100"
             id="options-menu"
@@ -87,7 +87,7 @@ const CreationDropMenu: FC<Props> = ({
                     alt="team or token icon"
                   />
                 )}
-                <p className="text-primary font-base-b">
+                <p className="text-primary">
                   {gameDetails[accessor as keyof ClassicGameOptions]}
                 </p>
               </div>
@@ -118,7 +118,7 @@ const CreationDropMenu: FC<Props> = ({
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {list.map((item, index) => (
+              {list?.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => clickHandler(item)}
