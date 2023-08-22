@@ -105,8 +105,8 @@ const GameSetup = () => {
       gameDetails.title !== "" &&
       gameDetails.gameTime !== "" &&
       gameDetails.collection !== "" &&
-      gameDetails.token !== "" &&
-      gameDetails.team1Name !== gameDetails.team2Name
+      gameDetails.team1Name !== gameDetails.team2Name &&
+      gameDetails.token !== ""
     ) {
       if (gameDetails.league !== "custom") {
         if (gameDetails.team1Record !== "" && gameDetails.team2Record !== "") {
@@ -308,7 +308,7 @@ const GameSetup = () => {
                 league={leagues.find(
                   (league) => league.league === gameDetails.league
                 )}
-                list={["DUST"]}
+                list={["DUST", "SOL", "USDC"]}
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}
                 accessor="token"

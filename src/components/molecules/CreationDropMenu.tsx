@@ -44,10 +44,16 @@ const CreationDropMenu: FC<Props> = ({
       switch (item) {
         case "DUST":
           urlPath = "/images/icons/dust_square.svg";
+          break;
         case "SOL":
           urlPath = "/images/icons/solana.svg";
+          break;
+        case "USDC":
+          urlPath = "/images/icons/usdc.svg";
+          break;
         default:
           urlPath = "/images/icons/dust_square.svg";
+          break;
       }
     } else if (accessor === "team1Name" || accessor === "team2Name") {
       urlPath =
