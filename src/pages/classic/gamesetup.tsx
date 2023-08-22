@@ -61,6 +61,33 @@ const GameSetup = () => {
 
   const router = useRouter();
 
+  const handleCreateGame = async () => {
+    const toastId = toast.loading("Creating game...");
+    setLoading(true);
+    try {
+      const confirm = await handleConfirmAction(
+        wallet,
+        "Are you sure you want to create this game?"
+      );
+      if (!confirm) throw new Error("User cancelled");
+
+      if (wagerUser!.twitterData === null) {
+        throw new Error("You must link your Twitter account to create a game.");
+      }
+
+      const { body } = await createClassic(gameDetails);
+      const gameId = body.data._id;
+
+      toast.success("Game created successfully!");
+      router.push(`/classic/${gameId}`);
+    } catch (err: any) {
+      toast.error(err.message || "Error contacting server. Try again later.");
+    } finally {
+      toast.dismiss(toastId);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const newGameDetails = { ...gameDetails };
     newGameDetails.team1Name = "";
@@ -119,33 +146,6 @@ const GameSetup = () => {
     fetchAssets();
   }, []);
 
-  const handleCreateGame = async () => {
-    const toastId = toast.loading("Creating game...");
-    setLoading(true);
-    try {
-      const confirm = await handleConfirmAction(
-        wallet,
-        "Are you sure you want to create this game?"
-      );
-      if (!confirm) throw new Error("User cancelled");
-
-      if (wagerUser!.twitterData === null) {
-        throw new Error("You must link your Twitter account to create a game.");
-      }
-
-      const { body } = await createClassic(gameDetails);
-      const gameId = body.data._id;
-
-      toast.success("Game created successfully!");
-      router.push(`/classic/${gameId}`);
-    } catch (err: any) {
-      toast.error(err.message || "Error contacting server. Try again later.");
-    } finally {
-      toast.dismiss(toastId);
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (gameDetails.league === "custom") {
       setHeadlineDisabled(false);
@@ -167,8 +167,10 @@ const GameSetup = () => {
 
         {!wagerUser || !wagerUser?.roles.includes("CREATOR") ? (
           <div className="w-full h-full flex justify-center items-center mt-20">
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold">
               You are not authorized to view this page.
+              <br />
+              Please log in with your wallet to continue.
             </div>
           </div>
         ) : (
@@ -188,6 +190,9 @@ const GameSetup = () => {
             </div>
             <div className="flex flex-col gap-5">
               <CreationDropMenu
+                league={leagues.find(
+                  (league) => league.league === gameDetails.league
+                )}
                 list={leagues.map((league) => league.league)}
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}
@@ -207,13 +212,16 @@ const GameSetup = () => {
                   />
                 ) : (
                   <CreationDropMenu
+                    league={leagues.find(
+                      (league) => league.league === gameDetails.league
+                    )}
                     list={getLeagueTeams(leagues, gameDetails.league)}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team1Name"
                     title="Team 1 / Record (optional)"
                     disabled={gameDetails.league === ""}
-                    // icon={true}
+                    icon={true}
                   />
                 )}
                 <CreationTextField
@@ -237,13 +245,16 @@ const GameSetup = () => {
                   />
                 ) : (
                   <CreationDropMenu
+                    league={leagues.find(
+                      (league) => league.league === gameDetails.league
+                    )}
                     list={getLeagueTeams(leagues, gameDetails.league)}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team2Name"
                     title="Team 2 / Record (optional)"
                     disabled={gameDetails.league === ""}
-                    // icon={true}
+                    icon={true}
                   />
                 )}
                 <CreationTextField
@@ -284,6 +295,9 @@ const GameSetup = () => {
                 type="datetime-local"
               />
               <CreationDropMenu
+                league={leagues.find(
+                  (league) => league.league === gameDetails.league
+                )}
                 list={getCollections(collections)}
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}
@@ -291,6 +305,9 @@ const GameSetup = () => {
                 title="Collection"
               />
               <CreationDropMenu
+                league={leagues.find(
+                  (league) => league.league === gameDetails.league
+                )}
                 list={["DUST"]}
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}

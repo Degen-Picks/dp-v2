@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { ClassicGameOptions } from "../../types";
+import { ClassicGameOptions, League } from "../../types";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 import React, { Dispatch, FC, SetStateAction, useRef, useState } from "react";
 
 interface Props {
+  league: League | undefined;
   list: string[];
   gameDetails: ClassicGameOptions;
   setGameDetails: Dispatch<SetStateAction<ClassicGameOptions>>;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const CreationDropMenu: FC<Props> = ({
+  league,
   list,
   gameDetails,
   setGameDetails,
@@ -37,17 +39,21 @@ const CreationDropMenu: FC<Props> = ({
   };
 
   const fetchIcon = (item: string) => {
-    // if (accessor === "token") {
-    switch (item) {
-      case "DUST":
-        return "/images/icons/dust_square.svg";
-      case "SOL":
-        return "/images/icons/solana.svg";
-      default:
-        return "/images/icons/dust_square.svg";
+    var urlPath: string = "";
+    if (accessor === "token") {
+      switch (item) {
+        case "DUST":
+          urlPath = "/images/icons/dust_square.svg";
+        case "SOL":
+          urlPath = "/images/icons/solana.svg";
+        default:
+          urlPath = "/images/icons/dust_square.svg";
+      }
+    } else if (accessor === "team1Name" || accessor === "team2Name") {
+      urlPath =
+        league?.options?.find((team) => team.name === item)?.imageUrl ?? "";
     }
-    // } else if (accessor === "team1Name" || accessor === "team2Name") {
-    // do stuff
+    return urlPath;
   };
 
   return (
@@ -75,18 +81,21 @@ const CreationDropMenu: FC<Props> = ({
             {gameDetails[accessor as keyof ClassicGameOptions] &&
             gameDetails[accessor as keyof ClassicGameOptions] !== "" ? (
               <div className="flex items-center gap-3">
-                {icon && (
-                  <Image
-                    src={fetchIcon(
-                      gameDetails[
-                        accessor as keyof ClassicGameOptions
-                      ] as string
-                    )}
-                    width={30}
-                    height={30}
-                    alt="team or token icon"
-                  />
-                )}
+                {icon &&
+                  fetchIcon(
+                    gameDetails[accessor as keyof ClassicGameOptions] as string
+                  ) !== "" && (
+                    <Image
+                      src={fetchIcon(
+                        gameDetails[
+                          accessor as keyof ClassicGameOptions
+                        ] as string
+                      )}
+                      width={30}
+                      height={30}
+                      alt="team or token icon"
+                    />
+                  )}
                 <p className="text-primary">
                   {gameDetails[accessor as keyof ClassicGameOptions]}
                 </p>
