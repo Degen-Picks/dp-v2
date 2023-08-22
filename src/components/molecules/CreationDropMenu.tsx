@@ -43,6 +43,8 @@ const CreationDropMenu: FC<Props> = ({
         return "/images/icons/dust_square.svg";
       case "SOL":
         return "/images/icons/solana.svg";
+      case "USDC":
+        return "/images/icons/usdc.svg";
       default:
         return "/images/icons/dust_square.svg";
     }
