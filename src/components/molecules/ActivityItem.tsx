@@ -1,13 +1,14 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Activity } from "../../types/GameInfo";
+import { Activity, GameInfo } from "../../types/GameInfo";
 import { FallbackImage } from "@/components";
 
 interface Props {
   item: Activity;
+  gameData: GameInfo;
 }
 
-const ActivityItem: FC<Props> = ({ item }) => {
+const ActivityItem: FC<Props> = ({ item, gameData }) => {
   const timeAgo = (date: Date) => {
     const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
     if (seconds < 60) return "Just now";
@@ -71,7 +72,7 @@ const ActivityItem: FC<Props> = ({ item }) => {
       <div className="flex flex-col items-end gap-1">
         <p>{item.teamName}</p>
         {/* round to whole numbers */}
-        <p className="text-sm">{Math.ceil(item.dustBet * 100) / 100} DUST</p>
+        <p className="text-sm">{Math.ceil(item.dustBet * 100) / 100} {gameData.gameInfo.token}</p>
       </div>
     </div>
   );

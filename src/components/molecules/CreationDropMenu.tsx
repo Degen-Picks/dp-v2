@@ -15,6 +15,8 @@ interface Props {
   icon?: boolean;
 }
 
+// TODO: make icon func global
+
 const CreationDropMenu: FC<Props> = ({
   league,
   list,

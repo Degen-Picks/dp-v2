@@ -15,8 +15,8 @@ import {
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import getDustBalance from "../../utils/getDustBalance";
-import sendDustTransaction from "../../utils/sendDustTransaction";
+import getDustBalance, { getTokenBalance } from "../../utils/getTokenBalance";
+import sendDustTransaction from "../../utils/sendTransaction";
 import toast from "react-hot-toast";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
@@ -27,6 +27,7 @@ import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
+import sendTransaction from "../../utils/sendTransaction";
 
 interface Props {
   gameId: string | string[];
@@ -46,8 +47,8 @@ const Classic: FC<Props> = ({ gameId }) => {
   //state variables
   const [pickCountdown, setPickCountdown] = useState<string>("Loading...");
   const [winningTeam, setWinningTeam] = useState<string>();
-  const [dustBet, setDustBet] = useState<number>(33);
-  const [dustBalance, setDustBalance] = useState<number>(0);
+  const [tokenBet, setTokenBet] = useState<number>(33);
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
   const [isBroke, setIsBroke] = useState<boolean>(false);
   const [rewardEstimate, setRewardEstimate] = useState<number>(0);
   const [success, setSuccess] = useState<boolean>(false);
@@ -101,6 +102,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       dateStr: "",
       timeStr: "",
       dayTime: "",
+      token: null,
     },
     team1: {
       teamName: "TBD",
@@ -131,7 +133,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   const rulesDisabled = success || loading || gameStatus !== GameStatus.OPEN;
 
   // create and process dust txn
-  const handlePayDust = async () => {
+  const handlePayToken = async () => {
     if (!gameData || !publicKey) return;
     const toastId = toast.loading("Processing Transaction...");
     setTxnLoading(true);
@@ -141,12 +143,13 @@ const Classic: FC<Props> = ({ gameId }) => {
       const escrowPublicKey = gameData[team].publicKey;
 
       // Send dust to our wallet
-      const txHash = await sendDustTransaction(
+      const txHash = await sendTransaction(
         publicKey,
         signTransaction,
         connection,
-        dustBet,
-        escrowPublicKey
+        tokenBet,
+        escrowPublicKey,
+        gameData.gameInfo.token!
       );
 
       // Check tx went through
@@ -287,6 +290,7 @@ const Classic: FC<Props> = ({ gameId }) => {
           dateStr: getDateStr(gameDate),
           timeStr: getTimeStr(gameDate),
           dayTime: getDayTime(gameDate),
+          token: currentWager.token,
         },
         team1: {
           teamName: currentWager.selections[0].title,
@@ -353,8 +357,8 @@ const Classic: FC<Props> = ({ gameId }) => {
   const buttonDisabled =
     isBroke ||
     winningTeam === undefined ||
-    dustBet === undefined ||
-    dustBet < 1 ||
+    tokenBet === undefined ||
+    tokenBet < 1 ||
     agree === false ||
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
@@ -382,23 +386,23 @@ const Classic: FC<Props> = ({ gameId }) => {
       {
         /* broke but picked a team */
       }
-      return "Insufficient DUST balance";
+      return `Insufficient ${gameData.gameInfo.token} balance`;
     } else if (
       !isBroke &&
       winningTeam &&
-      (dustBet === null || dustBet < 1 || !rewardEstimate) &&
+      (tokenBet === null || tokenBet < 1 || !rewardEstimate) &&
       gameStatus === GameStatus.OPEN
     ) {
       {
         /* not broke, picked a team, invalid dust bet */
       }
-      return "Invalid DUST value";
+      return `Invalid ${gameData.gameInfo.token} value`;
     } else if (
       !isBroke &&
       winningTeam &&
       !agree &&
-      dustBet !== null &&
-      dustBet >= 1 &&
+      tokenBet !== null &&
+      tokenBet >= 1 &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -408,8 +412,8 @@ const Classic: FC<Props> = ({ gameId }) => {
     } else if (
       !isBroke &&
       winningTeam &&
-      dustBet !== null &&
-      dustBet >= 1 &&
+      tokenBet !== null &&
+      tokenBet >= 1 &&
       agree &&
       gameStatus === GameStatus.OPEN
     ) {
@@ -555,19 +559,19 @@ const Classic: FC<Props> = ({ gameId }) => {
   // check if the user has enough dust each time the bet or wallet changes
   useEffect(() => {
     async function fetchWalletData() {
-      if (publicKey) {
-        const dustBalance = await getDustBalance(publicKey, connection);
-        setDustBalance(dustBalance);
+      if (publicKey && gameData.gameInfo.token) {
+        const balance = await getTokenBalance(publicKey, connection, gameData.gameInfo.token);
+        setTokenBalance(balance);
 
         // check if the user doesn't have enough DUST
-        const userIsBroke = dustBet > dustBalance;
+        const userIsBroke = tokenBet > balance;
         // update state
         setIsBroke(userIsBroke);
       }
     }
 
     fetchWalletData();
-  }, [publicKey, dustBet, connection]);
+  }, [publicKey, tokenBet, connection, gameData.gameInfo.token]);
 
   // show modal whenever a wallet is connected
   // useEffect(() => {
@@ -608,7 +612,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setTxn(userPickAmount.signature);
 
-            setDustBet(userPickAmount.amount);
+            setTokenBet(userPickAmount.amount);
 
             setSuccess(true);
             setAgree(true);
@@ -665,15 +669,15 @@ const Classic: FC<Props> = ({ gameId }) => {
       var totalVol;
       // if user hasn't bet yet, factor in user bet in potential reward
       if (!success) {
-        teamVolume = teamVolume + dustBet;
-        totalVol = gameData.team1.dustVol + gameData.team2.dustVol + dustBet;
+        teamVolume = teamVolume + tokenBet;
+        totalVol = gameData.team1.dustVol + gameData.team2.dustVol + tokenBet;
       } else {
         totalVol = gameData.team1.dustVol + gameData.team2.dustVol;
       }
 
       const multiplier = totalVol / teamVolume;
       let estimatedReward =
-        Math.floor((dustBet - dustBet * pickFee) * multiplier * 100) / 100;
+        Math.floor((tokenBet - tokenBet * pickFee) * multiplier * 100) / 100;
 
       if (!estimatedReward) {
         estimatedReward = totalVol;
@@ -682,7 +686,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       setRewardEstimate(estimatedReward);
     };
     estimateRewards();
-  }, [dustBet, gameData, winningTeam, success]);
+  }, [tokenBet, gameData, winningTeam, success]);
 
   // update final winner
   useEffect(() => {
@@ -833,14 +837,15 @@ const Classic: FC<Props> = ({ gameId }) => {
                           }
                           min="1"
                           max="1000000"
-                          value={dustBet}
+                          value={tokenBet}
                           onChange={(e) => {
-                            setDustBet(parseFloat(e.target.value));
+                            setTokenBet(parseFloat(e.target.value));
                           }}
                           className="disabled:opacity-70 disabled:cursor-not-allowed bg-light font-base-b 
                           rounded-md px-2 h-[50px] w-full text-center focus:outline-link focus:bg-white"
                         />
                         <div className="absolute left-2 top-[10px]">
+                          {/* TODO: Get icon based off ${gameData.gameInfo.token} */}
                           <Image
                             src="/images/icons/dust_square2.png"
                             height={30}
@@ -850,14 +855,14 @@ const Classic: FC<Props> = ({ gameId }) => {
                         </div>
                       </form>
                       <div className="w-full pt-1 text-sm sm:text-lg text-right text-secondary">
-                        Balance: {Math.floor(Number(dustBalance * 1000)) / 1000}{" "}
-                        DUST
+                        Balance: {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
+                        {gameData.gameInfo.token}
                       </div>
                     </div>
 
                     {winningTeam !== undefined &&
                       finalWinner === undefined &&
-                      dustBet >= 1 && (
+                      tokenBet >= 1 && (
                         <div className="w-full mt-4 py-3 px-4 bg-light text-center text-sm sm:text-base">
                           <p className="relative">
                             Potential reward (highly volatile)
@@ -875,7 +880,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                             </div>
                           </div> */}
                           <div className="font-base-b">
-                            {rewardEstimate || "N/A"} DUST
+                            {rewardEstimate || "N/A"} {gameData.gameInfo.token}
                           </div>
                         </div>
                       )}
@@ -914,7 +919,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     gameData?.gameInfo?.status !== "cancelled" &&
                     gameData?.gameInfo?.status !== "completed" ? (
                       <button
-                        onClick={() => !buttonDisabled && handlePayDust()}
+                        onClick={() => !buttonDisabled && handlePayToken()}
                         disabled={buttonDisabled}
                         className={`${
                           buttonDisabled
@@ -928,13 +933,13 @@ const Classic: FC<Props> = ({ gameId }) => {
                     ) : (
                       <div className="bg-light text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
                         {!finalWinner &&
-                        dustBet &&
+                        tokenBet &&
                         winningTeam &&
                         success &&
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p className="font-base-b">{`Success! You picked ${winningTeam} with ${dustBet} DUST.`}</p>
+                            <p className="font-base-b">{`Success! You picked ${winningTeam} with ${tokenBet} ${gameData.gameInfo.token}.`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${txn}${
@@ -949,7 +954,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : finalWinner === winningTeam && winAmount ? (
                           // you picked the winning team
                           <>
-                            <p className="font-base-b">{`LFG! You won ${winAmount} DUST!`}</p>
+                            <p className="font-base-b">{`LFG! You won ${winAmount} ${gameData.gameInfo.token}!`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${airdropTxn}${

@@ -150,7 +150,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
           {/* activity feed */}
           <div className="flex flex-col items-center gap-4 mb-8">
             {activities.map((item, index) => (
-              <ActivityItem item={item} key={index} />
+              <ActivityItem item={item} key={index} gameData={gameData} />
             ))}
           </div>
           {/* TODO: how to check if there are more activities? */}

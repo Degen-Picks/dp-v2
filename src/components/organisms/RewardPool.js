@@ -222,8 +222,8 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               <div className="pr-2 sm:pr-6">
                 <div className="text-sm sm:text-xl font-base-b">
                   {gameData.totalSpent.length > 4
-                    ? `${gameData.totalSpent.toFixed(4)} DUST`
-                    : `${gameData.totalSpent} DUST`}
+                    ? `${gameData.totalSpent.toFixed(4)} ${gameData.gameInfo.token}`
+                    : `${gameData.totalSpent} ${gameData.gameInfo.token}`}
                 </div>
                 <div className="text-[11px] sm:text-sm text-secondary">
                   total volume
@@ -239,7 +239,7 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               </div>
               <div className="pl-2 sm:pl-6 text-right">
                 <div className="text-sm sm:text-xl font-base-b">
-                  {gameData.entryFee} DUST
+                  {gameData.entryFee} ${gameData.gameInfo.token}
                 </div>
                 <div className="text-[11px] sm:text-sm text-secondary">
                   entry fee
@@ -259,17 +259,17 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               <div className="w-full flex flex-row justify-between items-center pb-10">
                 <PickemPlace place="first">
                   <span className="font-base-b">
-                    {Math.floor(gameData.totalSpent * 0.65 * 0.9)} DUST
+                    {Math.floor(gameData.totalSpent * 0.65 * 0.9)} ${gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
                 <PickemPlace place="second">
                   <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.25 * 0.9)} DUST
+                    {Math.floor(gameData.totalSpent * 0.25 * 0.9)} ${gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
                 <PickemPlace place="third">
                   <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.1 * 0.9)} DUST
+                    {Math.floor(gameData.totalSpent * 0.1 * 0.9)} ${gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
               </div>

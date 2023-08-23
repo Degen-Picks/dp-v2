@@ -1,3 +1,4 @@
+import { Token } from "./Token";
 import { WagerUser } from "./Wagers";
 
 export interface Activity {
@@ -33,6 +34,7 @@ export interface GameInfoClass {
   timeStr: string;
   dayTime: string;
   id: string;
+  token: Token | null;
 }
 
 export interface Team {
