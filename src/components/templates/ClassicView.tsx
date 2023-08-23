@@ -9,18 +9,16 @@ import {
   ActivityFeed,
   ManageGame,
   RulesModal,
-  GameMetadata,
   QuestionIcon,
   ClassicHero,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import getDustBalance, { getTokenBalance } from "../../utils/getTokenBalance";
-import sendDustTransaction from "../../utils/sendTransaction";
+import { getTokenBalance } from "../../utils/getTokenBalance";
 import toast from "react-hot-toast";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
-import { sleep } from "../../utils";
+import { getCurrencyIcon, sleep } from "../../utils";
 import { GameInfo, Wager } from "@/types";
 import { ToggleConfig } from "../molecules/ViewToggle";
 import {
@@ -272,7 +270,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       const gameDate = new Date(currentWager.gameDate);
 
-      // TODO make sure same as init
+      // TODO: we can inherit the type from the backend (using typeof return value)
       const parsed = {
         gameInfo: {
           description: currentWager.description,
@@ -560,7 +558,11 @@ const Classic: FC<Props> = ({ gameId }) => {
   useEffect(() => {
     async function fetchWalletData() {
       if (publicKey && gameData.gameInfo.token) {
-        const balance = await getTokenBalance(publicKey, connection, gameData.gameInfo.token);
+        const balance = await getTokenBalance(
+          publicKey,
+          connection,
+          gameData.gameInfo.token
+        );
         setTokenBalance(balance);
 
         // check if the user doesn't have enough DUST
@@ -845,17 +847,17 @@ const Classic: FC<Props> = ({ gameId }) => {
                           rounded-md px-2 h-[50px] w-full text-center focus:outline-link focus:bg-white"
                         />
                         <div className="absolute left-2 top-[10px]">
-                          {/* TODO: Get icon based off ${gameData.gameInfo.token} */}
                           <Image
-                            src="/images/icons/dust_square2.png"
+                            src={getCurrencyIcon(gameData.gameInfo.token)}
                             height={30}
                             width={30}
-                            alt="dust icon"
+                            alt={gameData.gameInfo.token ?? "dust"}
                           />
                         </div>
                       </form>
                       <div className="w-full pt-1 text-sm sm:text-lg text-right text-secondary">
-                        Balance: {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
+                        Balance:{" "}
+                        {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
                         {gameData.gameInfo.token}
                       </div>
                     </div>

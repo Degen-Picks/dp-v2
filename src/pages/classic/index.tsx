@@ -2,7 +2,7 @@ import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getWagers } from "@/utils";
+import { getCurrencyIcon, getWagers } from "@/utils";
 import {
   Navbar,
   GameFilter,
@@ -20,6 +20,7 @@ interface Props {
   status: string;
   gameTime: number;
   creator: WagerUser;
+  token: string | null;
 }
 
 export const PropSection: FC<Props> = ({
@@ -29,6 +30,7 @@ export const PropSection: FC<Props> = ({
   status,
   gameTime,
   creator,
+  token,
 }) => {
   return (
     <Link className="w-full" passHref href={`/classic/${encodeURI(slug)}`}>
@@ -62,14 +64,13 @@ export const PropSection: FC<Props> = ({
               </div>
             ) : null}
             <Timer status={status} gameTime={gameTime} />
-            {/* TODO: set up for multiple currencies */}
           </div>
         </div>
         <Image
-          src="/images/icons/dust_square2.png"
+          src={getCurrencyIcon(token)}
           width={30}
           height={30}
-          alt="dust"
+          alt="token icon"
           className="absolute top-3 right-3"
         />
       </div>
@@ -123,6 +124,7 @@ const GameQueue = () => {
             status={game.status}
             gameTime={game.endDate}
             creator={game.creator}
+            token={game.token}
           />
         );
       }
@@ -142,6 +144,7 @@ const GameQueue = () => {
           status={game.status}
           gameTime={game.endDate}
           creator={game.creator}
+          token={game.token}
         />
       );
     });
@@ -159,6 +162,7 @@ const GameQueue = () => {
           status={game.status}
           gameTime={game.endDate}
           creator={game.creator}
+          token={game.token}
         />
       );
     });
@@ -180,6 +184,7 @@ const GameQueue = () => {
           status={game.status}
           gameTime={game.endDate}
           creator={game.creator}
+          token={game.token}
         />
       );
     });

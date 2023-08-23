@@ -13,6 +13,7 @@ export interface Wager {
   metadata: any[];
   creator: WagerUser;
   description: string;
+  token: string | null;
 }
 
 export interface Selection {

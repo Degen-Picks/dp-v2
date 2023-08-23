@@ -1,10 +1,11 @@
-import { FC, useEffect } from "react";
-import { GameStatus } from "../templates/ClassicView";
-import { GameInfo } from "@/types";
-import { FallbackImage, Timer, VerifiedBadge } from "@/components";
+import { FC } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { GameStatus } from "../templates/ClassicView";
+import { FallbackImage, Timer, VerifiedBadge } from "@/components";
+import { GameInfo } from "@/types";
 import { smallClickAnimation } from "@/configs";
+import { getCurrencyIcon } from "@/utils";
 
 interface Props {
   gameStatus: GameStatus;
@@ -13,6 +14,7 @@ interface Props {
 
 const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
   const Divider = <div className="w-[1px] h-9 bg-[#A89FA8]" />;
+
   return (
     <div className="w-fit mx-auto flex items-center gap-4 mt-5">
       {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
@@ -58,15 +60,16 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
       )}
       <div className="flex items-center gap-4">
         {Divider}
-        {/* TODO: add other currencies */}
         <div className="flex items-center gap-2">
           <Image
-            src="/images/icons/dust_square2.png"
+            src={getCurrencyIcon(gameData?.gameInfo?.token)}
             width={30}
             height={30}
-            alt="currency"
+            alt="token icon"
           />
-          <p className="hidden sm:blocl text-lg">DUST</p>
+          <p className="hidden sm:block text-lg">
+            {gameData?.gameInfo?.token ?? "DUST"}
+          </p>
         </div>
       </div>
     </div>
