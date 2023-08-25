@@ -26,6 +26,7 @@ import {
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import sendTransaction from "../../utils/sendTransaction";
+import { SplToken, TOKEN_MAP } from "@/types/Token";
 
 interface Props {
   gameId: string | string[];
@@ -64,6 +65,8 @@ const Classic: FC<Props> = ({ gameId }) => {
   const [utcGameDate, setUtcGameDate] = useState<number>(); // Date picks close
 
   const [finalWinner, setFinalWinner] = useState<string>();
+
+  const [minimumBet, setMinimumBet] = useState<number>(1);
 
   const [toggleConfig, setToggleConfig] = useState<ToggleConfig>({
     option1: {
@@ -271,7 +274,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       const gameDate = new Date(currentWager.gameDate);
 
       // TODO: we can inherit the type from the backend (using typeof return value)
-      const parsed = {
+      const parsed: GameInfo = {
         gameInfo: {
           description: currentWager.description,
           endDate: currentWager.endDate,
@@ -334,6 +337,12 @@ const Classic: FC<Props> = ({ gameId }) => {
         case "cancelled":
           newGameStatus = GameStatus.CANCELLED;
           break;
+      }
+
+      if(parsed.gameInfo.token === "SOL") {
+        setMinimumBet(0.01);
+      } else {
+        setMinimumBet(TOKEN_MAP[parsed.gameInfo.token!].minimum);
       }
 
       setGameStatus(newGameStatus);
@@ -400,7 +409,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       winningTeam &&
       !agree &&
       tokenBet !== null &&
-      tokenBet >= 1 &&
+      tokenBet >= minimumBet &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -411,7 +420,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       !isBroke &&
       winningTeam &&
       tokenBet !== null &&
-      tokenBet >= 1 &&
+      tokenBet >= minimumBet &&
       agree &&
       gameStatus === GameStatus.OPEN
     ) {
@@ -864,7 +873,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
                     {winningTeam !== undefined &&
                       finalWinner === undefined &&
-                      tokenBet >= 1 && (
+                      tokenBet >= minimumBet && (
                         <div className="w-full mt-4 py-3 px-4 bg-light text-center text-sm sm:text-base">
                           <p className="relative">
                             Potential reward (highly volatile)
