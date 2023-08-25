@@ -17,7 +17,7 @@ const ClassicHero: FC<Props> = ({ gameData, gameStatus }) => {
         text="All games"
         handleClick={() => router.push("/classic")}
       />
-      <div className="w-full max-w-[480px] mx-auto pt-3">
+      <div className="w-full max-w-[480px] mx-auto pt-3 flex flex-col items-center justify-center gap-2.5">
         <div className="font-base text-center text-lg">
           {gameData.gameInfo.description}
         </div>

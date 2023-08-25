@@ -40,21 +40,22 @@ const CreationDropMenu: FC<Props> = ({
     setIsOpen(false);
   };
 
+  // TODO: abstract this function
   const fetchIcon = (item: string) => {
     var urlPath: string = "";
     if (accessor === "token") {
       switch (item) {
         case "DUST":
-          urlPath = "/images/icons/dust_square.svg";
+          urlPath = "/images/icons/dust.png";
           break;
         case "SOL":
-          urlPath = "/images/icons/solana.svg";
+          urlPath = "/images/icons/solana.png";
           break;
         case "USDC":
-          urlPath = "/images/icons/usdc.svg";
+          urlPath = "/images/icons/usdc.png";
           break;
         default:
-          urlPath = "/images/icons/dust_square.svg";
+          urlPath = "/images/icons/dust.png";
           break;
       }
     } else if (accessor === "team1Name" || accessor === "team2Name") {

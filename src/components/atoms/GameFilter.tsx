@@ -9,9 +9,9 @@ interface Props {
 
 const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
   return (
-    <div className="relative w-[200px] h-[30px] flex items-center z-40">
+    <div className="relative h-[38px] flex items-center gap-1 z-40 bg-white p-1">
       <motion.button
-        className={`w-1/2 h-full flex items-center justify-center ${
+        className={`w-[80px] h-[30px] flex items-center justify-center ${
           activeFilter ? "bg-primary text-white" : "bg-transparent text-primary"
         }`}
         {...smallClickAnimation}
@@ -20,7 +20,7 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
         <p>Live</p>
       </motion.button>
       <motion.button
-        className={`w-1/2 h-full flex items-center justify-center ${
+        className={`w-[80px] h-[30px] flex items-center justify-center ${
           !activeFilter
             ? "bg-primary text-white"
             : "bg-transparent text-primary"
@@ -28,7 +28,7 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
         {...smallClickAnimation}
         onClick={() => setActiveFilter(false)}
       >
-        <p>Completed</p>
+        <p>Past</p>
       </motion.button>
     </div>
   );

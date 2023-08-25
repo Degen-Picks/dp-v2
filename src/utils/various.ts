@@ -9,12 +9,12 @@ export function sleep(ms: number) {
 export const getCurrencyIcon = (token: string | null) => {
   switch (token) {
     case "DUST":
-      return "/images/icons/dust_square.svg";
+      return "/images/icons/dust.png";
     case "SOL":
-      return "/images/icons/solana.svg";
+      return "/images/icons/solana.png";
     case "USDC":
-      return "/images/icons/usdc.svg";
+      return "/images/icons/usdc.png";
     default:
-      return "/images/icons/dust_square.svg";
+      return "/images/icons/dust.png";
   }
 };
