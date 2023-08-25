@@ -17,7 +17,7 @@ export const TOKEN_MAP: Record<SplToken, TokenDetails> = generalConfig.useDevNet
         minimum: 1
     },
     USDC: {
-        publicKey: new PublicKey("AkDWDJ37DqhLN95TL467NFAPixDTq1L6iXLJ1Boqznr1"),
+        publicKey: new PublicKey("94Ab85gYry4raFhHsLbVJK7W7iR4cS8jyeFr7oZQcgAA"),
         decimals: 6,
         minimum: 1
     }
