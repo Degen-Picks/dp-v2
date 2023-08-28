@@ -39,22 +39,21 @@ const TeamBox: FC<TProps> = ({
     }
     `}
   >
-    <div className="flex flex-col text-center h-full justify-center w-fit mx-auto">
+    <div className="flex flex-col text-center h-full items-center justify-center w-fit mx-auto">
       {teamImg && teamImg !== "" && (
-        <div className="mx-auto w-[35px] h-[35px]">
-          <Image
-            src={teamImg}
-            width={30}
-            height={30}
-            alt={`${teamName} logo`}
-          />
-        </div>
+        <Image
+          src={teamImg}
+          width={30}
+          height={30}
+          alt={`${teamName} logo`}
+          className="flex items-center justify-center"
+        />
       )}
       <div>
         <div
           className={`${
             active ? "font-base-b" : "font-base text-secondary"
-          } text-center text-xs sm:text-base`}
+          } text-center text-lg`}
         >
           {teamName}
         </div>
@@ -62,7 +61,7 @@ const TeamBox: FC<TProps> = ({
           <div
             className={`${
               active ? "font-base-b" : "font-base text-secondary"
-            } text-[10px] sm:text-xs`}
+            } text-base leading-none`}
           >
             {teamRecord}
           </div>

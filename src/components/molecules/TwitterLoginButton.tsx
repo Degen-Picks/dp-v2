@@ -176,7 +176,7 @@ const TwitterLoginButton: FC = () => {
           rounded-full sm:rounded-none items-center sm:gap-2 group`}
         >
           {!isTwitterLinked || !userData ? (
-            <div className="flex items-center justify-center gap-2 px-2">
+            <div className="flex items-center justify-center gap-2.5 px-2">
               <Image
                 src="/images/icons/x.png"
                 width={30}
@@ -187,13 +187,16 @@ const TwitterLoginButton: FC = () => {
             </div>
           ) : (
             <div>
-              <div className="flex items-center justify-center gap-2 sm:px-2 sm:group-hover:hidden">
-                <div className="border border-light flex items-center justify-center rounded-full w-[35px] h-[35px] overflow-hidden">
+              <div className="flex items-center justify-center gap-2.5 sm:px-2 sm:group-hover:hidden">
+                <div
+                  className="border border-light flex items-center justify-center rounded-full 
+                  w-[30px] h-[30px] overflow-hidden"
+                >
                   <FallbackImage
                     src={userData?.twitterData!.profileImage}
-                    fallbackSrc={"/images/icons/user-alt.svg"}
-                    width={35}
-                    height={35}
+                    fallbackSrc={"/images/icons/user-alt.png"}
+                    width={30}
+                    height={30}
                     alt="Twitter Profile Image"
                   />
                 </div>

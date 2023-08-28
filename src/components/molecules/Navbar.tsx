@@ -11,7 +11,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const [winWidth] = useWindowSize();
-  const isMobile = winWidth < 640;
+  const isMobile = winWidth < 1024;
 
   useEffect(() => {
     if (router.isReady) {
@@ -23,27 +23,27 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-white lg:bg-transparent">
+      <div className="bg-white md:bg-transparent">
         <div
-          className="relative flex justify-center sm:justify-between 
-          py-4 max-w-[1600px] mx-auto px-4 sm:px-10"
+          className="relative flex justify-center md:justify-between 
+          py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
         >
           <Link href="/">
             <Image
               src="/images/logo_new.png"
-              width={50}
-              height={50}
+              width={60}
+              height={60}
               alt="degen picks logo"
               priority
             />
           </Link>
-          <div className="hidden sm:flex items-center gap-4 justify-end">
+          <div className="hidden lg:flex items-center gap-4 justify-end">
             <TwitterLoginButton />
             <ConnectButton />
           </div>
           {isMobile && (
             <div
-              className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center"
+              className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center bg-white p-2.5"
               onClick={() => setOpen(true)}
             >
               <svg

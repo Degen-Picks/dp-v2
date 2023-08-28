@@ -45,33 +45,32 @@ export const PropSection: FC<Props> = ({
           </p>
           <div className="flex items-center justify-center gap-2 mt-[10px]">
             {creator?.roles?.includes("ADMIN") ? (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-[5px]">
                 <VerifiedBadge />
                 <p className="uppercase">degen picks team</p>
-                <div className="h-5 w-[1px] bg-secondary" />
               </div>
             ) : creator?.twitterData ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-[5px]">
                 <FallbackImage
                   src={creator.twitterData.profileImage}
-                  fallbackSrc={"/images/icons/user-alt.svg"}
+                  fallbackSrc={"/images/icons/user-alt.png"}
                   width={24}
                   height={24}
                   alt="user image"
                 />
-                <p>{creator?.twitterData?.username}</p>
-                <div className="h-5 w-[1px] bg-secondary" />
+                <p className="text-base">{creator?.twitterData?.username}</p>
               </div>
             ) : null}
+            {creator && <div className="h-5 w-[1px] bg-secondary" />}
             <Timer status={status} gameTime={gameTime} />
           </div>
         </div>
         <Image
           src={getCurrencyIcon(token)}
-          width={30}
-          height={30}
+          width={24}
+          height={24}
           alt="token icon"
-          className="absolute top-3 right-3"
+          className="absolute top-2.5 right-2.5"
         />
       </div>
     </Link>
@@ -242,7 +241,7 @@ const GameQueue = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-5 items-center w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
-          <div className="hidden md:block absolute top-24 left-1/2 -translate-x-1/2">
+          <div className="hidden md:block absolute top-[84px] left-1/2 -translate-x-1/2">
             <GameFilter
               activeFilter={activeFilter}
               setActiveFilter={setActiveFilter}

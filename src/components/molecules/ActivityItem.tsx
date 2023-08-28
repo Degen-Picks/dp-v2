@@ -34,7 +34,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
             >
               <FallbackImage
                 src={item.userImage}
-                fallbackSrc={"/images/icons/user-alt.svg"}
+                fallbackSrc={"/images/icons/user-alt.png"}
                 width={45}
                 height={45}
                 alt="user image"
@@ -72,7 +72,9 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
       <div className="flex flex-col items-end gap-1">
         <p>{item.teamName}</p>
         {/* round to whole numbers */}
-        <p className="text-sm">{Math.ceil(item.dustBet * 100) / 100} {gameData.gameInfo.token}</p>
+        <p className="text-sm">
+          {Math.ceil(item.dustBet * 100) / 100} {gameData.gameInfo.token}
+        </p>
       </div>
     </div>
   );

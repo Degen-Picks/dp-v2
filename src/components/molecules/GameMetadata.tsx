@@ -38,7 +38,7 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
         >
           <FallbackImage
             src={gameData?.gameInfo?.creator.twitterData.profileImage}
-            fallbackSrc={"/images/icons/user-alt.svg"}
+            fallbackSrc={"/images/icons/user-alt.png"}
             width={24}
             height={24}
             alt="user image"

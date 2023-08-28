@@ -44,7 +44,7 @@ const getUserImage = (placedBet: any) => {
   if (placedBet.user && placedBet.user?.twitterData?.profileImage) {
     return placedBet.user.twitterData.profileImage;
   } else {
-    return "/images/icons/user-alt.svg";
+    return "/images/icons/user-alt.png";
   }
 };
 

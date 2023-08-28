@@ -15,8 +15,8 @@ const FallbackImage: FC<Props> = ({ src, fallbackSrc, width, height, alt }) => {
 
   const handleError = () => {
     setImageSrc(fallbackSrc);
-    setFinalWidth(20);
-    setFinalHeight(20);
+    setFinalWidth(24);
+    setFinalHeight(24);
   };
 
   return (

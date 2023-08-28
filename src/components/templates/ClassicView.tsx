@@ -339,7 +339,7 @@ const Classic: FC<Props> = ({ gameId }) => {
           break;
       }
 
-      if(parsed.gameInfo.token === "SOL") {
+      if (parsed.gameInfo.token === "SOL") {
         setMinimumBet(0.01);
       } else {
         setMinimumBet(TOKEN_MAP[parsed.gameInfo.token!].minimum);
@@ -864,7 +864,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           />
                         </div>
                       </form>
-                      <div className="w-full pt-1 text-sm sm:text-lg text-right text-secondary">
+                      <div className="w-full pt-1 text-lg text-right text-secondary">
                         Balance:{" "}
                         {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
                         {gameData.gameInfo.token}
@@ -874,7 +874,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     {winningTeam !== undefined &&
                       finalWinner === undefined &&
                       tokenBet >= minimumBet && (
-                        <div className="w-full mt-4 py-3 px-4 bg-light text-center text-sm sm:text-base">
+                        <div className="w-full mt-4 py-3 px-4 bg-light text-center text-lg">
                           <p className="relative">
                             Potential reward (highly volatile)
                           </p>
@@ -899,7 +899,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     <Divider />
 
                     <div
-                      className={`my-2 w-fit mr-auto text-left text-sm sm:text-base ${
+                      className={`my-2 w-fit mr-auto text-left text-lg ${
                         !success && "cursor-pointer disabled:cursor-default"
                       }`}
                       onClick={() =>
