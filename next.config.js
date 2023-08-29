@@ -27,7 +27,7 @@ const nextConfig = {
                 has: [
                     {
                         type: 'host',
-                        value: 'app.degen-picks-git-development-degenpicks.vercel.app',
+                        value: 'app.staging.degenpicks.xyz',
                     },
                 ],
                 destination: '/classic/:path*',
