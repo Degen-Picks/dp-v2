@@ -2,6 +2,8 @@ import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { GameInfo } from "../../types/GameInfo";
 import { GameStatus } from "../templates/ClassicView";
+import { motion } from "framer-motion";
+import { smallClickAnimation } from "@/configs";
 
 interface TProps {
   active: boolean;
@@ -30,7 +32,8 @@ const TeamBox: FC<TProps> = ({
   teamRecord,
   valid,
 }) => (
-  <div
+  <motion.div
+    {...smallClickAnimation}
     className={`sm:w-[249px] ${
       teamImg === "" ? "h-[50px]" : "h-[90px]"
     } py-3 sm:py-0 sm:px-0 hover:cursor-pointer
@@ -68,7 +71,7 @@ const TeamBox: FC<TProps> = ({
         )}
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 const ClassicVersusBox: FC<VProps> = ({

@@ -852,8 +852,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                           onChange={(e) => {
                             setTokenBet(parseFloat(e.target.value));
                           }}
-                          className="disabled:opacity-70 disabled:cursor-not-allowed bg-light font-base-b 
-                          rounded-md px-2 h-[50px] w-full text-center focus:outline-link focus:bg-white"
+                          className="disabled:opacity-70 disabled:cursor-not-allowed 
+                          bg-light px-2 h-[50px] w-full text-center focus:outline-none 
+                          focus:ring-2 focus:ring-link rounded-none"
                         />
                         <div className="absolute left-2 top-[10px]">
                           <Image
@@ -882,7 +883,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                             <QuestionIcon fill="#651FFF" />
                             <div
                               className="z-50 absolute left-1/2 -translate-x-1/2 sm:bottom-1/2 sm:left-full sm:translate-x-0 ml-2 px-2 py-1 text-sm w-[200px] sm:w-[250px]
-                              text-containerHead bg-container rounded-lg opacity-0 group-hover:opacity-100 
+                              text-containerHead bg-container opacity-0 group-hover:opacity-100 
                               transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
                             >
                               Your reward is determined by the multiplier.
@@ -897,7 +898,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       )}
 
                     <Divider />
-
+                    {/* TODO: replace with new component */}
                     <div
                       className={`my-2 w-fit mr-auto text-left text-lg ${
                         !success && "cursor-pointer disabled:cursor-default"

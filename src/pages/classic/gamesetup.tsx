@@ -6,6 +6,7 @@ import {
   CreationTextField,
   Divider,
   CreateModal,
+  AgreeCheckbox,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../../utils/dateUtil";
@@ -318,25 +319,11 @@ const GameSetup = () => {
             </div>
             <div className="py-2 w-full flex flex-col">
               <Divider />
-              <div
-                className="my-2 w-fit mr-auto text-left text-sm sm:text-base cursor-pointer"
-                onClick={() => setAgree(!agree)}
-              >
-                <input
-                  type="checkbox"
-                  checked={!!agree}
-                  onChange={() => setAgree(!agree)}
-                  className="mr-2 accent-link hover:accent-linkHover cursor-pointer"
-                />
-                You agree to{" "}
-                <span
-                  className="text-link hover:text-linkHover underline font-bold hover:cursor-pointer transition-all duration-150"
-                  onClick={() => setShowModal(true)}
-                >
-                  the rules
-                </span>
-                .
-              </div>
+              <AgreeCheckbox
+                agree={agree}
+                setAgree={setAgree}
+                setShowModal={setShowModal}
+              />
               <Divider />
             </div>
             <div className="w-full flex justify-between">

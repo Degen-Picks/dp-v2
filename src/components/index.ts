@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 
 // icons
+const CaratDown = dynamic(() => import("./@icons/CaratDown"));
 const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
@@ -10,6 +11,7 @@ const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 const WarningIcon = dynamic(() => import("./@icons/WarningIcon"));
 
 // atoms
+const AgreeCheckbox = dynamic(() => import("./atoms/AgreeCheckbox"));
 const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
@@ -65,6 +67,7 @@ const ManageGame = dynamic(() => import("./templates/ManageGame"));
 
 export {
   // icons
+  CaratDown,
   Close,
   Discord,
   DiscordFooter,
@@ -74,6 +77,7 @@ export {
   WarningIcon,
 
   // atoms
+  AgreeCheckbox,
   AlertBanner,
   BackButton,
   ConnectButton,
