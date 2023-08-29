@@ -365,7 +365,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     isBroke ||
     winningTeam === undefined ||
     tokenBet === undefined ||
-    tokenBet < 1 ||
+    tokenBet < minimumBet ||
     agree === false ||
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
@@ -397,7 +397,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     } else if (
       !isBroke &&
       winningTeam &&
-      (tokenBet === null || tokenBet < 1 || !rewardEstimate) &&
+      (tokenBet === null || tokenBet < minimumBet || !rewardEstimate) &&
       gameStatus === GameStatus.OPEN
     ) {
       {
