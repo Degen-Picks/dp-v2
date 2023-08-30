@@ -20,7 +20,7 @@ const nextConfig = {
                         value: 'app.degenpicks.xyz',
                     },
                 ],
-                destination: '/classic/:path*',
+                destination: '/classic',
             }
         ]
     }
