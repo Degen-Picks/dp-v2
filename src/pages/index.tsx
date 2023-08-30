@@ -6,9 +6,12 @@ import {
   Friends,
   Navbar,
   DataPoint,
+  ClassicView,
 } from "@/components";
 import { getWagers, getPickems, getStats } from "../utils/api/apiUtil";
 import { Pickem, Stats, Wager } from "@/types";
+import { GetServerSideProps, NextPage } from "next/types";
+import GameQueue from "./classic";
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats>();
@@ -133,4 +136,27 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+interface HomePageProps {
+  host: string | null;
+  gameId: string | null;
+}
+
+const HomePage: NextPage<HomePageProps> = ({ host, gameId }) => {
+  if (host === 'app.degenpicks.xyz' || host === 'staging.app.degenpicks.xyz') {
+    if(!gameId) {
+      return <GameQueue />;
+    }
+
+    return <ClassicView gameId={gameId} />;
+  }
+  return <Landing />;
+};
+
+
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async (context) => {
+  const host = context.req.headers.host || null;
+  const gameId = context.query.gameId ? String(context.query.gameId) : null;
+  return { props: { host, gameId } };
+};
+
+export default HomePage;
