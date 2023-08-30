@@ -18,3 +18,5 @@ export const getCurrencyIcon = (token: string | null) => {
       return "/images/icons/dust.png";
   }
 };
+
+export const pickFee = 0.069;

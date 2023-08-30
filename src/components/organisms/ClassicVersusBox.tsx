@@ -36,10 +36,9 @@ const TeamBox: FC<TProps> = ({
     {...smallClickAnimation}
     className={`sm:w-[249px] ${
       teamImg === "" ? "h-[50px]" : "h-[90px]"
-    } py-3 sm:py-0 sm:px-0 hover:cursor-pointer
-    bg-${active ? "[#6E17FF/10]" : "light"} ${
-      !valid && "sm:hover:cursor-not-allowed"
-    }
+    } py-3 sm:py-0 sm:px-0 hover:cursor-pointer\
+    ${active ? "bg-[#6E17FF/10]" : "bg-versusBg"}
+    ${!valid && "sm:hover:cursor-not-allowed"}
     `}
   >
     <div className="flex flex-col text-center h-full items-center justify-center w-fit mx-auto">
@@ -53,19 +52,9 @@ const TeamBox: FC<TProps> = ({
         />
       )}
       <div>
-        <div
-          className={`${
-            active ? "font-base-b" : "font-base text-secondary"
-          } text-center text-lg`}
-        >
-          {teamName}
-        </div>
+        <div className={`text-primary text-center text-lg`}>{teamName}</div>
         {teamRecord !== "" && (
-          <div
-            className={`${
-              active ? "font-base-b" : "font-base text-secondary"
-            } text-base leading-none`}
-          >
+          <div className={`text-secondary text-base leading-none`}>
             {teamRecord}
           </div>
         )}

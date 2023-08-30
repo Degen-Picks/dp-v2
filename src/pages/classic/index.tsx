@@ -13,6 +13,7 @@ import {
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   title: string;
@@ -82,6 +83,8 @@ const GameQueue = () => {
   const [games, setGames] = useState<Wager[]>([]);
   const [activeFilter, setActiveFilter] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  const { publicKey } = useWallet();
 
   // this function fetches the status for each game
   const loadGameData = async () => {
@@ -241,8 +244,15 @@ const GameQueue = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-5 items-center w-[90%] md:w-fit mx-auto justify-center mb-20 z-20">
-          <div className="hidden md:block absolute top-[84px] left-1/2 -translate-x-1/2">
+        <div
+          className="flex flex-col gap-5 items-center w-[90%] 
+          md:w-fit mx-auto justify-center mb-20 z-20"
+        >
+          <div
+            className={`hidden md:block absolute ${
+              publicKey ? "top-[84px]" : "top-7"
+            }  left-1/2 -translate-x-1/2`}
+          >
             <GameFilter
               activeFilter={activeFilter}
               setActiveFilter={setActiveFilter}

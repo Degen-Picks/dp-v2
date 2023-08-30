@@ -1,6 +1,6 @@
 import { useState, FC, useEffect } from "react";
 import Image from "next/image";
-import { ActivityItem, ClassicHero } from "@/components";
+import { ActivityItem, ClassicHero, Divider, TwitterShare } from "@/components";
 import { Activity, GameInfo } from "@/types";
 import { generalConfig, smallClickAnimation } from "@/configs";
 import { motion } from "framer-motion";
@@ -58,45 +58,38 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
 
   // TODO: Move to apiUtil
   const loadActivities = async () => {
-    const ITEMS_PER_PAGE = 5;
-    try {
-      const response = await axios.post(
-        `${generalConfig.apiUrl}/api/activityFeed`,
-        {
-          wagerId: gameData.gameInfo.id,
-          limit: ITEMS_PER_PAGE,
-          page: page,
+    await axios
+      .post(`${generalConfig.apiUrl}/api/activityFeed`, {
+        wagerId: gameData.gameInfo.id,
+      })
+      .then(function (response: any) {
+        const placedBets = response.data.data.reverse();
+        const data = [];
+        let id = 0;
+
+        for (const placedBet of placedBets) {
+          const formatted: Activity = {
+            id,
+            name: getName(placedBet),
+            time: dateFromObjectId(placedBet._id),
+            dustBet: placedBet.amounts[0].amount,
+            teamImage: getTeamImage(placedBet, gameData),
+            teamName: getTeamName(placedBet, gameData),
+            userImage: getUserImage(placedBet),
+            twitterName: placedBet.user?.twitterData?.username,
+          };
+
+          data.push(formatted);
+          id++;
         }
-      );
-
-      const placedBets = response.data.data.reverse();
-      const data: Activity[] = [];
-
-      let id = (page - 1) * ITEMS_PER_PAGE;
-
-      for (const placedBet of placedBets) {
-        const formatted = {
-          id,
-          name: getName(placedBet),
-          time: dateFromObjectId(placedBet._id),
-          dustBet: placedBet.amounts[0].amount,
-          teamName: getTeamName(placedBet, gameData),
-          teamImage: getTeamImage(placedBet, gameData),
-          userImage: getUserImage(placedBet),
-          twitterName: placedBet.user?.twitterData?.username,
-        };
-
-        data.push(formatted);
-        id++;
-      }
-
-      if (activities !== data) {
-        // this means that the data has changes
-        setActivities([...data]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+        if (activities !== data) {
+          // this means that the data has changed
+          setActivities(data);
+        }
+      })
+      .catch(function (error: any) {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -144,23 +137,37 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
       ) : (
         <>
           {/* logo section */}
-          <div className="my-10">
+          <div className="mt-10 mb-[72px]">
             <ClassicHero gameData={gameData} gameStatus={gameStatus} />
           </div>
           {/* activity feed */}
-          <div className="flex flex-col items-center gap-4 mb-8">
-            {activities.map((item, index) => (
-              <ActivityItem item={item} key={index} gameData={gameData} />
-            ))}
+          <div className="relative flex flex-col items-center gap-4 mb-8">
+            <div className="absolute right-0 -top-12">
+              <TwitterShare
+                url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
+              />
+            </div>
+            {activities.length > 0 ? (
+              activities.map((item, index) => (
+                <ActivityItem item={item} key={index} gameData={gameData} />
+              ))
+            ) : (
+              <>
+                <Divider color="#A89FA8" margin="1px" />
+                <p className="text-xl font-base text-center w-fit mx-auto">
+                  Nothing to see here...
+                </p>
+              </>
+            )}
           </div>
           {/* TODO: how to check if there are more activities? */}
-          <motion.button
+          {/* <motion.button
             {...smallClickAnimation}
             className="text-link"
             onClick={() => setPage(page + 1)}
           >
             Load More
-          </motion.button>
+          </motion.button> */}
         </>
       )}
     </div>

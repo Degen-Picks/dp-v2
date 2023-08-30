@@ -1,4 +1,5 @@
 import { smallClickAnimation } from "@/configs";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -11,6 +12,9 @@ interface Props {
 
 const AlertBanner: FC<Props> = ({ text, ctaLink, ctaText }) => {
   const router = useRouter();
+  const { publicKey } = useWallet();
+
+  if (!publicKey) return null;
 
   return (
     <div

@@ -103,25 +103,9 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
     <div>
       {/* reward pool outer container */}
       <div className="relative bg-white w-5/6 md:w-[620px] mx-auto mt-10">
-        {/* title on top */}
-        {/* <div className="relative h-[50px] flex items-center justify-center text-center text-containerHead bg-container">
-          <p className="font-base-b text-sm sm:text-base">
-            {`${gameData?.gameInfo?.dateStr} @ ${gameData?.gameInfo?.timeStr}` ??
-              "Reward Pool"}
-          </p>
-          {picksOpened ? (
-            <div className="hidden absolute right-3 sm:flex flex-row items-center px-3 rounded-md bg-white text-red-500 text-sm">
-              <div className="blob"></div> Live
-            </div>
-          ) : (
-            <div className="hidden absolute right-3 sm:flex flex-row items-center px-3 rounded-md bg-white text-slate-600 text-sm">
-              Final
-            </div>
-          )}
-        </div> */}
         <div className="absolute right-0 -top-12">
           <TwitterShare
-            url={`https://degenpicks.xyz/classic/${gameData.gameInfo.id}`}
+            url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
           />
         </div>
         {gameType === "degen" ? (
@@ -222,7 +206,9 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               <div className="pr-2 sm:pr-6">
                 <div className="text-sm sm:text-xl font-base-b">
                   {gameData.totalSpent.length > 4
-                    ? `${gameData.totalSpent.toFixed(4)} ${gameData.gameInfo.token}`
+                    ? `${gameData.totalSpent.toFixed(4)} ${
+                        gameData.gameInfo.token
+                      }`
                     : `${gameData.totalSpent} ${gameData.gameInfo.token}`}
                 </div>
                 <div className="text-[11px] sm:text-sm text-secondary">
@@ -259,17 +245,20 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
               <div className="w-full flex flex-row justify-between items-center pb-10">
                 <PickemPlace place="first">
                   <span className="font-base-b">
-                    {Math.floor(gameData.totalSpent * 0.65 * 0.9)} ${gameData.gameInfo.token}
+                    {Math.floor(gameData.totalSpent * 0.65 * 0.9)} $
+                    {gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
                 <PickemPlace place="second">
                   <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.25 * 0.9)} ${gameData.gameInfo.token}
+                    {Math.floor(gameData.totalSpent * 0.25 * 0.9)} $
+                    {gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
                 <PickemPlace place="third">
                   <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.1 * 0.9)} ${gameData.gameInfo.token}
+                    {Math.floor(gameData.totalSpent * 0.1 * 0.9)} $
+                    {gameData.gameInfo.token}
                   </span>
                 </PickemPlace>
               </div>

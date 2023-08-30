@@ -18,7 +18,7 @@ import { getTokenBalance } from "../../utils/getTokenBalance";
 import toast from "react-hot-toast";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
-import { getCurrencyIcon, sleep } from "../../utils";
+import { getCurrencyIcon, pickFee, sleep } from "../../utils";
 import { GameInfo, Wager } from "@/types";
 import { ToggleConfig } from "../molecules/ViewToggle";
 import {
@@ -84,8 +84,6 @@ const Classic: FC<Props> = ({ gameId }) => {
   // wallet variables
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
-
-  const pickFee = 0.069;
 
   const [gameData, setGameData] = useState<GameInfo>({
     gameInfo: {
@@ -805,7 +803,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             {publicKey && !loading && <div className="pb-8" />}
             {/* second area / betting section */}
             {publicKey && (
-              <div className="z-10 h-auto w-full relative overflow-hidden">
+              <div className="z-10 h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
                 <div className="bg-white w-5/6 md:w-[620px] mx-auto">
                   {/* header */}
@@ -879,19 +877,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           <p className="relative">
                             Potential reward (highly volatile)
                           </p>
-                          {/* <div className="group absolute right-0 top-1/2 -translate-y-1/2">
-                            <QuestionIcon fill="#651FFF" />
-                            <div
-                              className="z-50 absolute left-1/2 -translate-x-1/2 sm:bottom-1/2 sm:left-full sm:translate-x-0 ml-2 px-2 py-1 text-sm w-[200px] sm:w-[250px]
-                              text-containerHead bg-container opacity-0 group-hover:opacity-100 
-                              transition-opacity duration-500 ease-in-out pointer-events-none group-hover:pointer-events-auto"
-                            >
-                              Your reward is determined by the multiplier.
-                              Multipliers are highly volatile when the pool is
-                              live, and lock when the pool closes.
-                            </div>
-                          </div> */}
-                          <div className="font-base-b">
+                          <div>
                             {rewardEstimate || "N/A"} {gameData.gameInfo.token}
                           </div>
                         </div>

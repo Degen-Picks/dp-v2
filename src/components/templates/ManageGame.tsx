@@ -1,11 +1,16 @@
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
-import { handleConfirmAction, refundClassic } from "@/utils";
+import { handleConfirmAction, pickFee, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { GameStatus } from "./ClassicView";
-import { ClassicHero } from "@/components";
+import {
+  ClassicHero,
+  ClassicVersusBox,
+  Divider,
+  TwitterShare,
+} from "@/components";
 import { airdropClassic } from "@/utils/api/classic/airdrop";
 
 interface Props {
@@ -78,6 +83,18 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
     setLoading(false);
   };
 
+  const handleCreatorFee = () => {
+    let creatorFee: number;
+    const totalVolume = gameData.team1.dustVol + gameData.team2.dustVol;
+    if (gameData.gameInfo.creator?.roles?.includes("ADMIN")) {
+      creatorFee = totalVolume * pickFee;
+    } else {
+      creatorFee = (totalVolume * pickFee) / 2;
+    }
+
+    return creatorFee.toFixed(3);
+  };
+
   const handleAirDrop = async () => {
     if (selectedTeam === undefined) {
       toast.error("Please select a winner first!");
@@ -113,133 +130,94 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
     setLoading(false);
   };
 
-  const getStyles = (team: 1 | 2) => {
-    if (isAirdropped) {
-      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
-        return "border-correct bg-[#E8F5E9]";
-      } else if (
-        selectedTeam?.teamName === gameData.team2.teamName &&
-        team === 2
-      ) {
-        return "border-correct bg-[#E8F5E9]";
-      } else {
-        return "border-transparent bg-white";
-      }
-    } else if (isRefunded) {
-      return "border-transparent bg-white";
-    } else {
-      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
-        return "border-link bg-[#7808FF1A]/10";
-      } else if (
-        selectedTeam?.teamName === gameData.team2.teamName &&
-        team === 2
-      ) {
-        return "border-link bg-[#7808FF1A]/10";
-      } else {
-        return "border-transparent bg-white";
-      }
-    }
-  };
-
   return (
     <div className="w-full">
-      <ClassicHero gameData={gameData} gameStatus={gameStatus} />
-      <div className="w-full flex flex-col items-center justify-center gap-5">
-        <div className="w-full relative">
-          <button
-            className={`${
-              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
-            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
-            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
-            disabled:cursor-default ${getStyles(1)}`}
-            disabled={isDisabled}
-            onClick={() => {
-              if (selectedTeam?.teamName === gameData.team1.teamName) {
-                setSelectedTeam(undefined);
-              } else {
-                setSelectedTeam(gameData.team1);
-              }
-            }}
-          >
-            <Image
-              src={gameData.team1.teamLogo}
-              width={30}
-              height={30}
-              alt={gameData.team1.teamName}
+      <div className="mt-16 mb-[72px]">
+        <ClassicHero gameData={gameData} gameStatus={gameStatus} />
+      </div>
+      <div className="w-full flex flex-col items-center justify-center">
+        <div className="relative bg-white w-5/6 h-[121px] md:w-[620px] mx-auto flex items-center">
+          <div className="absolute right-0 -top-12">
+            <TwitterShare
+              url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
             />
-            <p className="font-base-b">{gameData.team1.teamName}</p>
-          </button>
-          <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
-            Team 1
-          </p>
+          </div>
+          <div className="w-full flex justify-between items-center py-3 mx-8 md:mx-[60px]">
+            <div className="h-[81px] px-10 flex flex-col items-center justify-center">
+              <p className="leading-none sm:text-lg">
+                {gameData.team1.uniqueWallets + gameData.team2.uniqueWallets}
+              </p>
+              <p className="text-center text-secondary">players</p>
+            </div>
+            <div className="h-[81px] px-10 flex flex-col items-center justify-center">
+              <p className="leading-none sm:text-lg">
+                {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(3)}
+              </p>
+              <p className="text-center text-secondary">volume</p>
+            </div>
+            <div className="h-[81px] px-10 bg-versusBg flex flex-col items-center justify-center">
+              <p className="leading-none sm:text-lg">{handleCreatorFee()}</p>
+              <p className="text-center text-secondary">you get</p>
+            </div>
+          </div>
         </div>
-        <div className="w-full relative">
-          <button
-            className={`${
-              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
-            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
-            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
-            disabled:cursor-default ${getStyles(2)}`}
-            disabled={isDisabled}
-            onClick={() => {
-              if (selectedTeam?.teamName === gameData.team2.teamName) {
-                setSelectedTeam(undefined);
-              } else {
-                setSelectedTeam(gameData.team2);
-              }
-            }}
-          >
-            <Image
-              src={gameData.team2.teamLogo}
-              width={30}
-              height={30}
-              alt={gameData.team2.teamName}
+        <div className="pb-8" />
+        <div className="bg-white w-5/6 md:w-[620px] mx-auto mb-20">
+          <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
+            <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
+              Set the game winner
+            </p>
+            <ClassicVersusBox
+              gameData={gameData}
+              success={false}
+              handlePicks={setSelectedTeam}
+              pickedTeams={[selectedTeam]}
+              valid={gameStatus === GameStatus.CLOSED}
+              gameStatus={gameStatus}
+              finalWinner={selectedTeam?.teamName}
+              hideImage={gameData.gameInfo.league === "custom"}
             />
-            <p className="font-base-b text-black">{gameData.team2.teamName}</p>
-          </button>
-          <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
-            Team 2
-          </p>
-        </div>
-        {isAirdropped ? (
-          <p className="text-correct font-base-b h-[50px] flex items-center justify-center">
-            Winners airdropped!
-          </p>
-        ) : (
-          <button
-            className={`${
-              isRefunded && "hidden"
-            } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
+            {/* divider */}
+            <Divider />
+            {isAirdropped ? (
+              <p className="text-correct font-base-b h-[50px] flex items-center justify-center">
+                Winners airdropped!
+              </p>
+            ) : (
+              <button
+                className={`${
+                  isRefunded && "hidden"
+                } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
             hover:scale-[1.02] transition-transform ease-in-out duration-500 flex 
             items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-70`}
-            onClick={handleAirDrop}
-            disabled={isDisabled}
-          >
-            <p className="font-base-b text-white">Airdrop winners</p>
-          </button>
-        )}
+                onClick={handleAirDrop}
+                disabled={isDisabled}
+              >
+                <p className="font-base-b text-white">Airdrop winners</p>
+              </button>
+            )}
 
-        {isRefunded ? (
-          <p
-            className="font-base-b text-incorrect text-center
+            {isRefunded ? (
+              <p
+                className="font-base-b text-incorrect text-center
               flex items-center justify-center"
-          >
-            Game refunded successfully.
-          </p>
-        ) : (
-          <button
-            className={`${
-              isAirdropped && "hidden"
-            } font-base-b text-incorrect text-center h-[50px] 
+              >
+                Game refunded successfully.
+              </p>
+            ) : (
+              <button
+                className={`${
+                  isAirdropped && "hidden"
+                } font-base-b text-incorrect text-center h-[50px] 
             flex items-center justify-center cursor-pointer z-50`}
-            onClick={handleCancelGame}
-            disabled={isRefunded || isAirdropped}
-          >
-            Cancel game
-          </button>
-        )}
+                onClick={handleCancelGame}
+                disabled={isRefunded || isAirdropped}
+              >
+                Cancel game
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
