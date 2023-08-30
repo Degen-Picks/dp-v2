@@ -12,7 +12,6 @@ import { getWagers, getPickems, getStats } from "../utils/api/apiUtil";
 import { Pickem, Stats, Wager } from "@/types";
 import { GetServerSideProps, NextPage } from "next/types";
 import GameQueue from "./classic";
-import GameSetup from "./classic/gamesetup";
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats>();
@@ -144,18 +143,9 @@ interface HomePageProps {
 
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
   if (host === 'app.degenpicks.xyz' || host === 'app.staging.degenpicks.xyz') {
-    if (path === '/gamesetup') {
-      return <GameSetup />;
-    }
-
-    const gameId = path?.replace(/\//g, '') || null;
-
-    if (!gameId) {
       return <GameQueue />;
-    }
-
-    return <ClassicView gameId={gameId} />;
   }
+  
   return <Landing />;
 };
 

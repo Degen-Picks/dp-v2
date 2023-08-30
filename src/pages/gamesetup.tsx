@@ -9,8 +9,8 @@ import {
   AgreeCheckbox,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { getTimezoneStr } from "../../utils/dateUtil";
-import { getAssets, getLoginStatus } from "../../utils/api/apiUtil";
+import { getTimezoneStr } from "../utils/dateUtil";
+import { getAssets, getLoginStatus } from "../utils/api/apiUtil";
 import toast from "react-hot-toast";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
 import { useRouter } from "next/router";
