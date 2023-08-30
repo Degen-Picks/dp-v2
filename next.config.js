@@ -8,22 +8,6 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "shdw-drive.genesysgo.net",
     ],
-  },
-  rewrites() {
-    return {
-        beforeFiles: [
-            {
-                source: '/:path*',
-                has: [
-                    {
-                        type: 'host',
-                        value: 'app.degenpicks.xyz',
-                    },
-                ],
-                destination: '/classic',
-            }
-        ]
-    }
   }
 };
 
