@@ -22,15 +22,22 @@ import {
 import createClassic from "@/utils/api/classic/create";
 import { withRedirect } from "@/utils/withRedirect";
 import { generalConfig } from "@/configs";
+import { COLLECTION_NAME_MAP, LEAGUE_NAME_MAP, REVERSE_LEAGUE_NAME_MAP } from "@/utils/nameMap";
 
 function getCollections(collections: any) {
-  return collections.map((collection: any) => collection.league);
+  return collections.map((collection: any) => collection.name);
 }
 
 function getLeagueTeams(leagues: any, league: any) {
-  return leagues
+  const teams = leagues
     .find((e: any) => e.league === league)
     ?.options.map((e: any) => e.name);
+
+  if (teams) {
+    return teams.sort();
+  }
+  
+  return null;
 }
 
 const GameSetup = () => {
@@ -111,7 +118,7 @@ const GameSetup = () => {
       gameDetails.team1Name !== gameDetails.team2Name &&
       gameDetails.token !== ""
     ) {
-      if (gameDetails.league !== "custom") {
+      if (gameDetails.league !== REVERSE_LEAGUE_NAME_MAP["custom"]) {
         if (gameDetails.team1Record !== "" && gameDetails.team2Record !== "") {
           setValidGame(true);
         } else {
@@ -135,12 +142,25 @@ const GameSetup = () => {
         setAssets(assets);
       }
 
-      const leagues = assets.filter(
-        (asset: League) => !asset.league.includes("collection")
-      );
-      const collection = assets.filter((asset: League) =>
-        asset.league.includes("collection")
-      );
+      const leagues: LeaguesArray = assets
+        .filter((asset: League) => !asset.league.includes("collection"))
+        .sort((a: League, b: League) => {
+          if (a.league.toLowerCase() === "custom") return 1;
+          if (b.league.toLowerCase() === "custom") return -1;
+          return a.league.localeCompare(b.league);
+        })
+        .map((asset: League) => ({
+          ...asset, // Spread existing properties
+          name: LEAGUE_NAME_MAP[asset.league] || 'Unknown', // Add the name property
+      }));
+
+      const collection: LeaguesArray = assets
+        .filter((asset: League) => asset.league.includes("collection"))
+        .map((asset: League) => ({
+          ...asset,
+          name: COLLECTION_NAME_MAP[asset.league] || 'Unknown',
+      }));
+      
 
       setLeagues(leagues);
       setCollections(collection);
@@ -150,7 +170,7 @@ const GameSetup = () => {
   }, []);
 
   useEffect(() => {
-    if (gameDetails.league === "custom") {
+    if (gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"]) {
       setHeadlineDisabled(false);
     } else {
       setHeadlineDisabled(true);
@@ -196,14 +216,14 @@ const GameSetup = () => {
                 league={leagues.find(
                   (league) => league.league === gameDetails.league
                 )}
-                list={leagues.map((league) => league.league)}
+                list={leagues.map((league) => league.name!)}
                 gameDetails={gameDetails}
                 setGameDetails={setGameDetails}
                 accessor="league"
                 title="League"
               />
               <div className="w-full flex items-center gap-5">
-                {gameDetails.league === "custom" ? (
+                {gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"] ? (
                   <CreationTextField
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
@@ -236,7 +256,7 @@ const GameSetup = () => {
                 />
               </div>
               <div className="w-full flex items-center gap-5">
-                {gameDetails.league === "custom" ? (
+                {gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"] ? (
                   <CreationTextField
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}

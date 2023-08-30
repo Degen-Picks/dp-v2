@@ -1,16 +1,23 @@
 import { generalConfig } from "@/configs";
 import { ClassicGameOptions, ClassicGameCreateResponse, ClassicGameBody } from "@/types";
+import { REVERSE_COLLECTION_NAME_MAP, REVERSE_LEAGUE_NAME_MAP } from "@/utils/nameMap";
   
 export default async function createClassic(
     options: ClassicGameOptions
   ): Promise<ClassicGameCreateResponse> {
     const endDate = new Date(options.gameTime).getTime();
+
+    const collectionName = REVERSE_COLLECTION_NAME_MAP[options.collection];
+    if(!collectionName) throw new Error("Invalid collection name");
+
+    const league = REVERSE_LEAGUE_NAME_MAP[options.league];
+    if(!league) throw new Error("Invalid league name");
   
     const createBody: ClassicGameBody = {
       title: options.title,
       description: options.description || " ",
       league: options.league,
-      collectionName: options.collection,
+      collectionName,
       selection1: options.team1Name,
       selection1Record: options.team1Record || " ",
       selection2: options.team2Name,

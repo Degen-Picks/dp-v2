@@ -38,6 +38,7 @@ export type TeamOption = {
 export type League = {
   _id: string;
   league: string;
+  name?: string;
   options: TeamOption[];
   __v: number;
 };
