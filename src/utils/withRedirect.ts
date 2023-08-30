@@ -8,7 +8,7 @@ export const withRedirect = (gssp?: GetServerSideProps) => {
     if ((host === 'degenpicks.xyz' || host === 'staging.degenpicks.xyz') && path !== '/') {
       return {
         redirect: {
-          destination: `http://app.${host}${path}`,
+          destination: `https://app.${host}${path}`,
           permanent: false,
         },
       };
