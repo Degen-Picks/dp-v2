@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { handleConfirmAction, pickFee, refundClassic } from "@/utils";
 import toast from "react-hot-toast";

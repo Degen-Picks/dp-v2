@@ -1,10 +1,9 @@
 import { useState, FC, useEffect } from "react";
-import Image from "next/image";
 import { ActivityItem, ClassicHero, Divider, TwitterShare } from "@/components";
 import { Activity, GameInfo } from "@/types";
-import { generalConfig, smallClickAnimation } from "@/configs";
-import { motion } from "framer-motion";
+import { generalConfig } from "@/configs";
 import { GameStatus } from "./ClassicView";
+import { FadeLoader } from "react-spinners";
 interface Props {
   gameData: GameInfo;
   gameStatus: GameStatus;
@@ -121,16 +120,9 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   return (
     <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
       {loading ? (
-        <div className="w-fit mx-auto mt-20">
-          {/* <div className="rotate">
-            <Image
-              src="/images/pickem/nipple.png"
-              width={100}
-              height={100}
-              alt="nipple spinner"
-            />
-          </div> */}
-          <p className="text-xl font-base text-center w-fit mx-auto py-10">
+        <div className="w-fit mx-auto flex flex-col items-center mt-20">
+          <FadeLoader color="#651FFF" />
+          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
             Loading ...
           </p>
         </div>

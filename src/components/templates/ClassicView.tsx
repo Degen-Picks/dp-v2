@@ -27,6 +27,7 @@ import {
 } from "../stores/WagerUserStore";
 import sendTransaction from "../../utils/sendTransaction";
 import { SplToken, TOKEN_MAP } from "@/types/Token";
+import { FadeLoader } from "react-spinners";
 
 interface Props {
   gameId: string | string[];
@@ -761,16 +762,9 @@ const Classic: FC<Props> = ({ gameId }) => {
           >
             {loading && (
               // loading indicator
-              <div className="w-fit mx-auto mt-20">
-                {/* <div className="rotate">
-                  <Image
-                    src="/images/pickem/nipple.png"
-                    width={100}
-                    height={100}
-                    alt="nipple spinner"
-                  />
-                </div> */}
-                <p className="text-xl font-base text-center w-fit mx-auto py-10">
+              <div className="w-fit mx-auto flex flex-col items-center mt-20">
+                <FadeLoader color="#651FFF" />
+                <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
                   Loading ...
                 </p>
               </div>

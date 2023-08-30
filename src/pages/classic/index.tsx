@@ -14,6 +14,7 @@ import {
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { FadeLoader } from "react-spinners";
 
 interface Props {
   title: string;
@@ -206,40 +207,10 @@ const GameQueue = () => {
         ctaLink={"https://degenpicks.xyz"}
       />
       <Navbar />
-      {/* Fixed y00ts pfps */}
-      {/* <div className={`lg:fixed absolute -bottom-2 -left-14 sm:left-0 z-0`}>
-        <Image
-          src="/images/landing/matt.png"
-          width={800 * 0.25}
-          height={1012 * 0.25}
-          alt="matt wuz here"
-        />
-      </div>
-      <div className={`lg:fixed absolute -bottom-2 -right-14 sm:right-0 z-0`}>
-        <Image
-          src="/images/landing/h.png"
-          width={800 * 0.25}
-          height={1012 * 0.25}
-          alt="h was here"
-        />
-      </div> */}
-      {/* <div className="md:max-w-[1000px] text-center w-[90%] md:w-[3/4] mx-auto mt-10 lg:mt-0">
-        <div className="w-fit mx-auto pb-16">
-          <p className="text-base">Picks Classic</p>
-          <p className="text-[30px] font-base-b">Featured Games</p>
-        </div>
-      </div> */}
       {loading ? (
-        <div className="w-fit mx-auto mt-20">
-          {/* <div className="rotate">
-            <Image
-              src="/images/pickem/nipple.png"
-              width={100}
-              height={100}
-              alt="nipple spinner"
-            />
-          </div> */}
-          <p className="text-xl font-base text-center w-fit mx-auto py-10">
+        <div className="w-fit mx-auto flex flex-col items-center mt-20">
+          <FadeLoader color="#651FFF" />
+          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
             Loading ...
           </p>
         </div>
