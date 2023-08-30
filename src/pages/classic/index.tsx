@@ -200,7 +200,7 @@ const GameQueue = () => {
     <div className="relative bg-light w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       <AlertBanner
         text={
-          "Now you can run your own Degen Picks™ pool, and get a % of the fees."
+          "Now you can run your own Degen Picks™ pool, and get 50% of the fees."
         }
         ctaText={"Learn More"}
         ctaLink={"https://degenpicks.xyz"}
