@@ -143,7 +143,7 @@ interface HomePageProps {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
-  if (host === 'app.degenpicks.xyz' || host === 'staging.app.degenpicks.xyz') {
+  if (host === 'app.degenpicks.xyz' || host === 'app.staging.degenpicks.xyz') {
     if (path === '/gamesetup') {
       return <GameSetup />;
     }
