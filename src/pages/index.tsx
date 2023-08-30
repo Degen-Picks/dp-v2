@@ -143,7 +143,7 @@ interface HomePageProps {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ host, gameId }) => {
-  if (host === 'app.degenpicks.xyz') {
+  if (host === 'app.degenpicks.xyz' || host === 'staging.app.degenpicks.xyz') {
     if(!gameId) {
       return <GameQueue />;
     }
