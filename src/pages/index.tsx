@@ -12,6 +12,7 @@ import { getWagers, getPickems, getStats } from "../utils/api/apiUtil";
 import { Pickem, Stats, Wager } from "@/types";
 import { GetServerSideProps, NextPage } from "next/types";
 import GameQueue from "./classic";
+import GameSetup from "./classic/gamesetup";
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats>();
@@ -138,12 +139,18 @@ const Landing = () => {
 
 interface HomePageProps {
   host: string | null;
-  gameId: string | null;
+  path: string | null;
 }
 
-const HomePage: NextPage<HomePageProps> = ({ host, gameId }) => {
+const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
   if (host === 'app.degenpicks.xyz' || host === 'staging.app.degenpicks.xyz') {
-    if(!gameId) {
+    if (path === '/gamesetup') {
+      return <GameSetup />;
+    }
+
+    const gameId = path?.replace(/\//g, '') || null;
+
+    if (!gameId) {
       return <GameQueue />;
     }
 
@@ -152,11 +159,10 @@ const HomePage: NextPage<HomePageProps> = ({ host, gameId }) => {
   return <Landing />;
 };
 
-
 export const getServerSideProps: GetServerSideProps<HomePageProps> = async (context) => {
   const host = context.req.headers.host || null;
-  const gameId = context.query.gameId ? String(context.query.gameId) : null;
-  return { props: { host, gameId } };
+  const path = context.req.url || null;
+  return { props: { host, path } };
 };
 
 export default HomePage;
