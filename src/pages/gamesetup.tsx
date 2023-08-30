@@ -214,7 +214,7 @@ const GameSetup = () => {
             <div className="flex flex-col gap-5">
               <CreationDropMenu
                 league={leagues.find(
-                  (league) => league.league === gameDetails.league
+                  (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                 )}
                 list={leagues.map((league) => league.name!)}
                 gameDetails={gameDetails}
@@ -223,7 +223,7 @@ const GameSetup = () => {
                 title="League"
               />
               <div className="w-full flex items-center gap-5">
-                {gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"] ? (
+                {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
                   <CreationTextField
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
@@ -236,9 +236,9 @@ const GameSetup = () => {
                 ) : (
                   <CreationDropMenu
                     league={leagues.find(
-                      (league) => league.league === gameDetails.league
+                      (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                     )}
-                    list={getLeagueTeams(leagues, gameDetails.league)}
+                    list={getLeagueTeams(leagues, REVERSE_LEAGUE_NAME_MAP[gameDetails.league])}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team1Name"
@@ -256,7 +256,7 @@ const GameSetup = () => {
                 />
               </div>
               <div className="w-full flex items-center gap-5">
-                {gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"] ? (
+                {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
                   <CreationTextField
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
@@ -269,9 +269,9 @@ const GameSetup = () => {
                 ) : (
                   <CreationDropMenu
                     league={leagues.find(
-                      (league) => league.league === gameDetails.league
+                      (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                     )}
-                    list={getLeagueTeams(leagues, gameDetails.league)}
+                    list={getLeagueTeams(leagues, REVERSE_LEAGUE_NAME_MAP[gameDetails.league])}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team2Name"

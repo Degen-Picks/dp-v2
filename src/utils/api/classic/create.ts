@@ -16,7 +16,7 @@ export default async function createClassic(
     const createBody: ClassicGameBody = {
       title: options.title,
       description: options.description || " ",
-      league: options.league,
+      league,
       collectionName,
       selection1: options.team1Name,
       selection1Record: options.team1Record || " ",
