@@ -21,6 +21,7 @@ import {
 } from "@/components/stores/WagerUserStore";
 import createClassic from "@/utils/api/classic/create";
 import { withRedirect } from "@/utils/withRedirect";
+import { generalConfig } from "@/configs";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.league);
@@ -81,7 +82,7 @@ const GameSetup = () => {
       const gameId = body.data._id;
 
       toast.success("Game created successfully!");
-      router.push(`/classic/${gameId}`);
+      router.push(`/${gameId}`);
     } catch (err: any) {
       toast.error(err.message || "Error contacting server. Try again later.");
     } finally {
@@ -180,7 +181,7 @@ const GameSetup = () => {
             <div className="absolute -left-32 -top-14">
               <BackButton
                 text="All games"
-                handleClick={() => router.push("/classic")}
+                handleClick={() => router.push(generalConfig.appUrl)}
               />
             </div>
             <div className="my-12">

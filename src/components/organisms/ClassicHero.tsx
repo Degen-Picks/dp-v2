@@ -3,6 +3,7 @@ import { BackButton, GameMetadata } from "@/components";
 import { GameInfo } from "@/types";
 import { GameStatus } from "../templates/ClassicView";
 import { useRouter } from "next/router";
+import { generalConfig } from "@/configs";
 
 interface Props {
   gameStatus: GameStatus;
@@ -15,7 +16,7 @@ const ClassicHero: FC<Props> = ({ gameData, gameStatus }) => {
     <div className="w-full max-w-[620px] mx-auto mb-8">
       <BackButton
         text="All games"
-        handleClick={() => router.push("/classic")}
+        handleClick={() => router.push(generalConfig.appUrl)}
       />
       <div className="w-full max-w-[480px] mx-auto pt-3 flex flex-col items-center justify-center gap-2.5">
         <div className="font-base text-center text-lg">

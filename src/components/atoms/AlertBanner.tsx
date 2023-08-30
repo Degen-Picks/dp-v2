@@ -23,7 +23,7 @@ const AlertBanner: FC<Props> = ({ text, ctaLink, ctaText }) => {
       <motion.button
         {...smallClickAnimation}
         className="bg-white h-10 w-32 flex items-center justify-center"
-        onClick={() => router.push("/classic/gamesetup")}
+        onClick={() => router.push("/gamesetup")}
       >
         Create game
       </motion.button>

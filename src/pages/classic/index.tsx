@@ -34,7 +34,7 @@ export const PropSection: FC<Props> = ({
   token,
 }) => {
   return (
-    <Link className="w-full" passHref href={`/classic/${encodeURI(slug)}`}>
+    <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
       <div
         className="relative bg-white py-3 h-[200px] w-full px-5 md:px-0 md:w-[380px] mx-auto 
         cursor-pointer hover:scale-[1.02] transition-transform ease-in-out duration-500"

@@ -1,3 +1,4 @@
+import { generalConfig } from "@/configs";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -12,7 +13,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
 
   const handleClick = (game: string) => {
     if (game === "classic") {
-      router.push("/classic");
+      router.push(generalConfig.appUrl);
     } else router.push("/pickem");
   };
 
