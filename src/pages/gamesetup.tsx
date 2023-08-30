@@ -20,6 +20,7 @@ import {
   WagerUserContextType,
 } from "@/components/stores/WagerUserStore";
 import createClassic from "@/utils/api/classic/create";
+import { withRedirect } from "@/utils/withRedirect";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.league);
@@ -344,4 +345,5 @@ const GameSetup = () => {
   );
 };
 
+export const getServerSideProps = withRedirect();
 export default GameSetup;

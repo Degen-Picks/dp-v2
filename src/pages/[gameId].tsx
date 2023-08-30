@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { ClassicView } from "@/components";
+import { withRedirect } from "@/utils/withRedirect";
 
 const UrlClassic = () => {
   const router = useRouter();
@@ -13,4 +14,5 @@ const UrlClassic = () => {
   );
 };
 
+export const getServerSideProps = withRedirect();
 export default UrlClassic;

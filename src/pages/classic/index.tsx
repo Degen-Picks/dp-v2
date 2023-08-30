@@ -12,6 +12,7 @@ import {
   FallbackImage,
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
+import { withRedirect } from "@/utils/withRedirect";
 
 interface Props {
   title: string;
@@ -298,4 +299,5 @@ const GameQueue = () => {
   );
 };
 
+export const getServerSideProps = withRedirect();
 export default GameQueue;
