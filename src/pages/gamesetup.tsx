@@ -118,7 +118,7 @@ const GameSetup = () => {
       gameDetails.team1Name !== gameDetails.team2Name &&
       gameDetails.token !== ""
     ) {
-      if (gameDetails.league !== REVERSE_LEAGUE_NAME_MAP["custom"]) {
+      if (gameDetails.league !== LEAGUE_NAME_MAP.custom) {
         if (gameDetails.team1Record !== "" && gameDetails.team2Record !== "") {
           setValidGame(true);
         } else {
@@ -170,7 +170,7 @@ const GameSetup = () => {
   }, []);
 
   useEffect(() => {
-    if (gameDetails.league === REVERSE_LEAGUE_NAME_MAP["custom"]) {
+    if (gameDetails.league === LEAGUE_NAME_MAP.custom) {
       setHeadlineDisabled(false);
     } else {
       setHeadlineDisabled(true);

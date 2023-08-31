@@ -129,6 +129,14 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
     setLoading(false);
   };
 
+  const pickHandler = (teamNum: number) => {
+    if(teamNum === 1) {
+      setSelectedTeam(gameData.team1);
+    } else {
+      setSelectedTeam(gameData.team2);
+    }
+  }
+
   return (
     <div className="w-full">
       <div className="mt-16 mb-[72px]">
@@ -169,7 +177,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
             <ClassicVersusBox
               gameData={gameData}
               success={false}
-              handlePicks={setSelectedTeam}
+              handlePicks={pickHandler}
               pickedTeams={[selectedTeam]}
               valid={gameStatus === GameStatus.CLOSED}
               gameStatus={gameStatus}

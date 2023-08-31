@@ -11,11 +11,11 @@ export const REVERSE_COLLECTION_NAME_MAP: { [key: string]: string } =
     Object.fromEntries(Object.entries(COLLECTION_NAME_MAP).map(([k, v]) => [v, k]));
 
 export const LEAGUE_NAME_MAP: { [key: string]: string } = {
-    big3: 'Big3 Basketball',
-    mlb: 'MLB Baseball',
-    nba: 'NBA Basketball',
-    nfl: 'NFL Football',
-    nhl: 'NHL Hockey',
+    big3: 'Big3',
+    mlb: 'MLB',
+    nba: 'NBA',
+    nfl: 'NFL',
+    nhl: 'NHL',
     custom: 'Custom',
 };
 
