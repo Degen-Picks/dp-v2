@@ -176,9 +176,9 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
             </p>
             <ClassicVersusBox
               gameData={gameData}
-              success={false}
+              success={isAirdropped || isRefunded}
               handlePicks={pickHandler}
-              pickedTeams={[selectedTeam]}
+              pickedTeams={[selectedTeam?.teamName]}
               valid={gameStatus === GameStatus.CLOSED}
               gameStatus={gameStatus}
               finalWinner={selectedTeam?.teamName}

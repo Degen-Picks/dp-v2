@@ -77,8 +77,6 @@ const ClassicVersusBox: FC<VProps> = ({
   const [active2, setActive2] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!success) return;
-
     if (pickedTeams.includes(gameData.team1.teamName)) {
       setActive1(true);
     } else if (pickedTeams.includes(gameData.team2.teamName)) {
