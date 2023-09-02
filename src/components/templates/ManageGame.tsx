@@ -91,7 +91,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
       creatorFee = (totalVolume * pickFee) / 2;
     }
 
-    return creatorFee.toFixed(3);
+    return creatorFee.toFixed(2);
   };
 
   const handleAirDrop = async () => {
@@ -158,7 +158,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
             </div>
             <div className="h-[81px] px-10 flex flex-col items-center justify-center">
               <p className="leading-none sm:text-lg">
-                {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(3)}
+                {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}
               </p>
               <p className="text-center text-secondary">volume</p>
             </div>

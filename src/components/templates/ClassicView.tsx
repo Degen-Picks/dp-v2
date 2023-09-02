@@ -339,7 +339,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
 
       if (parsed.gameInfo.token === "SOL") {
-        setMinimumBet(0.01);
+        setMinimumBet(0.1);
       } else {
         setMinimumBet(TOKEN_MAP[parsed.gameInfo.token!].minimum);
       }
