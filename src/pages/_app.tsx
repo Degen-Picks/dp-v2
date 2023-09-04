@@ -72,7 +72,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         />
         <meta
           property="og:image"
-          content={`https://${generalConfig.baseUrl}/images/meta.png`}
+          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
         <meta property="og:image:width" content="1800" />
         <meta property="og:image:height" content="941" />
@@ -86,10 +86,10 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         />
         <meta
           property="twitter:image"
-          content={`https://${generalConfig.baseUrl}/images/meta.png`}
+          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
       </Head>
-      <WagerUserContextProvider>      
+      <WagerUserContextProvider>
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
             <WalletModalProvider>
