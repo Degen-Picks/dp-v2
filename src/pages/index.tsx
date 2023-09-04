@@ -111,7 +111,7 @@ const Landing = () => {
           <div className="font-base-b text-[40px] leading-[39px] text-primary">
             Degen Picks
           </div>
-          <div className="lg:text-lg px-8 mt-4 max-w-[500px]">
+          <div className="lg:text-lg px-8 mt-4 max-w-[500px] mx-auto">
             <p>
               Bringing internet friends together with PvP betting pools. Built
               by OG DeGods for the Solana community.
