@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { ConnectButton, MobileMenu, TwitterLoginButton } from "@/components";
 import Link from "next/link";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { smallClickAnimation } from "@/configs";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
@@ -39,7 +41,17 @@ const Navbar = () => {
           </Link>
           <div className="hidden lg:flex items-center gap-4 justify-end">
             <TwitterLoginButton />
-            <ConnectButton />
+            {router.pathname !== "/" ? (
+              <ConnectButton />
+            ) : (
+              <motion.button
+                className="bg-link text-white h-[50px] px-5"
+                {...smallClickAnimation}
+                onClick={() => window.open("https://app.degenpicks.xyz/")}
+              >
+                Launch app
+              </motion.button>
+            )}
           </div>
           {isMobile && (
             <div

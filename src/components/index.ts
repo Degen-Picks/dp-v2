@@ -6,6 +6,7 @@ const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
+const Twitter = dynamic(() => import("./@icons/Twitter"));
 const TwitterFooter = dynamic(() => import("./@icons/TwitterFooter"));
 const VerifiedBadge = dynamic(() => import("./@icons/VerifiedBadge"));
 const WarningIcon = dynamic(() => import("./@icons/WarningIcon"));
@@ -72,6 +73,7 @@ export {
   Discord,
   DiscordFooter,
   QuestionIcon,
+  Twitter,
   TwitterFooter,
   VerifiedBadge,
   WarningIcon,

@@ -30,7 +30,7 @@ module.exports = {
       },
       colors: {
         light: "#ECEAEC",
-        dark: "#181925",
+        dark: "#1B1B1B",
         primary: "black",
         secondary: "#A89FA8",
         disabled: "#BDBDBD",
@@ -43,6 +43,7 @@ module.exports = {
         correct: "#43A047",
         incorrect: "#E53935",
         pending: "#FCF6C6",
+        data: "#FECE00",
       },
       screens: {
         xs: "281px",

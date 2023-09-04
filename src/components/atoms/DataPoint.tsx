@@ -48,10 +48,10 @@ const DataPoint: FC<Props> = ({ title, value }) => {
     <InView triggerOnce>
       {({ inView, ref }) => (
         <div
-          className="flex flex-col items-center justify-center w-[260px] h-full bg-light p-2 m-3"
+          className="flex flex-col items-center justify-center w-[260px] h-full p-2 m-3"
           ref={ref}
         >
-          <p className="font-base-b text-xl">
+          <p className="font-base-b text-lg text-data">
             {inView && <CountUpAnimation>{value}</CountUpAnimation>}
           </p>
           <p className="text-secondary">{title}</p>

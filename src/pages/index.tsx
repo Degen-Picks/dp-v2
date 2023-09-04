@@ -1,50 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
+import Image from "next/image";
 import {
   Footer,
-  GameOptions,
-  Roadmap,
-  Friends,
   Navbar,
   DataPoint,
-  ClassicView,
+  TwitterFooter,
+  Discord,
+  Twitter,
 } from "@/components";
-import { getWagers, getPickems, getStats } from "../utils/api/apiUtil";
-import { Pickem, Stats, Wager } from "@/types";
+import { getStats } from "../utils/api/apiUtil";
+import { Stats } from "@/types";
 import { GetServerSideProps, NextPage } from "next/types";
 import GameQueue from "./classic";
+import { getCurrencyIcon } from "@/utils";
+import { motion } from "framer-motion";
+import { smallClickAnimation } from "@/configs";
+import { useWindowSize } from "@/hooks/useWindowSize";
+
+interface TeamProps {
+  handle: string;
+  image: string;
+}
+
+const TeamMember: FC<TeamProps> = ({ handle, image }) => {
+  return (
+    <motion.button
+      {...smallClickAnimation}
+      className="flex items-center gap-2 w-fit"
+      onClick={() =>
+        window.open(
+          `https://twitter.com/${handle}`,
+          "_blank",
+          "noopener noreferrer"
+        )
+      }
+    >
+      <Image src={image} width={24} height={24} alt="user image" />
+      <p className="hover:text-link">{handle}</p>
+    </motion.button>
+  );
+};
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats>();
-  const [pickemLive, setPickemLive] = useState(false);
-  const [classicLive, setClassicLive] = useState(false);
 
-  // const router = useRouter();
-  // const marchMadness = new Date("March 21, 2023").getTime();
-
-  // this function fetches the status for each game
-  const loadGameData = async () => {
-    const wagerData = await getWagers();
-    const pickemData = await getPickems();
-
-    const classicLive = wagerData?.filter(
-      (wager: Wager) => wager.status === "live"
-    );
-    const pickemLive = pickemData?.filter(
-      (pickem: Pickem) => pickem.status === "live"
-    );
-
-    if (classicLive === undefined || classicLive.length === 0) {
-      setClassicLive(false);
-    } else {
-      setClassicLive(true);
-    }
-
-    if (pickemLive === undefined || pickemLive.length === 0) {
-      setPickemLive(false);
-    } else {
-      setPickemLive(true);
-    }
-  };
+  const [winWidth] = useWindowSize();
+  const isMobile = winWidth < 1024;
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -60,14 +61,6 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    async function loadPick() {
-      await loadGameData();
-    }
-
-    loadPick();
-  }, []);
-
-  useEffect(() => {
     async function loadStats() {
       await loadStatData();
     }
@@ -76,62 +69,123 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="w-full relative overflow-hidden min-h-screen">
-      {/* outer container */}
-      <div className="bg-light pb-20">
+    <div className="w-full relative overflow-hidden bg-light">
+      <div className="h-screen w-full flex flex-col">
         <Navbar />
-        <div className="mx-4 sm:max-w-[1000px] sm:mx-auto mt-10">
-          {/* logo section */}
-          {/* <Header type={"hero"} wagerData={wagers} pickemData={picks} /> */}
-          {/* targetUTC={marchMadness} */}
-          {/* two game options */}
-          <GameOptions classicLive={classicLive} pickemLive={pickemLive} />
-        </div>
-      </div>
-      {/* first subsection */}
-      <div className="bg-white">
-        <div className="text-center sm:max-w-[1000px] sm:mx-auto">
-          <div className="w-[90%] md:w-[3/4] mx-auto py-20 sm:pb-20 border-b border-border">
-            <div className="w-fit mx-auto sm:my-12">
-              <div className="font-base-b text-3xl text-black">
-                Join your favorite internet anons
-              </div>
-              <div className="text-[18px] lg:text-xl px-8 mt-4 text-secondary max-w-[620px]">
-                <p>
-                  We&apos;re cultivating the most elite community of sports
-                  enthusiasts and degenerates in web3.
-                </p>
-              </div>
-            </div>
-            <div className="mt-10 sm:mt-0 max-w-[820px] sm:h-[90px] flex flex-col sm:flex-row sm:justify-between items-center mx-auto">
-              {statData !== null && (
-                <>
-                  <DataPoint
-                    title="games hosted"
-                    value={statData?.gamesHosted!}
-                  />
-                  <DataPoint
-                    title="unique players"
-                    value={statData?.uniquePlayers!}
-                  />
-                  <DataPoint
-                    title="total DUST volume"
-                    value={statData?.totalVolume!}
-                  />
-                </>
-              )}
-            </div>
+        <div className="flex-1 flex flex-col items-center justify-evenly">
+          {isMobile ? (
+            <>
+              <Image
+                src="/images/landing/dp_scuba_mobile.png"
+                width={370}
+                height={370}
+                alt="DP artwork by scuba"
+                priority
+              />
+              <motion.button
+                className="bg-link text-white w-full max-w-[310px] h-[50px] text-lg px-5"
+                {...smallClickAnimation}
+                onClick={() => window.open("https://app.degenpicks.xyz/")}
+              >
+                Launch app
+              </motion.button>
+            </>
+          ) : (
+            <Image
+              src="/images/landing/dp_scuba.png"
+              width={940}
+              height={500}
+              alt="DP artwork by scuba"
+              priority
+            />
+          )}
+
+          <div className="animate-bounce flex flex-col items-center gap-1">
+            <p className="text-lg uppercase">Learn more</p>
+            <p>↓</p>
           </div>
         </div>
-        <Roadmap />
       </div>
-
-      {/* team section */}
-      <div className="bg-light px-4">
-        <Friends />
+      <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
+        <div className="w-[90%] md:w-[3/4] mx-auto pb-10 sm:pb-20">
+          <div className="font-base-b text-[40px] leading-[39px] text-primary">
+            Degen Picks
+          </div>
+          <div className="lg:text-lg px-8 mt-4 max-w-[500px]">
+            <p>
+              Bringing internet friends together with PvP betting pools. Built
+              by OG DeGods for the Solana community.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center justify-center gap-3 sm:my-12">
+            <p>Tokens:</p>
+            <div className="flex items-center gap-1">
+              <Image
+                src={getCurrencyIcon("DUST")}
+                width={24}
+                height={24}
+                alt="token icon"
+                className="rounded-full overflow-hidden"
+              />
+              <p>DUST</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Image
+                src={getCurrencyIcon("SOL")}
+                width={24}
+                height={24}
+                alt="token icon"
+                className="rounded-full overflow-hidden"
+              />
+              <p>SOL</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <Image
+                src={getCurrencyIcon("USDC")}
+                width={24}
+                height={24}
+                alt="token icon"
+                className="rounded-full overflow-hidden"
+              />
+              <p>USDC</p>
+            </div>
+          </div>
+          <div
+            className="mt-10 sm:mt-0 max-w-[333px] sm:h-[90px] bg-dark
+            flex flex-row justify-between items-center mx-auto"
+          >
+            {statData !== null && (
+              <>
+                <DataPoint title="games" value={statData?.gamesHosted!} />
+                <DataPoint title="volume" value={statData?.totalVolume!} />
+                <DataPoint title="players" value={statData?.uniquePlayers!} />
+              </>
+            )}
+          </div>
+        </div>
+        <div className="w-[90%] md:w-[3/4] mx-auto sm:pb-20">
+          <p className="text-center mt-5">Founders</p>
+          <div className="grid grid-cols-2 gap-x-10 gap-y-5 w-fit max-w-[500px] mx-auto">
+            <TeamMember handle="capsjpeg" image="/images/team/caps.png" />
+            <TeamMember handle="misterholana" image="/images/team/h.png" />
+            <TeamMember handle="0x_saddy" image="/images/team/saddy.png" />
+            <TeamMember handle="mattdegods" image="/images/team/matt.png" />
+          </div>
+        </div>
       </div>
-
-      <Footer />
+      <div className="absolute sm:fixed bottom-0 w-full">
+        <div className="text-secondary text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
+          <p>© 2023 Degen Picks</p>
+          <div className="hidden sm:flex items-center gap-4">
+            <p className="">Follow us</p>
+            {/* icons here */}
+            <Twitter className="fill-secondary" />
+            <Discord className="fill-secondary" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -142,14 +196,16 @@ interface HomePageProps {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
-  if (host === 'app.degenpicks.xyz' || host === 'app.staging.degenpicks.xyz') {
-      return <GameQueue />;
+  if (host === "app.degenpicks.xyz" || host === "app.staging.degenpicks.xyz") {
+    return <GameQueue />;
   }
-  
+
   return <Landing />;
 };
 
-export const getServerSideProps: GetServerSideProps<HomePageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async (
+  context
+) => {
   const host = context.req.headers.host || null;
   const path = context.req.url || null;
   return { props: { host, path } };
