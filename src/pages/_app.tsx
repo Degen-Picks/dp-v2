@@ -12,7 +12,7 @@ import {
   // SlopeWalletAdapter,
   SolflareWalletAdapter,
   SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
+  // SolletWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
@@ -44,7 +44,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       new SolflareWalletAdapter({ network }),
       new TorusWalletAdapter(),
       new LedgerWalletAdapter(),
-      new SolletWalletAdapter({ network }),
+      // new SolletWalletAdapter({ network }),
       new SolletExtensionWalletAdapter({ network }),
     ],
     [network]
