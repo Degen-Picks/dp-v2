@@ -9,7 +9,7 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   LedgerWalletAdapter,
   PhantomWalletAdapter,
-  SlopeWalletAdapter,
+  // SlopeWalletAdapter,
   SolflareWalletAdapter,
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
@@ -40,7 +40,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      new SlopeWalletAdapter(),
+      // new SlopeWalletAdapter(),
       new SolflareWalletAdapter({ network }),
       new TorusWalletAdapter(),
       new LedgerWalletAdapter(),
