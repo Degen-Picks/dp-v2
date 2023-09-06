@@ -59,7 +59,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="title" content={`Degen Picks`} />
         <meta
           name="description"
-          content={`Degen Picks: An all-or-nothing sports prediction game with DUST.`}
+          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
         />
 
         {/* <!-- Open Graph / Facebook --> */}
@@ -68,7 +68,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta property="og:title" content={`Degen Picks`} />
         <meta
           property="og:description"
-          content={`Degen Picks: An all-or-nothing sports prediction game with DUST.`}
+          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
         />
         <meta
           property="og:image"
