@@ -64,7 +64,7 @@ const CircularProgressWithLabel = (props) => {
         </p>
       </Box>
       <Box sx={{ textAlign: "center", paddingTop: "20px" }}>
-        <p className="font-base text-lg text-secondary">{props.team}</p>
+        <p className="font-base text-lg">{props.team}</p>
       </Box>
     </>
   );

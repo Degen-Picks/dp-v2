@@ -39,7 +39,7 @@ module.exports = {
         containerHead: "white",
         container: "black",
         link: "#651FFF",
-        linkHover: "#5018cc",
+        linkHover: "#4C17BF",
         correct: "#43A047",
         incorrect: "#E53935",
         pending: "#FCF6C6",

@@ -50,7 +50,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   const [tokenBet, setTokenBet] = useState<number>(33);
   const [tokenBalance, setTokenBalance] = useState<number>(0);
   const [isBroke, setIsBroke] = useState<boolean>(false);
-  const [rewardEstimate, setRewardEstimate] = useState<number>(0);
+  const [rewardEstimate, setRewardEstimate] = useState<string>("--");
   const [success, setSuccess] = useState<boolean>(false);
   const [txn, setTxn] = useState<string>();
   const [txnLoading, setTxnLoading] = useState<boolean>(false);
@@ -396,7 +396,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     } else if (
       !isBroke &&
       winningTeam &&
-      (tokenBet === null || tokenBet < minimumBet || !rewardEstimate) &&
+      (tokenBet === null || tokenBet < minimumBet || rewardEstimate === "--") &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -451,7 +451,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   // timer for countdown to game time (bets closed)
   // set and update a countdown timer every second
   const startGameDateCountdown = () => {
-    const countdownLogic = () => {
+    const gameCountdownLogic = () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -466,15 +466,15 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
     };
 
-    countdownLogic();
-    const interval = setInterval(countdownLogic, 1000);
+    gameCountdownLogic();
+    const interval = setInterval(gameCountdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
 
   // same countdown logic as before but with picks opening
   const startPickDateCountdown = () => {
-    const countdownLogic = async () => {
+    const pickCountdownLogic = async () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -483,17 +483,11 @@ const Classic: FC<Props> = ({ gameId }) => {
       var pickDistance = utcPickDate - now;
 
       // time calculations for days, hours, minutes and seconds (pick time - bets open)
-      var days = Math.floor(pickDistance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (pickDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
       var minutes = Math.floor((pickDistance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((pickDistance % (1000 * 60)) / 1000);
 
       // display the result
-      setPickCountdown(
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-      );
+      setPickCountdown(minutes + "m " + seconds + "s ");
 
       // if the count down is finished, write some text
       if (pickDistance < 0) {
@@ -509,11 +503,13 @@ const Classic: FC<Props> = ({ gameId }) => {
 
           startGameDateCountdown();
         }
+        // TODO: add else case if response is null
+        // we will want to restart a timer indicating we're waiting for backend to catch up
       }
     };
 
-    countdownLogic();
-    const interval = setInterval(countdownLogic, 1000);
+    pickCountdownLogic();
+    const interval = setInterval(pickCountdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
@@ -672,6 +668,10 @@ const Classic: FC<Props> = ({ gameId }) => {
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
     const estimateRewards = () => {
+      if (winningTeam === undefined) {
+        setRewardEstimate("--");
+        return;
+      }
       var teamVolume =
         gameData[winningTeam === gameData.team1.teamName ? "team1" : "team2"]
           .dustVol;
@@ -693,7 +693,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         estimatedReward = totalVol;
       }
 
-      setRewardEstimate(estimatedReward);
+      setRewardEstimate(estimatedReward.toString());
     };
     estimateRewards();
   }, [tokenBet, gameData, winningTeam, success]);
@@ -777,7 +777,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             {gameStatus === GameStatus.PREGAME && !loading && (
               <div className="text-center mt-8 sm:text-lg">
-                Our next game opens for picks in: {pickCountdown}
+                Live in: {pickCountdown}
               </div>
             )}
             {gameStatus !== GameStatus.PREGAME && !loading && (
@@ -845,8 +845,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                             setTokenBet(parseFloat(e.target.value));
                           }}
                           className="disabled:opacity-70 disabled:cursor-not-allowed 
-                          bg-light px-2 h-[50px] w-full text-center focus:outline-none 
-                          focus:ring-2 focus:ring-link rounded-none"
+                          bg-versusBg hover:bg-light px-2 h-[50px] w-full text-center focus:outline-none 
+                          focus:ring-2 focus:ring-link rounded-none focus:bg-white"
                         />
                         <div className="absolute left-2 top-[10px]">
                           <Image
@@ -857,25 +857,23 @@ const Classic: FC<Props> = ({ gameId }) => {
                           />
                         </div>
                       </form>
-                      <div className="w-full pt-1 text-lg text-right text-secondary">
+                      <div className="w-full pt-1 text-lg text-right">
                         Balance:{" "}
                         {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
                         {gameData.gameInfo.token}
                       </div>
                     </div>
 
-                    {winningTeam !== undefined &&
-                      finalWinner === undefined &&
-                      tokenBet >= minimumBet && (
-                        <div className="w-full mt-4 py-3 px-4 bg-light text-center text-lg">
-                          <p className="relative">
-                            Potential reward (highly volatile)
-                          </p>
-                          <div>
-                            {rewardEstimate || "N/A"} {gameData.gameInfo.token}
-                          </div>
+                    {finalWinner === undefined && tokenBet >= minimumBet && (
+                      <div className="w-full mt-4 py-3 px-4 bg-light text-center text-lg">
+                        <p className="relative">
+                          Potential reward (highly volatile)
+                        </p>
+                        <div>
+                          {rewardEstimate} {gameData.gameInfo.token}
                         </div>
-                      )}
+                      </div>
+                    )}
 
                     <Divider />
                     {/* TODO: replace with new component */}
@@ -931,7 +929,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p className="font-base-b">{`Success! You picked ${winningTeam} with ${tokenBet} ${gameData.gameInfo.token}.`}</p>
+                            <p>{`Success! You picked ${winningTeam} with ${tokenBet} ${gameData.gameInfo.token}.`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${txn}${
@@ -946,7 +944,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : finalWinner === winningTeam && winAmount ? (
                           // you picked the winning team
                           <>
-                            <p className="font-base-b">{`LFG! You won ${winAmount} ${gameData.gameInfo.token}!`}</p>
+                            <p>{`LFG! You won ${winAmount} ${gameData.gameInfo.token}!`}</p>
                             <a
                               className="text-base underline text-link hover:text-linkHover"
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
@@ -963,13 +961,15 @@ const Classic: FC<Props> = ({ gameId }) => {
                           gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked the incorrect team
                           <>
-                            <p className="font-base-b">L</p>
-                            <p>... we all take &apos;em</p>
+                            <p>
+                              L<br />
+                              ... we all take &apos;em
+                            </p>
                           </>
                         ) : winningTeam &&
                           gameData?.gameInfo?.status === "cancelled" ? (
                           <>
-                            <p className="font-base-b">{`This game was refunded.`}</p>
+                            <p>{`This game was refunded.`}</p>
                             <a
                               className={`text-base underline text-link hover:text-linkHover`}
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
@@ -985,11 +985,15 @@ const Classic: FC<Props> = ({ gameId }) => {
                         {/* if we get here, user has not bet on this game */}
                         {winningTeam === undefined &&
                           gameData?.gameInfo?.status === "completed" && (
-                            <p className="font-base-b">{`Game over! Winners have been airdropped.`}</p>
+                            <p>
+                              Game over!
+                              <br />
+                              Winners have been airdropped.
+                            </p>
                           )}
                         {winningTeam === undefined &&
                           gameData?.gameInfo?.status === "cancelled" && (
-                            <p className="font-base-b">{`This game was refunded.`}</p>
+                            <p>{`This game was refunded.`}</p>
                           )}
                       </div>
                     )}

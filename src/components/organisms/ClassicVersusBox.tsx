@@ -33,11 +33,10 @@ const TeamBox: FC<TProps> = ({
   valid,
 }) => (
   <motion.div
-    {...smallClickAnimation}
     className={`sm:w-[249px] ${
       teamImg === "" ? "h-[50px]" : "h-[90px]"
     } py-3 sm:py-0 sm:px-0 hover:cursor-pointer\
-    ${active ? "bg-[#6E17FF/10]" : "bg-versusBg"}
+    ${active ? "bg-link/5" : "bg-versusBg hover:bg-light"}
     ${!valid && "sm:hover:cursor-not-allowed"}
     `}
   >
@@ -100,14 +99,14 @@ const ClassicVersusBox: FC<VProps> = ({
             !success
               ? active1
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
-                : "border-transparent"
+                : "border-versusBg hover:border-light"
               : active1
               ? gameStatus === GameStatus.AIRDROPPED
                 ? gameData.team1.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
                 : "border-secondary !bg-border"
-              : "border-transparent"
+              : "border-versusBg hover:border-light"
           }`}
           // 7 - results are in + correct + active1 = green (border-correct bg-[#E8F5E9])
           // 8 - results are in + incorrect + active1 = red (border-incorrect bg-[#FFEBEE])
@@ -143,14 +142,14 @@ const ClassicVersusBox: FC<VProps> = ({
             !success
               ? active2
                 ? "border-link bg-[rgba(110,23,255,0.1)]"
-                : "border-transparent"
+                : "border-versusBg hover:border-light"
               : active2
               ? gameStatus === GameStatus.AIRDROPPED
                 ? gameData.team2.winner
                   ? "border-correct !bg-[#E8F5E9]"
                   : "border-incorrect !bg-[#FFEBEE]"
                 : "border-secondary !bg-border"
-              : "border-transparent"
+              : "border-versusBg hover:border-light"
           }`}
           onClick={() => {
             if (!success && valid) {
@@ -181,9 +180,7 @@ const ClassicVersusBox: FC<VProps> = ({
           className="absolute bg-white rounded-full w-[25px] h-[25px]
           left-1/2 -translate-x-1/2 text-center"
         >
-          <p className="h-full flex items-center justify-center text-sm text-secondary">
-            vs
-          </p>
+          <p className="h-full flex items-center justify-center text-sm">vs</p>
         </div>
       </div>
     </div>

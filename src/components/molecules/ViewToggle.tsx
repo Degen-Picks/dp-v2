@@ -146,9 +146,10 @@ const ViewToggle: FC<Props> = ({
         <div className={`h-[38px] flex items-center gap-1 p-1 bg-white`}>
           <motion.button
             className={`${
-              toggleConfig.selected === "option1" && "bg-primary text-white"
+              toggleConfig.selected === "option1"
+                ? "bg-primary text-white"
+                : "bg-transparent text-primary hover:bg-versusBg"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
-            {...smallClickAnimation}
             onClick={() => handleClick("option1")}
           >
             {/* {view === "pickem" && (
@@ -170,9 +171,10 @@ const ViewToggle: FC<Props> = ({
           </motion.button>
           <motion.button
             className={`${
-              toggleConfig.selected === "option2" && "bg-primary text-white"
+              toggleConfig.selected === "option2"
+                ? "bg-primary text-white"
+                : "bg-transparent text-primary hover:bg-versusBg"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
-            {...smallClickAnimation}
             onClick={() => handleClick("option2")}
           >
             {/* {view === "pickem" && (
@@ -194,9 +196,10 @@ const ViewToggle: FC<Props> = ({
           {toggleConfig.option3 && isAdmin === true ? (
             <motion.button
               className={`${
-                toggleConfig.selected === "option3" && "bg-primary text-white"
+                toggleConfig.selected === "option3"
+                  ? "bg-primary text-white"
+                  : "bg-transparent text-primary hover:bg-versusBg"
               } w-[80px] h-[30px] flex flex-col items-center justify-center`}
-              {...smallClickAnimation}
               onClick={() => handleClick("option3")}
             >
               {/* <ManageIcon

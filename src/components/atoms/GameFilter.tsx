@@ -1,6 +1,5 @@
 import { Dispatch, FC, SetStateAction } from "react";
 import { motion } from "framer-motion";
-import { smallClickAnimation } from "@/configs";
 
 interface Props {
   activeFilter: boolean;
@@ -12,9 +11,10 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
     <div className="relative h-[38px] flex items-center gap-1 z-40 bg-white p-1">
       <motion.button
         className={`w-[80px] h-[30px] flex items-center justify-center ${
-          activeFilter ? "bg-primary text-white" : "bg-transparent text-primary"
+          activeFilter
+            ? "bg-primary text-white"
+            : "bg-transparent text-primary hover:bg-versusBg"
         }`}
-        {...smallClickAnimation}
         onClick={() => setActiveFilter(true)}
       >
         <p>Live</p>
@@ -23,9 +23,8 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
         className={`w-[80px] h-[30px] flex items-center justify-center ${
           !activeFilter
             ? "bg-primary text-white"
-            : "bg-transparent text-primary"
+            : "bg-transparent text-primary hover:bg-versusBg"
         }`}
-        {...smallClickAnimation}
         onClick={() => setActiveFilter(false)}
       >
         <p>Past</p>
