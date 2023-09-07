@@ -820,7 +820,6 @@ const Classic: FC<Props> = ({ gameId }) => {
                       pickedTeams={[winningTeam]}
                       valid={gameStatus === GameStatus.OPEN}
                       gameStatus={gameStatus}
-                      finalWinner={finalWinner}
                       hideImage={gameData.gameInfo.league === "custom"}
                     />
 

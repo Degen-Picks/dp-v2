@@ -130,12 +130,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   };
 
   const pickHandler = (teamNum: number) => {
-    if(teamNum === 1) {
+    if (teamNum === 1) {
       setSelectedTeam(gameData.team1);
     } else {
       setSelectedTeam(gameData.team2);
     }
-  }
+  };
 
   return (
     <div className="w-full">
@@ -181,7 +181,6 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
               pickedTeams={[selectedTeam?.teamName]}
               valid={gameStatus === GameStatus.CLOSED}
               gameStatus={gameStatus}
-              finalWinner={selectedTeam?.teamName}
               hideImage={gameData.gameInfo.league === "custom"}
             />
             {/* divider */}
