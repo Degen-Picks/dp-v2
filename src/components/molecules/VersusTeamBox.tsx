@@ -7,24 +7,24 @@ import { GameStatus } from "../templates/ClassicView";
 interface TProps {
   gameData: GameInfo;
   active: boolean;
-  pickedTeams: any;
   teamImg?: string;
   teamName: string;
   teamRecord?: string;
   valid: boolean;
   success: boolean;
+  finalWinner: boolean;
   onClick: () => void;
 }
 
 const VersusTeamBox: FC<TProps> = ({
   gameData,
   active,
-  pickedTeams,
   teamImg,
   teamName,
   teamRecord,
   valid,
   success,
+  finalWinner,
   onClick,
 }) => {
   // states:
@@ -50,11 +50,11 @@ const VersusTeamBox: FC<TProps> = ({
         // and you selected this one
         if (gameData.gameInfo.status === GameStatus.AIRDROPPED) {
           // and the winner has been set
-          if (pickedTeams.includes(teamName)) {
-            // and you picked the winner
+          if (finalWinner) {
+            // and it is the winner
             return "border-correct bg-[#E8F5E9]";
           } else {
-            // and you picked the loser
+            // and it is the loser
             return "border-incorrect bg-[#FFEBEE]";
           }
         } else {

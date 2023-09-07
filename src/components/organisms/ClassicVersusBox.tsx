@@ -41,12 +41,12 @@ const ClassicVersusBox: FC<VProps> = ({
         <VersusTeamBox
           gameData={gameData}
           active={active1}
-          pickedTeams={pickedTeams}
           teamImg={!hideImage ? gameData.team1?.teamLogo : ""}
           teamName={gameData.team1.teamName}
           teamRecord={gameData.team1?.record}
           valid={valid}
           success={success}
+          finalWinner={gameData.team1.winner || false}
           onClick={() => {
             if (!success && valid) {
               if (active1) {
@@ -66,12 +66,12 @@ const ClassicVersusBox: FC<VProps> = ({
         <VersusTeamBox
           gameData={gameData}
           active={active2}
-          pickedTeams={pickedTeams}
           teamImg={!hideImage ? gameData.team2.teamLogo : ""}
           teamName={gameData.team2.teamName}
           teamRecord={gameData.team2.record}
           valid={valid}
           success={success}
+          finalWinner={gameData.team2.winner || false}
           onClick={() => {
             if (!success && valid) {
               if (active2) {
