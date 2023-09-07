@@ -52,6 +52,7 @@ const TermsView = dynamic(() => import("./molecules/TermsView"));
 const TwitterLoginButton = dynamic(
   () => import("./molecules/TwitterLoginButton")
 );
+const VersusTeamBox = dynamic(() => import("./molecules/VersusTeamBox"));
 const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 
 // organisms
@@ -113,6 +114,7 @@ export {
   RunYourPoolView,
   TermsView,
   TwitterLoginButton,
+  VersusTeamBox,
   ViewToggle,
 
   // organisms
