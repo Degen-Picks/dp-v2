@@ -14,7 +14,7 @@ import { GetServerSideProps, NextPage } from "next/types";
 import GameQueue from "./classic";
 import { getCurrencyIcon } from "@/utils";
 import { motion } from "framer-motion";
-import { smallClickAnimation } from "@/configs";
+import { generalConfig, smallClickAnimation } from "@/configs";
 import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface TeamProps {
@@ -85,7 +85,7 @@ const Landing = () => {
               <motion.button
                 className="bg-link text-white w-full max-w-[310px] h-[50px] text-lg px-5"
                 {...smallClickAnimation}
-                onClick={() => window.open("https://app.degenpicks.xyz/")}
+                onClick={() => window.open(generalConfig.appUrl)}
               >
                 Launch app
               </motion.button>
