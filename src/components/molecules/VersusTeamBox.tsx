@@ -59,16 +59,11 @@ const VersusTeamBox: FC<TProps> = ({
           }
         } else {
           // and the winner has not been set
-          return "border-link bg-link/5";
+          return "border-secondary bg-light";
         }
       } else {
-        if (active) {
-          // and you selected this one
-          return "border-secondary bg-light";
-        } else {
-          // and you did not select this one
-          return "border-versusBg bg-versusBg hover:border-light hover:bg-light";
-        }
+        // and you did not select this one
+        return "border-versusBg bg-versusBg";
       }
     }
   };
