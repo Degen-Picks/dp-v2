@@ -62,8 +62,13 @@ const VersusTeamBox: FC<TProps> = ({
           return "border-link bg-link/5";
         }
       } else {
-        // and you did not select this one - default style
-        return "border-versusBg bg-versusBg hover:border-light hover:bg-light";
+        if (active) {
+          // and you selected this one
+          return "border-secondary bg-light";
+        } else {
+          // and you did not select this one
+          return "border-versusBg bg-versusBg hover:border-light hover:bg-light";
+        }
       }
     }
   };
