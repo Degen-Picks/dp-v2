@@ -141,8 +141,7 @@ const ViewToggle: FC<Props> = ({
 
   return (
     <>
-      {/* desktop toggle */}
-      <div className="absolute top-24 sm:top-8 left-1/2 -translate-x-1/2">
+      <div className="absolute top-[120px] sm:top-8 left-1/2 -translate-x-1/2">
         <div className={`h-[38px] flex items-center gap-1 p-1 bg-greyscale1`}>
           <motion.button
             className={`${

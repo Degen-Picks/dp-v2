@@ -27,7 +27,7 @@ const TermsView: FC<Props> = ({ modalView }) => {
           </div>
           <div className="flex items-center gap-2">
             <WarningIcon />
-            <p>Don&apos;t game the play</p>
+            <p>Airdrop winners within 24hrs</p>
           </div>
         </div>
         <div className="w-[250px] flex flex-col items-start gap-4">
@@ -37,7 +37,7 @@ const TermsView: FC<Props> = ({ modalView }) => {
           </div>
           <div className="flex items-center gap-2">
             <WarningIcon />
-            <p>Airdrop winners within 24hrs</p>
+            <p>Take 50% of the fees</p>
           </div>
         </div>
       </div>

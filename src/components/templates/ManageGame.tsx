@@ -138,7 +138,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-[620px] mx-auto px-4 sm:px-0">
       <div className="mt-16 mb-[72px]">
         <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       </div>
