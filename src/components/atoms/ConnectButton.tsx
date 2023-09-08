@@ -54,15 +54,15 @@ const ConnectButton: FC<Props> = ({
   return (
     <WalletMultiButton
       className={`!relative flex items-center justify-center ${
-        buttonClasses
+        !!buttonClasses
           ? buttonClasses
-          : "!bg-black !px-8 !py-2.5 !w-full !h-auto !rounded-none !z-50"
+          : "!bg-black !px-8 !py-2.5 !w-full md:!min-w-[168px] !h-auto !rounded-none !z-50"
       }`}
       // startIcon={undefined}
     >
       <p
         className={`!text-lg !whitespace-nowrap ${
-          textClasses ? textClasses : "!font-base"
+          !!textClasses ? textClasses : "!font-base !text-greyscale1"
         }`}
       >
         {publicKey
