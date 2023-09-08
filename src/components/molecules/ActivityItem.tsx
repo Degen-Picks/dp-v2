@@ -29,8 +29,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
           >
             <div
               className="border border-greyscale3 bg-greyscale3 flex items-center justify-center 
-              rounded-full w-[40px] h-[40px] overflow-hidden hover:scale-110 
-              transition-transform ease-in-out duration-500"
+              rounded-full w-[40px] h-[40px] overflow-hidden"
             >
               <FallbackImage
                 src={item.userImage}

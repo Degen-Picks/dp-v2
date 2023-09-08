@@ -38,12 +38,12 @@ export const PropSection: FC<Props> = ({
   return (
     <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
       <div
-        className="relative bg-greyscale1 py-3 h-[200px] w-full px-5 md:px-0 md:w-[380px] mx-auto 
-        cursor-pointer hover:scale-[1.02] transition-transform ease-in-out duration-500"
+        className="relative bg-greyscale1 py-3 h-[200px] w-full
+        px-5 md:px-0 md:w-[380px] mx-auto cursor-pointer border-2 border-transparent hover:border-purple1"
       >
         <div className="flex flex-col items-center gap-[10px] justify-center h-full px-8">
           <p className="text-center text-lg leading-[17px]">{description}</p>
-          <p className="text-center text-2xl leading-[25px]  font-base-b">
+          <p className="text-center text-2xl leading-[25px] font-base-b">
             {title}
           </p>
           <div className="flex items-center justify-center gap-2 mt-[10px]">
