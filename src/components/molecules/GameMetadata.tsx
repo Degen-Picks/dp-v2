@@ -20,7 +20,7 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
       {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
         <div className="flex items-center gap-1">
           <VerifiedBadge />
-          <p className="uppercase hover:text-link cursor-pointer">
+          <p className="uppercase hover:text-purple1 cursor-pointer">
             degen picks team
           </p>
         </div>
@@ -43,7 +43,7 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
             height={24}
             alt="user image"
           />
-          <p className="hover:text-link">
+          <p className="hover:text-purple1">
             {gameData?.gameInfo?.creator?.twitterData?.username}
           </p>
         </motion.button>

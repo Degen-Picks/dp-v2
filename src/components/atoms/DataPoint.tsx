@@ -54,7 +54,7 @@ const DataPoint: FC<Props> = ({ title, value }) => {
           <p className="font-base-b text-lg text-data">
             {inView && <CountUpAnimation>{value}</CountUpAnimation>}
           </p>
-          <p className="text-secondary">{title}</p>
+          <p className="text-greyscale4">{title}</p>
         </div>
       )}
     </InView>

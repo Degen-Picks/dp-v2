@@ -59,7 +59,7 @@ const CircularProgressWithLabel = (props) => {
             thickness={2.5}
           />
         </Box>
-        <p className="text-lg flex items-center justify-center text-center text-link">
+        <p className="text-lg flex items-center justify-center text-center text-purple1">
           {`${Math.round(props.value)}%`}
         </p>
       </Box>

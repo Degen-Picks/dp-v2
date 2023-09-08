@@ -143,7 +143,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
         <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       </div>
       <div className="w-full flex flex-col items-center justify-center">
-        <div className="relative bg-white w-5/6 h-[121px] md:w-[620px] mx-auto flex items-center">
+        <div className="relative bg-greyscale1 w-5/6 h-[121px] md:w-[620px] mx-auto flex items-center">
           <div className="absolute right-0 -top-12">
             <TwitterShare
               url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
@@ -154,22 +154,22 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
               <p className="leading-none sm:text-lg">
                 {gameData.team1.uniqueWallets + gameData.team2.uniqueWallets}
               </p>
-              <p className="text-center text-secondary">players</p>
+              <p className="text-center text-greyscale4">players</p>
             </div>
             <div className="h-[81px] px-10 flex flex-col items-center justify-center">
               <p className="leading-none sm:text-lg">
                 {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}
               </p>
-              <p className="text-center text-secondary">volume</p>
+              <p className="text-center text-greyscale4">volume</p>
             </div>
-            <div className="h-[81px] px-10 bg-versusBg flex flex-col items-center justify-center">
+            <div className="h-[81px] px-10 bg-greyscale2 flex flex-col items-center justify-center">
               <p className="leading-none sm:text-lg">{handleCreatorFee()}</p>
-              <p className="text-center text-secondary">you get</p>
+              <p className="text-center text-greyscale4">you get</p>
             </div>
           </div>
         </div>
         <div className="pb-8" />
-        <div className="bg-white w-5/6 md:w-[620px] mx-auto mb-20">
+        <div className="bg-greyscale1 w-5/6 md:w-[620px] mx-auto mb-20">
           <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
             <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
               Set the game winner
@@ -199,7 +199,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
                 onClick={handleAirDrop}
                 disabled={isDisabled}
               >
-                <p className="font-base-b text-white">Airdrop winners</p>
+                <p className="font-base-b text-greyscale1">Airdrop winners</p>
               </button>
             )}
 

@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-white md:bg-transparent">
+      <div className="bg-greyscale1 md:bg-transparent">
         <div
           className="relative flex justify-center md:justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
@@ -45,7 +45,7 @@ const Navbar = () => {
               <ConnectButton />
             ) : (
               <motion.button
-                className="bg-link text-white h-[50px] px-5"
+                className="bg-purple1 text-greyscale1 h-[50px] px-5"
                 {...smallClickAnimation}
                 onClick={() => window.open("https://app.degenpicks.xyz/")}
               >
@@ -55,7 +55,7 @@ const Navbar = () => {
           </div>
           {isMobile && (
             <div
-              className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center bg-white p-2.5"
+              className="absolute right-5 top-1/2 -translate-y-1/2 flex items-center bg-greyscale1 p-2.5"
               onClick={() => setOpen(true)}
             >
               <svg

@@ -89,7 +89,7 @@ const ClassicVersusBox: FC<VProps> = ({
         />
         {/* vs icon absolutely positioned */}
         <div
-          className="absolute bg-white rounded-full w-[25px] h-[25px]
+          className="absolute bg-greyscale1 rounded-full w-[25px] h-[25px]
           left-1/2 -translate-x-1/2 text-center"
         >
           <p className="h-full flex items-center justify-center text-sm">vs</p>

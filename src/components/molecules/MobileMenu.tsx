@@ -37,7 +37,7 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
       ref={ref}
     >
       <div
-        className={`text-primary bg-white
+        className={` bg-greyscale1
           absolute flex flex-col w-screen
           top-0 right-0 py-4 px-6 shadow-2xl`}
       >
@@ -85,7 +85,7 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
           >
             <ConnectButton />
             {publicKey && <TwitterLoginButton />}
-            <div className="flex items-center gap-3 text-primary">
+            <div className="flex items-center gap-3 ">
               <a
                 href="https://twitter.com/degenpicksxyz"
                 rel="noreferrer noopener"

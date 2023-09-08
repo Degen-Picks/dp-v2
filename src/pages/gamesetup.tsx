@@ -22,7 +22,11 @@ import {
 import createClassic from "@/utils/api/classic/create";
 import { withRedirect } from "@/utils/withRedirect";
 import { generalConfig } from "@/configs";
-import { COLLECTION_NAME_MAP, LEAGUE_NAME_MAP, REVERSE_LEAGUE_NAME_MAP } from "@/utils/nameMap";
+import {
+  COLLECTION_NAME_MAP,
+  LEAGUE_NAME_MAP,
+  REVERSE_LEAGUE_NAME_MAP,
+} from "@/utils/nameMap";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.name);
@@ -36,7 +40,7 @@ function getLeagueTeams(leagues: any, league: any) {
   if (teams) {
     return teams.sort();
   }
-  
+
   return null;
 }
 
@@ -151,16 +155,15 @@ const GameSetup = () => {
         })
         .map((asset: League) => ({
           ...asset, // Spread existing properties
-          name: LEAGUE_NAME_MAP[asset.league] || 'Unknown', // Add the name property
-      }));
+          name: LEAGUE_NAME_MAP[asset.league] || "Unknown", // Add the name property
+        }));
 
       const collection: LeaguesArray = assets
         .filter((asset: League) => asset.league.includes("collection"))
         .map((asset: League) => ({
           ...asset,
-          name: COLLECTION_NAME_MAP[asset.league] || 'Unknown',
-      }));
-      
+          name: COLLECTION_NAME_MAP[asset.league] || "Unknown",
+        }));
 
       setLeagues(leagues);
       setCollections(collection);
@@ -214,7 +217,9 @@ const GameSetup = () => {
             <div className="flex flex-col gap-5">
               <CreationDropMenu
                 league={leagues.find(
-                  (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                  (league) =>
+                    league.league ===
+                    REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                 )}
                 list={leagues.map((league) => league.name!)}
                 gameDetails={gameDetails}
@@ -236,9 +241,14 @@ const GameSetup = () => {
                 ) : (
                   <CreationDropMenu
                     league={leagues.find(
-                      (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      (league) =>
+                        league.league ===
+                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                     )}
-                    list={getLeagueTeams(leagues, REVERSE_LEAGUE_NAME_MAP[gameDetails.league])}
+                    list={getLeagueTeams(
+                      leagues,
+                      REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                    )}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team1Name"
@@ -269,9 +279,14 @@ const GameSetup = () => {
                 ) : (
                   <CreationDropMenu
                     league={leagues.find(
-                      (league) => league.league === REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      (league) =>
+                        league.league ===
+                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
                     )}
-                    list={getLeagueTeams(leagues, REVERSE_LEAGUE_NAME_MAP[gameDetails.league])}
+                    list={getLeagueTeams(
+                      leagues,
+                      REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                    )}
                     gameDetails={gameDetails}
                     setGameDetails={setGameDetails}
                     accessor="team2Name"
@@ -350,7 +365,7 @@ const GameSetup = () => {
             </div>
             <div className="w-full flex justify-between">
               <button
-                className="h-[50px] w-full bg-black text-white
+                className="h-[50px] w-full bg-black text-greyscale1
                 px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
                 onClick={handleCreateGame}
                 disabled={!publicKey || !validGame || loading || !agree}

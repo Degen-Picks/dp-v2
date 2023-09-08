@@ -24,7 +24,7 @@ const PickemPlace = ({ place, children }) => {
   );
 };
 
-const RewardPool = ({ gameData, picksOpened, gameType }) => {
+const RewardPool = ({ gameData }) => {
   const [betRatio, setBetRatio] = useState({
     team1: 0,
     team2: 0,
@@ -35,236 +35,139 @@ const RewardPool = ({ gameData, picksOpened, gameType }) => {
     team2: "1.0x",
   });
 
-  // const fireHandler = (ratio) => {
-  //   if (ratio <= 33.3 && ratio > 0) {
-  //     return "🔥🔥🔥";
-  //   } else if (ratio > 33.3 && ratio <= 66.6) {
-  //     return "🔥🔥";
-  //   } else if (ratio > 66.6) {
-  //     return "🔥";
-  //   } else {
-  //     return "-";
-  //   }
-  // };
-
   useEffect(() => {
-    if (gameType === "degen") {
-      var team1Ratio =
-        Math.floor(
-          (gameData.team1.dustVol /
-            (gameData.team1.dustVol + gameData.team2.dustVol)) *
-            10000
-        ) / 100;
+    var team1Ratio =
+      Math.floor(
+        (gameData.team1.dustVol /
+          (gameData.team1.dustVol + gameData.team2.dustVol)) *
+          10000
+      ) / 100;
 
-      var team2Ratio = 100 - team1Ratio;
-      if (Number.isNaN(team1Ratio)) {
-        team1Ratio = 0;
-        team2Ratio = 0;
-      }
-
-      setBetRatio({
-        team1: team1Ratio,
-        team2: team2Ratio,
-      });
+    var team2Ratio = 100 - team1Ratio;
+    if (Number.isNaN(team1Ratio)) {
+      team1Ratio = 0;
+      team2Ratio = 0;
     }
+
+    setBetRatio({
+      team1: team1Ratio,
+      team2: team2Ratio,
+    });
   }, [gameData]);
 
   useEffect(() => {
-    if (gameType === "degen") {
-      const team1Multiplier =
-        Math.floor(
-          ((gameData.team1.dustVol + gameData.team2.dustVol) /
-            gameData.team1.dustVol) *
-            100
-        ) / 100;
+    const team1Multiplier =
+      Math.floor(
+        ((gameData.team1.dustVol + gameData.team2.dustVol) /
+          gameData.team1.dustVol) *
+          100
+      ) / 100;
 
-      const team2Multiplier =
-        Math.floor(
-          ((gameData.team1.dustVol + gameData.team2.dustVol) /
-            gameData.team2.dustVol) *
-            100
-        ) / 100;
+    const team2Multiplier =
+      Math.floor(
+        ((gameData.team1.dustVol + gameData.team2.dustVol) /
+          gameData.team2.dustVol) *
+          100
+      ) / 100;
 
-      const team1MultiplierParsed =
-        team1Multiplier === Infinity ? "-" : `${team1Multiplier}x`;
-      const team2MultiplierParsed =
-        team2Multiplier === Infinity ? "-" : `${team2Multiplier}x`;
+    const team1MultiplierParsed =
+      team1Multiplier === Infinity ? "-" : `${team1Multiplier}x`;
+    const team2MultiplierParsed =
+      team2Multiplier === Infinity ? "-" : `${team2Multiplier}x`;
 
-      if (!Number.isNaN(team1Multiplier) && !Number.isNaN(team1Multiplier)) {
-        setMultiplier({
-          team1: team1MultiplierParsed,
-          team2: team2MultiplierParsed,
-        });
-      }
+    if (!Number.isNaN(team1Multiplier) && !Number.isNaN(team1Multiplier)) {
+      setMultiplier({
+        team1: team1MultiplierParsed,
+        team2: team2MultiplierParsed,
+      });
     }
   }, [gameData]);
 
   return (
     <div>
       {/* reward pool outer container */}
-      <div className="relative bg-white w-5/6 md:w-[620px] mx-auto mt-10">
+      <div className="relative bg-greyscale1 w-5/6 md:w-[620px] mx-auto mt-10 text-base">
         <div className="absolute right-0 -top-12">
           <TwitterShare
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
           />
         </div>
-        {gameType === "degen" ? (
-          <>
-            <div className="flex flex-row justify-evenly items-center pb-5 pt-8">
-              {/* team 1 spread */}
-              <div className="hidden md:block w-[150px]">
-                <RewardCircle
-                  value={betRatio.team1}
-                  team={gameData.team1.teamName}
-                />
-              </div>
-              {/* reward data table */}
-              <div className="flex flex-col justify-between w-[340px] h-fit text-sm sm:text-base">
-                {/* vol */}
-                <div className="flex flex-row justify-between pb-3">
-                  <div className="w-[80px] text-right pr-2">
-                    {Math.floor(gameData.team1.dustVol * 100) / 100}
-                  </div>
-                  <div className="text-cente">
-                    <p className="px-3 text-[#A89FA8]">volume</p>
-                  </div>
-                  <div className="w-[80px] text-left pl-2">
-                    {Math.floor(gameData.team2.dustVol * 100) / 100}
-                  </div>
+        <>
+          <div className="flex flex-row justify-evenly items-center pb-5 pt-8">
+            {/* team 1 spread */}
+            <div className="hidden md:block w-[150px]">
+              <RewardCircle
+                value={betRatio.team1}
+                team={gameData.team1.teamName}
+              />
+            </div>
+            {/* reward data table */}
+            <div className="flex flex-col justify-between w-[340px] h-fit text-base sm:text-lg font-base">
+              {/* vol */}
+              <div className="flex flex-row justify-between pb-3">
+                <div className="w-[80px] text-right pr-2">
+                  {Math.floor(gameData.team1.dustVol * 100) / 100}
                 </div>
-                {/* unique wallets */}
-                <div className="flex flex-row justify-between pb-3">
-                  <div className="w-[80px] text-right pr-2">
-                    {gameData.team1.uniqueWallets}
-                  </div>
-                  <div className="text-cente">
-                    <p className="px-3 text-[#A89FA8]">players</p>
-                  </div>
-                  <div className="w-[80px] text-left pl-2">
-                    {gameData.team2.uniqueWallets}
-                  </div>
+                <div className="text-center">
+                  <p className="px-3 text-greyscale4">volume</p>
                 </div>
-                {/* reward level */}
-                {/* <div className="flex flex-row justify-between pb-3">
-                  <div className="w-[80px] text-right pr-2">
-                    {fireHandler(betRatio.team1)}
-                  </div>
-                  <div className="text-center">
-                    <p className="px-3 text-[#A89FA8]">level</p>
-                  </div>
-                  <div className="w-[80px] text-left pl-2">
-                    {fireHandler(betRatio.team2)}
-                  </div>
-                </div> */}
-                {/* reward multiplier */}
-                <div className="flex flex-row justify-between sm:pb-3">
-                  <div className="w-[80px] text-right pr-2">
-                    {multiplier.team1}
-                  </div>
-                  <div className="relative z-50 text-center">
-                    <p className="px-3 text-[#A89FA8]">reward</p>
-                  </div>
-                  <div className="w-[80px] text-left pl-2">
-                    {multiplier.team2}
-                  </div>
+                <div className="w-[80px] text-left pl-2">
+                  {Math.floor(gameData.team2.dustVol * 100) / 100}
                 </div>
               </div>
-              {/* team 2 spread */}
-              <div className="hidden md:block w-[150px]">
-                <RewardCircle
-                  value={betRatio.team2}
-                  team={gameData.team2.teamName}
-                />
+              {/* unique wallets */}
+              <div className="flex flex-row justify-between pb-3">
+                <div className="w-[80px] text-right pr-2">
+                  {gameData.team1.uniqueWallets}
+                </div>
+                <div className="text-center">
+                  <p className="px-3 text-greyscale4">players</p>
+                </div>
+                <div className="w-[80px] text-left pl-2">
+                  {gameData.team2.uniqueWallets}
+                </div>
+              </div>
+              {/* reward multiplier */}
+              <div className="flex flex-row justify-between sm:pb-3">
+                <div className="w-[80px] text-right pr-2">
+                  {multiplier.team1}
+                </div>
+                <div className="relative z-50 text-center">
+                  <p className="px-3 text-greyscale4">reward</p>
+                </div>
+                <div className="w-[80px] text-left pl-2">
+                  {multiplier.team2}
+                </div>
               </div>
             </div>
-            <div
-              className="md:hidden h-fit flex flex-row justify-between 
+            {/* team 2 spread */}
+            <div className="hidden md:block w-[150px]">
+              <RewardCircle
+                value={betRatio.team2}
+                team={gameData.team2.teamName}
+              />
+            </div>
+          </div>
+          <div
+            className="md:hidden h-fit flex flex-row justify-between 
               sm:justify-evenly mx-10 py-10 border-t border-black/20"
-            >
-              {/* team 1 spread */}
-              <div className="w-[100px]">
-                <RewardCircle
-                  value={betRatio.team1}
-                  team={gameData.team1.teamName}
-                />
-              </div>
-              {/* team 2 spread */}
-              <div className="w-[100px]">
-                <RewardCircle
-                  value={betRatio.team2}
-                  team={gameData.team2.teamName}
-                />
-              </div>
+          >
+            {/* team 1 spread */}
+            <div className="w-[100px]">
+              <RewardCircle
+                value={betRatio.team1}
+                team={gameData.team1.teamName}
+              />
             </div>
-          </>
-        ) : (
-          <>
-            <div
-              className="flex flex-row justify-left 
-              border-b border-border w-5/6 mx-auto pt-8 pb-4"
-            >
-              <div className="pr-2 sm:pr-6">
-                <div className="text-sm sm:text-xl font-base-b">
-                  {gameData.totalSpent.length > 4
-                    ? `${gameData.totalSpent.toFixed(4)} ${
-                        gameData.gameInfo.token
-                      }`
-                    : `${gameData.totalSpent} ${gameData.gameInfo.token}`}
-                </div>
-                <div className="text-[11px] sm:text-sm text-secondary">
-                  total volume
-                </div>
-              </div>
-              <div className="px-6 sm:px-16 w-fit mx-auto border-x border-border">
-                <div className="text-sm sm:text-xl text-center font-base-b">
-                  {gameData.totalUsers}
-                </div>
-                <div className="text-[11px] sm:text-sm text-secondary">
-                  players
-                </div>
-              </div>
-              <div className="pl-2 sm:pl-6 text-right">
-                <div className="text-sm sm:text-xl font-base-b">
-                  {gameData.entryFee} ${gameData.gameInfo.token}
-                </div>
-                <div className="text-[11px] sm:text-sm text-secondary">
-                  entry fee
-                </div>
-              </div>
+            {/* team 2 spread */}
+            <div className="w-[100px]">
+              <RewardCircle
+                value={betRatio.team2}
+                team={gameData.team2.teamName}
+              />
             </div>
-            <div className="w-5/6 mx-auto">
-              <div className="pt-4 pb-2">Rewards</div>
-              {/* <div className="pb-10">
-                <PickemPlace place="first">
-                  Winner takes all<br />
-                  <span className="font-base-b">
-                    {Math.floor(gameData.totalSpent*0.9*100)/100} DUST
-                  </span>
-                </PickemPlace>
-              </div> */}
-              <div className="w-full flex flex-row justify-between items-center pb-10">
-                <PickemPlace place="first">
-                  <span className="font-base-b">
-                    {Math.floor(gameData.totalSpent * 0.65 * 0.9)} $
-                    {gameData.gameInfo.token}
-                  </span>
-                </PickemPlace>
-                <PickemPlace place="second">
-                  <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.25 * 0.9)} $
-                    {gameData.gameInfo.token}
-                  </span>
-                </PickemPlace>
-                <PickemPlace place="third">
-                  <span className="font-base">
-                    {Math.floor(gameData.totalSpent * 0.1 * 0.9)} $
-                    {gameData.gameInfo.token}
-                  </span>
-                </PickemPlace>
-              </div>
-            </div>
-          </>
-        )}
+          </div>
+        </>
       </div>
     </div>
   );

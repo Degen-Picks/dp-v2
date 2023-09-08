@@ -15,7 +15,7 @@
 /* Sets top level div background */
 @layer base {
   body {
-    @apply bg-light text-lg;
+    @apply bg-greyscale3 text-lg;
   }
 }
 

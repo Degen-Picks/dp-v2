@@ -18,7 +18,7 @@ const TwitterShareButton: FC<Props> = ({ url }) => {
 
   return (
     <motion.button
-      className="flex items-center justify-center gap-[5px] px-3 py-1 fill-link hover:fill-linkHover text-link hover:text-linkHover"
+      className="flex items-center justify-center gap-[5px] px-3 py-1 fill-purple1 hover:fill-purple2 text-purple1 hover:text-purple2"
       onClick={() => window.open(twitterLink, "_blank", "noopener noreferrer")}
     >
       <svg

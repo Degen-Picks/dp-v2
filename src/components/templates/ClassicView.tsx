@@ -764,7 +764,7 @@ const Classic: FC<Props> = ({ gameId }) => {
               // loading indicator
               <div className="w-fit mx-auto flex flex-col items-center mt-20">
                 <FadeLoader color="#651FFF" />
-                <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
+                <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
                   Loading ...
                 </p>
               </div>
@@ -782,11 +782,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             )}
             {gameStatus !== GameStatus.PREGAME && !loading && (
               <div className={`${!publicKey && "mb-24 sm:mb-0"}`}>
-                <RewardPool
-                  gameData={gameData}
-                  picksOpened={gameStatus === GameStatus.OPEN}
-                  gameType={"degen"}
-                />
+                <RewardPool gameData={gameData} />
               </div>
             )}
             {!publicKey && !loading && (
@@ -799,10 +795,10 @@ const Classic: FC<Props> = ({ gameId }) => {
             {publicKey && (
               <div className="z-10 h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
-                <div className="bg-white w-5/6 md:w-[620px] mx-auto">
+                <div className="bg-greyscale1 w-5/6 md:w-[620px] mx-auto">
                   {/* header */}
-                  {/* <div className="relative h-[50px] flex items-center justify-center bg-container">
-                    <p className="font-base-b text-center text-containerHead">
+                  {/* <div className="relative h-[50px] flex items-center justify-center bg-greyscale5">
+                    <p className="font-base-b text-center text-greyscale1">
                       {`Make your pick`}
                     </p>
                   </div> */}
@@ -844,8 +840,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                             setTokenBet(parseFloat(e.target.value));
                           }}
                           className="disabled:opacity-70 disabled:cursor-not-allowed 
-                          bg-versusBg hover:bg-light px-2 h-[50px] w-full text-center focus:outline-none 
-                          focus:ring-2 focus:ring-link rounded-none focus:bg-white"
+                          bg-greyscale2 hover:bg-greyscale3 px-2 h-[50px] w-full text-center focus:outline-none 
+                          focus:ring-2 focus:ring-purple1 rounded-none focus:bg-greyscale1"
                         />
                         <div className="absolute left-2 top-[10px]">
                           <Image
@@ -864,7 +860,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     </div>
 
                     {finalWinner === undefined && tokenBet >= minimumBet && (
-                      <div className="w-full mt-4 py-3 px-4 bg-light text-center text-lg">
+                      <div className="w-full mt-4 py-3 px-4 bg-greyscale3 text-center text-lg">
                         <p className="relative">
                           Potential reward (highly volatile)
                         </p>
@@ -889,11 +885,11 @@ const Classic: FC<Props> = ({ gameId }) => {
                         checked={!!agree}
                         disabled={rulesDisabled}
                         onChange={() => setAgree(!agree)}
-                        className="mr-2 accent-link hover:accent-linkHover"
+                        className="mr-2 accent-purple1 hover:accent-purple2"
                       />
                       You agree to{" "}
                       <span
-                        className="text-link hover:text-linkHover underline font-bold hover:cursor-pointer transition-all duration-150"
+                        className="text-purple1 hover:text-purple2 underline font-bold hover:cursor-pointer transition-all duration-150"
                         onClick={() => setShowModal(true)}
                       >
                         the rules
@@ -915,12 +911,12 @@ const Classic: FC<Props> = ({ gameId }) => {
                             ? "cursor-not-allowed opacity-50"
                             : "cursor-pointer hover:bg-[#333333]"
                         }
-                      bg-black text-white w-full py-4 my-6 text-center z-[+1]`}
+                      bg-black text-greyscale1 w-full py-4 my-6 text-center z-[+1]`}
                       >
                         {buttonHandler()}
                       </button>
                     ) : (
-                      <div className="bg-light text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
+                      <div className="bg-greyscale3 text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
                         {!finalWinner &&
                         tokenBet &&
                         winningTeam &&
@@ -930,7 +926,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           <>
                             <p>{`Success! You picked ${winningTeam} with ${tokenBet} ${gameData.gameInfo.token}.`}</p>
                             <a
-                              className="text-base underline text-link hover:text-linkHover"
+                              className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${txn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -945,7 +941,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           <>
                             <p>{`LFG! You won ${winAmount} ${gameData.gameInfo.token}!`}</p>
                             <a
-                              className="text-base underline text-link hover:text-linkHover"
+                              className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -970,7 +966,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           <>
                             <p>{`This game was refunded.`}</p>
                             <a
-                              className={`text-base underline text-link hover:text-linkHover`}
+                              className={`text-base underline text-purple1 hover:text-purple2`}
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}

@@ -36,7 +36,7 @@ const TeamMember: FC<TeamProps> = ({ handle, image }) => {
       }
     >
       <Image src={image} width={24} height={24} alt="user image" />
-      <p className="hover:text-link">{handle}</p>
+      <p className="hover:text-purple1">{handle}</p>
     </motion.button>
   );
 };
@@ -69,7 +69,7 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="w-full relative overflow-hidden bg-light">
+    <div className="w-full relative overflow-hidden bg-greyscale3">
       <div className="h-screen w-full flex flex-col">
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-evenly">
@@ -83,7 +83,7 @@ const Landing = () => {
                 priority
               />
               <motion.button
-                className="bg-link text-white w-full max-w-[310px] h-[50px] text-lg px-5"
+                className="bg-purple1 text-greyscale1 w-full max-w-[310px] h-[50px] text-lg px-5"
                 {...smallClickAnimation}
                 onClick={() => window.open(generalConfig.appUrl)}
               >
@@ -108,7 +108,7 @@ const Landing = () => {
       </div>
       <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
         <div className="w-[90%] md:w-[3/4] mx-auto pb-10 sm:pb-20">
-          <div className="font-base-b text-[40px] leading-[39px] text-primary">
+          <div className="font-base-b text-[40px] leading-[39px] ">
             Degen Picks
           </div>
           <div className="lg:text-lg px-8 mt-4 max-w-[500px] mx-auto">
@@ -176,13 +176,13 @@ const Landing = () => {
         </div>
       </div>
       <div className="absolute sm:fixed bottom-0 w-full">
-        <div className="text-secondary text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
+        <div className="text-greyscale4 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
           <p>© 2023 Degen Picks</p>
           <div className="hidden sm:flex items-center gap-4">
             <p className="">Follow us</p>
             {/* icons here */}
-            <Twitter className="fill-secondary" />
-            <Discord className="fill-secondary" />
+            <Twitter className="fill-greyscale4" />
+            <Discord className="fill-greyscale4" />
           </div>
         </div>
       </div>

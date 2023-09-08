@@ -122,7 +122,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
       {loading ? (
         <div className="w-fit mx-auto flex flex-col items-center mt-20">
           <FadeLoader color="#651FFF" />
-          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
+          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
             Loading ...
           </p>
         </div>
@@ -155,7 +155,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
           {/* TODO: how to check if there are more activities? */}
           {/* <motion.button
             {...smallClickAnimation}
-            className="text-link"
+            className="text-purple1"
             onClick={() => setPage(page + 1)}
           >
             Load More

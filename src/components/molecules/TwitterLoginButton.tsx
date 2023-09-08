@@ -171,7 +171,7 @@ const TwitterLoginButton: FC = () => {
           className={`${
             isTwitterLinked
               ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
-              : "sm:py-1 sm:border border-black bg-white"
+              : "sm:py-1 sm:border border-black bg-greyscale1"
           } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
           rounded-full sm:rounded-none items-center sm:gap-2 group`}
         >
@@ -189,7 +189,7 @@ const TwitterLoginButton: FC = () => {
             <div>
               <div className="flex items-center justify-center gap-2.5 sm:px-2 sm:group-hover:hidden">
                 <div
-                  className="border border-light flex items-center justify-center rounded-full 
+                  className="border border-greyscale3 flex items-center justify-center rounded-full 
                   w-[30px] h-[30px] overflow-hidden"
                 >
                   <FallbackImage

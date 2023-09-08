@@ -22,7 +22,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
       {/* option 1 - degen picks OG */}
       <div
         className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
-        bg-white border-2 border-black/30 lg:hover:cursor-pointer lg:hover:border-link"
+        bg-greyscale1 border-2 border-black/30 lg:hover:cursor-pointer lg:hover:border-purple1"
         onClick={() => handleClick("classic")}
       >
         <div className="h-full flex flex-col justify-center">
@@ -56,7 +56,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
         </div>
         {/* game status */}
         {classicLive === true && (
-          <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-white text-red-500">
+          <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-greyscale1 text-red-500">
             <div className="blob"></div> Live game
           </div>
         )}
@@ -64,7 +64,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
       {/* option 2 - JB pickem */}
       <div
         className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
-        bg-white border-2 border-black/30 lg:cursor-not-allowed opacity-60"
+        bg-greyscale1 border-2 border-black/30 lg:cursor-not-allowed opacity-60"
         // onClick={() => handleClick("degen")}
       >
         <div className="h-full flex flex-col justify-center sm:pb-0">
@@ -83,13 +83,13 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
             </p>
           </div>
           {/* {pickemLive === true && (
-            <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-white text-red-500">
+            <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-greyscale1 text-red-500">
               <div className="blob"></div> Live game
             </div>
           )} */}
           <div
             className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 
-            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-container"
+            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-greyscale5"
           >
             Season ended
           </div>

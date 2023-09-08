@@ -19,7 +19,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
   };
 
   return (
-    <div className="w-full flex item-center justify-between bg-white max-w-[620px] mx-auto px-10 py-4">
+    <div className="w-full flex item-center justify-between bg-greyscale1 max-w-[620px] mx-auto px-10 py-4">
       <div className="flex items-center gap-3">
         {item.twitterName ? (
           <a
@@ -28,7 +28,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
             rel="noreferrer"
           >
             <div
-              className="border border-light bg-light flex items-center justify-center 
+              className="border border-greyscale3 bg-greyscale3 flex items-center justify-center 
               rounded-full w-[40px] h-[40px] overflow-hidden hover:scale-110 
               transition-transform ease-in-out duration-500"
             >
@@ -42,7 +42,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
             </div>
           </a>
         ) : (
-          <div className="border border-light bg-light flex items-center justify-center rounded-full w-[40px] h-[40px] overflow-hidden">
+          <div className="border border-greyscale3 bg-greyscale3 flex items-center justify-center rounded-full w-[40px] h-[40px] overflow-hidden">
             <Image
               src={item.userImage}
               width={20}
@@ -58,7 +58,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
               href={`https://twitter.com/${item.twitterName}`}
               target="_blank"
               rel="noreferrer"
-              className="font-base-b hover:text-link 
+              className="font-base-b hover:text-purple1 
               transition-colors ease-in-out duration-300"
             >
               {item.name}
@@ -66,7 +66,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
           ) : (
             <p className="font-base-b">{item.name}</p>
           )}
-          <p className="text-sm text-secondary">{timeAgo(item.time)}</p>
+          <p className="text-sm text-greyscale4">{timeAgo(item.time)}</p>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">

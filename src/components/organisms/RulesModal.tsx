@@ -45,7 +45,7 @@ const RulesModal: FC<ModalProps> = ({ showModal, setShowModal }) => {
             >
               <div
                 className="relative px-8 sm:px-20 pt-4 pb-12 border-0
-                shadow-lg flex flex-col w-full bg-white"
+                shadow-lg flex flex-col w-full bg-greyscale1"
               >
                 {/* header */}
                 <div className="w-full">

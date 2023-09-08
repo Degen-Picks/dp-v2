@@ -5,7 +5,7 @@ const Friends = () => (
     <div className="font-base-b text-3xl text-black text-center pt-16">
       Built different by the DeGods community
     </div>
-    <p className="text-center text-secondary text-xl py-4">and friends.</p>
+    <p className="text-center text-greyscale4 text-xl py-4">and friends.</p>
     <div className="flex overflow-x-scroll gap-3 lg:gap-6 mb-4 py-6 px-10 lg:px-0">
       <Friend
         link="https://twitter.com/NinetiesNFT"
@@ -86,7 +86,7 @@ const Friends = () => (
         href="https://discord.gg/TGTam7epH6"
         target="_blank"
         rel="noreferrer"
-        className="underline text-link lg:hover:text-linkHover"
+        className="underline text-purple1 lg:hover:text-purple2"
       >
         Discord
       </a>

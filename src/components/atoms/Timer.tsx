@@ -48,7 +48,7 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
   return (
     <div className="flex items-center justify-center whitespace-nowrap text-lg">
       {status === "closed" ? (
-        <p className="text-primary">Picks Closed</p>
+        <p className="">Picks Closed</p>
       ) : status === "completed" ? (
         <div className="flex items-center gap-1">
           <p className="text-correct">Airdrops</p>
@@ -65,9 +65,9 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
       ) : status === "cancelled" ? (
         <p className="text-incorrect">Refunded</p>
       ) : status === "upcoming" ? (
-        <p className="text-secondary">Loading</p>
+        <p className="text-greyscale4">Loading</p>
       ) : (
-        <p className={`${closeToEnd ? "text-incorrect" : "text-link"}`}>
+        <p className={`${closeToEnd ? "text-incorrect" : "text-purple1"}`}>
           {timeRemaining}
         </p>
       )}

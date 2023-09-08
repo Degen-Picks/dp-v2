@@ -14,7 +14,7 @@ const Forwardbutton: FC<Props> = ({ text, handleClick }) => {
       className="flex items-center gap-2 cursor-pointer h-[50px] w-[100px]"
       onClick={handleClick}
     >
-      <p className="text-link text-lg">{text}</p>
+      <p className="text-purple1 text-lg">{text}</p>
       <svg
         width="15"
         height="13"

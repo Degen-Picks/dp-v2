@@ -31,21 +31,17 @@ const CreationTextField: FC<Props> = ({
       {title && (
         <p
           className="absolute -translate-x-[290px] w-[250px] top-1/2 -translate-y-1/2
-          text-secondary whitespace-nowrap text-right"
+          text-greyscale4 whitespace-nowrap text-right"
         >
           {title}
         </p>
       )}
       <form id="text-area" className="h-full">
         <input
-          className={`w-full h-full bg-white hover:bg-gray-50 
+          className={`w-full h-full bg-greyscale1 hover:bg-gray-50 
           flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-link disabled:cursor-not-allowed disabled:text-disabled
-          ${
-            accessor === "gameTime" && !initialized
-              ? "text-disabled"
-              : "text-primary"
-          }
+          focus:border-purple1 disabled:cursor-not-allowed disabled:text-disabled
+          ${accessor === "gameTime" && !initialized ? "text-disabled" : ""}
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
           type={type}

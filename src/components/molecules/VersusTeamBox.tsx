@@ -39,10 +39,10 @@ const VersusTeamBox: FC<TProps> = ({
       // no pick submitted
       if (active) {
         // and you selected this one
-        return "border-link bg-link/5";
+        return "border-purple1 bg-purple1/5";
       } else {
         // default style
-        return "border-versusBg bg-versusBg hover:border-light hover:bg-light";
+        return "border-greyscale2 bg-greyscale2 hover:border-greyscale3 hover:bg-greyscale3";
       }
     } else {
       // pick submitted
@@ -59,11 +59,11 @@ const VersusTeamBox: FC<TProps> = ({
           }
         } else {
           // and the winner has not been set
-          return "border-secondary bg-light";
+          return "border-greyscale4 bg-greyscale3";
         }
       } else {
         // and you did not select this one
-        return "border-versusBg bg-versusBg";
+        return "border-greyscale2 bg-greyscale2";
       }
     }
   };
@@ -87,9 +87,9 @@ const VersusTeamBox: FC<TProps> = ({
           />
         )}
         <div>
-          <div className={`text-primary text-center text-lg`}>{teamName}</div>
+          <div className={` text-center text-lg`}>{teamName}</div>
           {teamRecord !== "" && (
-            <div className={`text-secondary text-base leading-none`}>
+            <div className={`text-greyscale4 text-base leading-none`}>
               {teamRecord}
             </div>
           )}

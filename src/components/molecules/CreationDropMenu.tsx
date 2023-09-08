@@ -70,7 +70,7 @@ const CreationDropMenu: FC<Props> = ({
     <div className="w-full relative">
       <p
         className="absolute -translate-x-[290px] w-[250px] top-1/2
-        -translate-y-1/2 text-secondary whitespace-nowrap text-right"
+        -translate-y-1/2 text-greyscale4 whitespace-nowrap text-right"
       >
         {title}
       </p>
@@ -78,9 +78,9 @@ const CreationDropMenu: FC<Props> = ({
         <button
           type="button"
           className="flex items-center justify-between w-full h-[50px]
-          bg-white px-4 py-2 hover:bg-gray-50 focus:outline-none 
-          focus:ring-2 disabled:hover:bg-white disabled:hover:cursor-not-allowed
-          focus:ring-link"
+          bg-greyscale1 px-4 py-2 hover:bg-gray-50 focus:outline-none 
+          focus:ring-2 disabled:hover:bg-greyscale1 disabled:hover:cursor-not-allowed
+          focus:ring-purple1"
           id="options-menu"
           aria-expanded="true"
           aria-haspopup="true"
@@ -105,7 +105,7 @@ const CreationDropMenu: FC<Props> = ({
                     alt="team or token icon"
                   />
                 )}
-              <p className="text-primary">
+              <p className="">
                 {gameDetails[accessor as keyof ClassicGameOptions]}
               </p>
             </div>
@@ -113,12 +113,12 @@ const CreationDropMenu: FC<Props> = ({
             <p className="text-disabled">{placeholder}</p>
           )}
           <CaratDown
-            className={`mr-2 ${disabled ? "fill-disabled" : "fill-primary"}`}
+            className={`mr-2 ${disabled ? "fill-disabled" : "fill-greyscale5"}`}
           />
         </button>
 
         {isOpen && (
-          <div className="w-full max-h-[200px] overflow-y-auto absolute right-0 z-[+1] mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className="w-full max-h-[200px] overflow-y-auto absolute right-0 z-[+1] mt-2 origin-top-right rounded-md bg-greyscale1 shadow-lg ring-1 ring-black ring-opacity-5">
             <div
               className="py-1"
               role="menu"
@@ -129,7 +129,7 @@ const CreationDropMenu: FC<Props> = ({
                 <button
                   key={index}
                   onClick={() => clickHandler(item)}
-                  className="z-50 w-full bg-white px-4 py-2 text-left text-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="z-50 w-full bg-greyscale1 px-4 py-2 text-left text-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   role="menuitem"
                 >
                   <div className="flex items-center gap-3">
@@ -141,7 +141,7 @@ const CreationDropMenu: FC<Props> = ({
                         alt="team or token icon"
                       />
                     )}
-                    <p className="text-primary">{item}</p>
+                    <p className="">{item}</p>
                   </div>
                 </button>
               ))}

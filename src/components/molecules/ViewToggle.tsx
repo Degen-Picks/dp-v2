@@ -143,12 +143,12 @@ const ViewToggle: FC<Props> = ({
     <>
       {/* desktop toggle */}
       <div className="absolute top-24 sm:top-8 left-1/2 -translate-x-1/2">
-        <div className={`h-[38px] flex items-center gap-1 p-1 bg-white`}>
+        <div className={`h-[38px] flex items-center gap-1 p-1 bg-greyscale1`}>
           <motion.button
             className={`${
               toggleConfig.selected === "option1"
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary hover:bg-versusBg"
+                ? "bg-greyscale5 text-greyscale1"
+                : "bg-transparent  hover:bg-greyscale2"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option1")}
           >
@@ -172,8 +172,8 @@ const ViewToggle: FC<Props> = ({
           <motion.button
             className={`${
               toggleConfig.selected === "option2"
-                ? "bg-primary text-white"
-                : "bg-transparent text-primary hover:bg-versusBg"
+                ? "bg-greyscale5 text-greyscale1"
+                : "bg-transparent  hover:bg-greyscale2"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option2")}
           >
@@ -197,8 +197,8 @@ const ViewToggle: FC<Props> = ({
             <motion.button
               className={`${
                 toggleConfig.selected === "option3"
-                  ? "bg-primary text-white"
-                  : "bg-transparent text-primary hover:bg-versusBg"
+                  ? "bg-greyscale5 text-greyscale1"
+                  : "bg-transparent  hover:bg-greyscale2"
               } w-[80px] h-[30px] flex flex-col items-center justify-center`}
               onClick={() => handleClick("option3")}
             >
@@ -215,12 +215,12 @@ const ViewToggle: FC<Props> = ({
 
       {/* mobile toggle (tabs) */}
       {/* <div className="w-full lg:hidden mt-[1px] h-[50px]">
-        <div className="w-full h-full bg-white flex items-center justify-between px-[5px]">
+        <div className="w-full h-full bg-greyscale1 flex items-center justify-between px-[5px]">
           <div
             className={`${
               toggleConfig.selected === "option1"
-                ? "border-b-2 border-link text-link font-base-b"
-                : "text-secondary font-base"
+                ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                : "text-greyscale4 font-base"
             } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
             onClick={() => handleClick("option1")}
           >
@@ -229,8 +229,8 @@ const ViewToggle: FC<Props> = ({
           <div
             className={`${
               toggleConfig.selected === "option2"
-                ? "border-b-2 border-link text-link font-base-b"
-                : "text-secondary font-base"
+                ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                : "text-greyscale4 font-base"
             } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
             onClick={() => handleClick("option2")}
           >
@@ -240,8 +240,8 @@ const ViewToggle: FC<Props> = ({
             <div
               className={`${
                 toggleConfig.selected === "option3" && isAdmin === true
-                  ? "border-b-2 border-link text-link font-base-b"
-                  : "text-secondary font-base"
+                  ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                  : "text-greyscale4 font-base"
               } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
               onClick={() => handleClick("option3")}
             >

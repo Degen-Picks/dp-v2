@@ -38,12 +38,12 @@ export const PropSection: FC<Props> = ({
   return (
     <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
       <div
-        className="relative bg-white py-3 h-[200px] w-full px-5 md:px-0 md:w-[380px] mx-auto 
+        className="relative bg-greyscale1 py-3 h-[200px] w-full px-5 md:px-0 md:w-[380px] mx-auto 
         cursor-pointer hover:scale-[1.02] transition-transform ease-in-out duration-500"
       >
         <div className="flex flex-col items-center gap-[10px] justify-center h-full px-8">
           <p className="text-center text-lg leading-[17px]">{description}</p>
-          <p className="text-center text-2xl leading-[25px] text-primary font-base-b">
+          <p className="text-center text-2xl leading-[25px]  font-base-b">
             {title}
           </p>
           <div className="flex items-center justify-center gap-2 mt-[10px]">
@@ -64,7 +64,7 @@ export const PropSection: FC<Props> = ({
                 <p className="text-base">{creator?.twitterData?.username}</p>
               </div>
             ) : null}
-            {creator && <div className="h-5 w-[1px] bg-secondary" />}
+            {creator && <div className="h-5 w-[1px] bg-greyscale4" />}
             <Timer status={status} gameTime={gameTime} />
           </div>
         </div>
@@ -198,7 +198,7 @@ const GameQueue = () => {
   }, []);
 
   return (
-    <div className="relative bg-light w-full overflow-hidden min-h-screen pb-20 md:pb-0">
+    <div className="relative bg-greyscale3 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       <AlertBanner
         text={
           "Now you can run your own Degen Picks™ pool, and get 50% of the fees."
@@ -210,7 +210,7 @@ const GameQueue = () => {
       {loading ? (
         <div className="w-fit mx-auto flex flex-col items-center mt-20">
           <FadeLoader color="#651FFF" />
-          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-link">
+          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
             Loading ...
           </p>
         </div>
@@ -273,7 +273,7 @@ const GameQueue = () => {
         </div>
       )}
 
-      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-secondary z-50">
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-greyscale4 z-50">
         © Degen Picks 2023
       </p>
     </div>

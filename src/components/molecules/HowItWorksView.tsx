@@ -7,9 +7,9 @@ interface StepProps {
 }
 
 const RuleStep: FC<StepProps> = ({ num, instructions }) => (
-  <div className="bg-light w-full md:w-[155px] h-[85px] flex flex-col items-center justify-center">
-    <p className="text-secondary text-sm">{`Step ${num}`}</p>
-    <p className="text-primary text-center px-2 -mt-1">{instructions}</p>
+  <div className="bg-greyscale3 w-full md:w-[155px] h-[85px] flex flex-col items-center justify-center">
+    <p className="text-greyscale4 text-sm">{`Step ${num}`}</p>
+    <p className=" text-center px-2 -mt-1">{instructions}</p>
   </div>
 );
 
@@ -33,7 +33,7 @@ const HowItWorksView: FC<HowItWorksViewProps> = ({ modalView }) => {
           href="https://en.wikipedia.org/wiki/Parimutuel_betting"
           target="_blank"
           rel="noreferrer"
-          className="underline text-link hover:text-linkHover"
+          className="underline text-purple1 hover:text-purple2"
         >
           parimutuel model
         </a>
