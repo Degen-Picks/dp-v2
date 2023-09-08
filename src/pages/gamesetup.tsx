@@ -7,6 +7,8 @@ import {
   Divider,
   CreateModal,
   AgreeCheckbox,
+  ConnectButton,
+  TwitterLoginButton,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../utils/dateUtil";
@@ -27,6 +29,7 @@ import {
   LEAGUE_NAME_MAP,
   REVERSE_LEAGUE_NAME_MAP,
 } from "@/utils/nameMap";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.name);
@@ -66,7 +69,6 @@ const GameSetup = () => {
 
   const [validGame, setValidGame] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [headlineDisabled, setHeadlineDisabled] = useState(true);
   const [assets, setAssets] = useState<LeaguesArray>([]);
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
@@ -173,16 +175,11 @@ const GameSetup = () => {
   }, []);
 
   useEffect(() => {
-    if (gameDetails.league === LEAGUE_NAME_MAP.custom) {
-      setHeadlineDisabled(false);
-    } else {
-      setHeadlineDisabled(true);
-      if (!!gameDetails.team1Name && !!gameDetails.team2Name) {
-        setGameDetails({
-          ...gameDetails,
-          description: `${gameDetails.team1Name} vs. ${gameDetails.team2Name}`,
-        });
-      }
+    if (!!gameDetails.team1Name && !!gameDetails.team2Name) {
+      setGameDetails({
+        ...gameDetails,
+        description: `${gameDetails.team1Name} vs. ${gameDetails.team2Name}`,
+      });
     }
   }, [gameDetails.league, gameDetails.team1Name, gameDetails.team2Name]);
 
@@ -190,191 +187,201 @@ const GameSetup = () => {
     <>
       <div className="w-full min-h-screen">
         <Navbar />
+        <div className="relative sm:w-[400px] mx-auto pb-20">
+          <div className="absolute left-6 md:-left-32 -top-14">
+            <BackButton
+              text="All games"
+              handleClick={() => router.push(generalConfig.appUrl)}
+            />
+          </div>
+          <div className="my-16">
+            <div className="w-fit mx-auto lg:mb-0">
+              <div className="font-base-b text-center text-3xl text-black">
+                Game Setup
+              </div>
+            </div>
+          </div>
+          {!publicKey && (
+            <div className="w-full h-full flex justify-center items-center mt-20">
+              <ConnectButton
+                buttonClasses="!bg-greyscale1 !h-[50px] !w-fit !px-5 !flex !items-center !justify-center"
+                textClasses="!text-greyscale5"
+                connectText="Connect wallet to play"
+              />
+            </div>
+          )}
 
-        {!wagerUser || !wagerUser?.roles.includes("CREATOR") ? (
-          <div className="w-full h-full flex justify-center items-center mt-20">
-            <div className="text-xl font-bold">
-              You are not authorized to view this page.
-              <br />
-              Please log in with your wallet to continue.
-            </div>
-          </div>
-        ) : (
-          <div className="relative sm:w-[400px] mx-auto pb-20">
-            <div className="absolute -left-32 -top-14">
-              <BackButton
-                text="All games"
-                handleClick={() => router.push(generalConfig.appUrl)}
-              />
-            </div>
-            <div className="my-12">
-              <div className="w-fit mx-auto lg:mb-0">
-                <div className="font-base-b text-center text-3xl text-black">
-                  Game Setup
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-5">
-              <CreationDropMenu
-                league={leagues.find(
-                  (league) =>
-                    league.league ===
-                    REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
-                )}
-                list={leagues.map((league) => league.name!)}
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="league"
-                title="League"
-              />
-              <div className="w-full flex items-center gap-5">
-                {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
-                  <CreationTextField
-                    gameDetails={gameDetails}
-                    setGameDetails={setGameDetails}
-                    accessor="team1Name"
-                    placeholder="ex: Buffalo Bills"
-                    fullWidth={true}
-                    textLeft={true}
-                    title="Team 1 / Record (optional)"
-                  />
-                ) : (
-                  <CreationDropMenu
-                    league={leagues.find(
-                      (league) =>
-                        league.league ===
-                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
-                    )}
-                    list={getLeagueTeams(
-                      leagues,
-                      REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
-                    )}
-                    gameDetails={gameDetails}
-                    setGameDetails={setGameDetails}
-                    accessor="team1Name"
-                    title="Team 1 / Record (optional)"
-                    disabled={gameDetails.league === ""}
-                    icon={true}
-                  />
-                )}
-                <CreationTextField
-                  gameDetails={gameDetails}
-                  setGameDetails={setGameDetails}
-                  accessor="team1Record"
-                  placeholder="0-0"
-                  fullWidth={false}
-                />
-              </div>
-              <div className="w-full flex items-center gap-5">
-                {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
-                  <CreationTextField
-                    gameDetails={gameDetails}
-                    setGameDetails={setGameDetails}
-                    accessor="team2Name"
-                    placeholder="ex: New York Jets"
-                    fullWidth={true}
-                    textLeft={true}
-                    title="Team 2 / Record (optional)"
-                  />
-                ) : (
-                  <CreationDropMenu
-                    league={leagues.find(
-                      (league) =>
-                        league.league ===
-                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
-                    )}
-                    list={getLeagueTeams(
-                      leagues,
-                      REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
-                    )}
-                    gameDetails={gameDetails}
-                    setGameDetails={setGameDetails}
-                    accessor="team2Name"
-                    title="Team 2 / Record (optional)"
-                    disabled={gameDetails.league === ""}
-                    icon={true}
-                  />
-                )}
-                <CreationTextField
-                  gameDetails={gameDetails}
-                  setGameDetails={setGameDetails}
-                  accessor="team2Record"
-                  placeholder="0-0"
-                  fullWidth={false}
-                />
-              </div>
-              <CreationTextField
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="description"
-                placeholder="-"
-                fullWidth={true}
-                textLeft={true}
-                title="Headline"
-                disabled={headlineDisabled}
-              />
-              <CreationTextField
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="title"
-                placeholder="ex: Monday Night Football (Week 1)"
-                fullWidth={true}
-                textLeft={true}
-                title="Title"
-              />
-              <CreationTextField
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="gameTime"
-                placeholder="mm/dd/yy --:-- PM"
-                fullWidth={true}
-                textLeft={true}
-                title={`Game time (${getTimezoneStr(new Date())})`}
-                type="datetime-local"
-              />
-              <CreationDropMenu
-                league={leagues.find(
-                  (league) => league.league === gameDetails.league
-                )}
-                list={getCollections(collections)}
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="collection"
-                title="Collection"
-              />
-              <CreationDropMenu
-                league={leagues.find(
-                  (league) => league.league === gameDetails.league
-                )}
-                list={["DUST", "SOL", "USDC"]}
-                gameDetails={gameDetails}
-                setGameDetails={setGameDetails}
-                accessor="token"
-                title="Token"
-                icon={true}
-              />
-            </div>
-            <div className="py-2 w-full flex flex-col">
-              <Divider />
-              <AgreeCheckbox
-                agree={agree}
-                setAgree={setAgree}
-                setShowModal={setShowModal}
-              />
-              <Divider />
-            </div>
-            <div className="w-full flex justify-between">
-              <button
-                className="h-[50px] w-full bg-black text-greyscale1
-                px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
-                onClick={handleCreateGame}
-                disabled={!publicKey || !validGame || loading || !agree}
+          {wagerUser?.publicKey && wagerUser?.roles.includes("CREATOR") && (
+            <>
+              <div
+                className={`${
+                  wagerUser.twitterData && "hidden"
+                } w-full h-full flex justify-center items-center mt-20`}
               >
-                Create game
-              </button>
-            </div>
-          </div>
-        )}
+                <TwitterLoginButton />
+              </div>
+              <div className="flex flex-col gap-5">
+                <CreationDropMenu
+                  league={leagues.find(
+                    (league) =>
+                      league.league ===
+                      REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                  )}
+                  list={leagues.map((league) => league.name!)}
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="league"
+                  title="League"
+                />
+                <div className="w-full flex items-center gap-5">
+                  {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
+                    <CreationTextField
+                      gameDetails={gameDetails}
+                      setGameDetails={setGameDetails}
+                      accessor="team1Name"
+                      placeholder="ex: Buffalo Bills"
+                      fullWidth={true}
+                      textLeft={true}
+                      title="Team 1 / Record (optional)"
+                    />
+                  ) : (
+                    <CreationDropMenu
+                      league={leagues.find(
+                        (league) =>
+                          league.league ===
+                          REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      )}
+                      list={getLeagueTeams(
+                        leagues,
+                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      )}
+                      gameDetails={gameDetails}
+                      setGameDetails={setGameDetails}
+                      accessor="team1Name"
+                      title="Team 1 / Record (optional)"
+                      disabled={gameDetails.league === ""}
+                      icon={true}
+                    />
+                  )}
+                  <CreationTextField
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team1Record"
+                    placeholder="0-0"
+                    fullWidth={false}
+                  />
+                </div>
+                <div className="w-full flex items-center gap-5">
+                  {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
+                    <CreationTextField
+                      gameDetails={gameDetails}
+                      setGameDetails={setGameDetails}
+                      accessor="team2Name"
+                      placeholder="ex: New York Jets"
+                      fullWidth={true}
+                      textLeft={true}
+                      title="Team 2 / Record (optional)"
+                    />
+                  ) : (
+                    <CreationDropMenu
+                      league={leagues.find(
+                        (league) =>
+                          league.league ===
+                          REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      )}
+                      list={getLeagueTeams(
+                        leagues,
+                        REVERSE_LEAGUE_NAME_MAP[gameDetails.league]
+                      )}
+                      gameDetails={gameDetails}
+                      setGameDetails={setGameDetails}
+                      accessor="team2Name"
+                      title="Team 2 / Record (optional)"
+                      disabled={gameDetails.league === ""}
+                      icon={true}
+                    />
+                  )}
+                  <CreationTextField
+                    gameDetails={gameDetails}
+                    setGameDetails={setGameDetails}
+                    accessor="team2Record"
+                    placeholder="0-0"
+                    fullWidth={false}
+                  />
+                </div>
+                <CreationTextField
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="description"
+                  placeholder="-"
+                  fullWidth={true}
+                  textLeft={true}
+                  title="Headline"
+                  disabled={true}
+                />
+                <CreationTextField
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="title"
+                  placeholder="ex: Monday Night Football (Week 1)"
+                  fullWidth={true}
+                  textLeft={true}
+                  title="Title"
+                />
+                <CreationTextField
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="gameTime"
+                  placeholder="mm/dd/yy --:-- PM"
+                  fullWidth={true}
+                  textLeft={true}
+                  title={`Pool close (${getTimezoneStr(new Date())})`}
+                  type="datetime-local"
+                />
+                <CreationDropMenu
+                  league={leagues.find(
+                    (league) => league.league === gameDetails.league
+                  )}
+                  list={getCollections(collections)}
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="collection"
+                  title="Collection"
+                />
+                <CreationDropMenu
+                  league={leagues.find(
+                    (league) => league.league === gameDetails.league
+                  )}
+                  list={["DUST", "SOL", "USDC"]}
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="token"
+                  title="Token"
+                  icon={true}
+                />
+              </div>
+              <div className="py-2 w-full flex flex-col">
+                <Divider />
+                <AgreeCheckbox
+                  agree={agree}
+                  setAgree={setAgree}
+                  setShowModal={setShowModal}
+                />
+                <Divider />
+              </div>
+              <div className="w-full flex justify-between">
+                <button
+                  className="h-[50px] w-full bg-black text-greyscale1
+                  px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
+                  onClick={handleCreateGame}
+                  disabled={!publicKey || !validGame || loading || !agree}
+                >
+                  Create game
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
       <CreateModal showModal={showModal} setShowModal={setShowModal} />
     </>

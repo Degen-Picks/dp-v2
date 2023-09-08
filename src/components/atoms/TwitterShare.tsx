@@ -9,7 +9,7 @@ interface Props {
 
 const TwitterShareButton: FC<Props> = ({ url }) => {
   // The text you want to tweet out
-  const tweetText = `Check out this game on @degenpicksxyz!\n\n${url}`;
+  const tweetText = `Check out this pool on @degenpicksxyz\n\n${url}`;
 
   // Construct the Twitter link with the encoded tweet text
   const twitterLink = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
