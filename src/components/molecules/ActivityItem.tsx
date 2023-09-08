@@ -45,8 +45,8 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
           <div className="border border-greyscale3 bg-greyscale3 flex items-center justify-center rounded-full w-[40px] h-[40px] overflow-hidden">
             <Image
               src={item.userImage}
-              width={20}
-              height={20}
+              width={45}
+              height={45}
               alt="user image"
             />
           </div>
@@ -58,21 +58,21 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
               href={`https://twitter.com/${item.twitterName}`}
               target="_blank"
               rel="noreferrer"
-              className="font-base-b hover:text-purple1 
+              className="hover:text-purple1 
               transition-colors ease-in-out duration-300"
             >
               {item.name}
             </a>
           ) : (
-            <p className="font-base-b">{item.name}</p>
+            <p>{item.name}</p>
           )}
-          <p className="text-sm text-greyscale4">{timeAgo(item.time)}</p>
+          <p className="text-greyscale4">{timeAgo(item.time)}</p>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">
-        <p>{item.teamName}</p>
+        <p className="text-lg">{item.teamName}</p>
         {/* round to whole numbers */}
-        <p className="text-sm">
+        <p className="!text-base">
           {Math.ceil(item.dustBet * 100) / 100} {gameData.gameInfo.token}
         </p>
       </div>

@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ConnectButton, MobileMenu, TwitterLoginButton } from "@/components";
 import Link from "next/link";
 import { useWindowSize } from "@/hooks/useWindowSize";
-import { smallClickAnimation } from "@/configs";
+import { generalConfig, smallClickAnimation } from "@/configs";
 import { motion } from "framer-motion";
 
-const Navbar = () => {
+interface Props {
+  landing?: boolean;
+}
+
+const Navbar: FC<Props> = ({ landing = false }) => {
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -25,7 +29,10 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-greyscale1 md:bg-transparent">
+      <div
+        className={`${landing && "fixed top-0 w-full"} 
+        bg-greyscale1 md:bg-transparent`}
+      >
         <div
           className="relative flex justify-center md:justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
@@ -33,24 +40,23 @@ const Navbar = () => {
           <Link href="/">
             <Image
               src="/images/logo_new.png"
-              width={60}
-              height={60}
+              width={isMobile ? 60 : 70}
+              height={isMobile ? 60 : 70}
               alt="degen picks logo"
               priority
             />
           </Link>
           <div className="hidden lg:flex items-center gap-4 justify-end">
             <TwitterLoginButton />
-            {router.pathname !== "/" ? (
-              <ConnectButton />
-            ) : (
+            {landing ? (
               <motion.button
-                className="bg-purple1 text-greyscale1 h-[50px] px-5"
-                {...smallClickAnimation}
+                className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
                 onClick={() => window.open("https://app.degenpicks.xyz/")}
               >
                 Launch app
               </motion.button>
+            ) : (
+              <ConnectButton />
             )}
           </div>
           {isMobile && (

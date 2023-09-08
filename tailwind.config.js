@@ -29,7 +29,6 @@ module.exports = {
         "body-2xl": "1.5rem",
       },
       colors: {
-        dark: "#1B1B1B",
         disabled: "#BDBDBD",
         border: "#E0E0E0",
 

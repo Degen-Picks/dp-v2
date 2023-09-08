@@ -3,12 +3,18 @@ import { FC } from "react";
 interface Props {
   color?: string;
   margin?: string;
+  width?: string;
 }
 
-const Divider: FC<Props> = ({ color = "#E0E0E0", margin = "16px" }) => (
+const Divider: FC<Props> = ({ color = "#E0E0E0", margin = "16px", width }) => (
   <div
-    className="w-full h-[1px]"
-    style={{ backgroundColor: color, marginTop: margin, marginBottom: margin }}
+    className="h-[1px] px-10"
+    style={{
+      backgroundColor: color,
+      marginTop: margin,
+      marginBottom: margin,
+      width: width ? width : "100%",
+    }}
   />
 );
 

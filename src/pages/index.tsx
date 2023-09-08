@@ -7,6 +7,7 @@ import {
   TwitterFooter,
   Discord,
   Twitter,
+  Divider,
 } from "@/components";
 import { getStats } from "../utils/api/apiUtil";
 import { Stats } from "@/types";
@@ -25,8 +26,7 @@ interface TeamProps {
 const TeamMember: FC<TeamProps> = ({ handle, image }) => {
   return (
     <motion.button
-      {...smallClickAnimation}
-      className="flex items-center gap-2 w-fit"
+      className="flex items-center gap-2 w-fit group"
       onClick={() =>
         window.open(
           `https://twitter.com/${handle}`,
@@ -35,8 +35,14 @@ const TeamMember: FC<TeamProps> = ({ handle, image }) => {
         )
       }
     >
-      <Image src={image} width={24} height={24} alt="user image" />
-      <p className="hover:text-purple1">{handle}</p>
+      <Image
+        src={image}
+        width={33}
+        height={33}
+        alt="user image"
+        className="rounded-full border border-transparent group-hover:border-purple1"
+      />
+      <p className="group-hover:text-purple1">{handle}</p>
     </motion.button>
   );
 };
@@ -71,7 +77,7 @@ const Landing = () => {
   return (
     <div className="w-full relative overflow-hidden bg-greyscale3">
       <div className="h-screen w-full flex flex-col">
-        <Navbar />
+        <Navbar landing={true} />
         <div className="flex-1 flex flex-col items-center justify-evenly">
           {isMobile ? (
             <>
@@ -84,7 +90,6 @@ const Landing = () => {
               />
               <motion.button
                 className="bg-purple1 text-greyscale1 w-full max-w-[310px] h-[50px] text-lg px-5"
-                {...smallClickAnimation}
                 onClick={() => window.open(generalConfig.appUrl)}
               >
                 Launch app
@@ -107,7 +112,7 @@ const Landing = () => {
         </div>
       </div>
       <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
-        <div className="w-[90%] md:w-[3/4] mx-auto pb-10 sm:pb-20">
+        <div className="w-[90%] md:w-[3/4] mx-auto pb-6">
           <div className="font-base-b text-[40px] leading-[39px] ">
             Degen Picks
           </div>
@@ -119,7 +124,7 @@ const Landing = () => {
           </div>
         </div>
         <div>
-          <div className="flex items-center justify-center gap-3 sm:my-12">
+          <div className="flex items-center justify-center gap-3 sm:mb-12">
             <p>Tokens:</p>
             <div className="flex items-center gap-1">
               <Image
@@ -153,7 +158,7 @@ const Landing = () => {
             </div>
           </div>
           <div
-            className="mt-10 sm:mt-0 max-w-[333px] sm:h-[90px] bg-dark
+            className="mt-10 sm:mt-0 max-w-[333px] sm:h-[90px] bg-greyscale5
             flex flex-row justify-between items-center mx-auto"
           >
             {statData !== null && (
@@ -165,24 +170,25 @@ const Landing = () => {
             )}
           </div>
         </div>
+        <div className="h-[1px] px-4 bg-greyscale4 my-10 w-[90%] md:w-[500px] mx-auto" />
         <div className="w-[90%] md:w-[3/4] mx-auto sm:pb-20">
-          <p className="text-center mt-5">Founders</p>
+          <p className="text-center pb-5">Founders</p>
           <div className="grid grid-cols-2 gap-x-10 gap-y-5 w-fit max-w-[500px] mx-auto">
             <TeamMember handle="capsjpeg" image="/images/team/caps.png" />
             <TeamMember handle="misterholana" image="/images/team/h.png" />
             <TeamMember handle="0x_saddy" image="/images/team/saddy.png" />
-            <TeamMember handle="mattdegods" image="/images/team/matt.png" />
+            <TeamMember handle="matt_degods" image="/images/team/matt.png" />
           </div>
         </div>
       </div>
       <div className="absolute sm:fixed bottom-0 w-full">
-        <div className="text-greyscale4 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
+        <div className="text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
           <p>© 2023 Degen Picks</p>
           <div className="hidden sm:flex items-center gap-4">
             <p className="">Follow us</p>
             {/* icons here */}
-            <Twitter className="fill-greyscale4" />
-            <Discord className="fill-greyscale4" />
+            <Twitter className="fill-greyscale5 hover:fill-[#333333]" />
+            <Discord className="fill-greyscale5 hover:fill-[#333333]" />
           </div>
         </div>
       </div>

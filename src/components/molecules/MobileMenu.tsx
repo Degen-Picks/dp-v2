@@ -37,7 +37,7 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
       ref={ref}
     >
       <div
-        className={` bg-greyscale1
+        className={`bg-greyscale1
           absolute flex flex-col w-screen
           top-0 right-0 py-4 px-6 shadow-2xl`}
       >
@@ -45,8 +45,8 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
           <Link href="/">
             <Image
               src="/images/logo_new.png"
-              width={50}
-              height={50}
+              width={60}
+              height={60}
               alt="degen picks logo"
             />
           </Link>
