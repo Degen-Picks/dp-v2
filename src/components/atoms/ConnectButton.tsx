@@ -52,32 +52,26 @@ const ConnectButton: FC<Props> = ({
   }, [publicKey]);
 
   return (
-    <div
-      className={`${
+    <WalletMultiButton
+      className={`!relative flex items-center justify-center ${
         buttonClasses
           ? buttonClasses
-          : "!bg-black !relative !w-full flex items-center justify-center md:!px-0 !h-auto !rounded-none !z-50"
+          : "!bg-black !px-8 !py-2.5 !w-full !h-auto !rounded-none !z-50"
       }`}
+      // startIcon={undefined}
     >
-      <WalletMultiButton
-        className="!w-full md:!w-[168px] !flex !justify-center"
-        // startIcon={undefined}
+      <p
+        className={`!text-lg !whitespace-nowrap ${
+          textClasses ? textClasses : "!font-base"
+        }`}
       >
-        <p
-          className={`${
-            textClasses
-              ? textClasses
-              : "!font-base !text-lg !whitespace-nowrap1"
-          }`}
-        >
-          {publicKey
-            ? publicKey.toBase58().slice(0, 4) +
-              " ... " +
-              publicKey.toBase58().slice(-4)
-            : connectText}
-        </p>
-      </WalletMultiButton>
-    </div>
+        {publicKey
+          ? publicKey.toBase58().slice(0, 4) +
+            " ... " +
+            publicKey.toBase58().slice(-4)
+          : connectText ?? "Connect"}
+      </p>
+    </WalletMultiButton>
   );
 };
 

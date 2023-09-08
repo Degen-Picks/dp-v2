@@ -1,13 +1,24 @@
+import { useState, useEffect, FC, useContext } from "react";
 import { generalConfig } from "@/configs";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useState, useEffect, FC } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { FallbackImage } from "@/components";
 import { WagerUser } from "@/types";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
-const TwitterLoginButton: FC = () => {
+interface Props {
+  text?: string;
+}
+
+const TwitterLoginButton: FC<Props> = ({ text }) => {
   const { publicKey } = useWallet();
+  const { wagerUser, setWagerUser } = useContext(
+    WagerUserContext
+  ) as WagerUserContextType;
   const [userData, setUserData] = useState<WagerUser | null>();
   const [isTwitterLinked, setIsTwitterLinked] = useState<boolean>(false);
 
@@ -148,6 +159,11 @@ const TwitterLoginButton: FC = () => {
         return;
       }
 
+      if (wagerUser) {
+        wagerUser.twitterData = null;
+        setWagerUser(wagerUser);
+      }
+
       toast.success("Twitter unlinked.");
 
       setIsTwitterLinked(false);
@@ -171,9 +187,9 @@ const TwitterLoginButton: FC = () => {
           className={`${
             isTwitterLinked
               ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
-              : "sm:py-1 sm:border border-black bg-greyscale1"
-          } h-[50px] w-[50px] sm:min-w-[146px] flex justify-center 
-          rounded-full sm:rounded-none items-center sm:gap-2 group`}
+              : "sm:py-1 sm:border border-black hover:bg-greyscale1"
+          } h-[50px] sm:min-w-[146px] flex justify-center 
+          rounded-full sm:rounded-none items-center sm:gap-2 group px-2`}
         >
           {!isTwitterLinked || !userData ? (
             <div className="flex items-center justify-center gap-2.5 px-2">
@@ -183,7 +199,7 @@ const TwitterLoginButton: FC = () => {
                 height={30}
                 alt="twitter icon"
               />
-              <p className="text-lg">Link</p>
+              <p className="text-lg">{text ? text : "Link"}</p>
             </div>
           ) : (
             <div>

@@ -7,12 +7,11 @@ import {
   Divider,
   CreateModal,
   AgreeCheckbox,
-  ConnectButton,
   TwitterLoginButton,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../utils/dateUtil";
-import { getAssets, getLoginStatus } from "../utils/api/apiUtil";
+import { getAssets } from "../utils/api/apiUtil";
 import toast from "react-hot-toast";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
 import { useRouter } from "next/router";
@@ -29,7 +28,6 @@ import {
   LEAGUE_NAME_MAP,
   REVERSE_LEAGUE_NAME_MAP,
 } from "@/utils/nameMap";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 function getCollections(collections: any) {
   return collections.map((collection: any) => collection.name);
@@ -69,7 +67,6 @@ const GameSetup = () => {
 
   const [validGame, setValidGame] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [assets, setAssets] = useState<LeaguesArray>([]);
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
   const [agree, setAgree] = useState(false);
@@ -139,14 +136,10 @@ const GameSetup = () => {
   }, [gameDetails]);
 
   useEffect(() => {
+    if (!publicKey) return;
     const fetchAssets = async () => {
       const assets = await getAssets();
-      if (assets === null) {
-        setAssets([]);
-        return;
-      } else {
-        setAssets(assets);
-      }
+      if (assets === null) return;
 
       const leagues: LeaguesArray = assets
         .filter((asset: League) => !asset.league.includes("collection"))
@@ -172,7 +165,7 @@ const GameSetup = () => {
     };
 
     fetchAssets();
-  }, []);
+  }, [publicKey]);
 
   useEffect(() => {
     if (!!gameDetails.team1Name && !!gameDetails.team2Name) {
@@ -187,8 +180,8 @@ const GameSetup = () => {
     <>
       <div className="w-full min-h-screen">
         <Navbar />
-        <div className="relative sm:w-[400px] mx-auto pb-20">
-          <div className="absolute left-6 md:-left-32 -top-14">
+        <div className="relative sm:w-[400px] mx-auto pb-20 px-4 sm:px-0">
+          <div className="absolute left-4 md:-left-32 -top-14">
             <BackButton
               text="All games"
               handleClick={() => router.push(generalConfig.appUrl)}
@@ -203,22 +196,18 @@ const GameSetup = () => {
           </div>
           {!publicKey && (
             <div className="w-full h-full flex justify-center items-center mt-20">
-              <ConnectButton
-                buttonClasses="!bg-greyscale1 !h-[50px] !w-fit !px-5 !flex !items-center !justify-center"
-                textClasses="!text-greyscale5"
-                connectText="Connect wallet to play"
-              />
+              Connect your wallet to play
             </div>
           )}
 
-          {wagerUser?.publicKey && wagerUser?.roles.includes("CREATOR") && (
+          {publicKey && !!wagerUser && wagerUser?.roles.includes("CREATOR") && (
             <>
               <div
                 className={`${
                   wagerUser.twitterData && "hidden"
-                } w-full h-full flex justify-center items-center mt-20`}
+                } w-full h-full flex justify-center items-center mb-10`}
               >
-                <TwitterLoginButton />
+                <TwitterLoginButton text="Link to create a game" />
               </div>
               <div className="flex flex-col gap-5">
                 <CreationDropMenu
@@ -232,6 +221,7 @@ const GameSetup = () => {
                   setGameDetails={setGameDetails}
                   accessor="league"
                   title="League"
+                  disabled={!wagerUser.twitterData}
                 />
                 <div className="w-full flex items-center gap-5">
                   {gameDetails.league === LEAGUE_NAME_MAP.custom ? (
@@ -243,6 +233,7 @@ const GameSetup = () => {
                       fullWidth={true}
                       textLeft={true}
                       title="Team 1 / Record (optional)"
+                      disabled={!wagerUser.twitterData}
                     />
                   ) : (
                     <CreationDropMenu
@@ -259,7 +250,9 @@ const GameSetup = () => {
                       setGameDetails={setGameDetails}
                       accessor="team1Name"
                       title="Team 1 / Record (optional)"
-                      disabled={gameDetails.league === ""}
+                      disabled={
+                        gameDetails.league === "" || !wagerUser.twitterData
+                      }
                       icon={true}
                     />
                   )}
@@ -269,6 +262,7 @@ const GameSetup = () => {
                     accessor="team1Record"
                     placeholder="0-0"
                     fullWidth={false}
+                    disabled={!wagerUser.twitterData}
                   />
                 </div>
                 <div className="w-full flex items-center gap-5">
@@ -281,6 +275,7 @@ const GameSetup = () => {
                       fullWidth={true}
                       textLeft={true}
                       title="Team 2 / Record (optional)"
+                      disabled={!wagerUser.twitterData}
                     />
                   ) : (
                     <CreationDropMenu
@@ -297,7 +292,9 @@ const GameSetup = () => {
                       setGameDetails={setGameDetails}
                       accessor="team2Name"
                       title="Team 2 / Record (optional)"
-                      disabled={gameDetails.league === ""}
+                      disabled={
+                        gameDetails.league === "" || !wagerUser.twitterData
+                      }
                       icon={true}
                     />
                   )}
@@ -307,6 +304,7 @@ const GameSetup = () => {
                     accessor="team2Record"
                     placeholder="0-0"
                     fullWidth={false}
+                    disabled={!wagerUser.twitterData}
                   />
                 </div>
                 <CreationTextField
@@ -327,6 +325,7 @@ const GameSetup = () => {
                   fullWidth={true}
                   textLeft={true}
                   title="Title"
+                  disabled={!wagerUser.twitterData}
                 />
                 <CreationTextField
                   gameDetails={gameDetails}
@@ -337,6 +336,7 @@ const GameSetup = () => {
                   textLeft={true}
                   title={`Pool close (${getTimezoneStr(new Date())})`}
                   type="datetime-local"
+                  disabled={!wagerUser.twitterData}
                 />
                 <CreationDropMenu
                   league={leagues.find(
@@ -347,6 +347,7 @@ const GameSetup = () => {
                   setGameDetails={setGameDetails}
                   accessor="collection"
                   title="Collection"
+                  disabled={!wagerUser.twitterData}
                 />
                 <CreationDropMenu
                   league={leagues.find(
@@ -358,6 +359,7 @@ const GameSetup = () => {
                   accessor="token"
                   title="Token"
                   icon={true}
+                  disabled={!wagerUser.twitterData}
                 />
               </div>
               <div className="py-2 w-full flex flex-col">
@@ -366,6 +368,7 @@ const GameSetup = () => {
                   agree={agree}
                   setAgree={setAgree}
                   setShowModal={setShowModal}
+                  disabled={!wagerUser.twitterData}
                 />
                 <Divider />
               </div>
@@ -374,7 +377,13 @@ const GameSetup = () => {
                   className="h-[50px] w-full bg-black text-greyscale1
                   px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
                   onClick={handleCreateGame}
-                  disabled={!publicKey || !validGame || loading || !agree}
+                  disabled={
+                    !publicKey ||
+                    !validGame ||
+                    loading ||
+                    !agree ||
+                    !wagerUser.twitterData
+                  }
                 >
                   Create game
                 </button>
