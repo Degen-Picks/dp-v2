@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { handleConfirmAction, pickFee, refundClassic } from "@/utils";
+import { handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -8,6 +8,7 @@ import {
   ClassicHero,
   ClassicVersusBox,
   Divider,
+  ManageStats,
   TwitterShare,
 } from "@/components";
 import { airdropClassic } from "@/utils/api/classic/airdrop";
@@ -86,18 +87,6 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
     setLoading(false);
   };
 
-  const handleCreatorFee = () => {
-    let creatorFee: number;
-    const totalVolume = gameData.team1.dustVol + gameData.team2.dustVol;
-    if (gameData.gameInfo.creator?.roles?.includes("ADMIN")) {
-      creatorFee = totalVolume * pickFee;
-    } else {
-      creatorFee = (totalVolume * pickFee) / 2;
-    }
-
-    return creatorFee.toFixed(2);
-  };
-
   const handleAirDrop = async () => {
     if (selectedTeam === undefined) {
       toast.error("Please select a winner first!");
@@ -156,35 +145,11 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
       <div className="mt-16 mb-[72px]">
         <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       </div>
-      <div className="w-full flex flex-col items-center justify-center">
-        <div className="relative bg-greyscale1 w-5/6 h-[121px] md:w-[620px] mx-auto flex items-center">
-          <div className="absolute right-0 -top-12">
-            <TwitterShare
-              url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
-            />
-          </div>
-          <div className="w-full flex justify-between items-center py-3 mx-8 md:mx-[60px]">
-            <div className="h-[81px] px-10 flex flex-col items-center justify-center">
-              <p className="leading-none text-lg">
-                {gameData.team1.uniqueWallets + gameData.team2.uniqueWallets}
-              </p>
-              <p className="text-center text-base text-greyscale4">players</p>
-            </div>
-            <div className="h-[81px] px-10 flex flex-col items-center justify-center">
-              <p className="leading-none text-lg">
-                {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}
-              </p>
-              <p className="text-center text-base text-greyscale4">volume</p>
-            </div>
-            <div className="h-[81px] px-10 bg-greyscale2 flex flex-col items-center justify-center">
-              <p className="leading-none text-lg">{handleCreatorFee()}</p>
-              <p className="text-center text-base text-greyscale4">you get</p>
-            </div>
-          </div>
-        </div>
-        <div className="pb-8" />
-        <div className="bg-greyscale1 w-5/6 md:w-[620px] mx-auto mb-20">
-          <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
+      <div className="w-full flex flex-col gap-5 items-center justify-center">
+        {/* manage stats */}
+        <ManageStats gameData={gameData} />
+        <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
+          <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
             <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
               Set the game winner
             </p>

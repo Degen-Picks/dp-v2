@@ -86,7 +86,7 @@ const RewardPool = ({ gameData }) => {
   return (
     <div>
       {/* reward pool outer container */}
-      <div className="relative bg-greyscale1 w-5/6 md:w-[620px] mx-auto mt-10 text-base">
+      <div className="relative bg-greyscale1 w-full md:w-[620px] mx-auto mt-10 text-base">
         <div className="absolute right-0 -top-12">
           <TwitterShare
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}

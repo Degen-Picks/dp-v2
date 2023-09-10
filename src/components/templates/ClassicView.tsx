@@ -766,7 +766,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
         {toggleConfig.selected === "option1" && (
           <div
-            className={`px-4 pt-16 flex flex-col justify-between ${
+            className={`px-4 pt-16 flex flex-col gap-5 justify-between ${
               showModal && "overflow-hidden"
             }`}
           >
@@ -786,7 +786,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             )}
 
             {gameStatus === GameStatus.PREGAME && !loading && (
-              <div className="text-center mt-8 sm:text-lg">
+              <div className="text-center sm:text-lg">
                 Live in: {pickCountdown}
               </div>
             )}
@@ -796,16 +796,15 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
             {!publicKey && !loading && (
-              <div className="w-fit mx-auto text-center sm:mt-5 mb-20 sm:mb-32 md:mt-5 md:mb-0">
+              <div className="w-fit mx-auto text-center sm:mt-5 mb-20 sm:mb-32 md:mb-0">
                 Connect wallet to play.
               </div>
             )}
-            {publicKey && !loading && <div className="pb-8" />}
             {/* second area / betting section */}
             {publicKey && (
               <div className="z-10 h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
-                <div className="bg-greyscale1 w-5/6 md:w-[620px] mx-auto">
+                <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
                   {/* header */}
                   {/* <div className="relative h-[50px] flex items-center justify-center bg-greyscale5">
                     <p className="font-base-b text-center text-greyscale1">
@@ -813,7 +812,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     </p>
                   </div> */}
                   {/* betting = four components */}
-                  <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
+                  <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
                     {/* 1. pick winner */}
                     <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
                       Pick a team
@@ -870,7 +869,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     </div>
 
                     {finalWinner === undefined && (
-                      <div className="w-full mt-4 py-3 px-4 bg-greyscale3 text-center text-lg">
+                      <div className="w-full my-5 py-3 px-4 bg-greyscale3 text-center text-lg">
                         <p className="relative">
                           Potential reward (highly volatile)
                         </p>

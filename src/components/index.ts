@@ -60,6 +60,7 @@ const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
+const ManageStats = dynamic(() => import("./organisms/ManageStats"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
 
@@ -123,6 +124,7 @@ export {
   ClassicHero,
   ClassicVersusBox,
   CreateModal,
+  ManageStats,
   RewardPool,
   RulesModal,
 

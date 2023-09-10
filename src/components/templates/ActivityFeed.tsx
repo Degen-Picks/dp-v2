@@ -133,7 +133,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
             <ClassicHero gameData={gameData} gameStatus={gameStatus} />
           </div>
           {/* activity feed */}
-          <div className="relative flex flex-col items-center gap-4 mb-8">
+          <div className="relative flex flex-col items-center gap-5 mb-8">
             <div className="absolute right-0 -top-12">
               <TwitterShare
                 url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
