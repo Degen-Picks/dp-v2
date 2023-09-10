@@ -9,7 +9,6 @@ import {
   ClassicVersusBox,
   Divider,
   ManageStats,
-  TwitterShare,
 } from "@/components";
 import { airdropClassic } from "@/utils/api/classic/airdrop";
 
@@ -24,6 +23,8 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const wallet = useWallet();
 
   const isDisabled =
@@ -147,7 +148,11 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
       </div>
       <div className="w-full flex flex-col gap-5 items-center justify-center">
         {/* manage stats */}
-        <ManageStats gameData={gameData} />
+        <ManageStats
+          gameData={gameData}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
         <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
           <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
             <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">

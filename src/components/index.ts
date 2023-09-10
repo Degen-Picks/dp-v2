@@ -5,6 +5,7 @@ const CaratDown = dynamic(() => import("./@icons/CaratDown"));
 const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
+const InfoIcon = dynamic(() => import("./@icons/InfoIcon"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
 const Twitter = dynamic(() => import("./@icons/Twitter"));
 const TwitterFooter = dynamic(() => import("./@icons/TwitterFooter"));
@@ -60,6 +61,7 @@ const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
+const InfoModal = dynamic(() => import("./organisms/InfoModal"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
@@ -75,6 +77,7 @@ export {
   Close,
   Discord,
   DiscordFooter,
+  InfoIcon,
   QuestionIcon,
   Twitter,
   TwitterFooter,
@@ -124,6 +127,7 @@ export {
   ClassicHero,
   ClassicVersusBox,
   CreateModal,
+  InfoModal,
   ManageStats,
   RewardPool,
   RulesModal,
