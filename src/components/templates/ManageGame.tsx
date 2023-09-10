@@ -135,9 +135,19 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
 
   const pickHandler = (teamNum: number) => {
     if (teamNum === 1) {
-      setSelectedTeam(gameData.team1);
+      if (selectedTeam?.teamName === gameData.team1.teamName) {
+        setSelectedTeam(undefined);
+        return;
+      } else {
+        setSelectedTeam(gameData.team1);
+      }
     } else {
-      setSelectedTeam(gameData.team2);
+      if (selectedTeam?.teamName === gameData.team2.teamName) {
+        setSelectedTeam(undefined);
+        return;
+      } else {
+        setSelectedTeam(gameData.team2);
+      }
     }
   };
 
