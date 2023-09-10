@@ -20,27 +20,18 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
     WagerUserContext
   ) as WagerUserContextType;
   const [userData, setUserData] = useState<WagerUser | null>();
-  const [isTwitterLinked, setIsTwitterLinked] = useState<boolean>(false);
 
   const wallet = useWallet();
 
   const loadUserData = async () => {
     try {
       const url = `${generalConfig.apiUrl}/oauth/status?publicKey=${publicKey}`;
-
       const res = await fetch(url);
-
       if (res.status === 404) {
         return;
       }
-
       const data: WagerUser = await res.json();
-
       setUserData(data || {});
-
-      if (data.twitterData && data.twitterData !== null) {
-        setIsTwitterLinked(true);
-      }
     } catch (err) {
       console.log(err);
     }
@@ -166,7 +157,6 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
 
       toast.success("Twitter unlinked.");
 
-      setIsTwitterLinked(false);
       setUserData(null);
     } catch (err) {
       console.log(err);
@@ -177,21 +167,23 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
     if (publicKey) {
       loadUserData();
     }
-  }, [publicKey]);
+  }, [publicKey, wagerUser]);
 
   return (
     <>
       {publicKey && (
         <button
-          onClick={isTwitterLinked ? handleTwitterUnlink : handleTwitterLogin}
+          onClick={
+            userData?.twitterData ? handleTwitterUnlink : handleTwitterLogin
+          }
           className={`${
-            isTwitterLinked
+            !!userData?.twitterData
               ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
               : "sm:py-1 sm:border border-black hover:bg-greyscale1"
           } h-[50px] sm:min-w-[146px] flex justify-center 
           rounded-full sm:rounded-none items-center sm:gap-2 group px-2`}
         >
-          {!isTwitterLinked || !userData ? (
+          {!userData?.twitterData ? (
             <div className="flex items-center justify-center gap-2.5 px-2">
               <Image
                 src="/images/icons/x.png"
