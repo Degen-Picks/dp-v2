@@ -1,9 +1,10 @@
+import { generalConfig } from "@/configs";
 import { FC, SVGAttributes } from "react";
 
 export interface DiscordProps extends SVGAttributes<SVGSVGElement> {}
 
 const Discord: FC<DiscordProps> = ({ ...componentProps }: DiscordProps) => (
-  <a href="https://discord.gg/TGTam7epH6" target="_blank" rel="noreferrer">
+  <a href={generalConfig.discordUrl} target="_blank" rel="noreferrer">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height={14}

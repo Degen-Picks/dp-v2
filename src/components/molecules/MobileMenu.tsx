@@ -11,6 +11,7 @@ import {
 import { useWallet } from "@solana/wallet-adapter-react";
 import Link from "next/link";
 import { useOutsideAlerter } from "@/hooks/useOutsideAlerter";
+import { generalConfig } from "@/configs";
 
 interface Props {
   open: boolean;
@@ -92,10 +93,7 @@ const MobileMenu: FC<Props> = ({ open, setOpen }) => {
               >
                 <TwitterFooter />
               </a>
-              <a
-                href="https://discord.gg/discord.gg/ZvH7z4ZkZG"
-                rel="noreferrer noopener"
-              >
+              <a href={generalConfig.discordUrl} rel="noreferrer noopener">
                 <DiscordFooter />
               </a>
             </div>

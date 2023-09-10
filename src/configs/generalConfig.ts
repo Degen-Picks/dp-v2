@@ -4,6 +4,7 @@ export const generalConfig = {
   baseUrl: "degenpicks.xyz",
   apiUrl: "https://api.degenpicks.xyz",
   appUrl: "https://app.degenpicks.xyz",
+  discordUrl: "https://discord.gg/TGTam7epH6",
   useDevAPI: true,
   useDevNet: false,
 
