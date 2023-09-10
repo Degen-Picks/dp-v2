@@ -1,23 +1,13 @@
-import { FC, useContext, useEffect } from "react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useContext, useEffect } from "react";
 import { login, logout } from "@/utils";
 import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 
-interface Props {
-  buttonClasses?: string;
-  textClasses?: string;
-  connectText?: string;
-}
-
-const ConnectButton: FC<Props> = ({
-  buttonClasses,
-  textClasses,
-  connectText,
-}) => {
+const ConnectButton = () => {
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
   ) as WagerUserContextType;
@@ -52,26 +42,23 @@ const ConnectButton: FC<Props> = ({
   }, [publicKey]);
 
   return (
-    <WalletMultiButton
-      className={`!relative flex items-center justify-center ${
-        !!buttonClasses
-          ? buttonClasses
-          : "!bg-black !px-8 !py-2.5 !w-full md:!min-w-[168px] !h-auto !rounded-none !z-50"
-      }`}
-      // startIcon={undefined}
+    <div
+      className="!bg-black !relative !w-fit flex items-center justify-center
+        md:!px-0 !h-auto !rounded-none !z-50"
     >
-      <p
-        className={`!text-lg !whitespace-nowrap ${
-          !!textClasses ? textClasses : "!font-base !text-greyscale1"
-        }`}
+      <WalletMultiButton
+        className="!w-full md:!w-fit !flex !justify-center"
+        // startIcon={undefined}
       >
-        {publicKey
-          ? publicKey.toBase58().slice(0, 4) +
-            " ... " +
-            publicKey.toBase58().slice(-4)
-          : connectText ?? "Connect"}
-      </p>
-    </WalletMultiButton>
+        <p className="!font-base !text-lg !whitespace-nowrap">
+          {publicKey
+            ? publicKey.toBase58().slice(0, 4) +
+              " ... " +
+              publicKey.toBase58().slice(-4)
+            : "Connect"}
+        </p>
+      </WalletMultiButton>
+    </div>
   );
 };
 

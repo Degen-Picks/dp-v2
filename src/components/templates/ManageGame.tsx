@@ -26,7 +26,11 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const wallet = useWallet();
 
   const isDisabled =
-    gameStatus !== GameStatus.CLOSED || loading || isRefunded || isAirdropped;
+    gameStatus !== GameStatus.CLOSED ||
+    loading ||
+    isRefunded ||
+    isAirdropped ||
+    selectedTeam === undefined;
 
   useEffect(() => {
     // Ensures gameData state is up-to-date
@@ -138,7 +142,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   };
 
   return (
-    <div className="w-full max-w-[620px] mx-auto px-4 sm:px-0">
+    <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
       <div className="mt-16 mb-[72px]">
         <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       </div>
@@ -151,20 +155,20 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
           </div>
           <div className="w-full flex justify-between items-center py-3 mx-8 md:mx-[60px]">
             <div className="h-[81px] px-10 flex flex-col items-center justify-center">
-              <p className="leading-none sm:text-lg">
+              <p className="leading-none text-lg">
                 {gameData.team1.uniqueWallets + gameData.team2.uniqueWallets}
               </p>
-              <p className="text-center text-greyscale4">players</p>
+              <p className="text-center text-base text-greyscale4">players</p>
             </div>
             <div className="h-[81px] px-10 flex flex-col items-center justify-center">
-              <p className="leading-none sm:text-lg">
+              <p className="leading-none text-lg">
                 {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}
               </p>
-              <p className="text-center text-greyscale4">volume</p>
+              <p className="text-center text-base text-greyscale4">volume</p>
             </div>
             <div className="h-[81px] px-10 bg-greyscale2 flex flex-col items-center justify-center">
-              <p className="leading-none sm:text-lg">{handleCreatorFee()}</p>
-              <p className="text-center text-greyscale4">you get</p>
+              <p className="leading-none text-lg">{handleCreatorFee()}</p>
+              <p className="text-center text-base text-greyscale4">you get</p>
             </div>
           </div>
         </div>
@@ -186,27 +190,27 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
             {/* divider */}
             <Divider />
             {isAirdropped ? (
-              <p className="text-correct font-base-b h-[50px] flex items-center justify-center">
+              <p className="text-correct h-[50px] flex items-center justify-center">
                 Winners airdropped!
               </p>
             ) : (
               <button
                 className={`${
                   isRefunded && "hidden"
-                } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
-            hover:scale-[1.02] transition-transform ease-in-out duration-500 flex 
-            items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-70`}
+                } mt-5 w-full h-[50px] px-5 cursor-pointer bg-black
+                flex items-center justify-center disabled:cursor-not-allowed 
+                disabled:bg-disabled hover:bg-[#333333]`}
                 onClick={handleAirDrop}
                 disabled={isDisabled}
               >
-                <p className="font-base-b text-greyscale1">Airdrop winners</p>
+                <p className="text-greyscale1">Airdrop winners</p>
               </button>
             )}
 
             {isRefunded ? (
               <p
-                className="font-base-b text-incorrect text-center
-              flex items-center justify-center"
+                className="text-incorrect text-center
+                flex items-center justify-center"
               >
                 Game refunded successfully.
               </p>
@@ -214,8 +218,8 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
               <button
                 className={`${
                   isAirdropped && "hidden"
-                } font-base-b text-incorrect text-center h-[50px] 
-            flex items-center justify-center cursor-pointer z-50`}
+                } text-incorrect hover:text-[#A91A23] text-center h-[50px] 
+                flex items-center justify-center cursor-pointer z-50`}
                 onClick={handleCancelGame}
                 disabled={isRefunded || isAirdropped}
               >

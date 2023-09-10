@@ -29,7 +29,6 @@ module.exports = {
         "body-2xl": "1.5rem",
       },
       colors: {
-        disabled: "#BDBDBD",
         border: "#E0E0E0",
 
         greyscale1: "#FFFFFF",
@@ -42,6 +41,7 @@ module.exports = {
         correct: "#43A047",
         incorrect: "#E1233D",
         pending: "#FCF6C6",
+        disabled: "#979797",
         data: "#FECE00",
       },
       screens: {

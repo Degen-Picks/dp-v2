@@ -14,6 +14,7 @@ const WarningIcon = dynamic(() => import("./@icons/WarningIcon"));
 // atoms
 const AgreeCheckbox = dynamic(() => import("./atoms/AgreeCheckbox"));
 const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
+const AlertBanner2 = dynamic(() => import("./atoms/AlertBanner2"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
@@ -82,6 +83,7 @@ export {
   // atoms
   AgreeCheckbox,
   AlertBanner,
+  AlertBanner2,
   BackButton,
   ConnectButton,
   DataPoint,

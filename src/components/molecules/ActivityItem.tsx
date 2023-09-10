@@ -65,7 +65,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
           ) : (
             <p>{item.name}</p>
           )}
-          <p className="text-greyscale4">{timeAgo(item.time)}</p>
+          <p className="text-greyscale4 !text-base">{timeAgo(item.time)}</p>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">

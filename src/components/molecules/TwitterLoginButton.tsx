@@ -204,18 +204,13 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
           ) : (
             <div>
               <div className="flex items-center justify-center gap-2.5 sm:px-2 sm:group-hover:hidden">
-                <div
-                  className="border border-greyscale3 flex items-center justify-center rounded-full 
-                  w-[30px] h-[30px] overflow-hidden"
-                >
-                  <FallbackImage
-                    src={userData?.twitterData!.profileImage}
-                    fallbackSrc={"/images/icons/user-alt.png"}
-                    width={30}
-                    height={30}
-                    alt="Twitter Profile Image"
-                  />
-                </div>
+                <FallbackImage
+                  src={userData?.twitterData!.profileImage}
+                  fallbackSrc={"/images/icons/user-alt.png"}
+                  width={33}
+                  height={33}
+                  alt="Twitter Profile Image"
+                />
                 <p className="text-lg">{userData?.twitterData!.username}</p>
               </div>
               <div className="hidden sm:group-hover:block">

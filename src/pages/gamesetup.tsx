@@ -375,7 +375,7 @@ const GameSetup = () => {
               <div className="w-full flex justify-between">
                 <button
                   className="h-[50px] w-full bg-black text-greyscale1
-                  px-5 py-2 disabled:cursor-not-allowed disabled:bg-[#979797]"
+                  px-5 py-2 disabled:cursor-not-allowed disabled:bg-disabled"
                   onClick={handleCreateGame}
                   disabled={
                     !publicKey ||

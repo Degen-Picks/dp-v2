@@ -61,7 +61,7 @@ export const PropSection: FC<Props> = ({
                   height={24}
                   alt="user image"
                 />
-                <p className="text-base">{creator?.twitterData?.username}</p>
+                <p className="text-lg">{creator?.twitterData?.username}</p>
               </div>
             ) : null}
             {creator && <div className="h-5 w-[1px] bg-greyscale4" />}
@@ -272,10 +272,6 @@ const GameQueue = () => {
           )}
         </div>
       )}
-
-      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-greyscale4 z-50">
-        © Degen Picks 2023
-      </p>
     </div>
   );
 };

@@ -6,14 +6,11 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { getLoginStatus } from "@/utils";
 import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import { motion } from "framer-motion";
-import { smallClickAnimation } from "@/configs";
 
 interface IconProps {
   fill: string;
@@ -141,13 +138,17 @@ const ViewToggle: FC<Props> = ({
 
   return (
     <>
-      <div className="absolute top-[120px] sm:top-8 left-1/2 -translate-x-1/2">
+      <div
+        className={`absolute ${
+          ownsGame ? "top-[180px] md:top-[92px]" : "top-[120px] sm:top-8"
+        } left-1/2 -translate-x-1/2`}
+      >
         <div className={`h-[38px] flex items-center gap-1 p-1 bg-greyscale1`}>
           <motion.button
             className={`${
               toggleConfig.selected === "option1"
                 ? "bg-greyscale5 text-greyscale1"
-                : "bg-transparent  hover:bg-greyscale2"
+                : "bg-transparent hover:bg-greyscale2"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option1")}
           >

@@ -11,6 +11,7 @@ import {
   RulesModal,
   QuestionIcon,
   ClassicHero,
+  AlertBanner2,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -618,7 +619,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setTxn(userPickAmount.signature);
 
-            setTokenBet(userPickAmount.amount);
+            setTokenBet(userPickAmount.amount ?? 0);
 
             setSuccess(true);
             setAgree(true);
@@ -668,7 +669,11 @@ const Classic: FC<Props> = ({ gameId }) => {
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
     const estimateRewards = () => {
-      if (winningTeam === undefined) {
+      if (
+        winningTeam === undefined ||
+        tokenBet < minimumBet ||
+        Number.isNaN(tokenBet)
+      ) {
         setRewardEstimate("--");
         return;
       }
@@ -743,6 +748,11 @@ const Classic: FC<Props> = ({ gameId }) => {
             </div>
           </>
         )}
+        {/* only when user is creator, show this banner */}
+        {wagerUser !== null &&
+          wagerUser.publicKey === gameData.gameInfo.creator?.publicKey && (
+            <AlertBanner2 />
+          )}
         <Navbar />
         <ViewToggle
           toggleConfig={toggleConfig}
@@ -837,7 +847,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           max="1000000"
                           value={tokenBet}
                           onChange={(e) => {
-                            setTokenBet(parseFloat(e.target.value));
+                            setTokenBet(parseFloat(e.target.value ?? "0") ?? 0);
                           }}
                           className="disabled:opacity-70 disabled:cursor-not-allowed 
                           bg-greyscale2 hover:bg-greyscale3 px-2 h-[50px] w-full text-center focus:outline-none 
@@ -859,7 +869,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       </div>
                     </div>
 
-                    {finalWinner === undefined && tokenBet >= minimumBet && (
+                    {finalWinner === undefined && (
                       <div className="w-full mt-4 py-3 px-4 bg-greyscale3 text-center text-lg">
                         <p className="relative">
                           Potential reward (highly volatile)
@@ -911,12 +921,12 @@ const Classic: FC<Props> = ({ gameId }) => {
                             ? "cursor-not-allowed opacity-50"
                             : "cursor-pointer hover:bg-[#333333]"
                         }
-                      bg-black text-greyscale1 w-full py-4 my-6 text-center z-[+1]`}
+                      bg-black text-greyscale1 w-full h-[50px] my-6 text-center z-[+1]`}
                       >
                         {buttonHandler()}
                       </button>
                     ) : (
-                      <div className="bg-greyscale3 text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
+                      <div className="bg-greyscale3 text-black text-base sm:text-lg w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
                         {!finalWinner &&
                         tokenBet &&
                         winningTeam &&

@@ -20,14 +20,11 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
       {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
         <div className="flex items-center gap-1">
           <VerifiedBadge />
-          <p className="uppercase hover:text-purple1 cursor-pointer">
-            degen picks team
-          </p>
+          <p className="uppercase">degen picks team</p>
         </div>
       ) : gameData?.gameInfo?.creator?.twitterData ? (
         <motion.button
-          {...smallClickAnimation}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 group"
           onClick={() =>
             window.open(
               `https://twitter.com/${gameData?.gameInfo?.creator?.twitterData?.username}`,
@@ -36,14 +33,16 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
             )
           }
         >
-          <FallbackImage
-            src={gameData?.gameInfo?.creator.twitterData.profileImage}
-            fallbackSrc={"/images/icons/user-alt.png"}
-            width={24}
-            height={24}
-            alt="user image"
-          />
-          <p className="hover:text-purple1">
+          <div className="border border-transparent rounded-full group-hover:border-purple1">
+            <FallbackImage
+              src={gameData?.gameInfo?.creator.twitterData.profileImage}
+              fallbackSrc={"/images/icons/user-alt.png"}
+              width={33}
+              height={33}
+              alt="user image"
+            />
+          </div>
+          <p className="group-hover:text-purple1">
             {gameData?.gameInfo?.creator?.twitterData?.username}
           </p>
         </motion.button>
@@ -63,8 +62,8 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
         <div className="flex items-center gap-2">
           <Image
             src={getCurrencyIcon(gameData?.gameInfo?.token)}
-            width={30}
-            height={30}
+            width={24}
+            height={24}
             alt="token icon"
           />
           <p className="hidden sm:block text-lg">
