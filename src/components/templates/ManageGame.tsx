@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
@@ -8,9 +8,14 @@ import {
   ClassicHero,
   ClassicVersusBox,
   Divider,
+  InfoModal,
   ManageStats,
 } from "@/components";
 import { airdropClassic } from "@/utils/api/classic/airdrop";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 interface Props {
   gameData: GameInfo;
@@ -23,9 +28,11 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   const wallet = useWallet();
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
 
   const isDisabled =
     gameStatus !== GameStatus.CLOSED ||
@@ -66,26 +73,32 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   }, [isRefunded]);
 
   const handleCancelGame = async () => {
-    const confirmation = await handleConfirmAction(
-      wallet,
-      "Are you sure you want to cancel this game?"
-    );
-    if (!confirmation) return;
+    if (wagerUser?.roles?.includes("ADMIN")) {
+      const confirmation = await handleConfirmAction(
+        wallet,
+        "Are you sure you want to cancel this game?"
+      );
+      if (!confirmation) return;
 
-    const toastId = toast.loading("Cancelling game...");
-    setLoading(true);
+      const toastId = toast.loading("Cancelling game...");
+      setLoading(true);
 
-    const { success, message } = await refundClassic(gameData);
+      const { success, message } = await refundClassic(gameData);
 
-    success === true ? toast.success("Game cancelled!") : toast.error(message);
+      success === true
+        ? toast.success("Game cancelled!")
+        : toast.error(message);
 
-    // Refresh game data
-    await loadGameData();
+      // Refresh game data
+      await loadGameData();
 
-    setIsRefunded(success);
+      setIsRefunded(success);
 
-    toast.dismiss(toastId);
-    setLoading(false);
+      toast.dismiss(toastId);
+      setLoading(false);
+    } else {
+      setShowCancelModal(true);
+    }
   };
 
   const handleAirDrop = async () => {
@@ -142,74 +155,97 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   };
 
   return (
-    <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
-      <div className="mt-16 mb-[72px]">
-        <ClassicHero gameData={gameData} gameStatus={gameStatus} />
-      </div>
-      <div className="w-full flex flex-col gap-5 items-center justify-center">
-        {/* manage stats */}
-        <ManageStats
-          gameData={gameData}
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
-        <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
-          <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
-            <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
-              Set the game winner
-            </p>
-            <ClassicVersusBox
-              gameData={gameData}
-              success={isAirdropped || isRefunded}
-              handlePicks={pickHandler}
-              pickedTeams={[selectedTeam?.teamName]}
-              valid={gameStatus === GameStatus.CLOSED}
-              gameStatus={gameStatus}
-              hideImage={gameData.gameInfo.league === "custom"}
-            />
-            {/* divider */}
-            <Divider />
-            {isAirdropped ? (
-              <p className="text-correct h-[50px] flex items-center justify-center">
-                Winners airdropped!
+    <>
+      <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
+        <div className="mt-16 mb-[72px]">
+          <ClassicHero gameData={gameData} gameStatus={gameStatus} />
+        </div>
+        <div className="w-full flex flex-col gap-5 items-center justify-center">
+          {/* manage stats */}
+          <ManageStats
+            gameData={gameData}
+            showModal={showCancelModal}
+            setShowModal={setShowCancelModal}
+          />
+          <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
+            <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
+              <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
+                Set the game winner
               </p>
-            ) : (
-              <button
-                className={`${
-                  isRefunded && "hidden"
-                } mt-5 w-full h-[50px] px-5 cursor-pointer bg-black
+              <ClassicVersusBox
+                gameData={gameData}
+                success={isAirdropped || isRefunded}
+                handlePicks={pickHandler}
+                pickedTeams={[selectedTeam?.teamName]}
+                valid={gameStatus === GameStatus.CLOSED}
+                gameStatus={gameStatus}
+                hideImage={gameData.gameInfo.league === "custom"}
+              />
+              {/* divider */}
+              <Divider />
+              {isAirdropped ? (
+                <p className="text-correct h-[50px] flex items-center justify-center">
+                  Winners airdropped!
+                </p>
+              ) : (
+                <button
+                  className={`${
+                    isRefunded && "hidden"
+                  } mt-5 w-full h-[50px] px-5 cursor-pointer bg-black
                 flex items-center justify-center disabled:cursor-not-allowed 
                 disabled:bg-disabled hover:bg-[#333333]`}
-                onClick={handleAirDrop}
-                disabled={isDisabled}
-              >
-                <p className="text-greyscale1">Airdrop winners</p>
-              </button>
-            )}
+                  onClick={handleAirDrop}
+                  disabled={isDisabled}
+                >
+                  <p className="text-greyscale1">Airdrop winners</p>
+                </button>
+              )}
 
-            {isRefunded ? (
-              <p
-                className="text-incorrect text-center
+              {isRefunded ? (
+                <p
+                  className="text-incorrect text-center
                 flex items-center justify-center"
-              >
-                Game refunded successfully.
-              </p>
-            ) : (
-              <button
-                className={`${
-                  isAirdropped && "hidden"
-                } text-incorrect hover:text-[#A91A23] text-center h-[50px] 
-                flex items-center justify-center cursor-pointer z-50`}
-                onClick={handleCancelGame}
-                disabled={isRefunded || isAirdropped}
-              >
-                Cancel game
-              </button>
-            )}
+                >
+                  Game refunded successfully.
+                </p>
+              ) : (
+                <button
+                  className={`${
+                    isAirdropped && "hidden"
+                  } text-incorrect hover:text-[#A91A23] text-center h-[50px] 
+                  flex items-center justify-center cursor-pointer z-50`}
+                  onClick={handleCancelGame}
+                  disabled={isRefunded || isAirdropped}
+                >
+                  Cancel game
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <InfoModal showModal={showInfoModal} setShowModal={setShowInfoModal}>
+        <div
+          className="w-full pt-4 text-center gap-5
+          flex flex-col items-center justify-center"
+        >
+          <p className="text-xl sm:text-2xl font-base-b text-center">
+            What you take home
+          </p>
+          <p className="max-w-[400px] mx-auto text-base sm:text-lg">
+            Degen Picks™ takes a 6.9% fee on the total volume of each game. When
+            you run your own pool, you are eligible for 50% of the fees. Fees
+            are airdropped when you set the winner for your game.
+          </p>
+          <button
+            className="ml-auto text-purple1 hover:text-purple2 text-lg"
+            onClick={() => setShowInfoModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </InfoModal>
+    </>
   );
 };
 

@@ -94,6 +94,7 @@ const GameSetup = () => {
       toast.success("Game created successfully!");
       router.push(`/${gameId}`);
     } catch (err: any) {
+      console.log(err);
       toast.error(err.message || "Error contacting server. Try again later.");
     } finally {
       toast.dismiss(toastId);

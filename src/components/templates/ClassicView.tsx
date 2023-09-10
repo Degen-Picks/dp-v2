@@ -12,6 +12,8 @@ import {
   QuestionIcon,
   ClassicHero,
   AlertBanner2,
+  InfoIcon,
+  InfoModal,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -57,6 +59,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   const [txnLoading, setTxnLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
   const [agree, setAgree] = useState<boolean>(false);
   const [winAmount, setWinAmount] = useState<number>(0);
   const [airdropTxn, setAirdropTxn] = useState<string>();
@@ -870,9 +873,13 @@ const Classic: FC<Props> = ({ gameId }) => {
 
                     {finalWinner === undefined && (
                       <div className="w-full my-5 py-3 px-4 bg-greyscale3 text-center text-lg">
-                        <p className="relative">
-                          Potential reward (highly volatile)
-                        </p>
+                        <div className="relative w-fit mx-auto">
+                          <p>Potential reward</p>
+                          <InfoIcon
+                            className="w-4 h-4 absolute fill-purple1 hover:fill-purple2 top-1/2 -translate-y-[47%] -right-6 cursor-pointer"
+                            onClick={() => setShowInfoModal(true)}
+                          />
+                        </div>
                         <div>
                           {rewardEstimate} {gameData.gameInfo.token}
                         </div>
@@ -1018,8 +1025,27 @@ const Classic: FC<Props> = ({ gameId }) => {
           />
         )}
       </div>
-      {/* modal window - legal jargon */}
       <RulesModal showModal={showModal} setShowModal={setShowModal} />
+      <InfoModal showModal={showInfoModal} setShowModal={setShowInfoModal}>
+        <div
+          className="w-full pt-4 text-center gap-5
+          flex flex-col items-center justify-center"
+        >
+          <p className="text-xl sm:text-2xl font-base-b text-center">
+            Your potential payout
+          </p>
+          <p className="max-w-[400px] mx-auto text-base sm:text-lg">
+            Your payout is determined by the multiplier. Multipliers are highly
+            volatile when the pool is live, and lock when the pool closes.
+          </p>
+          <button
+            className="ml-auto text-purple1 hover:text-purple2 text-lg"
+            onClick={() => setShowInfoModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </InfoModal>
     </>
   );
 };

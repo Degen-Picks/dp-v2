@@ -1,21 +1,13 @@
 import { useState, useEffect, FC } from "react";
 import Image from "next/image";
-import {
-  Footer,
-  Navbar,
-  DataPoint,
-  TwitterFooter,
-  Discord,
-  Twitter,
-  Divider,
-} from "@/components";
+import { Navbar, DataPoint, Discord, Twitter } from "@/components";
 import { getStats } from "../utils/api/apiUtil";
 import { Stats } from "@/types";
 import { GetServerSideProps, NextPage } from "next/types";
 import GameQueue from "./classic";
 import { getCurrencyIcon } from "@/utils";
 import { motion } from "framer-motion";
-import { generalConfig, smallClickAnimation } from "@/configs";
+import { generalConfig } from "@/configs";
 import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface TeamProps {

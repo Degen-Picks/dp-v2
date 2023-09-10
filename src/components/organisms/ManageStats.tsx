@@ -19,37 +19,40 @@ const ManageStats: FC<Props> = ({ gameData, showModal, setShowModal }) => {
       creatorFee = (totalVolume * pickFee) / 2;
     }
 
-    return creatorFee.toFixed(2);
+    return creatorFee.toFixed(2) + " " + gameData.gameInfo.token?.toUpperCase();
   };
 
   return (
     <>
-      <div className="relative bg-greyscale1 w-full md:w-[620px] h-[121px] mx-auto flex items-center">
+      <div className="relative bg-greyscale1 w-full md:w-[620px] sm:h-[121px] mx-auto flex items-center">
         <div className="absolute right-0 -top-12">
           <TwitterShare
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
           />
         </div>
         {/* manage stats */}
-        <div className="w-full flex justify-between items-center py-3 mx-5 sm:mx-8 md:mx-[60px]">
-          <div className="sm:h-[81px] py-5 sm:py-0 px-5 sm:px-10 flex flex-col items-center justify-center">
+        <div className="w-full flex justify-between items-center p-2.5 sm:mx-8 md:mx-[60px]">
+          <div className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 flex flex-col items-center justify-center">
             <p className="leading-none text-lg">
               {gameData.team1.uniqueWallets + gameData.team2.uniqueWallets}
             </p>
             <p className="text-center text-base text-greyscale4">players</p>
           </div>
-          <div className="sm:h-[81px] py-5 sm:py-0 px-5 sm:px-10 flex flex-col items-center justify-center">
+          <div className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 flex flex-col items-center justify-center">
             <p className="leading-none text-lg">
-              {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}
+              {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}{" "}
+              {gameData.gameInfo.token?.toUpperCase()}
             </p>
             <p className="text-center text-base text-greyscale4">volume</p>
           </div>
-          <div className="sm:h-[81px] py-5 sm:py-0 px-5 sm:px-10 bg-greyscale2 flex flex-col items-center justify-center">
+          <div className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 bg-greyscale2 flex flex-col items-center justify-center">
             <p className="leading-none text-lg">{handleCreatorFee()}</p>
             <div className="relative w-fit">
-              <p className="text-center text-base text-greyscale4">you get</p>
+              <p className="text-center text-base text-greyscale4 pr-2">
+                you get
+              </p>
               <InfoIcon
-                className="absolute -right-4 top-1/2 -translate-y-1/2 w-[14px] h-[14px] fill-purple1 cursor-pointer"
+                className="absolute -right-3 top-1/2 -translate-y-[47%] w-[14px] h-[14px] fill-purple1 cursor-pointer"
                 onClick={() => setShowModal(true)}
               />
             </div>
@@ -62,11 +65,12 @@ const ManageStats: FC<Props> = ({ gameData, showModal, setShowModal }) => {
           flex flex-col items-center justify-center"
         >
           <p className="text-xl sm:text-2xl font-base-b text-center">
-            Your potential payout
+            What you take home
           </p>
           <p className="max-w-[400px] mx-auto text-base sm:text-lg">
-            Your payout is determined by the multiplier. Multipliers are highly
-            volatile when the pool is live, and lock when the pool closes.
+            Degen Picks™ takes a 6.9% fee on the total volume of each game. When
+            you run your own pool, you are eligible for 50% of the fees. Fees
+            are airdropped when you set the winner for your game.
           </p>
           <button
             className="ml-auto text-purple1 hover:text-purple2 text-lg"
