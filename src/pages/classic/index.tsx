@@ -245,14 +245,8 @@ const GameQueue = () => {
                 (game.status === "completed" || game.status === "cancelled"))
           ).length === 0 && (
             <div className="w-full md:w-[620px] flex flex-col items-center justify-center pt-10">
-              <Image
-                src="/images/landing/nippie_countdown.svg"
-                alt="nippie"
-                width={200}
-                height={200}
-              />
-              <p className="text-center text-[22px] font-base-b pt-5">
-                No games right now.
+              <p className="text-center text-lg pt-5">
+                No live games right now.
               </p>
             </div>
           )}
