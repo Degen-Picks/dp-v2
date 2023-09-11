@@ -16,6 +16,7 @@ import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
+import { generalConfig } from "@/configs";
 
 interface Props {
   gameData: GameInfo;
@@ -157,15 +158,15 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   return (
     <>
       <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
-        <div className="mt-16 mb-[72px]">
+        <div className="mt-10 mb-[72px]">
           <ClassicHero gameData={gameData} gameStatus={gameStatus} />
         </div>
         <div className="w-full flex flex-col gap-5 items-center justify-center">
           {/* manage stats */}
           <ManageStats
             gameData={gameData}
-            showModal={showCancelModal}
-            setShowModal={setShowCancelModal}
+            showModal={showInfoModal}
+            setShowModal={setShowInfoModal}
           />
           <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
             <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
@@ -224,22 +225,29 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
           </div>
         </div>
       </div>
-      <InfoModal showModal={showInfoModal} setShowModal={setShowInfoModal}>
+      <InfoModal showModal={showCancelModal} setShowModal={setShowCancelModal}>
         <div
           className="w-full pt-4 text-center gap-5
           flex flex-col items-center justify-center"
         >
           <p className="text-xl sm:text-2xl font-base-b text-center">
-            What you take home
+            Cancelling games
           </p>
           <p className="max-w-[400px] mx-auto text-base sm:text-lg">
-            Degen Picks™ takes a 6.9% fee on the total volume of each game. When
-            you run your own pool, you are eligible for 50% of the fees. Fees
-            are airdropped when you set the winner for your game.
+            If there’s an issue with your game, reach out to an admin or{" "}
+            <a
+              href={generalConfig.discordUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline text-purple1 hover:text-purple2"
+            >
+              open a ticket
+            </a>{" "}
+            in Discord.
           </p>
           <button
             className="ml-auto text-purple1 hover:text-purple2 text-lg"
-            onClick={() => setShowInfoModal(false)}
+            onClick={() => setShowCancelModal(false)}
           >
             Close
           </button>

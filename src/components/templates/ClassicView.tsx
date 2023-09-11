@@ -874,7 +874,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                     {finalWinner === undefined && (
                       <div className="w-full my-5 py-3 px-4 bg-greyscale3 text-center text-lg">
                         <div className="relative w-fit mx-auto">
-                          <p>Potential reward</p>
+                          <p>Potential payout</p>
                           <InfoIcon
                             className="w-4 h-4 absolute fill-purple1 hover:fill-purple2 top-1/2 -translate-y-[47%] -right-6 cursor-pointer"
                             onClick={() => setShowInfoModal(true)}

@@ -70,7 +70,7 @@ const GameSetup = () => {
   const [leagues, setLeagues] = useState<LeaguesArray>([]);
   const [collections, setCollections] = useState<LeaguesArray>([]);
   const [agree, setAgree] = useState(false);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
 
@@ -176,6 +176,12 @@ const GameSetup = () => {
       });
     }
   }, [gameDetails.league, gameDetails.team1Name, gameDetails.team2Name]);
+
+  useEffect(() => {
+    if (publicKey) {
+      setShowModal(true);
+    }
+  }, [publicKey]);
 
   return (
     <>
@@ -375,7 +381,7 @@ const GameSetup = () => {
               </div>
               <div className="w-full flex justify-between">
                 <button
-                  className="h-[50px] w-full bg-black text-greyscale1
+                  className="h-[50px] w-full bg-black hover:bg-[#333333] text-greyscale1
                   px-5 py-2 disabled:cursor-not-allowed disabled:bg-disabled"
                   onClick={handleCreateGame}
                   disabled={

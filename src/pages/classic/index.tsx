@@ -221,7 +221,7 @@ const GameQueue = () => {
         >
           <div
             className={`hidden md:block absolute ${
-              publicKey ? "top-[84px]" : "top-7"
+              publicKey ? "top-[92px]" : "top-7"
             }  left-1/2 -translate-x-1/2`}
           >
             <GameFilter

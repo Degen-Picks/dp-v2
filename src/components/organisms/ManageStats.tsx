@@ -38,21 +38,28 @@ const ManageStats: FC<Props> = ({ gameData, showModal, setShowModal }) => {
             </p>
             <p className="text-center text-base text-greyscale4">players</p>
           </div>
-          <div className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 flex flex-col items-center justify-center">
+          <div
+            className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 flex flex-col 
+            items-center justify-center"
+          >
             <p className="leading-none text-lg">
               {(gameData.team1.dustVol + gameData.team2.dustVol).toFixed(2)}{" "}
               {gameData.gameInfo.token?.toUpperCase()}
             </p>
             <p className="text-center text-base text-greyscale4">volume</p>
           </div>
-          <div className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 bg-greyscale2 flex flex-col items-center justify-center">
+          <div
+            className="sm:h-[81px] py-2.5 px-5 sm:py-0 sm:px-10 bg-greyscale2 
+            flex flex-col items-center justify-center"
+          >
             <p className="leading-none text-lg">{handleCreatorFee()}</p>
             <div className="relative w-fit">
               <p className="text-center text-base text-greyscale4 pr-2">
                 you get
               </p>
               <InfoIcon
-                className="absolute -right-3 top-1/2 -translate-y-[47%] w-[14px] h-[14px] fill-purple1 cursor-pointer"
+                className="absolute -right-3 top-1/2 -translate-y-[47%] w-[14px] h-[14px] 
+                fill-purple1 hover:fill-purple2 cursor-pointer"
                 onClick={() => setShowModal(true)}
               />
             </div>
