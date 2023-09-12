@@ -737,7 +737,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         />
       ) : null}
       <div className="relative overflow-hidden min-h-screen pb-48 lg:pb-10">
-        {!loading && (
+        {!loading ? (
           <>
             {/* Fixed y00ts pfps */}
             <div
@@ -766,35 +766,41 @@ const Classic: FC<Props> = ({ gameId }) => {
               />
             </div>
           </>
-        )}
+        ) : null}
         {/* only when user is creator, show this banner */}
-        {wagerUser !== null &&
-          wagerUser.publicKey === gameData.gameInfo.creator?.publicKey && (
-            <AlertBanner2 />
-          )}
-        <Navbar />
-        <ViewToggle
-          toggleConfig={toggleConfig}
-          setToggleConfig={setToggleConfig}
-          view="classic"
-          ownsGame={
-            wagerUser !== null &&
-            wagerUser.publicKey === gameData.gameInfo.creator?.publicKey
-          }
-        />
+        {wagerUser !== null
+          ? !loading &&
+            wagerUser.publicKey === gameData.gameInfo.creator?.publicKey && (
+              <AlertBanner2 />
+            )
+          : null}
+        {!loading ? (
+          <>
+            <Navbar />
+            <ViewToggle
+              toggleConfig={toggleConfig}
+              setToggleConfig={setToggleConfig}
+              view="classic"
+              ownsGame={
+                wagerUser !== null &&
+                wagerUser.publicKey === gameData.gameInfo.creator?.publicKey
+              }
+            />
+          </>
+        ) : null}
 
-        {toggleConfig.selected === "option1" && (
+        {toggleConfig.selected === "option1" ? (
           <div
             className={`px-4 pt-16 flex flex-col gap-5 justify-between ${
               showModal && "overflow-hidden"
             }`}
           >
-            {loading && (
+            {loading ? (
               // loading indicator
-              <div className="w-fit mx-auto flex flex-col items-center mt-20">
+              <div className="w-fit mx-auto flex flex-col items-center mt-56">
                 <BarLoader color="black" />
               </div>
-            )}
+            ) : null}
 
             {/* logo section */}
             {!loading && (
@@ -817,7 +823,7 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
             {/* second area / betting section */}
-            {publicKey && (
+            {publicKey && !loading && (
               <div className="h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
                 <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
@@ -1027,17 +1033,17 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
           </div>
-        )}
-        {toggleConfig.selected === "option2" && (
+        ) : null}
+        {toggleConfig.selected === "option2" ? (
           <ActivityFeed gameData={gameData} gameStatus={gameStatus} />
-        )}
-        {toggleConfig.selected === "option3" && (
+        ) : null}
+        {toggleConfig.selected === "option3" ? (
           <ManageGame
             gameData={gameData}
             loadGameData={loadGameData}
             gameStatus={gameStatus}
           />
-        )}
+        ) : null}
       </div>
       <RulesModal showModal={showModal} setShowModal={setShowModal} />
       <InfoModal showModal={showInfoModal} setShowModal={setShowInfoModal}>

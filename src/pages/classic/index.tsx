@@ -199,20 +199,22 @@ const GameQueue = () => {
 
   return (
     <div className="relative bg-greyscale3 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
-      <AlertBanner
-        text={
-          "Now you can run your own Degen Picks™ pool, and get 50% of the fees."
-        }
-        ctaText={"Learn More"}
-        ctaLink={"https://degenpicks.xyz"}
-      />
-      <Navbar />
+      {!loading && (
+        <>
+          <AlertBanner
+            text={
+              "Now you can run your own Degen Picks™ pool, and get 50% of the fees."
+            }
+            ctaText={"Learn More"}
+            ctaLink={"https://degenpicks.xyz"}
+          />
+          <Navbar />
+        </>
+      )}
+
       {loading ? (
-        <div className="w-fit mx-auto flex flex-col items-center mt-20">
+        <div className="w-fit mx-auto flex flex-col items-center mt-56">
           <BarLoader color="black" />
-          <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
-            Loading ...
-          </p>
         </div>
       ) : (
         <div
