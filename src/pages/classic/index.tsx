@@ -14,7 +14,7 @@ import {
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { FadeLoader } from "react-spinners";
+import { BarLoader } from "react-spinners";
 
 interface Props {
   title: string;
@@ -209,7 +209,7 @@ const GameQueue = () => {
       <Navbar />
       {loading ? (
         <div className="w-fit mx-auto flex flex-col items-center mt-20">
-          <FadeLoader color="#651FFF" />
+          <BarLoader color="black" />
           <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
             Loading ...
           </p>

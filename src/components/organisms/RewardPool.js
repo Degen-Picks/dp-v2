@@ -86,7 +86,7 @@ const RewardPool = ({ gameData }) => {
   return (
     <div>
       {/* reward pool outer container */}
-      <div className="relative bg-greyscale1 w-full md:w-[620px] mx-auto mt-5 text-base">
+      <div className="relative bg-greyscale1 w-full md:w-[620px] mx-auto mt-[72px] text-base">
         <div className="absolute right-0 -top-12">
           <TwitterShare
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
@@ -102,38 +102,38 @@ const RewardPool = ({ gameData }) => {
               />
             </div>
             {/* reward data table */}
-            <div className="flex flex-col justify-between w-[340px] h-fit text-base sm:text-lg font-base">
+            <div className="flex flex-col justify-between w-[300px] h-fit text-lg font-base">
               {/* vol */}
-              <div className="flex flex-row justify-between pb-3">
+              <div className="flex flex-row justify-between sm:pb-2">
                 <div className="w-[80px] text-right pr-2">
                   {Math.floor(gameData.team1.dustVol * 100) / 100}
                 </div>
                 <div className="text-center">
-                  <p className="px-3 text-greyscale4">volume</p>
+                  <p className="px-3 text-greyscale4 text-base">volume</p>
                 </div>
                 <div className="w-[80px] text-left pl-2">
                   {Math.floor(gameData.team2.dustVol * 100) / 100}
                 </div>
               </div>
               {/* unique wallets */}
-              <div className="flex flex-row justify-between pb-3">
+              <div className="flex flex-row justify-between sm:pb-2">
                 <div className="w-[80px] text-right pr-2">
                   {gameData.team1.uniqueWallets}
                 </div>
                 <div className="text-center">
-                  <p className="px-3 text-greyscale4">players</p>
+                  <p className="px-3 text-greyscale4 text-base">players</p>
                 </div>
                 <div className="w-[80px] text-left pl-2">
                   {gameData.team2.uniqueWallets}
                 </div>
               </div>
               {/* reward multiplier */}
-              <div className="flex flex-row justify-between sm:pb-3">
+              <div className="flex flex-row justify-between sm:pb-2">
                 <div className="w-[80px] text-right pr-2">
                   {multiplier.team1}
                 </div>
                 <div className="relative z-50 text-center">
-                  <p className="px-3 text-greyscale4">reward</p>
+                  <p className="px-3 text-greyscale4 text-base">reward</p>
                 </div>
                 <div className="w-[80px] text-left pl-2">
                   {multiplier.team2}

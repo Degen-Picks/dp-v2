@@ -203,7 +203,7 @@ const GameSetup = () => {
           </div>
           {!publicKey && (
             <div className="w-full h-full flex justify-center items-center mt-20">
-              Connect your wallet to play
+              Connect your wallet & Twitter/X to create a pool.
             </div>
           )}
 
@@ -370,14 +370,14 @@ const GameSetup = () => {
                 />
               </div>
               <div className="py-2 w-full flex flex-col">
-                <Divider />
+                <Divider color="#A89FA8" />
                 <AgreeCheckbox
                   agree={agree}
                   setAgree={setAgree}
                   setShowModal={setShowModal}
                   disabled={!wagerUser.twitterData}
                 />
-                <Divider />
+                <Divider color="#A89FA8" />
               </div>
               <div className="w-full flex justify-between">
                 <button

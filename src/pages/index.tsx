@@ -97,7 +97,7 @@ const Landing = () => {
             />
           )}
 
-          <div className="animate-bounce flex flex-col items-center gap-1">
+          <div className="animate-bounce flex flex-col items-center gap-1 z-0">
             <p className="text-lg uppercase">Learn more</p>
             <p>↓</p>
           </div>
@@ -162,8 +162,7 @@ const Landing = () => {
             )}
           </div>
         </div>
-        <div className="h-[1px] px-4 bg-greyscale4 my-10 w-[90%] md:w-[500px] mx-auto" />
-        <div className="w-[90%] md:w-[3/4] mx-auto sm:pb-20">
+        <div className="w-[90%] md:w-[3/4] mx-auto sm:pt-5 sm:pb-20">
           <p className="text-center pb-5">Founders</p>
           <div className="grid grid-cols-2 gap-x-10 gap-y-5 w-fit max-w-[500px] mx-auto">
             <TeamMember handle="capsjpeg" image="/images/team/caps.png" />

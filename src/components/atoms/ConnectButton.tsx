@@ -31,8 +31,7 @@ const ConnectButton = () => {
   // Logout on disconnect/wallet change
   useEffect(() => {
     async function load() {
-      const logoutUser = await logout();
-      console.log("Logged out", logoutUser);
+      await logout();
       setWagerUser(null);
     }
 
@@ -43,7 +42,7 @@ const ConnectButton = () => {
 
   return (
     <div
-      className="!bg-black !relative !w-fit flex items-center justify-center
+      className="!bg-black !relative !w-full sm:!w-fit flex items-center justify-center
         md:!px-0 !h-auto !rounded-none !z-50"
     >
       <WalletMultiButton

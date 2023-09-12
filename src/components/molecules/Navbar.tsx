@@ -31,7 +31,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
     <>
       <div
         className={`${landing && "fixed top-0 w-full"} 
-        bg-greyscale1 md:bg-transparent`}
+        bg-greyscale1 md:bg-transparent z-20`}
       >
         <div
           className="relative flex justify-center md:justify-between 
@@ -47,7 +47,6 @@ const Navbar: FC<Props> = ({ landing = false }) => {
             />
           </Link>
           <div className="hidden lg:flex items-center gap-4 justify-end">
-            <TwitterLoginButton />
             {landing ? (
               <motion.button
                 className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
@@ -56,7 +55,10 @@ const Navbar: FC<Props> = ({ landing = false }) => {
                 Launch app
               </motion.button>
             ) : (
-              <ConnectButton />
+              <>
+                <TwitterLoginButton />
+                <ConnectButton />
+              </>
             )}
           </div>
           {isMobile && (

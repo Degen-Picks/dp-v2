@@ -179,8 +179,8 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
           className={`${
             !!userData?.twitterData
               ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
-              : "sm:py-1 sm:border border-black hover:bg-greyscale1"
-          } h-[50px] sm:min-w-[146px] flex justify-center 
+              : "sm:py-1 rounded-none border border-black hover:bg-greyscale1"
+          } h-[50px] sm:min-w-[146px] flex justify-center w-full sm:w-auto 
           rounded-full sm:rounded-none items-center sm:gap-2 group px-2`}
         >
           {!userData?.twitterData ? (

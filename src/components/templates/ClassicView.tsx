@@ -29,10 +29,10 @@ import {
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import sendTransaction from "../../utils/sendTransaction";
-import { SplToken, TOKEN_MAP } from "@/types/Token";
-import { FadeLoader } from "react-spinners";
+import { TOKEN_MAP } from "@/types/Token";
 import Confetti from "react-confetti";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { BarLoader } from "react-spinners";
 
 interface Props {
   gameId: string | string[];
@@ -560,7 +560,10 @@ const Classic: FC<Props> = ({ gameId }) => {
   useEffect(() => {
     async function loadPick() {
       await loadGameData();
-      setLoading(false);
+      // show loader for 2 seconds more than needed
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
 
     loadPick();
@@ -644,7 +647,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setWinningTeam(gameData[pickedTeam].teamName);
 
-            console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
+            // console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
 
             if (userPick.winAmount === -1) {
               setFinalWinner(gameData[otherTeam].teamName);
@@ -724,16 +727,15 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   return (
     <>
-      {/* {finalWinner === winningTeam && winAmount && ( */}
-      <Confetti
-        width={width}
-        height={2 * height}
-        recycle={false}
-        numberOfPieces={400}
-        tweenDuration={10000}
-        className="z-50"
-      />
-      {/* )} */}
+      {!loading && finalWinner === winningTeam && winAmount ? (
+        <Confetti
+          width={width}
+          height={2 * height}
+          recycle={false}
+          numberOfPieces={400}
+          tweenDuration={10000}
+        />
+      ) : null}
       <div className="relative overflow-hidden min-h-screen pb-48 lg:pb-10">
         {!loading && (
           <>
@@ -790,10 +792,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             {loading && (
               // loading indicator
               <div className="w-fit mx-auto flex flex-col items-center mt-20">
-                <FadeLoader color="#651FFF" />
-                <p className="text-xl font-base text-center w-fit mx-auto py-5 text-purple1">
-                  Loading ...
-                </p>
+                <BarLoader color="black" />
               </div>
             )}
 
@@ -947,7 +946,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                         {buttonHandler()}
                       </button>
                     ) : (
-                      <div className="bg-greyscale3 text-black text-base sm:text-lg w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
+                      <div className="bg-greyscale3 text-black text-lg w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
                         {!finalWinner &&
                         tokenBet &&
                         winningTeam &&
