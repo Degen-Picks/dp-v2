@@ -848,6 +848,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           min="1"
                           max="1000000"
                           value={tokenBet}
+                          // TODO: fix decimal bug
                           onChange={(e) => {
                             setTokenBet(parseFloat(e.target.value ?? "0") ?? 0);
                           }}
