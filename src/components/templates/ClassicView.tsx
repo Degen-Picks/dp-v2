@@ -724,9 +724,16 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   return (
     <>
-      {finalWinner === winningTeam && winAmount && (
-        <Confetti width={width} height={height} recycle={false} />
-      )}
+      {/* {finalWinner === winningTeam && winAmount && ( */}
+      <Confetti
+        width={width}
+        height={2 * height}
+        recycle={false}
+        numberOfPieces={400}
+        tweenDuration={10000}
+        className="z-50"
+      />
+      {/* )} */}
       <div className="relative overflow-hidden min-h-screen pb-48 lg:pb-10">
         {!loading && (
           <>
@@ -812,7 +819,7 @@ const Classic: FC<Props> = ({ gameId }) => {
             )}
             {/* second area / betting section */}
             {publicKey && (
-              <div className="z-10 h-auto w-full relative overflow-hidden mb-20">
+              <div className="h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
                 <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
                   {/* header */}
