@@ -31,6 +31,8 @@ import {
 import sendTransaction from "../../utils/sendTransaction";
 import { SplToken, TOKEN_MAP } from "@/types/Token";
 import { FadeLoader } from "react-spinners";
+import Confetti from "react-confetti";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {
   gameId: string | string[];
@@ -89,6 +91,8 @@ const Classic: FC<Props> = ({ gameId }) => {
   // wallet variables
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
+
+  const [width, height] = useWindowSize();
 
   const [gameData, setGameData] = useState<GameInfo>({
     gameInfo: {
@@ -720,6 +724,9 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   return (
     <>
+      {finalWinner === winningTeam && winAmount && (
+        <Confetti width={width} height={height} recycle={false} />
+      )}
       <div className="relative overflow-hidden min-h-screen pb-48 lg:pb-10">
         {!loading && (
           <>
