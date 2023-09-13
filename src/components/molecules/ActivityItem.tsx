@@ -72,7 +72,7 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
         <p className="text-lg">{item.teamName}</p>
         {/* round to whole numbers */}
         <p className="!text-base">
-          {Math.ceil(item.dustBet * 100) / 100} {gameData.gameInfo.token}
+          {Math.floor(item.dustBet * 100) / 100} {gameData.gameInfo.token}
         </p>
       </div>
     </div>
