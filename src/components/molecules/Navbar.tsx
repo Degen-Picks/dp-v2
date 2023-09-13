@@ -37,7 +37,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
           className="relative flex justify-center md:justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
         >
-          <Link href="/">
+          <Link href="https://degenpicks.xyz/">
             <Image
               src="/images/logo_new.png"
               width={isMobile ? 60 : 70}
@@ -50,7 +50,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
             {landing ? (
               <motion.button
                 className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
-                onClick={() => window.open("https://app.degenpicks.xyz/")}
+                onClick={() => router.push("https://app.degenpicks.xyz/")}
               >
                 Launch app
               </motion.button>
