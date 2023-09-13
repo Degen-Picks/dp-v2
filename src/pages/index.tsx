@@ -75,43 +75,54 @@ const Landing = () => {
 
   return (
     <div className="w-full relative overflow-hidden bg-greyscale3">
-      <div className="h-[90vh] w-full flex flex-col">
-        <Navbar landing={true} />
-        <div className="flex-1 flex flex-col items-center justify-between mt-32">
+      <div className="h-screen w-full flex flex-col gap-5">
+        <Navbar />
+        <div className="flex-1 flex flex-col gap-5 items-center justify-between">
           {isMobile ? (
             <>
-              <Image
-                src="/images/landing/dp_scuba_mobile.png"
-                width={370}
-                height={370}
-                alt="DP artwork by scuba"
-                priority
-              />
-              <motion.button
-                className="bg-purple1 text-greyscale1 w-full max-w-[310px] h-[50px] text-lg px-5 -mt-16"
-                onClick={() => window.open(generalConfig.appUrl)}
-              >
-                Launch app
-              </motion.button>
+              <div className="w-full">
+                <Image
+                  src="/images/landing/dp_scuba_mobile.png"
+                  width={370}
+                  height={370}
+                  alt="DP artwork by scuba"
+                  priority
+                  className="w-fit mx-auto px-5"
+                />
+                <div className="w-full px-5">
+                  <motion.button
+                    className="bg-purple1 text-greyscale1 w-full h-[50px] text-lg mt-5"
+                    onClick={() => window.open(generalConfig.appUrl)}
+                  >
+                    Launch app
+                  </motion.button>
+                </div>
+              </div>
+              <div className="animate-bounce flex flex-col items-center gap-1 z-0 pb-10">
+                <p className="text-lg uppercase">Learn more</p>
+                <p>↓</p>
+              </div>
             </>
           ) : (
-            <Image
-              src="/images/landing/dp_scuba.png"
-              width={940}
-              height={500}
-              alt="DP artwork by scuba"
-              priority
-            />
+            <div className="w-full h-full flex flex-col gap-10">
+              <Image
+                src="/images/landing/dp_scuba.png"
+                width={940}
+                height={500}
+                alt="DP artwork by scuba"
+                priority
+                className="mx-auto"
+              />
+              <div className="animate-bounce flex flex-col items-center gap-1 z-0">
+                <p className="text-lg uppercase">Learn more</p>
+                <p>↓</p>
+              </div>
+            </div>
           )}
-
-          <div className="animate-bounce flex flex-col items-center gap-1 z-0">
-            <p className="text-lg uppercase">Learn more</p>
-            <p>↓</p>
-          </div>
         </div>
       </div>
       <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
-        <div className="w-[90%] md:w-[3/4] mx-auto pb-6">
+        <div className="w-[90%] md:w-[3/4] mx-auto pb-6 -mt-10 sm:mt-0">
           <div className="font-base-b text-[40px] leading-[39px] ">
             Degen Picks
           </div>
