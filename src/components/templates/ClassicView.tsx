@@ -594,7 +594,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
         // check if the user doesn't have enough token
         if (gameData.gameInfo.token === "SOL") {
-          setIsBroke(tokenBet > balance + 0.01);
+          setIsBroke(tokenBet + 0.01 > balance);
         } else {
           setIsBroke(tokenBet > balance);
         }
