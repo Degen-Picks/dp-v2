@@ -29,10 +29,8 @@ const Navbar: FC<Props> = ({ landing = false }) => {
 
   return (
     <>
-      <div
-        className={`${landing && "fixed top-0 w-full"} 
-        bg-greyscale1 md:bg-transparent z-20`}
-      >
+      {/* TODO: ${landing && "fixed top-0 w-full"} */}
+      <div className={`bg-greyscale1 md:bg-transparent z-20`}>
         <div
           className="relative flex justify-center md:justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"

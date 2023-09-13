@@ -76,7 +76,7 @@ const Landing = () => {
   return (
     <div className="w-full relative overflow-hidden bg-greyscale3">
       <div className="h-screen w-full flex flex-col gap-5">
-        <Navbar />
+        <Navbar landing={true} />
         <div className="flex-1 flex flex-col gap-5 items-center justify-between">
           {isMobile ? (
             <>
@@ -89,9 +89,9 @@ const Landing = () => {
                   priority
                   className="w-fit mx-auto px-5"
                 />
-                <div className="w-full px-5">
+                <div className="w-full flex justify-center items-center px-5">
                   <motion.button
-                    className="bg-purple1 text-greyscale1 w-full h-[50px] text-lg mt-5"
+                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg mt-5"
                     onClick={() => window.open(generalConfig.appUrl)}
                   >
                     Launch app
