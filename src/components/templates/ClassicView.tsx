@@ -377,6 +377,18 @@ const Classic: FC<Props> = ({ gameId }) => {
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
 
+  const valueHandler = () => {
+    if (success) {
+      if (Number.isInteger(tokenBet)) {
+        return tokenBet;
+      } else {
+        return tokenBet.toFixed(2);
+      }
+    } else {
+      return tokenBet;
+    }
+  };
+
   // updates button text based current state
   const buttonHandler = () => {
     if (
@@ -866,7 +878,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           }
                           min="1"
                           max="1000000"
-                          value={tokenBet}
+                          value={valueHandler()}
                           // TODO: fix decimal bug
                           onChange={(e) => {
                             setTokenBet(parseFloat(e.target.value ?? "0") ?? 0);
@@ -960,7 +972,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p>{`Success! You picked ${winningTeam} with ${tokenBet} ${gameData.gameInfo.token}.`}</p>
+                            <p>{`Success! You picked ${winningTeam} with ${tokenBet.toFixed(
+                              2
+                            )} ${gameData.gameInfo.token}.`}</p>
                             <a
                               className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${txn}${

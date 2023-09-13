@@ -180,7 +180,7 @@ const TwitterLoginButton: FC<Props> = ({ text }) => {
             !!userData?.twitterData
               ? "sm:hover:border-[#E1233D] sm:hover:border-2 sm:py-2"
               : "sm:py-1 rounded-none border border-black hover:bg-greyscale1"
-          } h-[50px] sm:min-w-[146px] flex justify-center w-full sm:w-auto 
+          } h-[50px] sm:min-w-[146px] flex justify-center w-full
           rounded-full sm:rounded-none items-center sm:gap-2 group px-2`}
         >
           {!userData?.twitterData ? (

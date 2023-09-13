@@ -50,6 +50,7 @@ const getUserImage = (placedBet: any) => {
 const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [activityRefresh, setActivityRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
   // const [page, setPage] = useState(1);
 
   const axios = require("axios");
@@ -88,6 +89,8 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
         });
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,7 +131,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
           />
         </div>
-        {activities.length > 0 ? (
+        {activities.length > 0 && !loading ? (
           activities.map((item, index) => (
             <ActivityItem item={item} key={index} gameData={gameData} />
           ))
