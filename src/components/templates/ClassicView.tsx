@@ -595,7 +595,6 @@ const Classic: FC<Props> = ({ gameId }) => {
         // check if the user doesn't have enough token
         if (gameData.gameInfo.token === "SOL") {
           setIsBroke(tokenBet > balance + 0.01);
-          toast.error("Need enough SOL to cover gas fees!");
         } else {
           setIsBroke(tokenBet > balance);
         }
