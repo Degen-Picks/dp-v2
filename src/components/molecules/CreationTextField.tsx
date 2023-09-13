@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { ClassicGameOptions } from "../../types";
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   fullWidth?: boolean;
   textLeft?: boolean;
   type?: string;
+  disabled?: boolean;
 }
 
 const CreationTextField: FC<Props> = ({
@@ -21,28 +22,37 @@ const CreationTextField: FC<Props> = ({
   fullWidth = true,
   textLeft = false,
   type = "text",
+  disabled = false,
 }) => {
+  const [initialized, setInitialized] = useState<boolean>(false);
+
   return (
-    <div className={`relative h-full ${fullWidth ? "w-full" : "w-[80px]"}`}>
+    <div className={`relative h-[50px] ${fullWidth ? "w-full" : "w-[80px]"}`}>
       {title && (
         <p
           className="absolute -translate-x-[290px] w-[250px] top-1/2 -translate-y-1/2
-        text-secondary whitespace-nowrap text-right"
+          text-greyscale4 whitespace-nowrap text-right"
         >
           {title}
         </p>
       )}
       <form id="text-area" className="h-full">
         <input
-          className={`w-full h-full bg-white text-primary hover:bg-gray-50 
+          className={`w-full h-full bg-greyscale1 hover:bg-gray-50 
           flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-link font-base-b
+          focus:border-purple1 disabled:cursor-not-allowed disabled:text-disabled
+          ${accessor === "gameTime" && !initialized ? "text-disabled" : ""}
           ${textLeft ? "text-left px-4" : "text-center"}`}
+          disabled={disabled}
           type={type}
           onChange={(e) => {
             const newGameDetails: ClassicGameOptions = { ...gameDetails };
             newGameDetails[accessor] = e.target.value;
             setGameDetails(newGameDetails);
+            setInitialized(true);
+          }}
+          onKeyDown={(e) => {
+            setInitialized(true);
           }}
           value={gameDetails[accessor]}
           placeholder={placeholder}

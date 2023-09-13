@@ -1,3 +1,4 @@
+import { generalConfig } from "@/configs";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -12,20 +13,20 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
 
   const handleClick = (game: string) => {
     if (game === "classic") {
-      router.push("/classic");
+      router.push(generalConfig.appUrl);
     } else router.push("/pickem");
   };
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center items-center space-y-5 lg:space-y-0 lg:space-x-5 my-8">
+    <div className="flex flex-col lg:flex-row justify-center items-center space-y-5 lg:space-y-0 lg:space-x-5 my-20">
       {/* option 1 - degen picks OG */}
       <div
-        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] rounded-xl text-center 
-        bg-white border-2 border-black/30 lg:hover:cursor-pointer lg:hover:border-link"
+        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
+        bg-greyscale1 border-2 border-black/30 lg:hover:cursor-pointer lg:hover:border-purple1"
         onClick={() => handleClick("classic")}
       >
         <div className="h-full flex flex-col justify-center">
-          <div className="font-bingodilan text-3xl text-black mt-4">
+          <div className="font-base-b text-3xl text-black mt-4">
             Degen Picks
             <br />
             (Classic)
@@ -55,19 +56,19 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
         </div>
         {/* game status */}
         {classicLive === true && (
-          <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-white text-red-500">
+          <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-greyscale1 text-red-500">
             <div className="blob"></div> Live game
           </div>
         )}
       </div>
       {/* option 2 - JB pickem */}
       <div
-        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] rounded-2xl text-center 
-        bg-white border-2 border-black/30 lg:cursor-not-allowed opacity-60"
+        className="relative overflow-hidden h-[300px] w-[95%] sm:w-[380px] lg:w-[460px] lg:h-[360px] text-center 
+        bg-greyscale1 border-2 border-black/30 lg:cursor-not-allowed opacity-60"
         // onClick={() => handleClick("degen")}
       >
         <div className="h-full flex flex-col justify-center sm:pb-0">
-          <div className="font-bingodilan text-3xl mt-4 px-3 text-black">
+          <div className="font-base-b text-3xl mt-4 px-3 text-black">
             JB&apos;s NFL
             <br />
             Pick&apos;em
@@ -82,13 +83,13 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
             </p>
           </div>
           {/* {pickemLive === true && (
-            <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-white text-red-500">
+            <div className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 flex flex-row items-center px-3 py-1 rounded-lg border border-red-400 bg-greyscale1 text-red-500">
               <div className="blob"></div> Live game
             </div>
           )} */}
           <div
             className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 
-            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-container"
+            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-greyscale5"
           >
             Season ended
           </div>

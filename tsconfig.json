@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/utils/sendDustTransaction.ts"
+    "src/utils/sendTransaction.ts"
   ],
   "exclude": ["node_modules"]
 }

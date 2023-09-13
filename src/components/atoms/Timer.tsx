@@ -7,6 +7,7 @@ interface Props {
 
 const Timer: FC<Props> = ({ status, gameTime }) => {
   const [timeRemaining, setTimeRemaining] = useState("");
+  const [closeToEnd, setCloseToEnd] = useState(false);
 
   useEffect(() => {
     const calculateTimeRemaining = () => {
@@ -26,12 +27,15 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
         );
         var seconds = Math.floor((gameDistance % (1000 * 60)) / 1000);
 
-        if (days === 0) {
+        if (days === 0 && hours >= 1) {
+          setCloseToEnd(false);
           setTimeRemaining(hours + "h " + minutes + "m");
         } else if (days === 0 && hours < 1) {
           setTimeRemaining(minutes + "m " + seconds + "s");
+          setCloseToEnd(true);
         } else {
           setTimeRemaining(days + "d " + hours + "h " + minutes + "m");
+          setCloseToEnd(false);
         }
       }
     };
@@ -42,12 +46,12 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
   }, [gameTime]);
 
   return (
-    <div className="bg-light h-30 px-2 py-1 rounded-md flex items-center justify-center">
+    <div className="flex items-center justify-center whitespace-nowrap text-lg">
       {status === "closed" ? (
-        <p className="text-sm text-secondary font-base-b">Picks Closed</p>
+        <p className="">Picks Closed</p>
       ) : status === "completed" ? (
         <div className="flex items-center gap-1">
-          <p className="text-sm text-correct font-base-b">Airdrops</p>
+          <p className="text-correct">Airdrops</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="10"
@@ -59,11 +63,13 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
           </svg>
         </div>
       ) : status === "cancelled" ? (
-        <p className="text-sm text-incorrect font-base-b">Refunded</p>
+        <p className="text-incorrect">Refunded</p>
       ) : status === "upcoming" ? (
-        <p className="text-sm text-secondary font-base-b">Loading</p>
+        <p className="text-greyscale4">Loading</p>
       ) : (
-        <p className="text-sm text-link font-base-b">{timeRemaining}</p>
+        <p className={`${closeToEnd ? "text-incorrect" : "text-purple1"}`}>
+          {timeRemaining}
+        </p>
       )}
     </div>
   );

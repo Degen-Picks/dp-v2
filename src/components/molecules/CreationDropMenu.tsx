@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { ClassicGameOptions } from "../../types";
+import { ClassicGameOptions, League } from "../../types";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
-import React, { Dispatch, FC, SetStateAction, useRef, useState } from "react";
+import CaratDown from "../@icons/CaratDown";
+import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
 
 interface Props {
+  league: League | undefined;
   list: string[];
   gameDetails: ClassicGameOptions;
   setGameDetails: Dispatch<SetStateAction<ClassicGameOptions>>;
@@ -14,7 +16,10 @@ interface Props {
   icon?: boolean;
 }
 
+// TODO: make icon func global
+
 const CreationDropMenu: FC<Props> = ({
+  league,
   list,
   gameDetails,
   setGameDetails,
@@ -36,46 +41,59 @@ const CreationDropMenu: FC<Props> = ({
     setIsOpen(false);
   };
 
+  // TODO: abstract this function
   const fetchIcon = (item: string) => {
-    // if (accessor === "token") {
-    switch (item) {
-      case "DUST":
-        return "/images/icons/dust_square.svg";
-      case "SOL":
-        return "/images/icons/solana.svg";
-      default:
-        return "/images/icons/dust_square.svg";
+    var urlPath: string = "";
+    if (accessor === "token") {
+      switch (item) {
+        case "DUST":
+          urlPath = "/images/icons/dust.png";
+          break;
+        case "SOL":
+          urlPath = "/images/icons/solana.png";
+          break;
+        case "USDC":
+          urlPath = "/images/icons/usdc.png";
+          break;
+        default:
+          urlPath = "/images/icons/dust.png";
+          break;
+      }
+    } else if (accessor === "team1Name" || accessor === "team2Name") {
+      urlPath =
+        league?.options?.find((team) => team.name === item)?.imageUrl ?? "";
     }
-    // } else if (accessor === "team1Name" || accessor === "team2Name") {
-    // do stuff
+    return urlPath;
   };
 
   return (
     <div className="w-full relative">
       <p
         className="absolute -translate-x-[290px] w-[250px] top-1/2
-        -translate-y-1/2 text-secondary whitespace-nowrap text-right"
+        -translate-y-1/2 text-greyscale4 whitespace-nowrap text-right"
       >
         {title}
       </p>
       <div className="w-full relative inline-block text-left" ref={wrapperRef}>
-        <div>
-          <button
-            type="button"
-            className="flex items-center justify-between w-full bg-white 
-            px-4 py-2 font-base-b hover:bg-gray-50 focus:outline-none 
-            focus:ring-2 disabled:hover:bg-white disabled:hover:cursor-not-allowed
-            focus:ring-link focus:ring-offset-2 focus:ring-offset-gray-100"
-            id="options-menu"
-            aria-expanded="true"
-            aria-haspopup="true"
-            onClick={() => setIsOpen(!isOpen)}
-            disabled={disabled}
-          >
-            {gameDetails[accessor as keyof ClassicGameOptions] &&
-            gameDetails[accessor as keyof ClassicGameOptions] !== "" ? (
-              <div className="flex items-center gap-3">
-                {icon && (
+        <button
+          type="button"
+          className="flex items-center justify-between w-full h-[50px]
+          bg-greyscale1 px-4 py-2 hover:bg-gray-50 focus:outline-none 
+          focus:ring-2 disabled:hover:bg-greyscale1 disabled:hover:cursor-not-allowed
+          focus:ring-purple1"
+          id="options-menu"
+          aria-expanded="true"
+          aria-haspopup="true"
+          onClick={() => setIsOpen(!isOpen)}
+          disabled={disabled}
+        >
+          {gameDetails[accessor as keyof ClassicGameOptions] &&
+          gameDetails[accessor as keyof ClassicGameOptions] !== "" ? (
+            <div className="flex items-center gap-3">
+              {icon &&
+                fetchIcon(
+                  gameDetails[accessor as keyof ClassicGameOptions] as string
+                ) !== "" && (
                   <Image
                     src={fetchIcon(
                       gameDetails[
@@ -87,42 +105,31 @@ const CreationDropMenu: FC<Props> = ({
                     alt="team or token icon"
                   />
                 )}
-                <p className="text-primary font-base-b">
-                  {gameDetails[accessor as keyof ClassicGameOptions]}
-                </p>
-              </div>
-            ) : (
-              <p className="text-disabled">{placeholder}</p>
-            )}
-            <svg
-              className="h-5 w-5 flex items-center justify-center"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="black"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
+              <p className="">
+                {gameDetails[accessor as keyof ClassicGameOptions]}
+              </p>
+            </div>
+          ) : (
+            <p className="text-disabled">{placeholder}</p>
+          )}
+          <CaratDown
+            className={`mr-2 ${disabled ? "fill-disabled" : "fill-greyscale5"}`}
+          />
+        </button>
 
         {isOpen && (
-          <div className="w-full max-h-[200px] overflow-y-auto absolute right-0 z-[+1] mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className="w-full max-h-[200px] overflow-y-auto absolute right-0 z-[+1] mt-2 origin-top-right rounded-md bg-greyscale1 shadow-lg ring-1 ring-black ring-opacity-5">
             <div
               className="py-1"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {list.map((item, index) => (
+              {list?.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => clickHandler(item)}
-                  className="z-50 w-full bg-white px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="z-50 w-full bg-greyscale1 px-4 py-2 text-left text-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   role="menuitem"
                 >
                   <div className="flex items-center gap-3">
@@ -134,7 +141,7 @@ const CreationDropMenu: FC<Props> = ({
                         alt="team or token icon"
                       />
                     )}
-                    <p className="text-primary">{item}</p>
+                    <p className="">{item}</p>
                   </div>
                 </button>
               ))}

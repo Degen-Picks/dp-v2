@@ -1,3 +1,5 @@
+import { TwitterData } from "./TwitterData";
+
 export interface Wager {
   finalScore: string;
   league: string;
@@ -9,7 +11,9 @@ export interface Wager {
   endDate: number;
   gameDate: number;
   metadata: any[];
+  creator: WagerUser;
   description: string;
+  token: string | null;
 }
 
 export interface Selection {
@@ -23,3 +27,12 @@ export interface Selection {
   nftImageUrl: string;
   _id: string;
 }
+
+type Roles = Role[];
+type Role = "ADMIN" | "CREATOR" | "DEFAULT";
+
+export type WagerUser = {
+  publicKey: string;
+  twitterData: TwitterData | null;
+  roles: Roles;
+};

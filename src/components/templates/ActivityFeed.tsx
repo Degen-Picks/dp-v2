@@ -1,10 +1,12 @@
 import { useState, FC, useEffect } from "react";
-import Image from "next/image";
-import { ActivityItem } from "@/components";
+import { ActivityItem, ClassicHero, Divider, TwitterShare } from "@/components";
 import { Activity, GameInfo } from "@/types";
 import { generalConfig } from "@/configs";
+import { GameStatus } from "./ClassicView";
+
 interface Props {
   gameData: GameInfo;
+  gameStatus: GameStatus;
 }
 
 const dateFromObjectId = (objectId: string) => {
@@ -30,56 +32,70 @@ const getTeamImage = (placedBet: any, gameData: GameInfo) => {
     : gameData.team2.teamLogo;
 };
 
+const getTeamName = (placedBet: any, gameData: GameInfo) => {
+  // console.log(placedBet, gameData);
+  return placedBet.selectionId === gameData.team1.id
+    ? gameData.team1.teamName
+    : gameData.team2.teamName;
+};
+
 const getUserImage = (placedBet: any) => {
   if (placedBet.user && placedBet.user?.twitterData?.profileImage) {
     return placedBet.user.twitterData.profileImage;
   } else {
-    return "/images/icons/user-alt.svg";
+    return "/images/icons/user-alt.png";
   }
 };
 
-const ActivityFeed: FC<Props> = ({ gameData }) => {
+const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [activityRefresh, setActivityRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
+  // const [page, setPage] = useState(1);
 
   const axios = require("axios");
 
+  // TODO: Move to apiUtil
   const loadActivities = async () => {
-    await axios
-      .post(`${generalConfig.apiUrl}/api/activityFeed`, {
-        wagerId: gameData.gameInfo.id,
-      })
-      .then(function (response: any) {
-        const placedBets = response.data.data.reverse();
-        const data = [];
-        let id = 0;
+    try {
+      await axios
+        .post(`${generalConfig.apiUrl}/api/activityFeed`, {
+          wagerId: gameData.gameInfo.id,
+        })
+        .then(function (response: any) {
+          const placedBets = response.data.data.reverse();
+          const data = [];
+          let id = 0;
 
-        for (const placedBet of placedBets) {
-          const formatted: Activity = {
-            id,
-            name: getName(placedBet),
-            time: dateFromObjectId(placedBet._id),
-            dustBet: placedBet.amounts[0].amount,
-            teamImage: getTeamImage(placedBet, gameData),
-            userImage: getUserImage(placedBet),
-            twitterName: placedBet.user?.twitterData?.username,
-          };
+          for (const placedBet of placedBets) {
+            const formatted: Activity = {
+              id,
+              name: getName(placedBet),
+              time: dateFromObjectId(placedBet._id),
+              dustBet: placedBet.amounts[0].amount,
+              teamImage: getTeamImage(placedBet, gameData),
+              teamName: getTeamName(placedBet, gameData),
+              userImage: getUserImage(placedBet),
+              twitterName: placedBet.user?.twitterData?.username,
+            };
 
-          data.push(formatted);
-          id++;
-        }
-        if (activities !== data) {
-          // this means that the data has changed
-          setActivities(data);
-        }
-      })
-      .catch(function (error: any) {
-        console.log(error);
-      });
+            data.push(formatted);
+            id++;
+          }
+          if (activities !== data) {
+            // this means that the data has changed
+            setActivities(data);
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
+    if (!gameData) return;
     let interval: any = null;
     if (!activityRefresh) {
       setActivityRefresh(true);
@@ -87,58 +103,55 @@ const ActivityFeed: FC<Props> = ({ gameData }) => {
       interval = setInterval(async () => {
         await loadActivities();
 
-        if (gameData.gameInfo.status !== "live") {
+        if (gameStatus === GameStatus.OPEN) {
           clearInterval(interval);
         }
       }, 5000);
     }
 
     return () => clearInterval(interval);
-  }, []);
+  }, [gameData]);
 
   useEffect(() => {
-    const fetchActivity = async () => {
-      await loadActivities();
-      setLoading(false);
-    };
-
-    fetchActivity();
-  }, []);
+    if (gameData) {
+      loadActivities();
+    }
+  }, [gameData]);
 
   return (
-    <div className="activity-feed">
-      {loading ? (
-        <div className="w-fit mx-auto mt-20">
-          <div className="rotate">
-            <Image
-              src="/images/pickem/nipple.png"
-              width={100}
-              height={100}
-              alt="nipple spinner"
-            />
-          </div>
-          <p className="text-xl font-pressura text-center w-fit mx-auto py-10">
-            Loading ...
-          </p>
+    <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
+      {/* logo section */}
+      <div className="mt-10 mb-[72px]">
+        <ClassicHero gameData={gameData} gameStatus={gameStatus} />
+      </div>
+      {/* activity feed */}
+      <div className="relative flex flex-col items-center gap-5 mb-8">
+        <div className="absolute right-0 -top-12">
+          <TwitterShare
+            url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
+          />
         </div>
-      ) : (
-        <>
-          {/* logo section */}
-          <div className="w-fit max-w-[620px] mx-auto my-10">
-            <div className="font-pressura text-center">
-              {gameData.gameInfo.description}
-            </div>
-            <div className="font-bingodilan text-center text-3xl text-black">
-              {gameData.gameInfo.title}
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-4 mb-8">
-            {activities.map((item, index) => (
-              <ActivityItem item={item} key={index} />
-            ))}
-          </div>
-        </>
-      )}
+        {activities.length > 0 && !loading ? (
+          activities.map((item, index) => (
+            <ActivityItem item={item} key={index} gameData={gameData} />
+          ))
+        ) : (
+          <>
+            <Divider color="#A89FA8" margin="1px" />
+            <p className="text-xl font-base text-center w-fit mx-auto">
+              Nothing to see here...
+            </p>
+          </>
+        )}
+      </div>
+      {/* TODO: how to check if there are more activities? */}
+      {/* <motion.button
+            {...smallClickAnimation}
+            className="text-purple1"
+            onClick={() => setPage(page + 1)}
+          >
+            Load More
+          </motion.button> */}
     </div>
   );
 };

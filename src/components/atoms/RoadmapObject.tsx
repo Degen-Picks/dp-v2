@@ -24,8 +24,8 @@ const RoadmapObject: FC<Props> = ({ title, description, state }) => (
         <p
           className={`text-sm px-2 py-1
       ${state === "Complete" && "text-correct"}
-      ${state === "In progress" && "text-primary bg-pending"}
-      ${state === "Upcoming" && "text-secondary bg-container"}
+      ${state === "In progress" && " bg-pending"}
+      ${state === "Upcoming" && "text-greyscale4 bg-greyscale5"}
       `}
         >
           {state}

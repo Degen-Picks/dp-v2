@@ -9,16 +9,14 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import {
   LedgerWalletAdapter,
   PhantomWalletAdapter,
-  SlopeWalletAdapter,
   SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
-  SolletWalletAdapter,
   TorusWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
+import { WagerUserContextProvider } from "@/components/stores/WagerUserStore";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -39,12 +37,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      new SlopeWalletAdapter(),
       new SolflareWalletAdapter({ network }),
       new TorusWalletAdapter(),
       new LedgerWalletAdapter(),
-      new SolletWalletAdapter({ network }),
-      new SolletExtensionWalletAdapter({ network }),
     ],
     [network]
   );
@@ -58,7 +53,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta name="title" content={`Degen Picks`} />
         <meta
           name="description"
-          content={`Degen Picks: An all-or-nothing sports prediction game with DUST.`}
+          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
         />
 
         {/* <!-- Open Graph / Facebook --> */}
@@ -67,11 +62,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <meta property="og:title" content={`Degen Picks`} />
         <meta
           property="og:description"
-          content={`Degen Picks: An all-or-nothing sports prediction game with DUST.`}
+          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
         />
         <meta
           property="og:image"
-          content={`https://${generalConfig.baseUrl}/images/meta.png`}
+          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
         <meta property="og:image:width" content="1800" />
         <meta property="og:image:height" content="941" />
@@ -85,16 +80,18 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         />
         <meta
           property="twitter:image"
-          content={`https://${generalConfig.baseUrl}/images/meta.png`}
+          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
       </Head>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>
-            <Component {...pageProps} />
-          </WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      <WagerUserContextProvider>
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              <Component {...pageProps} />
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </WagerUserContextProvider>
       <Toaster />
     </>
   );

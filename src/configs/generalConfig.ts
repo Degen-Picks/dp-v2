@@ -3,6 +3,8 @@ export const generalConfig = {
   // Change to deployed base url (no slashes or protocols, EI: http: or https:)
   baseUrl: "degenpicks.xyz",
   apiUrl: "https://api.degenpicks.xyz",
+  appUrl: "https://app.degenpicks.xyz",
+  discordUrl: "https://discord.gg/TGTam7epH6",
   useDevAPI: false,
   useDevNet: false,
 
@@ -18,3 +20,7 @@ export const generalConfig = {
 generalConfig["apiUrl"] = generalConfig.useDevAPI
   ? "https://staging-api.degenpicks.xyz"
   : "https://api.degenpicks.xyz";
+
+generalConfig["appUrl"] = generalConfig.useDevAPI
+  ? "https://app.staging.degenpicks.xyz"
+  : "https://app.degenpicks.xyz";

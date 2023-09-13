@@ -1,27 +1,46 @@
-import Image from "next/image";
-import { FC, useEffect, useState } from "react";
-import { airdropClassic, handleConfirmAction, refundClassic } from "@/utils";
+import { FC, useContext, useEffect, useState } from "react";
+import { handleConfirmAction, refundClassic } from "@/utils";
 import toast from "react-hot-toast";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { GameStatus } from "./ClassicView";
+import {
+  ClassicHero,
+  ClassicVersusBox,
+  Divider,
+  InfoModal,
+  ManageStats,
+} from "@/components";
+import { airdropClassic } from "@/utils/api/classic/airdrop";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
+import { generalConfig } from "@/configs";
 
 interface Props {
   gameData: GameInfo;
+  gameStatus: GameStatus;
   loadGameData: () => Promise<GameInfo | undefined | null>;
 }
 
-const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
+const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | undefined>(undefined);
   const [isAirdropped, setIsAirdropped] = useState<boolean>(false);
   const [isRefunded, setIsRefunded] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
   const wallet = useWallet();
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
 
   const isDisabled =
-    gameData.gameInfo.status !== "closed" ||
+    gameStatus !== GameStatus.CLOSED ||
     loading ||
     isRefunded ||
-    isAirdropped;
+    isAirdropped ||
+    selectedTeam === undefined;
 
   useEffect(() => {
     // Ensures gameData state is up-to-date
@@ -33,12 +52,12 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, []);
 
   useEffect(() => {
-    if (gameData.gameInfo.status === "cancelled") {
+    if (gameStatus === GameStatus.CANCELLED) {
       setIsRefunded(true);
       return;
     }
 
-    if (gameData.gameInfo.status === "completed") {
+    if (gameStatus === GameStatus.AIRDROPPED) {
       gameData.team1.winner === true
         ? setSelectedTeam(gameData.team1)
         : setSelectedTeam(gameData.team2);
@@ -46,7 +65,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       setIsAirdropped(true);
       return;
     }
-  }, [gameData]);
+  }, [gameData, gameStatus]);
 
   useEffect(() => {
     if (isRefunded) {
@@ -55,26 +74,32 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
   }, [isRefunded]);
 
   const handleCancelGame = async () => {
-    const confirmation = await handleConfirmAction(
-      wallet,
-      "Are you sure you want to cancel this game?"
-    );
-    if (!confirmation) return;
+    if (wagerUser?.roles?.includes("ADMIN")) {
+      const confirmation = await handleConfirmAction(
+        wallet,
+        "Are you sure you want to cancel this game?"
+      );
+      if (!confirmation) return;
 
-    const toastId = toast.loading("Cancelling game...");
-    setLoading(true);
+      const toastId = toast.loading("Cancelling game...");
+      setLoading(true);
 
-    const { success, message } = await refundClassic(gameData);
+      const { success, message } = await refundClassic(gameData);
 
-    success === true ? toast.success("Game cancelled!") : toast.error(message);
+      success === true
+        ? toast.success("Game cancelled!")
+        : toast.error(message);
 
-    // Refresh game data
-    await loadGameData();
+      // Refresh game data
+      await loadGameData();
 
-    setIsRefunded(success);
+      setIsRefunded(success);
 
-    toast.dismiss(toastId);
-    setLoading(false);
+      toast.dismiss(toastId);
+      setLoading(false);
+    } else {
+      setShowCancelModal(true);
+    }
   };
 
   const handleAirDrop = async () => {
@@ -83,7 +108,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
       return;
     }
 
-    if (gameData.gameInfo.status !== "closed") {
+    if (gameStatus !== GameStatus.CLOSED) {
       toast.error("Game must be closed to airdrop winners!");
       return;
     }
@@ -112,142 +137,123 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData }) => {
     setLoading(false);
   };
 
-  const getStyles = (team: 1 | 2) => {
-    if (isAirdropped) {
-      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
-        return "border-correct bg-[#E8F5E9]";
-      } else if (
-        selectedTeam?.teamName === gameData.team2.teamName &&
-        team === 2
-      ) {
-        return "border-correct bg-[#E8F5E9]";
+  const pickHandler = (teamNum: number) => {
+    if (teamNum === 1) {
+      if (selectedTeam?.teamName === gameData.team1.teamName) {
+        setSelectedTeam(undefined);
+        return;
       } else {
-        return "border-transparent bg-white";
+        setSelectedTeam(gameData.team1);
       }
-    } else if (isRefunded) {
-      return "border-transparent bg-white";
     } else {
-      if (selectedTeam?.teamName === gameData.team1.teamName && team === 1) {
-        return "border-link bg-[#7808FF1A]/10";
-      } else if (
-        selectedTeam?.teamName === gameData.team2.teamName &&
-        team === 2
-      ) {
-        return "border-link bg-[#7808FF1A]/10";
+      if (selectedTeam?.teamName === gameData.team2.teamName) {
+        setSelectedTeam(undefined);
+        return;
       } else {
-        return "border-transparent bg-white";
+        setSelectedTeam(gameData.team2);
       }
     }
   };
 
   return (
-    <div className="w-full">
-      <div className="w-fit max-w-[620px] mx-auto my-10">
-        <div className="font-pressura text-center">
-          {gameData.gameInfo.description}
+    <>
+      <div className="w-full max-w-[620px] mx-auto pt-6 px-4 sm:px-0">
+        <div className="mt-10 mb-[72px]">
+          <ClassicHero gameData={gameData} gameStatus={gameStatus} />
         </div>
-        <div className="font-bingodilan text-center text-3xl text-black">
-          {gameData.gameInfo.title}
-        </div>
-      </div>
-      <div className="w-full flex flex-col items-center justify-center gap-5">
-        <div className="w-full relative">
-          <button
-            className={`${
-              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
-            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
-            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
-            disabled:cursor-default ${getStyles(1)}`}
-            disabled={isDisabled}
-            onClick={() => {
-              if (selectedTeam?.teamName === gameData.team1.teamName) {
-                setSelectedTeam(undefined);
-              } else {
-                setSelectedTeam(gameData.team1);
-              }
-            }}
-          >
-            <Image
-              src={gameData.team1.teamLogo}
-              width={30}
-              height={30}
-              alt={gameData.team1.teamName}
-            />
-            <p className="font-base-b">{gameData.team1.teamName}</p>
-          </button>
-          <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
-            Team 1
-          </p>
-        </div>
-        <div className="w-full relative">
-          <button
-            className={`${
-              (isRefunded || isAirdropped) && "opacity-70 cursor-not-allowed"
-            } w-[90%] mx-auto sm:w-[400px] h-[50px] border-2
-            flex items-center gap-5 px-5 cursor-pointer sm:hover:scale-[1.02]
-            transition-transform ease-in-out duration-500 disabled:sm:hover:scale-[1.0]
-            disabled:cursor-default ${getStyles(2)}`}
-            disabled={isDisabled}
-            onClick={() => {
-              if (selectedTeam?.teamName === gameData.team2.teamName) {
-                setSelectedTeam(undefined);
-              } else {
-                setSelectedTeam(gameData.team2);
-              }
-            }}
-          >
-            <Image
-              src={gameData.team2.teamLogo}
-              width={30}
-              height={30}
-              alt={gameData.team2.teamName}
-            />
-            <p className="font-base-b text-black">{gameData.team2.teamName}</p>
-          </button>
-          <p className="hidden sm:block absolute top-1/2 -translate-y-1/2 -left-20 text-secondary">
-            Team 2
-          </p>
-        </div>
-        {isAirdropped ? (
-          <p className="text-correct font-base-b h-[50px] flex items-center justify-center">
-            Winners airdropped!
-          </p>
-        ) : (
-          <button
-            className={`${
-              isRefunded && "hidden"
-            } mt-5 w-[90%] sm:w-[400px] h-[50px] px-5 cursor-pointer bg-black
-            hover:scale-[1.02] transition-transform ease-in-out duration-500 flex 
-            items-center justify-center disabled:cursor-not-allowed disabled:hover:scale-100 disabled:opacity-70`}
-            onClick={handleAirDrop}
-            disabled={isDisabled}
-          >
-            <p className="font-base-b text-white">Airdrop winners</p>
-          </button>
-        )}
+        <div className="w-full flex flex-col gap-5 items-center justify-center">
+          {/* manage stats */}
+          <ManageStats
+            gameData={gameData}
+            showModal={showInfoModal}
+            setShowModal={setShowInfoModal}
+          />
+          <div className="bg-greyscale1 w-full md:w-[620px] mx-auto mb-20">
+            <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
+              <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
+                Set the game winner
+              </p>
+              <ClassicVersusBox
+                gameData={gameData}
+                success={isAirdropped || isRefunded}
+                handlePicks={pickHandler}
+                pickedTeams={[selectedTeam?.teamName]}
+                valid={gameStatus === GameStatus.CLOSED}
+                gameStatus={gameStatus}
+                hideImage={gameData.gameInfo.league === "custom"}
+              />
+              {/* divider */}
+              <Divider />
+              {isAirdropped ? (
+                <p className="text-correct h-[50px] flex items-center justify-center">
+                  Winners airdropped!
+                </p>
+              ) : (
+                <button
+                  className={`${
+                    isRefunded && "hidden"
+                  } mt-5 w-full h-[50px] px-5 cursor-pointer bg-black
+                flex items-center justify-center disabled:cursor-not-allowed 
+                disabled:bg-disabled hover:bg-[#333333]`}
+                  onClick={handleAirDrop}
+                  disabled={isDisabled}
+                >
+                  <p className="text-greyscale1">Airdrop winners</p>
+                </button>
+              )}
 
-        {isRefunded ? (
-          <p
-            className="font-base-b text-incorrect text-center
-              flex items-center justify-center"
-          >
-            Game refunded successfully.
-          </p>
-        ) : (
-          <button
-            className={`${
-              isAirdropped && "hidden"
-            } font-base-b text-incorrect text-center h-[50px] 
-            flex items-center justify-center cursor-pointer z-50`}
-            onClick={handleCancelGame}
-            disabled={isRefunded || isAirdropped}
-          >
-            Cancel game
-          </button>
-        )}
+              {isRefunded ? (
+                <p
+                  className="text-incorrect text-center
+                flex items-center justify-center"
+                >
+                  Game refunded successfully.
+                </p>
+              ) : (
+                <button
+                  className={`${
+                    isAirdropped && "hidden"
+                  } text-incorrect hover:text-[#A91A23] text-center h-[50px] 
+                  flex items-center justify-center cursor-pointer z-50`}
+                  onClick={handleCancelGame}
+                  disabled={isRefunded || isAirdropped}
+                >
+                  Cancel game
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <InfoModal showModal={showCancelModal} setShowModal={setShowCancelModal}>
+        <div
+          className="w-full pt-4 text-center gap-5
+          flex flex-col items-center justify-center"
+        >
+          <p className="text-xl sm:text-2xl font-base-b text-center">
+            Cancelling games
+          </p>
+          <p className="max-w-[400px] mx-auto text-base sm:text-lg">
+            If there’s an issue with your game, reach out to an admin or{" "}
+            <a
+              href={generalConfig.discordUrl}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline text-purple1 hover:text-purple2"
+            >
+              open a ticket
+            </a>{" "}
+            in Discord.
+          </p>
+          <button
+            className="ml-auto text-purple1 hover:text-purple2 text-lg"
+            onClick={() => setShowCancelModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </InfoModal>
+    </>
   );
 };
 

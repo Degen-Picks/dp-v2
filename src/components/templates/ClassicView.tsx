@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Navbar,
@@ -9,44 +9,59 @@ import {
   ActivityFeed,
   ManageGame,
   RulesModal,
+  QuestionIcon,
+  ClassicHero,
+  AlertBanner2,
+  InfoIcon,
+  InfoModal,
 } from "@/components";
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import getDustBalance from "../../utils/getDustBalance";
-import sendDustTransaction from "../../utils/sendDustTransaction";
+import { getTokenBalance } from "../../utils/getTokenBalance";
 import toast from "react-hot-toast";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
-import { sleep } from "../../utils";
+import { getCurrencyIcon, pickFee, sleep } from "../../utils";
 import { GameInfo, Wager } from "@/types";
 import { ToggleConfig } from "../molecules/ViewToggle";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
+import sendTransaction from "../../utils/sendTransaction";
+import { TOKEN_MAP } from "@/types/Token";
+import Confetti from "react-confetti";
+import { useWindowSize } from "@/hooks/useWindowSize";
+import { BarLoader } from "react-spinners";
 
 interface Props {
   gameId: string | string[];
 }
 
 export enum GameStatus {
-  PREGAME = "pregame",
-  OPEN = "open",
+  PREGAME = "upcoming",
+  OPEN = "live",
   CLOSED = "closed",
-  AIRDROPPED = "airdropped",
+  AIRDROPPED = "completed",
   CANCELLED = "cancelled",
 }
 
 const Classic: FC<Props> = ({ gameId }) => {
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
+
   //state variables
-  const [gameCountdown, setGameCountdown] = useState<string>("Loading...");
   const [pickCountdown, setPickCountdown] = useState<string>("Loading...");
   const [winningTeam, setWinningTeam] = useState<string>();
-  const [dustBet, setDustBet] = useState<number>(33);
-  const [dustBalance, setDustBalance] = useState<number>(0);
+  const [tokenBet, setTokenBet] = useState<number>(33);
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
   const [isBroke, setIsBroke] = useState<boolean>(false);
-  const [rewardEstimate, setRewardEstimate] = useState<number>(0);
+  const [rewardEstimate, setRewardEstimate] = useState<string>("--");
   const [success, setSuccess] = useState<boolean>(false);
   const [txn, setTxn] = useState<string>();
   const [txnLoading, setTxnLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
   const [agree, setAgree] = useState<boolean>(false);
   const [winAmount, setWinAmount] = useState<number>(0);
   const [airdropTxn, setAirdropTxn] = useState<string>();
@@ -58,9 +73,11 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   const [finalWinner, setFinalWinner] = useState<string>();
 
+  const [minimumBet, setMinimumBet] = useState<number>(1);
+
   const [toggleConfig, setToggleConfig] = useState<ToggleConfig>({
     option1: {
-      title: "Pick",
+      title: "Game",
     },
     option2: {
       title: "Activity",
@@ -75,19 +92,25 @@ const Classic: FC<Props> = ({ gameId }) => {
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
 
-  const pickFee = 0.069;
+  const [width, height] = useWindowSize();
 
   const [gameData, setGameData] = useState<GameInfo>({
     gameInfo: {
-      dateStr: "TBD",
+      description: "",
+      endDate: 0,
+      finalScore: "",
+      gameDate: 0,
+      league: "",
+      metadata: "",
+      // selections: "",
+      startDate: 0,
+      status: "",
+      title: "",
+      id: "",
+      dateStr: "",
       timeStr: "",
       dayTime: "",
-      status: "",
-      id: "",
-      title: "",
-      description: "",
-      league: "",
-      finalScore: "",
+      token: null,
     },
     team1: {
       teamName: "TBD",
@@ -118,7 +141,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   const rulesDisabled = success || loading || gameStatus !== GameStatus.OPEN;
 
   // create and process dust txn
-  const handlePayDust = async () => {
+  const handlePayToken = async () => {
     if (!gameData || !publicKey) return;
     const toastId = toast.loading("Processing Transaction...");
     setTxnLoading(true);
@@ -128,12 +151,13 @@ const Classic: FC<Props> = ({ gameId }) => {
       const escrowPublicKey = gameData[team].publicKey;
 
       // Send dust to our wallet
-      const txHash = await sendDustTransaction(
+      const txHash = await sendTransaction(
         publicKey,
         signTransaction,
         connection,
-        dustBet,
-        escrowPublicKey
+        tokenBet,
+        escrowPublicKey,
+        gameData.gameInfo.token!
       );
 
       // Check tx went through
@@ -226,8 +250,6 @@ const Classic: FC<Props> = ({ gameId }) => {
       );
       const body = await response.json();
 
-      console.log("typing needed: ", body);
-
       if (body.length === 0) return;
 
       let currentWager = null;
@@ -258,19 +280,25 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       const gameDate = new Date(currentWager.gameDate);
 
-      // TODO make sure same as init
-      const parsed = {
+      // TODO: we can inherit the type from the backend (using typeof return value)
+      const parsed: GameInfo = {
         gameInfo: {
+          description: currentWager.description,
+          endDate: currentWager.endDate,
+          finalScore: currentWager.finalScore,
+          gameDate: currentWager.gameDate,
+          league: currentWager.league,
+          metadata: currentWager.metadata,
+          // selections: currentWager.selected,
+          startDate: currentWager.startDate,
+          status: currentWager.status,
+          title: currentWager.title,
+          creator: currentWager.creator,
+          id: currentWager._id,
           dateStr: getDateStr(gameDate),
           timeStr: getTimeStr(gameDate),
           dayTime: getDayTime(gameDate),
-          status: currentWager.status,
-          id: currentWager._id,
-          title: currentWager.title,
-          description: currentWager.description,
-          league: currentWager.league,
-          finalScore: currentWager.finalScore,
-          metadata: currentWager.metadata,
+          token: currentWager.token,
         },
         team1: {
           teamName: currentWager.selections[0].title,
@@ -298,12 +326,34 @@ const Classic: FC<Props> = ({ gameId }) => {
         },
       };
 
-      setGameData(parsed);
+      let newGameStatus: GameStatus = GameStatus.PREGAME;
 
-      if (parsed.gameInfo.status === "cancelled") {
-        setGameStatus(GameStatus.CANCELLED);
-        setGameCountdown("Picks refunded.");
+      switch (parsed.gameInfo.status) {
+        case "upcoming":
+          newGameStatus = GameStatus.PREGAME;
+          break;
+        case "live":
+          newGameStatus = GameStatus.OPEN;
+          break;
+        case "closed":
+          newGameStatus = GameStatus.CLOSED;
+          break;
+        case "completed":
+          newGameStatus = GameStatus.AIRDROPPED;
+          break;
+        case "cancelled":
+          newGameStatus = GameStatus.CANCELLED;
+          break;
       }
+
+      if (parsed.gameInfo.token === "SOL") {
+        setMinimumBet(0.1);
+      } else {
+        setMinimumBet(TOKEN_MAP[parsed.gameInfo.token!].minimum);
+      }
+
+      setGameStatus(newGameStatus);
+      setGameData(parsed);
 
       // Cut end date short to include last second picks
       setUtcGameDate(currentWager.endDate - 5000);
@@ -321,11 +371,23 @@ const Classic: FC<Props> = ({ gameId }) => {
   const buttonDisabled =
     isBroke ||
     winningTeam === undefined ||
-    dustBet === undefined ||
-    dustBet < 1 ||
+    tokenBet === undefined ||
+    tokenBet < minimumBet ||
     agree === false ||
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
+
+  const valueHandler = () => {
+    if (success) {
+      if (Number.isInteger(tokenBet)) {
+        return tokenBet;
+      } else {
+        return tokenBet.toFixed(2);
+      }
+    } else {
+      return tokenBet;
+    }
+  };
 
   // updates button text based current state
   const buttonHandler = () => {
@@ -350,23 +412,23 @@ const Classic: FC<Props> = ({ gameId }) => {
       {
         /* broke but picked a team */
       }
-      return "Insufficient DUST balance";
+      return `Insufficient ${gameData.gameInfo.token} balance`;
     } else if (
       !isBroke &&
       winningTeam &&
-      (dustBet === null || dustBet < 1 || !rewardEstimate) &&
+      (tokenBet === null || tokenBet < minimumBet || rewardEstimate === "--") &&
       gameStatus === GameStatus.OPEN
     ) {
       {
         /* not broke, picked a team, invalid dust bet */
       }
-      return "Invalid DUST value";
+      return `Invalid ${gameData.gameInfo.token} value`;
     } else if (
       !isBroke &&
       winningTeam &&
       !agree &&
-      dustBet !== null &&
-      dustBet >= 1 &&
+      tokenBet !== null &&
+      tokenBet >= minimumBet &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -376,8 +438,8 @@ const Classic: FC<Props> = ({ gameId }) => {
     } else if (
       !isBroke &&
       winningTeam &&
-      dustBet !== null &&
-      dustBet >= 1 &&
+      tokenBet !== null &&
+      tokenBet >= minimumBet &&
       agree &&
       gameStatus === GameStatus.OPEN
     ) {
@@ -409,7 +471,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   // timer for countdown to game time (bets closed)
   // set and update a countdown timer every second
   const startGameDateCountdown = () => {
-    const interval = setInterval(() => {
+    const gameCountdownLogic = () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -417,34 +479,22 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (utcGameDate === undefined) return;
       var gameDistance = utcGameDate - now;
 
-      // time calculations for days, hours, minutes and seconds (game time - bets closed)
-      var days = Math.floor(gameDistance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (gameDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      var minutes = Math.floor((gameDistance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((gameDistance % (1000 * 60)) / 1000);
-
-      // display the result
-      setGameCountdown(
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-      );
-
       // if the count down is finished, write some text
       if (gameDistance < 0) {
         clearInterval(interval);
-        setGameCountdown("Picks closed.");
-
         setGameStatus(GameStatus.CLOSED);
       }
-    }, 1000);
+    };
+
+    gameCountdownLogic();
+    const interval = setInterval(gameCountdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
 
   // same countdown logic as before but with picks opening
   const startPickDateCountdown = () => {
-    const interval = setInterval(async () => {
+    const pickCountdownLogic = async () => {
       // get today's date and time
       var now = new Date().getTime();
 
@@ -453,17 +503,11 @@ const Classic: FC<Props> = ({ gameId }) => {
       var pickDistance = utcPickDate - now;
 
       // time calculations for days, hours, minutes and seconds (pick time - bets open)
-      var days = Math.floor(pickDistance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (pickDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
       var minutes = Math.floor((pickDistance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((pickDistance % (1000 * 60)) / 1000);
 
       // display the result
-      setPickCountdown(
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s "
-      );
+      setPickCountdown(minutes + "m " + seconds + "s ");
 
       // if the count down is finished, write some text
       if (pickDistance < 0) {
@@ -479,29 +523,34 @@ const Classic: FC<Props> = ({ gameId }) => {
 
           startGameDateCountdown();
         }
+        // TODO: add else case if response is null
+        // we will want to restart a timer indicating we're waiting for backend to catch up
       }
-    }, 1000);
+    };
+
+    pickCountdownLogic();
+    const interval = setInterval(pickCountdownLogic, 1000);
 
     return () => clearInterval(interval);
   };
 
   useEffect(() => {
-    if (utcPickDate !== undefined && utcGameDate !== undefined) {
-      if (gameStatus === GameStatus.CANCELLED) return;
+    if (!loading && utcPickDate !== undefined && utcGameDate !== undefined) {
+      if (gameStatus === GameStatus.CANCELLED) {
+        // setGameStatus("Picks refunded.");
+        return;
+      }
 
       if (new Date().getTime() > utcGameDate) {
-        setGameCountdown("Picks closed.");
-
         setGameStatus(GameStatus.CLOSED);
       } else if (new Date().getTime() > utcPickDate) {
         setGameStatus(GameStatus.OPEN);
-
         startGameDateCountdown();
       } else {
         startPickDateCountdown();
       }
     }
-  }, [utcPickDate, utcGameDate]);
+  }, [loading, utcPickDate, utcGameDate, gameStatus]);
 
   // Refresh game data
   useEffect(() => {
@@ -511,7 +560,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
       interval = setInterval(async () => {
         const refreshed = await loadGameData();
-        if (refreshed && refreshed.gameInfo.status !== "live") {
+        if (refreshed && gameStatus !== GameStatus.OPEN) {
           clearInterval(interval);
         }
       }, 7500);
@@ -523,7 +572,10 @@ const Classic: FC<Props> = ({ gameId }) => {
   useEffect(() => {
     async function loadPick() {
       await loadGameData();
-      setLoading(false);
+      // show loader for 2 seconds more than needed
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
 
     loadPick();
@@ -532,29 +584,33 @@ const Classic: FC<Props> = ({ gameId }) => {
   // check if the user has enough dust each time the bet or wallet changes
   useEffect(() => {
     async function fetchWalletData() {
-      if (publicKey) {
-        const dustBalance = await getDustBalance(publicKey, connection);
-        setDustBalance(dustBalance);
+      if (publicKey && gameData.gameInfo.token) {
+        const balance = await getTokenBalance(
+          publicKey,
+          connection,
+          gameData.gameInfo.token
+        );
+        setTokenBalance(balance);
 
         // check if the user doesn't have enough DUST
-        const userIsBroke = dustBet > dustBalance;
+        const userIsBroke = tokenBet > balance;
         // update state
         setIsBroke(userIsBroke);
       }
     }
 
     fetchWalletData();
-  }, [publicKey, dustBet, connection]);
+  }, [publicKey, tokenBet, connection, gameData.gameInfo.token]);
 
   // show modal whenever a wallet is connected
-  useEffect(() => {
-    if (publicKey) {
-      if (gameData.gameInfo.status === "live") setShowModal(true);
-    } else {
-      setShowModal(false);
-      setSuccess(false);
-    }
-  }, [publicKey, gameData.gameInfo.status]);
+  // useEffect(() => {
+  //   if (publicKey) {
+  //     if (gameStatus === GameStatus.OPEN) setShowModal(true);
+  //   } else {
+  //     setShowModal(false);
+  //     setSuccess(false);
+  //   }
+  // }, [publicKey, gameStatus]);
 
   useEffect(() => {
     const loadUserPick = async (wagerId: string) => {
@@ -585,12 +641,12 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setTxn(userPickAmount.signature);
 
-            setDustBet(userPickAmount.amount);
+            setTokenBet(userPickAmount.amount ?? 0);
 
             setSuccess(true);
             setAgree(true);
 
-            if (gameData.gameInfo.status === "cancelled") {
+            if (gameStatus === GameStatus.CANCELLED) {
               if (userPick.transferData.signature) {
                 setAirdropTxn(userPick.transferData.signature);
               }
@@ -603,7 +659,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setWinningTeam(gameData[pickedTeam].teamName);
 
-            console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
+            // console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
 
             if (userPick.winAmount === -1) {
               setFinalWinner(gameData[otherTeam].teamName);
@@ -624,22 +680,25 @@ const Classic: FC<Props> = ({ gameId }) => {
     };
 
     const fetchUserPick = async () => {
-      if (publicKey && gameStatus === GameStatus.PREGAME) {
+      if (!loading && publicKey && gameStatus !== GameStatus.PREGAME) {
         await loadUserPick(gameData.gameInfo.id);
       }
     };
 
     fetchUserPick();
-  }, [publicKey, gameStatus, gameData]);
-
-  // test
-  useEffect(() => {
-    console.log(gameData);
-  }, [gameData]);
+  }, [publicKey, gameStatus, gameData, loading]);
 
   // update reward predictions each time we change pick, dust wager, or incoming game data changes
   useEffect(() => {
     const estimateRewards = () => {
+      if (
+        winningTeam === undefined ||
+        tokenBet < minimumBet ||
+        Number.isNaN(tokenBet)
+      ) {
+        setRewardEstimate("--");
+        return;
+      }
       var teamVolume =
         gameData[winningTeam === gameData.team1.teamName ? "team1" : "team2"]
           .dustVol;
@@ -647,45 +706,50 @@ const Classic: FC<Props> = ({ gameId }) => {
       var totalVol;
       // if user hasn't bet yet, factor in user bet in potential reward
       if (!success) {
-        teamVolume = teamVolume + dustBet;
-        totalVol = gameData.team1.dustVol + gameData.team2.dustVol + dustBet;
+        teamVolume = teamVolume + tokenBet;
+        totalVol = gameData.team1.dustVol + gameData.team2.dustVol + tokenBet;
       } else {
         totalVol = gameData.team1.dustVol + gameData.team2.dustVol;
       }
 
       const multiplier = totalVol / teamVolume;
       let estimatedReward =
-        Math.floor((dustBet - dustBet * pickFee) * multiplier * 100) / 100;
+        Math.floor((tokenBet - tokenBet * pickFee) * multiplier * 100) / 100;
 
       if (!estimatedReward) {
         estimatedReward = totalVol;
       }
 
-      setRewardEstimate(estimatedReward);
+      setRewardEstimate(estimatedReward.toString());
     };
     estimateRewards();
-  }, [dustBet, gameData, winningTeam, success]);
+  }, [tokenBet, gameData, winningTeam, success]);
 
   // update final winner
   useEffect(() => {
     // check if game is over
-    if (gameData.gameInfo.status === "completed") {
+    if (gameStatus === GameStatus.AIRDROPPED) {
       setFinalWinner(
         gameData.team1.winner
           ? gameData.team1.teamName
           : gameData.team2.teamName
       );
     }
-  }, [gameData]);
-
-  useEffect(() => {
-    console.log(gameStatus);
-  }, [gameStatus]);
+  }, [gameData, gameStatus]);
 
   return (
     <>
+      {!loading && finalWinner === winningTeam && winAmount ? (
+        <Confetti
+          width={width}
+          height={2 * height}
+          recycle={false}
+          numberOfPieces={400}
+          tweenDuration={10000}
+        />
+      ) : null}
       <div className="relative overflow-hidden min-h-screen pb-48 lg:pb-10">
-        {!loading && (
+        {!loading ? (
           <>
             {/* Fixed y00ts pfps */}
             <div
@@ -714,96 +778,75 @@ const Classic: FC<Props> = ({ gameId }) => {
               />
             </div>
           </>
-        )}
-        <Navbar />
-        <ViewToggle
-          toggleConfig={toggleConfig}
-          setToggleConfig={setToggleConfig}
-          view="classic"
-        />
+        ) : null}
+        {/* only when user is creator, show this banner */}
+        {wagerUser !== null
+          ? !loading &&
+            wagerUser.publicKey === gameData.gameInfo.creator?.publicKey && (
+              <AlertBanner2 />
+            )
+          : null}
+        {!loading ? (
+          <>
+            <Navbar />
+            <ViewToggle
+              toggleConfig={toggleConfig}
+              setToggleConfig={setToggleConfig}
+              view="classic"
+              ownsGame={
+                wagerUser !== null &&
+                wagerUser.publicKey === gameData.gameInfo.creator?.publicKey
+              }
+            />
+          </>
+        ) : null}
 
-        {toggleConfig.selected === "option1" && (
+        {toggleConfig.selected === "option1" ? (
           <div
-            className={`px-4 pt-10 flex flex-col justify-between ${
+            className={`px-4 pt-16 flex flex-col gap-5 justify-between ${
               showModal && "overflow-hidden"
             }`}
           >
-            {loading && (
+            {loading ? (
               // loading indicator
-              <div className="w-fit mx-auto mt-20">
-                <div className="rotate">
-                  <Image
-                    src="/images/pickem/nipple.png"
-                    width={100}
-                    height={100}
-                    alt="nipple spinner"
-                  />
-                </div>
-                <p className="text-xl font-pressura text-center w-fit mx-auto py-10">
-                  Loading ...
-                </p>
+              <div className="w-fit mx-auto flex flex-col items-center mt-56">
+                <BarLoader color="black" />
               </div>
-            )}
+            ) : null}
 
             {/* logo section */}
             {!loading && (
-              <div>
-                <div className="w-fit max-w-[620px] mx-auto mb-8">
-                  <div className="font-pressura text-center">
-                    {gameData.gameInfo.description}
-                  </div>
-                  <div className="font-bingodilan text-center text-3xl text-black">
-                    {gameData.gameInfo.title}
-                  </div>
-                </div>
-                {gameStatus !== GameStatus.PREGAME && (
-                  <div className="h-[50px] w-fit bg-white px-6 mx-auto flex items-center justify-center text-center text-link font-base-b">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512"
-                      className="fill-link w-5 h-5 pr-2"
-                    >
-                      <path d="M272 0C289.7 0 304 14.33 304 32C304 49.67 289.7 64 272 64H256V98.45C293.5 104.2 327.7 120 355.7 143L377.4 121.4C389.9 108.9 410.1 108.9 422.6 121.4C435.1 133.9 435.1 154.1 422.6 166.6L398.5 190.8C419.7 223.3 432 262.2 432 304C432 418.9 338.9 512 224 512C109.1 512 16 418.9 16 304C16 200 92.32 113.8 192 98.45V64H176C158.3 64 144 49.67 144 32C144 14.33 158.3 0 176 0L272 0zM248 192C248 178.7 237.3 168 224 168C210.7 168 200 178.7 200 192V320C200 333.3 210.7 344 224 344C237.3 344 248 333.3 248 320V192z" />
-                    </svg>
-                    {gameCountdown}
-                  </div>
-                )}
-              </div>
+              <ClassicHero gameData={gameData} gameStatus={gameStatus} />
             )}
 
             {gameStatus === GameStatus.PREGAME && !loading && (
-              <div className="text-center mt-8 sm:text-lg">
-                Our next game opens for picks in: {pickCountdown}
+              <div className="text-center sm:text-lg">
+                Live in: {pickCountdown}
               </div>
             )}
             {gameStatus !== GameStatus.PREGAME && !loading && (
               <div className={`${!publicKey && "mb-24 sm:mb-0"}`}>
-                <RewardPool
-                  gameData={gameData}
-                  picksOpened={gameStatus === GameStatus.OPEN}
-                  gameType={"degen"}
-                />
+                <RewardPool gameData={gameData} />
               </div>
             )}
             {!publicKey && !loading && (
-              <div className="w-fit mx-auto text-center sm:mt-12 mb-20 sm:mb-32 md:mt-12 md:mb-0">
+              <div className="w-fit mx-auto text-center sm:mt-5 mb-20 sm:mb-32 md:mb-0">
                 Connect wallet to play.
               </div>
             )}
-            {publicKey && !loading && <div className="pb-8 pt-2" />}
             {/* second area / betting section */}
-            {publicKey && (
-              <div className="z-10 h-auto w-full relative overflow-hidden">
+            {publicKey && !loading && (
+              <div className="h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
-                <div className="bg-white w-5/6 md:w-[620px] mx-auto">
+                <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
                   {/* header */}
-                  <div className="relative h-[50px] flex items-center justify-center bg-container">
-                    <p className="font-base-b text-center text-containerHead">
-                      {`⬇️ Make your pick ⬇️`}
+                  {/* <div className="relative h-[50px] flex items-center justify-center bg-greyscale5">
+                    <p className="font-base-b text-center text-greyscale1">
+                      {`Make your pick`}
                     </p>
-                  </div>
+                  </div> */}
                   {/* betting = four components */}
-                  <div className="flex flex-col justify-evenly items-center py-3 mx-8 md:mx-[60px]">
+                  <div className="flex flex-col justify-evenly items-center py-3 mx-5 md:mx-[60px]">
                     {/* 1. pick winner */}
                     <p className="text-left mr-auto pt-4 pb-2 sm:text-lg">
                       Pick a team
@@ -815,8 +858,8 @@ const Classic: FC<Props> = ({ gameId }) => {
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
                       valid={gameStatus === GameStatus.OPEN}
-                      gameStatus={gameData.gameInfo.status}
-                      finalWinner={finalWinner}
+                      gameStatus={gameStatus}
+                      hideImage={gameData.gameInfo.league === "custom"}
                     />
 
                     {/* divider */}
@@ -824,7 +867,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
                     {/* 2. throw some dust on it */}
                     <p className="text-left mr-auto py-2 sm:text-lg">
-                      Throw down on it...
+                      Throw down on it
                     </p>
                     <div className="w-full">
                       <form className="w-full relative">
@@ -835,44 +878,51 @@ const Classic: FC<Props> = ({ gameId }) => {
                           }
                           min="1"
                           max="1000000"
-                          value={dustBet}
+                          value={valueHandler()}
+                          // TODO: fix decimal bug
                           onChange={(e) => {
-                            setDustBet(parseFloat(e.target.value));
+                            setTokenBet(parseFloat(e.target.value ?? "0") ?? 0);
                           }}
-                          className="disabled:opacity-70 disabled:cursor-not-allowed bg-light font-base-b 
-                          rounded-md px-2 h-[50px] w-full text-center focus:outline-link focus:bg-white"
+                          className="disabled:opacity-70 disabled:cursor-not-allowed 
+                          bg-greyscale2 hover:bg-greyscale3 px-2 h-[50px] w-full text-center focus:outline-none 
+                          focus:ring-2 focus:ring-purple1 rounded-none focus:bg-greyscale1"
                         />
                         <div className="absolute left-2 top-[10px]">
                           <Image
-                            src="/images/icons/dust.png"
+                            src={getCurrencyIcon(gameData.gameInfo.token)}
                             height={30}
                             width={30}
-                            alt="dust icon"
+                            alt={gameData.gameInfo.token ?? "dust"}
                           />
                         </div>
                       </form>
-                      <div className="w-full pt-1 text-sm sm:text-body-md text-right text-secondary">
-                        Balance: {Math.floor(Number(dustBalance * 1000)) / 1000}{" "}
-                        DUST
+                      <div className="w-full pt-1 text-lg text-right">
+                        Balance:{" "}
+                        {Math.floor(Number(tokenBalance * 1000)) / 1000}{" "}
+                        {gameData.gameInfo.token}
                       </div>
                     </div>
 
-                    {winningTeam !== undefined &&
-                      finalWinner === undefined &&
-                      dustBet >= 1 && (
-                        <div className="w-full mt-4 py-3 px-4 bg-container text-center text-sm sm:text-base">
-                          <div>Potential reward (highly volatile)</div>
-                          <div className="font-base-b">
-                            {rewardEstimate || "N/A"} DUST
-                          </div>
+                    {finalWinner === undefined && (
+                      <div className="w-full my-5 py-3 px-4 bg-greyscale3 text-center text-lg">
+                        <div className="relative w-fit mx-auto">
+                          <p>Potential payout</p>
+                          <InfoIcon
+                            className="w-4 h-4 absolute fill-purple1 hover:fill-purple2 top-1/2 -translate-y-[47%] -right-6 cursor-pointer"
+                            onClick={() => setShowInfoModal(true)}
+                          />
                         </div>
-                      )}
+                        <div>
+                          {rewardEstimate} {gameData.gameInfo.token}
+                        </div>
+                      </div>
+                    )}
 
                     <Divider />
-
+                    {/* TODO: replace with new component */}
                     <div
-                      className={`my-2 w-fit mr-auto text-left text-sm sm:text-body-md ${
-                        !success && "cursor-pointer"
+                      className={`my-2 w-fit mr-auto text-left text-lg ${
+                        !success && "cursor-pointer disabled:cursor-default"
                       }`}
                       onClick={() =>
                         !success && !rulesDisabled && setAgree(!agree)
@@ -883,11 +933,11 @@ const Classic: FC<Props> = ({ gameId }) => {
                         checked={!!agree}
                         disabled={rulesDisabled}
                         onChange={() => setAgree(!agree)}
-                        className="mr-2 accent-link hover:accent-linkHover"
+                        className="mr-2 accent-purple1 hover:accent-purple2"
                       />
                       You agree to{" "}
                       <span
-                        className="text-link hover:text-linkHover underline font-bold hover:cursor-pointer transition-all duration-150"
+                        className="text-purple1 hover:text-purple2 underline font-bold hover:cursor-pointer transition-all duration-150"
                         onClick={() => setShowModal(true)}
                       >
                         the rules
@@ -902,29 +952,31 @@ const Classic: FC<Props> = ({ gameId }) => {
                     gameData?.gameInfo?.status !== "cancelled" &&
                     gameData?.gameInfo?.status !== "completed" ? (
                       <button
-                        onClick={() => !buttonDisabled && handlePayDust()}
+                        onClick={() => !buttonDisabled && handlePayToken()}
                         disabled={buttonDisabled}
                         className={`${
                           buttonDisabled
                             ? "cursor-not-allowed opacity-50"
                             : "cursor-pointer hover:bg-[#333333]"
                         }
-                      bg-black text-white w-full py-4 my-6 text-center z-[+1]`}
+                      bg-black text-greyscale1 w-full h-[50px] my-6 text-center z-[+1]`}
                       >
                         {buttonHandler()}
                       </button>
                     ) : (
-                      <div className="bg-light text-black text-sm sm:text-base w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
+                      <div className="bg-greyscale3 text-black text-lg w-full py-4 px-2 sm:px-0 my-6 text-center z-[+1]">
                         {!finalWinner &&
-                        dustBet &&
+                        tokenBet &&
                         winningTeam &&
                         success &&
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p className="font-base-b">{`🎉 Success! You picked ${winningTeam} with ${dustBet} DUST 🎉`}</p>
+                            <p>{`Success! You picked ${winningTeam} with ${tokenBet.toFixed(
+                              2
+                            )} ${gameData.gameInfo.token}.`}</p>
                             <a
-                              className="text-base underline text-link hover:text-linkHover"
+                              className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${txn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -937,9 +989,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                         ) : finalWinner === winningTeam && winAmount ? (
                           // you picked the winning team
                           <>
-                            <p className="font-base-b">{`🏆 LFG! You won ${winAmount} DUST 🏆`}</p>
+                            <p>{`LFG! You won ${winAmount} ${gameData.gameInfo.token}!`}</p>
                             <a
-                              className="text-base underline text-link hover:text-linkHover"
+                              className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -954,15 +1006,17 @@ const Classic: FC<Props> = ({ gameId }) => {
                           gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked the incorrect team
                           <>
-                            <p className="font-base-b">L</p>
-                            <p>... we all take &apos;em</p>
+                            <p>
+                              L<br />
+                              ... we all take &apos;em
+                            </p>
                           </>
                         ) : winningTeam &&
                           gameData?.gameInfo?.status === "cancelled" ? (
                           <>
-                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                            <p>{`This game was refunded.`}</p>
                             <a
-                              className={`text-base underline text-link hover:text-linkHover`}
+                              className={`text-base underline text-purple1 hover:text-purple2`}
                               href={`https://explorer.solana.com/tx/${airdropTxn}${
                                 generalConfig.useDevNet ? "?cluster=devnet" : ""
                               }`}
@@ -976,11 +1030,15 @@ const Classic: FC<Props> = ({ gameId }) => {
                         {/* if we get here, user has not bet on this game */}
                         {winningTeam === undefined &&
                           gameData?.gameInfo?.status === "completed" && (
-                            <p className="font-base-b">{`Game over! Winners have been airdropped.`}</p>
+                            <p>
+                              Game over!
+                              <br />
+                              Winners have been airdropped.
+                            </p>
                           )}
                         {winningTeam === undefined &&
                           gameData?.gameInfo?.status === "cancelled" && (
-                            <p className="font-base-b">{`🪄 This game was refunded 🪄`}</p>
+                            <p>{`This game was refunded.`}</p>
                           )}
                       </div>
                     )}
@@ -989,20 +1047,39 @@ const Classic: FC<Props> = ({ gameId }) => {
               </div>
             )}
           </div>
-        )}
-        {toggleConfig.selected === "option2" && (
-          <ActivityFeed gameData={gameData} />
-        )}
-        {toggleConfig.selected === "option3" && (
-          <ManageGame gameData={gameData} loadGameData={loadGameData} />
-        )}
+        ) : null}
+        {toggleConfig.selected === "option2" ? (
+          <ActivityFeed gameData={gameData} gameStatus={gameStatus} />
+        ) : null}
+        {toggleConfig.selected === "option3" ? (
+          <ManageGame
+            gameData={gameData}
+            loadGameData={loadGameData}
+            gameStatus={gameStatus}
+          />
+        ) : null}
       </div>
-      {/* modal window - legal jargon */}
-      <RulesModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        gameType="classic"
-      />
+      <RulesModal showModal={showModal} setShowModal={setShowModal} />
+      <InfoModal showModal={showInfoModal} setShowModal={setShowInfoModal}>
+        <div
+          className="w-full pt-4 text-center gap-5
+          flex flex-col items-center justify-center"
+        >
+          <p className="text-xl sm:text-2xl font-base-b text-center">
+            Your potential payout
+          </p>
+          <p className="max-w-[400px] mx-auto text-base sm:text-lg">
+            Your payout is determined by the multiplier. Multipliers are highly
+            volatile when the pool is live, and lock when the pool closes.
+          </p>
+          <button
+            className="ml-auto text-purple1 hover:text-purple2 text-lg"
+            onClick={() => setShowInfoModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </InfoModal>
     </>
   );
 };

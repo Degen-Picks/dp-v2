@@ -1,6 +1,16 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { getLoginStatus } from "@/utils";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
+import { motion } from "framer-motion";
 
 interface IconProps {
   fill: string;
@@ -96,11 +106,17 @@ interface Props {
   toggleConfig: ToggleConfig;
   setToggleConfig: Dispatch<SetStateAction<ToggleConfig>>;
   view: "classic" | "pickem";
+  ownsGame: boolean;
 }
 
-const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
+const ViewToggle: FC<Props> = ({
+  toggleConfig,
+  setToggleConfig,
+  view,
+  ownsGame,
+}) => {
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
   const [isAdmin, setIsAdmin] = useState(false);
-  const { publicKey } = useWallet();
 
   const handleClick = (tab: "option1" | "option2" | "option3") => {
     if (tab === "option3" && isAdmin === false) return;
@@ -112,36 +128,31 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
   };
 
   useEffect(() => {
-    async function loginAdmin() {
-      if (!publicKey) return;
-
-      // TODO: Get login status by public key
-      // (currently gets from just cookie session), get specific "role"
-      const isAdmin = await getLoginStatus();
-      setIsAdmin(isAdmin);
+    if ((wagerUser && wagerUser.roles.includes("ADMIN")) || ownsGame) {
+      setIsAdmin(true);
+    } else {
+      handleClick("option1");
+      setIsAdmin(false);
     }
-
-    loginAdmin();
-  }, [publicKey]);
+  }, [wagerUser, ownsGame]);
 
   return (
     <>
-      {/* desktop toggle */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 hidden lg:block">
-        <div
-          className={`${
-            isAdmin ? "w-[333px]" : "w-[255px]"
-          } h-[60px] bg-[#EEEEEE] flex items-center justify-between px-[5px] rounded-lg`}
-        >
-          <div
+      <div
+        className={`absolute ${
+          ownsGame ? "top-[180px] md:top-[92px]" : "top-[120px] sm:top-8"
+        } left-1/2 -translate-x-1/2`}
+      >
+        <div className={`h-[38px] flex items-center gap-1 p-1 bg-greyscale1`}>
+          <motion.button
             className={`${
               toggleConfig.selected === "option1"
-                ? "bg-white font-base-b text-link hover:text-linkHover"
-                : "text-secondary font-base hover:text-black/70"
-            } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm `}
+                ? "bg-greyscale5 text-greyscale1"
+                : "bg-transparent hover:bg-greyscale2"
+            } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option1")}
           >
-            {view === "pickem" && (
+            {/* {view === "pickem" && (
               <FootballIcon
                 fill={`${
                   toggleConfig.selected === "option1" ? "link" : "secondary"
@@ -154,19 +165,19 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
                   toggleConfig.selected === "option1" ? "link" : "secondary"
                 }`}
               />
-            )}
+            )} */}
 
             {toggleConfig.option1.title}
-          </div>
-          <div
+          </motion.button>
+          <motion.button
             className={`${
               toggleConfig.selected === "option2"
-                ? "bg-white font-base-b text-link hover:text-linkHover"
-                : "text-secondary font-base hover:text-black/70"
-            } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm`}
+                ? "bg-greyscale5 text-greyscale1"
+                : "bg-transparent  hover:bg-greyscale2"
+            } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option2")}
           >
-            {view === "pickem" && (
+            {/* {view === "pickem" && (
               <TrophyIcon
                 fill={`${
                   toggleConfig.selected === "option2" ? "link" : "secondary"
@@ -179,37 +190,37 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
                   toggleConfig.selected === "option2" ? "link" : "secondary"
                 }`}
               />
-            )}
+            )} */}
             {toggleConfig.option2.title}
-          </div>
+          </motion.button>
           {toggleConfig.option3 && isAdmin === true ? (
-            <div
+            <motion.button
               className={`${
                 toggleConfig.selected === "option3"
-                  ? "bg-white font-base-b text-link hover:text-linkHover"
-                  : "text-secondary font-base hover:text-black/70"
-              } w-[120px] h-[50px] flex flex-col items-center justify-center hover:cursor-pointer rounded-lg text-sm`}
+                  ? "bg-greyscale5 text-greyscale1"
+                  : "bg-transparent  hover:bg-greyscale2"
+              } w-[80px] h-[30px] flex flex-col items-center justify-center`}
               onClick={() => handleClick("option3")}
             >
-              <ManageIcon
+              {/* <ManageIcon
                 fill={`${
                   toggleConfig.selected === "option3" ? "link" : "secondary"
                 }`}
-              />
+              /> */}
               {toggleConfig.option3.title}
-            </div>
+            </motion.button>
           ) : null}
         </div>
       </div>
 
       {/* mobile toggle (tabs) */}
-      <div className="w-full lg:hidden mt-[1px] h-[50px]">
-        <div className="w-full h-full bg-white flex items-center justify-between px-[5px]">
+      {/* <div className="w-full lg:hidden mt-[1px] h-[50px]">
+        <div className="w-full h-full bg-greyscale1 flex items-center justify-between px-[5px]">
           <div
             className={`${
               toggleConfig.selected === "option1"
-                ? "border-b-2 border-link text-link font-base-b"
-                : "text-secondary font-base"
+                ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                : "text-greyscale4 font-base"
             } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
             onClick={() => handleClick("option1")}
           >
@@ -218,8 +229,8 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
           <div
             className={`${
               toggleConfig.selected === "option2"
-                ? "border-b-2 border-link text-link font-base-b"
-                : "text-secondary font-base"
+                ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                : "text-greyscale4 font-base"
             } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
             onClick={() => handleClick("option2")}
           >
@@ -229,8 +240,8 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
             <div
               className={`${
                 toggleConfig.selected === "option3" && isAdmin === true
-                  ? "border-b-2 border-link text-link font-base-b"
-                  : "text-secondary font-base"
+                  ? "border-b-2 border-purple1 text-purple1 font-base-b"
+                  : "text-greyscale4 font-base"
               } w-1/2 h-full flex flex-col items-center justify-center hover:cursor-pointer text-sm`}
               onClick={() => handleClick("option3")}
             >
@@ -238,7 +249,7 @@ const ViewToggle: FC<Props> = ({ toggleConfig, setToggleConfig, view }) => {
             </div>
           ) : null}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
