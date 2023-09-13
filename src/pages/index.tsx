@@ -41,6 +41,7 @@ const TeamMember: FC<TeamProps> = ({ handle, image }) => {
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats>();
+  const [mounted, setMounted] = useState(false);
 
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 1024;
@@ -65,6 +66,12 @@ const Landing = () => {
 
     loadStats();
   }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="w-full relative overflow-hidden bg-greyscale3">
