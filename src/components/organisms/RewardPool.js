@@ -133,7 +133,7 @@ const RewardPool = ({ gameData }) => {
                   {multiplier.team1}
                 </div>
                 <div className="relative z-50 text-center">
-                  <p className="px-3 text-greyscale4 text-base">reward</p>
+                  <p className="px-3 text-greyscale4 text-base">payout</p>
                 </div>
                 <div className="w-[80px] text-left pl-2">
                   {multiplier.team2}
