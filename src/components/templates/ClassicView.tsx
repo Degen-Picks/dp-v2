@@ -581,7 +581,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     loadPick();
   }, []);
 
-  // check if the user has enough dust each time the bet or wallet changes
+  // check if the user has enough token each time the bet or wallet changes
   useEffect(() => {
     async function fetchWalletData() {
       if (publicKey && gameData.gameInfo.token) {
@@ -592,10 +592,13 @@ const Classic: FC<Props> = ({ gameId }) => {
         );
         setTokenBalance(balance);
 
-        // check if the user doesn't have enough DUST
-        const userIsBroke = tokenBet > balance;
-        // update state
-        setIsBroke(userIsBroke);
+        // check if the user doesn't have enough token
+        if (gameData.gameInfo.token === "SOL") {
+          setIsBroke(tokenBet > balance + 0.01);
+          toast.error("Need enough SOL to cover gas fees!");
+        } else {
+          setIsBroke(tokenBet > balance);
+        }
       }
     }
 
