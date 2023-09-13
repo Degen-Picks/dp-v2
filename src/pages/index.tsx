@@ -91,7 +91,7 @@ const Landing = () => {
                 />
                 <div className="w-full flex justify-center items-center px-5">
                   <motion.button
-                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg mt-5"
+                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg -mt-5"
                     onClick={() => window.open(generalConfig.appUrl)}
                   >
                     Launch app
