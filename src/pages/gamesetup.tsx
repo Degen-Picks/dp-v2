@@ -325,7 +325,7 @@ const GameSetup = () => {
                   placeholder="-"
                   fullWidth={true}
                   textLeft={true}
-                  title="Headline"
+                  title="Matchup"
                   disabled={true}
                 />
                 <CreationTextField
@@ -358,7 +358,7 @@ const GameSetup = () => {
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
                   accessor="collection"
-                  title="Collection"
+                  title="Branding"
                   disabled={!wagerUser.twitterData}
                 />
                 <CreationDropMenu
