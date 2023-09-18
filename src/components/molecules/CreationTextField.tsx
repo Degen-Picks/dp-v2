@@ -11,6 +11,7 @@ interface Props {
   textLeft?: boolean;
   type?: string;
   disabled?: boolean;
+  limit?: number;
 }
 
 const CreationTextField: FC<Props> = ({
@@ -23,6 +24,7 @@ const CreationTextField: FC<Props> = ({
   textLeft = false,
   type = "text",
   disabled = false,
+  limit,
 }) => {
   const [initialized, setInitialized] = useState<boolean>(false);
 
@@ -44,6 +46,7 @@ const CreationTextField: FC<Props> = ({
           ${accessor === "gameTime" && !initialized ? "text-disabled" : ""}
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
+          maxLength={limit ? limit : undefined}
           type={type}
           onChange={(e) => {
             const newGameDetails: ClassicGameOptions = { ...gameDetails };

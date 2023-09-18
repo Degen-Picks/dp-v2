@@ -241,6 +241,7 @@ const GameSetup = () => {
                       textLeft={true}
                       title="Team 1 / Record (optional)"
                       disabled={!wagerUser.twitterData}
+                      limit={12}
                     />
                   ) : (
                     <CreationDropMenu
@@ -270,6 +271,7 @@ const GameSetup = () => {
                     placeholder="0-0"
                     fullWidth={false}
                     disabled={!wagerUser.twitterData}
+                    limit={7}
                   />
                 </div>
                 <div className="w-full flex items-center gap-5">
@@ -283,6 +285,7 @@ const GameSetup = () => {
                       textLeft={true}
                       title="Team 2 / Record (optional)"
                       disabled={!wagerUser.twitterData}
+                      limit={12}
                     />
                   ) : (
                     <CreationDropMenu
@@ -312,6 +315,7 @@ const GameSetup = () => {
                     placeholder="0-0"
                     fullWidth={false}
                     disabled={!wagerUser.twitterData}
+                    limit={7}
                   />
                 </div>
                 <CreationTextField
@@ -333,6 +337,7 @@ const GameSetup = () => {
                   textLeft={true}
                   title="Title"
                   disabled={!wagerUser.twitterData}
+                  limit={72}
                 />
                 <CreationTextField
                   gameDetails={gameDetails}
