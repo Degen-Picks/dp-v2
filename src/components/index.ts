@@ -5,6 +5,7 @@ const CaratDown = dynamic(() => import("./@icons/CaratDown"));
 const Close = dynamic(() => import("./@icons/Close"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
+const ExternalLink = dynamic(() => import("./@icons/ExternalLink"));
 const InfoIcon = dynamic(() => import("./@icons/InfoIcon"));
 const QuestionIcon = dynamic(() => import("./@icons/QuestionIcon"));
 const Twitter = dynamic(() => import("./@icons/Twitter"));
@@ -77,6 +78,7 @@ export {
   Close,
   Discord,
   DiscordFooter,
+  ExternalLink,
   InfoIcon,
   QuestionIcon,
   Twitter,

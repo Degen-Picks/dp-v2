@@ -77,6 +77,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
               teamName: getTeamName(placedBet, gameData),
               userImage: getUserImage(placedBet),
               twitterName: placedBet.user?.twitterData?.username,
+              signature: placedBet.amounts[0].signature,
             };
 
             data.push(formatted);
