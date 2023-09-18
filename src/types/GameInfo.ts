@@ -10,6 +10,7 @@ export interface Activity {
   teamName: string;
   userImage: string;
   twitterName?: string;
+  signature: string;
 }
 
 export interface GameInfo {

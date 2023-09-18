@@ -1,7 +1,8 @@
 import { FC } from "react";
 import Image from "next/image";
-import { Activity, GameInfo } from "../../types/GameInfo";
-import { FallbackImage } from "@/components";
+import { Activity, GameInfo } from "@/types";
+import { FallbackImage, ExternalLink } from "@/components";
+import { generalConfig } from "@/configs";
 
 interface Props {
   item: Activity;
@@ -68,12 +69,28 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
           <p className="text-greyscale4 !text-base">{timeAgo(item.time)}</p>
         </div>
       </div>
-      <div className="flex flex-col items-end gap-1">
-        <p className="text-lg">{item.teamName}</p>
-        {/* round to whole numbers */}
-        <p className="!text-base">
-          {Math.floor(item.dustBet * 100) / 100} {gameData.gameInfo.token}
-        </p>
+      <div className="flex items-center gap-5">
+        <div className="flex flex-col items-end gap-1">
+          <p className="text-lg">{item.teamName}</p>
+          {/* round to whole numbers */}
+          <p className="!text-base">
+            {Math.floor(item.dustBet * 100) / 100} {gameData.gameInfo.token}
+          </p>
+        </div>
+        <a
+          href={`https://explorer.solana.com/tx/${item.signature}${
+            generalConfig.useDevNet ? "?cluster=devnet" : ""
+          }`}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="p-2.5 -mr-5"
+        >
+          <ExternalLink
+            width={14}
+            height={14}
+            className="fill-greyscale4 hover:fill-disabled"
+          />
+        </a>
       </div>
     </div>
   );
