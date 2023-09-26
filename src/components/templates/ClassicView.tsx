@@ -52,7 +52,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   //state variables
   const [pickCountdown, setPickCountdown] = useState<string>("Loading...");
   const [winningTeam, setWinningTeam] = useState<string>();
-  const [tokenBet, setTokenBet] = useState<number | null>(33);
+  const [tokenBet, setTokenBet] = useState<string | null>("33");
   const [tokenBalance, setTokenBalance] = useState<number>(0);
   const [isBroke, setIsBroke] = useState<boolean>(false);
   const [rewardEstimate, setRewardEstimate] = useState<string>("--");
@@ -155,7 +155,7 @@ const Classic: FC<Props> = ({ gameId }) => {
         publicKey,
         signTransaction,
         connection,
-        tokenBet,
+        parseFloat(tokenBet),
         escrowPublicKey,
         gameData.gameInfo.token!
       );
@@ -373,7 +373,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     winningTeam === undefined ||
     tokenBet === undefined ||
     tokenBet === null ||
-    tokenBet < minimumBet ||
+    parseFloat(tokenBet) < minimumBet ||
     agree === false ||
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
@@ -381,10 +381,10 @@ const Classic: FC<Props> = ({ gameId }) => {
   const valueHandler = () => {
     if (tokenBet === null) return "";
     if (success) {
-      if (Number.isInteger(tokenBet)) {
+      if (Number.isInteger(parseFloat(tokenBet))) {
         return tokenBet;
       } else {
-        return tokenBet.toFixed(2);
+        return parseFloat(tokenBet).toFixed(2);
       }
     } else {
       return tokenBet;
@@ -392,9 +392,9 @@ const Classic: FC<Props> = ({ gameId }) => {
   };
 
   const handleBetInput = (e: any) => {
-    const inputValue = e.target.value;
+    const inputValue: string = e.target.value;
 
-    if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+    if (/^\d*\.?\d*$/.test(inputValue)) {
       setTokenBet(inputValue);
     }
   };
@@ -438,7 +438,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       winningTeam &&
       !agree &&
       tokenBet !== null &&
-      tokenBet >= minimumBet &&
+      parseFloat(tokenBet) >= minimumBet &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -449,7 +449,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       !isBroke &&
       winningTeam &&
       tokenBet !== null &&
-      tokenBet >= minimumBet &&
+      parseFloat(tokenBet) >= minimumBet &&
       agree &&
       gameStatus === GameStatus.OPEN
     ) {
@@ -604,9 +604,9 @@ const Classic: FC<Props> = ({ gameId }) => {
 
         // check if the user doesn't have enough token
         if (gameData.gameInfo.token === "SOL" && tokenBet !== null) {
-          setIsBroke(tokenBet + 0.01 > balance);
+          setIsBroke(parseFloat(tokenBet) + 0.01 > balance);
         } else {
-          setIsBroke(tokenBet !== null && tokenBet > balance);
+          setIsBroke(tokenBet !== null && parseFloat(tokenBet) > balance);
         }
       }
     }
@@ -706,7 +706,8 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (
         winningTeam === undefined ||
         tokenBet === null ||
-        tokenBet < minimumBet ||
+        parseFloat(tokenBet) < minimumBet ||
+        parseFloat(tokenBet) === 0 ||
         Number.isNaN(tokenBet)
       ) {
         setRewardEstimate("--");
@@ -719,19 +720,28 @@ const Classic: FC<Props> = ({ gameId }) => {
       var totalVol;
       // if user hasn't bet yet, factor in user bet in potential reward
       if (!success) {
-        teamVolume = teamVolume + tokenBet;
-        totalVol = gameData.team1.dustVol + gameData.team2.dustVol + tokenBet;
+        teamVolume = teamVolume + parseFloat(tokenBet);
+        totalVol =
+          gameData.team1.dustVol +
+          gameData.team2.dustVol +
+          parseFloat(tokenBet);
       } else {
         totalVol = gameData.team1.dustVol + gameData.team2.dustVol;
       }
 
       const multiplier = totalVol / teamVolume;
       let estimatedReward =
-        Math.floor((tokenBet - tokenBet * pickFee) * multiplier * 100) / 100;
+        Math.floor(
+          (parseFloat(tokenBet) - parseFloat(tokenBet) * pickFee) *
+            multiplier *
+            100
+        ) / 100;
 
       if (!estimatedReward) {
         estimatedReward = totalVol;
       }
+
+      console.log("ESTIMATED REWARD: ", estimatedReward);
 
       setRewardEstimate(estimatedReward.toString());
     };
@@ -984,9 +994,9 @@ const Classic: FC<Props> = ({ gameId }) => {
                         gameData?.gameInfo?.status !== "cancelled" ? (
                           // you picked a team, game in progress
                           <>
-                            <p>{`Success! You picked ${winningTeam} with ${tokenBet.toFixed(
-                              2
-                            )} ${gameData.gameInfo.token}.`}</p>
+                            <p>{`Success! You picked ${winningTeam} with ${parseFloat(
+                              tokenBet
+                            ).toFixed(2)} ${gameData.gameInfo.token}.`}</p>
                             <a
                               className="text-base underline text-purple1 hover:text-purple2"
                               href={`https://explorer.solana.com/tx/${txn}${
