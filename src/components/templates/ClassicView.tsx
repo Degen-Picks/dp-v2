@@ -52,7 +52,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   //state variables
   const [pickCountdown, setPickCountdown] = useState<string>("Loading...");
   const [winningTeam, setWinningTeam] = useState<string>();
-  const [tokenBet, setTokenBet] = useState<number>(33);
+  const [tokenBet, setTokenBet] = useState<number | null>(33);
   const [tokenBalance, setTokenBalance] = useState<number>(0);
   const [isBroke, setIsBroke] = useState<boolean>(false);
   const [rewardEstimate, setRewardEstimate] = useState<string>("--");
@@ -142,7 +142,7 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   // create and process dust txn
   const handlePayToken = async () => {
-    if (!gameData || !publicKey) return;
+    if (!gameData || !publicKey || tokenBet === null) return;
     const toastId = toast.loading("Processing Transaction...");
     setTxnLoading(true);
     if (!isBroke) {
@@ -372,12 +372,14 @@ const Classic: FC<Props> = ({ gameId }) => {
     isBroke ||
     winningTeam === undefined ||
     tokenBet === undefined ||
+    tokenBet === null ||
     tokenBet < minimumBet ||
     agree === false ||
     txnLoading ||
     gameStatus !== GameStatus.OPEN;
 
   const valueHandler = () => {
+    if (tokenBet === null) return "";
     if (success) {
       if (Number.isInteger(tokenBet)) {
         return tokenBet;
@@ -386,6 +388,14 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
     } else {
       return tokenBet;
+    }
+  };
+
+  const handleBetInput = (e: any) => {
+    const inputValue = e.target.value;
+
+    if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+      setTokenBet(inputValue);
     }
   };
 
@@ -416,7 +426,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     } else if (
       !isBroke &&
       winningTeam &&
-      (tokenBet === null || tokenBet < minimumBet || rewardEstimate === "--") &&
+      (tokenBet === null || rewardEstimate === "--") &&
       gameStatus === GameStatus.OPEN
     ) {
       {
@@ -593,10 +603,10 @@ const Classic: FC<Props> = ({ gameId }) => {
         setTokenBalance(balance);
 
         // check if the user doesn't have enough token
-        if (gameData.gameInfo.token === "SOL") {
+        if (gameData.gameInfo.token === "SOL" && tokenBet !== null) {
           setIsBroke(tokenBet + 0.01 > balance);
         } else {
-          setIsBroke(tokenBet > balance);
+          setIsBroke(tokenBet !== null && tokenBet > balance);
         }
       }
     }
@@ -695,6 +705,7 @@ const Classic: FC<Props> = ({ gameId }) => {
     const estimateRewards = () => {
       if (
         winningTeam === undefined ||
+        tokenBet === null ||
         tokenBet < minimumBet ||
         Number.isNaN(tokenBet)
       ) {
@@ -874,17 +885,16 @@ const Classic: FC<Props> = ({ gameId }) => {
                     <div className="w-full">
                       <form className="w-full relative">
                         <input
-                          type="number"
+                          type="text"
+                          inputMode="decimal"
                           disabled={
                             success || gameStatus !== GameStatus.OPEN || loading
                           }
                           min="1"
                           max="1000000"
-                          value={valueHandler()}
+                          value={tokenBet === null ? "" : valueHandler()}
                           // TODO: fix decimal bug
-                          onChange={(e) => {
-                            setTokenBet(parseFloat(e.target.value ?? "0") ?? 0);
-                          }}
+                          onChange={(e) => handleBetInput(e)}
                           className="disabled:opacity-70 disabled:cursor-not-allowed 
                           bg-greyscale2 hover:bg-greyscale3 px-2 h-[50px] w-full text-center focus:outline-none 
                           focus:ring-2 focus:ring-purple1 rounded-none focus:bg-greyscale1"
