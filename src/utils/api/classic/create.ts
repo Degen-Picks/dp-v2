@@ -23,7 +23,8 @@ export default async function createClassic(
       selection2: options.team2Name,
       selection2Record: options.team2Record || " ",
       gameDate: endDate,
-      token: options.token
+      token: options.token,
+      info: options.info || " ",
     };
   
     const headers = new Headers();

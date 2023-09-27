@@ -63,6 +63,7 @@ const GameSetup = () => {
     gameTime: "",
     collection: "",
     token: "",
+    info: "" // TODO: Implement 
   });
 
   const [validGame, setValidGame] = useState(false);
