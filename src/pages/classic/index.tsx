@@ -1,39 +1,34 @@
-import { FC } from "react";
+import { useEffect, useState, FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { getCurrencyIcon, getWagers } from "@/utils";
 import {
   Navbar,
   GameFilter,
   Timer,
-  VerifiedBadge,
   AlertBanner,
   FallbackImage,
+  Crown,
 } from "@/components";
-import { Wager, WagerUser } from "@/types";
+import { Wager } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
 
 interface Props {
-  title: string;
-  description: string;
-  slug: string;
-  status: string;
-  gameTime: number;
-  creator: WagerUser;
-  token: string | null;
+  game: Wager;
 }
 
 export const PropSection: FC<Props> = ({
-  title,
-  description,
-  slug,
-  status,
-  gameTime,
-  creator,
-  token,
+  game: {
+    title,
+    description,
+    _id: slug,
+    status,
+    endDate: gameTime,
+    creator,
+    token,
+  },
 }) => {
   return (
     <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
@@ -49,8 +44,8 @@ export const PropSection: FC<Props> = ({
           <div className="flex items-center justify-center gap-2 mt-[10px]">
             {creator?.roles?.includes("ADMIN") ? (
               <div className="flex items-center gap-[5px]">
-                <VerifiedBadge />
-                <p className="uppercase">degen picks team</p>
+                <Crown width={18.2} height={14} />
+                <p className="uppercase text-lg">dp team</p>
               </div>
             ) : creator?.twitterData ? (
               <div className="flex items-center gap-[5px]">
@@ -119,18 +114,7 @@ const GameQueue = () => {
     .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
     .map(
       (game, index) => {
-        return (
-          <PropSection
-            key={index}
-            title={game.title}
-            slug={game._id}
-            description={game.description}
-            status={game.status}
-            gameTime={game.endDate}
-            creator={game.creator}
-            token={game.token}
-          />
-        );
+        return <PropSection key={index} game={game} />;
       }
       // now, sort upcoming games by date
     );
@@ -139,36 +123,14 @@ const GameQueue = () => {
     ?.filter((game) => activeFilter === true && game.status === "closed")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return (
-        <PropSection
-          key={index}
-          title={game.title}
-          slug={game._id}
-          description={game.description}
-          status={game.status}
-          gameTime={game.endDate}
-          creator={game.creator}
-          token={game.token}
-        />
-      );
+      return <PropSection key={index} game={game} />;
     });
 
   const activeUpcomingGames = games
     ?.filter((game) => activeFilter === true && game.status === "upcoming")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return (
-        <PropSection
-          key={index}
-          title={game.title}
-          slug={game._id}
-          description={game.description}
-          status={game.status}
-          gameTime={game.endDate}
-          creator={game.creator}
-          token={game.token}
-        />
-      );
+      return <PropSection key={index} game={game} />;
     });
 
   const pastGames = games
@@ -179,18 +141,7 @@ const GameQueue = () => {
     )
     .reverse()
     .map((game, index) => {
-      return (
-        <PropSection
-          key={index}
-          title={game.title}
-          slug={game._id}
-          description={game.description}
-          status={game.status}
-          gameTime={game.endDate}
-          creator={game.creator}
-          token={game.token}
-        />
-      );
+      return <PropSection key={index} game={game} />;
     });
 
   useEffect(() => {

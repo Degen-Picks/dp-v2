@@ -63,7 +63,7 @@ const GameSetup = () => {
     gameTime: "",
     collection: "",
     token: "",
-    info: "" // TODO: Implement 
+    info: "", // TODO: Implement
   });
 
   const [validGame, setValidGame] = useState(false);
@@ -183,6 +183,10 @@ const GameSetup = () => {
       setShowModal(true);
     }
   }, [publicKey]);
+
+  useEffect(() => {
+    console.log("wager user", wagerUser);
+  }, [wagerUser]);
 
   return (
     <>

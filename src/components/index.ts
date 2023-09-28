@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 // icons
 const CaratDown = dynamic(() => import("./@icons/CaratDown"));
 const Close = dynamic(() => import("./@icons/Close"));
+const Crown = dynamic(() => import("./@icons/Crown"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
 const ExternalLink = dynamic(() => import("./@icons/ExternalLink"));
@@ -76,6 +77,7 @@ export {
   // icons
   CaratDown,
   Close,
+  Crown,
   Discord,
   DiscordFooter,
   ExternalLink,

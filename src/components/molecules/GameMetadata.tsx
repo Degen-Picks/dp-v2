@@ -2,7 +2,7 @@ import { FC } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { GameStatus } from "../templates/ClassicView";
-import { FallbackImage, Timer, VerifiedBadge } from "@/components";
+import { Crown, FallbackImage, Timer, VerifiedBadge } from "@/components";
 import { GameInfo } from "@/types";
 import { smallClickAnimation } from "@/configs";
 import { getCurrencyIcon } from "@/utils";
@@ -19,8 +19,8 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
     <div className="w-fit mx-auto flex items-center gap-4 mt-5">
       {gameData?.gameInfo?.creator?.roles?.includes("ADMIN") ? (
         <div className="flex items-center gap-1">
-          <VerifiedBadge />
-          <p className="uppercase">degen picks team</p>
+          <Crown width={18.2} height={14} />
+          <p className="uppercase text-lg">dp team</p>
         </div>
       ) : gameData?.gameInfo?.creator?.twitterData ? (
         <motion.button
