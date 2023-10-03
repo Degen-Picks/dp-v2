@@ -14,6 +14,7 @@ export const getCurrencyIcon = (token: string | null) => {
       return "/images/icons/solana.png";
     case "USDC":
       return "/images/icons/usdc.png";
+      // TODO: NEED CROWN
     default:
       return "/images/icons/dust.png";
   }

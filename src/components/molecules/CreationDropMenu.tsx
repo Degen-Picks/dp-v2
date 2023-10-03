@@ -55,6 +55,7 @@ const CreationDropMenu: FC<Props> = ({
         case "USDC":
           urlPath = "/images/icons/usdc.png";
           break;
+          // TODO: NEED CROWN
         default:
           urlPath = "/images/icons/dust.png";
           break;

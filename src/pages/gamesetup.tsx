@@ -370,7 +370,7 @@ const GameSetup = () => {
                   league={leagues.find(
                     (league) => league.league === gameDetails.league
                   )}
-                  list={["DUST", "SOL", "USDC"]}
+                  list={["DUST", "SOL", "USDC", "CROWN"]}
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
                   accessor="token"
