@@ -369,6 +369,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   };
 
   const buttonDisabled =
+    !publicKey ||
     isBroke ||
     winningTeam === undefined ||
     tokenBet === undefined ||
@@ -418,6 +419,11 @@ const Classic: FC<Props> = ({ gameId }) => {
         /* forgot to pick a winning team */
       }
       return "Select a winning team";
+    } else if (!publicKey && gameStatus === GameStatus.OPEN) {
+      {
+        /* game is open but wallet not connected */
+      }
+      return `Connect your wallet`;
     } else if (isBroke && winningTeam && gameStatus === GameStatus.OPEN) {
       {
         /* broke but picked a team */
@@ -852,13 +858,13 @@ const Classic: FC<Props> = ({ gameId }) => {
                 <RewardPool gameData={gameData} />
               </div>
             )}
-            {!publicKey && !loading && (
+            {/* {!publicKey && !loading && (
               <div className="w-fit mx-auto text-center sm:mt-5 mb-20 sm:mb-32 md:mb-0">
                 Connect wallet to play.
               </div>
-            )}
+            )} */}
             {/* second area / betting section */}
-            {publicKey && !loading && (
+            {!loading && (
               <div className="h-auto w-full relative overflow-hidden mb-20">
                 {/* betting box */}
                 <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
