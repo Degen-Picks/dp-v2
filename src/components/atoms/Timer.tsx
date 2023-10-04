@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 interface Props {
   status: string;
   gameTime: number;
-  winner: boolean | null;
+  winner: string | null;
 }
 
 const Timer: FC<Props> = ({ status, gameTime, winner }) => {

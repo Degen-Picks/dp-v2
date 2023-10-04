@@ -23,7 +23,7 @@ interface Props {
   gameTime: number;
   creator: WagerUser;
   token: string | null;
-  winner: boolean | null;
+  winner: string | null;
 }
 
 export const PropSection: FC<Props> = ({
@@ -131,7 +131,9 @@ const GameQueue = () => {
             creator={game.creator}
             token={game.token}
             winner={
-              game.selections.map((selection) => selection.winner === true)[0]
+              game.selections.filter(
+                (selection) => selection.winner === true
+              )[0]?.title
             }
           />
         );
@@ -154,7 +156,8 @@ const GameQueue = () => {
           creator={game.creator}
           token={game.token}
           winner={
-            game.selections.map((selection) => selection.winner === true)[0]
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
           }
         />
       );
@@ -175,7 +178,8 @@ const GameQueue = () => {
           creator={game.creator}
           token={game.token}
           winner={
-            game.selections.map((selection) => selection.winner === true)[0]
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
           }
         />
       );
@@ -200,7 +204,8 @@ const GameQueue = () => {
           creator={game.creator}
           token={game.token}
           winner={
-            game.selections.map((selection) => selection.winner === true)[0]
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
           }
         />
       );
