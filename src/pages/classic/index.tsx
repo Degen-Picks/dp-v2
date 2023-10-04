@@ -10,25 +10,31 @@ import {
   FallbackImage,
   Crown,
 } from "@/components";
-import { Wager } from "@/types";
+import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
 
 interface Props {
-  game: Wager;
+  title: string;
+  description: string;
+  slug: string;
+  status: string;
+  gameTime: number;
+  creator: WagerUser;
+  token: string | null;
+  winner: boolean | null;
 }
 
 export const PropSection: FC<Props> = ({
-  game: {
-    title,
-    description,
-    _id: slug,
-    status,
-    endDate: gameTime,
-    creator,
-    token,
-  },
+  title,
+  description,
+  slug,
+  status,
+  gameTime,
+  creator,
+  token,
+  winner,
 }) => {
   return (
     <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
@@ -60,7 +66,7 @@ export const PropSection: FC<Props> = ({
               </div>
             ) : null}
             {creator && <div className="h-5 w-[1px] bg-greyscale4" />}
-            <Timer status={status} gameTime={gameTime} />
+            <Timer status={status} gameTime={gameTime} winner={winner} />
           </div>
         </div>
         <Image
@@ -114,7 +120,21 @@ const GameQueue = () => {
     .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
     .map(
       (game, index) => {
-        return <PropSection key={index} game={game} />;
+        return (
+          <PropSection
+            key={index}
+            title={game.title}
+            slug={game._id}
+            description={game.description}
+            status={game.status}
+            gameTime={game.endDate}
+            creator={game.creator}
+            token={game.token}
+            winner={
+              game.selections.map((selection) => selection.winner === true)[0]
+            }
+          />
+        );
       }
       // now, sort upcoming games by date
     );
@@ -123,14 +143,42 @@ const GameQueue = () => {
     ?.filter((game) => activeFilter === true && game.status === "closed")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return <PropSection key={index} game={game} />;
+      return (
+        <PropSection
+          key={index}
+          title={game.title}
+          slug={game._id}
+          description={game.description}
+          status={game.status}
+          gameTime={game.endDate}
+          creator={game.creator}
+          token={game.token}
+          winner={
+            game.selections.map((selection) => selection.winner === true)[0]
+          }
+        />
+      );
     });
 
   const activeUpcomingGames = games
     ?.filter((game) => activeFilter === true && game.status === "upcoming")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return <PropSection key={index} game={game} />;
+      return (
+        <PropSection
+          key={index}
+          title={game.title}
+          slug={game._id}
+          description={game.description}
+          status={game.status}
+          gameTime={game.endDate}
+          creator={game.creator}
+          token={game.token}
+          winner={
+            game.selections.map((selection) => selection.winner === true)[0]
+          }
+        />
+      );
     });
 
   const pastGames = games
@@ -141,7 +189,21 @@ const GameQueue = () => {
     )
     .reverse()
     .map((game, index) => {
-      return <PropSection key={index} game={game} />;
+      return (
+        <PropSection
+          key={index}
+          title={game.title}
+          slug={game._id}
+          description={game.description}
+          status={game.status}
+          gameTime={game.endDate}
+          creator={game.creator}
+          token={game.token}
+          winner={
+            game.selections.map((selection) => selection.winner === true)[0]
+          }
+        />
+      );
     });
 
   useEffect(() => {
