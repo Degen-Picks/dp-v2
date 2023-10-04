@@ -138,7 +138,8 @@ const Classic: FC<Props> = ({ gameId }) => {
     },
   });
 
-  const rulesDisabled = success || loading || gameStatus !== GameStatus.OPEN;
+  const rulesDisabled =
+    success || loading || gameStatus !== GameStatus.OPEN || !publicKey;
 
   // create and process dust txn
   const handlePayToken = async () => {
@@ -402,7 +403,12 @@ const Classic: FC<Props> = ({ gameId }) => {
 
   // updates button text based current state
   const buttonHandler = () => {
-    if (
+    if (!publicKey && gameStatus === GameStatus.OPEN) {
+      {
+        /* game is open but wallet not connected */
+      }
+      return `Connect your wallet`;
+    } else if (
       gameStatus !== GameStatus.OPEN &&
       !success &&
       gameStatus !== GameStatus.PREGAME
@@ -419,11 +425,6 @@ const Classic: FC<Props> = ({ gameId }) => {
         /* forgot to pick a winning team */
       }
       return "Select a winning team";
-    } else if (!publicKey && gameStatus === GameStatus.OPEN) {
-      {
-        /* game is open but wallet not connected */
-      }
-      return `Connect your wallet`;
     } else if (isBroke && winningTeam && gameStatus === GameStatus.OPEN) {
       {
         /* broke but picked a team */
@@ -886,7 +887,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                       success={success}
                       handlePicks={pickHandler}
                       pickedTeams={[winningTeam]}
-                      valid={gameStatus === GameStatus.OPEN}
+                      valid={gameStatus === GameStatus.OPEN && !!publicKey}
                       gameStatus={gameStatus}
                       hideImage={gameData.gameInfo.league === "custom"}
                     />
@@ -904,7 +905,10 @@ const Classic: FC<Props> = ({ gameId }) => {
                           type="text"
                           inputMode="decimal"
                           disabled={
-                            success || gameStatus !== GameStatus.OPEN || loading
+                            success ||
+                            gameStatus !== GameStatus.OPEN ||
+                            loading ||
+                            !publicKey
                           }
                           min="1"
                           max="1000000"
