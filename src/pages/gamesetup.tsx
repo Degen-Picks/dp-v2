@@ -8,6 +8,7 @@ import {
   CreateModal,
   AgreeCheckbox,
   TwitterLoginButton,
+  CreationTextFieldLong,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../utils/dateUtil";
@@ -63,7 +64,7 @@ const GameSetup = () => {
     gameTime: "",
     collection: "",
     token: "",
-    info: "", // TODO: Implement
+    info: "",
   });
 
   const [validGame, setValidGame] = useState(false);
@@ -343,6 +344,17 @@ const GameSetup = () => {
                   title="Title"
                   disabled={!wagerUser.twitterData}
                   limit={72}
+                />
+                <CreationTextFieldLong
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="info"
+                  placeholder="ex: If the Bills outscore the Jets by 10 points, the Bills win the pool."
+                  fullWidth={true}
+                  textLeft={true}
+                  title="Pool details (optional)"
+                  disabled={!wagerUser.twitterData}
+                  limit={1000}
                 />
                 <CreationTextField
                   gameDetails={gameDetails}

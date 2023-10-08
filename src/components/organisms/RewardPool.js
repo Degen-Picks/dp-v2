@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
-import { RewardCircle, TwitterShare } from "@/components";
+import { PoolDetailsModal, RewardCircle, TwitterShare } from "@/components";
 
-const renderPlace = (thisPlace) => {
-  switch (thisPlace) {
-    case "first":
-      return "🏆";
-    case "second":
-      return "🥈";
-    default:
-      return "🥉";
-  }
-};
+// const renderPlace = (thisPlace) => {
+//   switch (thisPlace) {
+//     case "first":
+//       return "🏆";
+//     case "second":
+//       return "🥈";
+//     default:
+//       return "🥉";
+//   }
+// };
 
-const PickemPlace = ({ place, children }) => {
-  const emoji = renderPlace(place);
-  return (
-    <div className="w-[72px] sm:w-[100px] md:w-[130px] lg:w-[160px] h-[60px] sm:h-[77px] bg-[#F0EBE9]">
-      <div className="h-full w-fit mx-auto text-center flex flex-col justify-center text-xs sm:text-sm lg:">
-        <p>{emoji}</p>
-        <p>{children}</p>
-      </div>
-    </div>
-  );
-};
+// const PickemPlace = ({ place, children }) => {
+//   const emoji = renderPlace(place);
+//   return (
+//     <div className="w-[72px] sm:w-[100px] md:w-[130px] lg:w-[160px] h-[60px] sm:h-[77px] bg-[#F0EBE9]">
+//       <div className="h-full w-fit mx-auto text-center flex flex-col justify-center text-xs sm:text-sm lg:">
+//         <p>{emoji}</p>
+//         <p>{children}</p>
+//       </div>
+//     </div>
+//   );
+// };
 
 const RewardPool = ({ gameData }) => {
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+
   const [betRatio, setBetRatio] = useState({
     team1: 0,
     team2: 0,
@@ -84,13 +86,23 @@ const RewardPool = ({ gameData }) => {
   }, [gameData]);
 
   return (
-    <div>
+    <>
       {/* reward pool outer container */}
       <div className="relative bg-greyscale1 w-full md:w-[620px] mx-auto mt-[20px] text-base">
         <div className="absolute right-0 -top-12">
           <TwitterShare
             url={`https://app.degenpicks.xyz/${gameData.gameInfo.id}`}
           />
+        </div>
+        <div className="absolute left-0 -top-12">
+          <button
+            className="text-lg text-purple1"
+            onClick={() => {
+              setDetailsModalOpen(true);
+            }}
+          >
+            Pool details
+          </button>
         </div>
         <>
           <div className="flex flex-row justify-evenly items-center pb-5 pt-8">
@@ -169,7 +181,14 @@ const RewardPool = ({ gameData }) => {
           </div>
         </>
       </div>
-    </div>
+      <PoolDetailsModal
+        showModal={detailsModalOpen}
+        setShowModal={setDetailsModalOpen}
+      >
+        <p>Pool Details:</p>
+        <p>{gameData.gameInfo.info}</p>
+      </PoolDetailsModal>
+    </>
   );
 };
 

@@ -279,6 +279,8 @@ const Classic: FC<Props> = ({ gameId }) => {
         console.log("Found game by time", currentWager);
       }
 
+      console.log("Current wager", currentWager);
+
       const gameDate = new Date(currentWager.gameDate);
 
       // TODO: we can inherit the type from the backend (using typeof return value)
@@ -295,6 +297,7 @@ const Classic: FC<Props> = ({ gameId }) => {
           status: currentWager.status,
           title: currentWager.title,
           creator: currentWager.creator,
+          info: currentWager.info,
           id: currentWager._id,
           dateStr: getDateStr(gameDate),
           timeStr: getTimeStr(gameDate),

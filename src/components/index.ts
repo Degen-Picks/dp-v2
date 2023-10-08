@@ -39,6 +39,9 @@ const CreationDropMenu = dynamic(() => import("./molecules/CreationDropMenu"));
 const CreationTextField = dynamic(
   () => import("./molecules/CreationTextField")
 );
+const CreationTextFieldLong = dynamic(
+  () => import("./molecules/CreationTextFieldLong")
+);
 const Friends = dynamic(() => import("./molecules/Friends"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
@@ -65,6 +68,7 @@ const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
+const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
 
@@ -111,6 +115,7 @@ export {
   ActivityItem,
   CreationDropMenu,
   CreationTextField,
+  CreationTextFieldLong,
   Friends,
   GameMetadata,
   GameOptions,
@@ -133,6 +138,7 @@ export {
   CreateModal,
   InfoModal,
   ManageStats,
+  PoolDetailsModal,
   RewardPool,
   RulesModal,
 
