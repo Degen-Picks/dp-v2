@@ -74,7 +74,7 @@ const Landing = () => {
   if (!mounted) return null;
 
   return (
-    <div className="w-full relative overflow-hidden h-screen bg-greyscale3">
+    <div className="w-full relative overflow-y-auto h-screen bg-greyscale3">
       <div className="h-full w-full flex flex-col gap-5">
         <Navbar landing={true} />
         {isMobile ? (
@@ -86,7 +86,7 @@ const Landing = () => {
                 height={370}
                 alt="DP artwork by scuba"
                 priority
-                className="w-[90%] mx-auto"
+                className="w-[90%] max-w-[370px] mx-auto"
               />
               <div className="w-full flex justify-center items-center px-5">
                 <motion.button
@@ -107,7 +107,7 @@ const Landing = () => {
                 height={1000}
                 alt="DP artwork by scuba"
                 priority
-                className="w-[80%] mx-auto"
+                className="w-[80%] max-w-[1200px] mx-auto"
               />
             </div>
           </div>
