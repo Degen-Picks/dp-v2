@@ -122,7 +122,7 @@ const ActivityFeed: FC<Props> = ({ gameData, gameStatus }) => {
   return (
     <div className="w-full max-w-[620px] mx-auto px-4 sm:px-0">
       {/* logo section */}
-      <div className="mb-[72px]">
+      <div className="mb-[72px] mt-20 sm:mt-0">
         <ClassicHero gameData={gameData} gameStatus={gameStatus} />
       </div>
       {/* activity feed */}

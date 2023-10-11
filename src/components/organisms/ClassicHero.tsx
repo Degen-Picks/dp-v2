@@ -13,7 +13,7 @@ interface Props {
 const ClassicHero: FC<Props> = ({ gameData, gameStatus }) => {
   const router = useRouter();
   return (
-    <div className="w-full max-w-[620px] mx-auto mb-8">
+    <div className="w-full max-w-[620px] mx-auto mb-8 mt-20 sm:mt-0">
       <BackButton
         text="All games"
         handleClick={() => router.push(generalConfig.appUrl)}
