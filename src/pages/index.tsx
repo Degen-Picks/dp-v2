@@ -74,8 +74,8 @@ const Landing = () => {
   if (!mounted) return null;
 
   return (
-    <div className="w-full relative overflow-hidden bg-greyscale3">
-      <div className="h-screen w-full flex flex-col gap-5">
+    <div className="w-full relative overflow-hidden h-screen bg-greyscale3">
+      <div className="h-full w-full flex flex-col gap-5">
         <Navbar landing={true} />
         <div className="flex-1 flex flex-col gap-5 items-center justify-between">
           {isMobile ? (
@@ -91,20 +91,20 @@ const Landing = () => {
                 />
                 <div className="w-full flex justify-center items-center px-5">
                   <motion.button
-                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg -mt-5"
+                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg mt-10"
                     onClick={() => window.open(generalConfig.appUrl)}
                   >
                     Launch app
                   </motion.button>
                 </div>
               </div>
-              <div className="animate-bounce flex flex-col items-center gap-1 z-0 pb-10">
+              {/* <div className="animate-bounce flex flex-col items-center gap-1 z-0 pb-10">
                 <p className="text-lg uppercase">Learn more</p>
                 <p>↓</p>
-              </div>
+              </div> */}
             </>
           ) : (
-            <div className="w-full h-full flex flex-col gap-10">
+            <div className="w-full h-full flex flex-col gap-10 mt-10">
               <Image
                 src="/images/landing/dp_scuba.png"
                 width={940}
@@ -113,15 +113,15 @@ const Landing = () => {
                 priority
                 className="mx-auto"
               />
-              <div className="animate-bounce flex flex-col items-center gap-1 z-0">
+              {/* <div className="animate-bounce flex flex-col items-center gap-1 z-0">
                 <p className="text-lg uppercase">Learn more</p>
                 <p>↓</p>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
       </div>
-      <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
+      {/* <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
         <div className="w-[90%] md:w-[3/4] mx-auto pb-6 -mt-10 sm:mt-0">
           <div className="font-base-b text-[40px] leading-[39px] ">
             Degen Picks
@@ -189,7 +189,7 @@ const Landing = () => {
             <TeamMember handle="matt_degods" image="/images/team/matt.png" />
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="absolute sm:fixed bottom-0 w-full">
         <div className="text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
           <p>© 2023 Degen Picks</p>
