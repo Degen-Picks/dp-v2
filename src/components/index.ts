@@ -23,7 +23,6 @@ const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
-const Footer = dynamic(() => import("./atoms/Footer"));
 const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
@@ -101,7 +100,6 @@ export {
   DataPoint,
   Divider,
   FallbackImage,
-  Footer,
   ForwardButton,
   Friend,
   GameFilter,

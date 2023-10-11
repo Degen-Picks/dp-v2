@@ -77,48 +77,51 @@ const Landing = () => {
     <div className="w-full relative overflow-hidden h-screen bg-greyscale3">
       <div className="h-full w-full flex flex-col gap-5">
         <Navbar landing={true} />
-        <div className="flex-1 flex flex-col gap-5 items-center justify-between">
-          {isMobile ? (
-            <>
-              <div className="w-full">
-                <Image
-                  src="/images/landing/dp_scuba_mobile.png"
-                  width={370}
-                  height={370}
-                  alt="DP artwork by scuba"
-                  priority
-                  className="w-fit mx-auto px-5"
-                />
-                <div className="w-full flex justify-center items-center px-5">
-                  <motion.button
-                    className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg mt-10"
-                    onClick={() => window.open(generalConfig.appUrl)}
-                  >
-                    Launch app
-                  </motion.button>
-                </div>
-              </div>
-              {/* <div className="animate-bounce flex flex-col items-center gap-1 z-0 pb-10">
-                <p className="text-lg uppercase">Learn more</p>
-                <p>↓</p>
-              </div> */}
-            </>
-          ) : (
-            <div className="w-full h-full flex flex-col gap-10 mt-10">
+        {isMobile ? (
+          <div className="w-full h-full flex flex-col flex-1">
+            <div className="h-full flex flex-col items-center justify-center gap-5">
               <Image
-                src="/images/landing/dp_scuba.png"
-                width={940}
-                height={500}
+                src="/images/landing/dp_scuba_mobile.png"
+                width={370}
+                height={370}
                 alt="DP artwork by scuba"
                 priority
-                className="mx-auto"
+                className="w-[90%] mx-auto"
               />
-              {/* <div className="animate-bounce flex flex-col items-center gap-1 z-0">
-                <p className="text-lg uppercase">Learn more</p>
-                <p>↓</p>
-              </div> */}
+              <div className="w-full flex justify-center items-center px-5">
+                <motion.button
+                  className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg"
+                  onClick={() => window.open(generalConfig.appUrl)}
+                >
+                  Launch app
+                </motion.button>
+              </div>
             </div>
-          )}
+          </div>
+        ) : (
+          <div className="max-w-[1600px] flex flex-1 mx-auto">
+            <div className="w-full h-full flex items-center justify-center">
+              <Image
+                src="/images/landing/dp_scuba.png"
+                width={1880}
+                height={1000}
+                alt="DP artwork by scuba"
+                priority
+                className="w-[80%] mx-auto"
+              />
+            </div>
+          </div>
+        )}
+        <div className="w-full">
+          <div className="max-w-[1600px] mx-auto text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
+            <p>© 2023 Degen Picks</p>
+            <div className="hidden sm:flex items-center gap-4">
+              <p className="">Follow us</p>
+              {/* icons here */}
+              <Twitter className="fill-greyscale5 hover:fill-[#333333]" />
+              <Discord className="fill-greyscale5 hover:fill-[#333333]" />
+            </div>
+          </div>
         </div>
       </div>
       {/* <div className="text-center sm:max-w-[1000px] h-screen flex flex-col items-center justify-center gap-5 sm:mx-auto">
@@ -190,17 +193,6 @@ const Landing = () => {
           </div>
         </div>
       </div> */}
-      <div className="absolute sm:fixed bottom-0 w-full">
-        <div className="text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
-          <p>© 2023 Degen Picks</p>
-          <div className="hidden sm:flex items-center gap-4">
-            <p className="">Follow us</p>
-            {/* icons here */}
-            <Twitter className="fill-greyscale5 hover:fill-[#333333]" />
-            <Discord className="fill-greyscale5 hover:fill-[#333333]" />
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
