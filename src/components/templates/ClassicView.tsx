@@ -279,8 +279,6 @@ const Classic: FC<Props> = ({ gameId }) => {
         console.log("Found game by time", currentWager);
       }
 
-      console.log("Current wager", currentWager);
-
       const gameDate = new Date(currentWager.gameDate);
 
       // TODO: we can inherit the type from the backend (using typeof return value)
@@ -681,8 +679,6 @@ const Classic: FC<Props> = ({ gameId }) => {
 
             setWinningTeam(gameData[pickedTeam].teamName);
 
-            // console.log("THE TEAM YOU PICKED: ", gameData[pickedTeam].teamName);
-
             if (userPick.winAmount === -1) {
               setFinalWinner(gameData[otherTeam].teamName);
               setWinAmount(-1);
@@ -750,8 +746,6 @@ const Classic: FC<Props> = ({ gameId }) => {
       if (!estimatedReward) {
         estimatedReward = totalVol;
       }
-
-      console.log("ESTIMATED REWARD: ", estimatedReward);
 
       setRewardEstimate(estimatedReward.toString());
     };

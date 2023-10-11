@@ -35,17 +35,6 @@ const PoolDetailsModal: FC<ModalProps> = ({
                 className="relative p-5 border-0
                 shadow-lg flex flex-col w-full bg-greyscale1"
               >
-                {/* header */}
-                <div className="w-full">
-                  <button
-                    className="absolute right-6 top-6"
-                    onClick={() => {
-                      setShowModal(false);
-                    }}
-                  >
-                    <Close className="fill-black" />
-                  </button>
-                </div>
                 {/* content body */}
                 {children}
               </div>
