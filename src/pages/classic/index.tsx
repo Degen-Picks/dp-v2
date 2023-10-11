@@ -50,7 +50,12 @@ export const PropSection: FC<Props> = ({
           <div className="flex items-center justify-center gap-2 mt-[10px]">
             {creator?.roles?.includes("ADMIN") ? (
               <div className="flex items-center gap-[5px]">
-                <Crown width={18.2} height={14} />
+                <Image
+                  src="/images/team_icon.png"
+                  width={16}
+                  height={16}
+                  alt="dp team icon"
+                />
                 <p className="uppercase text-lg">dp team</p>
               </div>
             ) : creator?.twitterData ? (
