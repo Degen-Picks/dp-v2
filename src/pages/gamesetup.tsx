@@ -349,12 +349,12 @@ const GameSetup = () => {
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
                   accessor="info"
-                  placeholder="ex: If the Bills outscore the Jets by 10 points, the Bills win the pool."
+                  placeholder="If you need more room to explain your pool..."
                   fullWidth={true}
                   textLeft={true}
                   title="Pool details (optional)"
                   disabled={!wagerUser.twitterData}
-                  limit={1000}
+                  limit={300}
                 />
                 <CreationTextField
                   gameDetails={gameDetails}
