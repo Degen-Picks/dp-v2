@@ -107,7 +107,7 @@ const Landing = () => {
                 height={1000}
                 alt="DP artwork by scuba"
                 priority
-                className="w-[80%] max-w-[1200px] mx-auto"
+                className="w-[80%] max-w-[1000px] mx-auto"
               />
             </div>
           </div>
