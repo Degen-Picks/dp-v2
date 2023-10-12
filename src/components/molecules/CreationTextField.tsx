@@ -40,10 +40,10 @@ const CreationTextField: FC<Props> = ({
       )}
       <form id="text-area" className="h-full">
         <input
-          className={`w-full h-full bg-greyscale1 hover:bg-gray-50 
-          flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-purple1 disabled:cursor-not-allowed disabled:text-disabled
-          ${accessor === "gameTime" && !initialized ? "text-disabled" : ""}
+          className={`w-full h-full bg-greyscale1 hover:bg-gray-50 placeholder:text-greyscale4
+          flex items-center py-3 focus:outline-none border-2 border-transparent placeholder:opacity-100
+          focus:border-purple1 disabled:cursor-not-allowed disabled:text-greyscale4
+          ${accessor === "gameTime" && !initialized ? "text-greyscale4" : ""}
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
           maxLength={limit ? limit : undefined}

@@ -166,7 +166,9 @@ const RewardPool = ({ gameData }) => {
         <div className="w-full flex flex-col gap-2.5 items-center justify-center">
           <p className="text-2xl font-base-b text-center">Pool Details</p>
           <p className="text-xl text-center">
-            {gameData.gameInfo.info !== "" ? gameData.gameInfo.info : "--"}
+            {gameData.gameInfo.info !== "" && gameData.gameInfo.info !== " "
+              ? gameData.gameInfo.info
+              : "--"}
           </p>
           <div className="w-full h-[1px] bg-greyscale4/50 my-2.5" />
           <p className="text-xl text-center">

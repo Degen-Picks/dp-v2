@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { ClassicGameOptions } from "../../types";
 
 interface Props {
@@ -24,8 +24,6 @@ const CreationTextFieldLong: FC<Props> = ({
   disabled = false,
   limit,
 }) => {
-  const [initialized, setInitialized] = useState<boolean>(false);
-
   return (
     <div className={`relative ${fullWidth ? "w-full" : "w-[80px]"}`}>
       {title && (
@@ -39,8 +37,8 @@ const CreationTextFieldLong: FC<Props> = ({
       <form id="text-area">
         <textarea
           className={`w-full min-h-[50px] max-h-[400px] bg-greyscale1 hover:bg-gray-50 resize-y
-          flex items-center py-3 focus:outline-none border-2 border-transparent
-          focus:border-purple1 disabled:cursor-not-allowed disabled:text-disabled
+          flex items-center py-3 focus:outline-none border-2 border-transparent placeholder:text-greyscale4
+          focus:border-purple1 disabled:cursor-not-allowed disabled:text-greyscale4
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
           maxLength={limit ? limit : undefined}
@@ -48,10 +46,6 @@ const CreationTextFieldLong: FC<Props> = ({
             const newGameDetails: ClassicGameOptions = { ...gameDetails };
             newGameDetails[accessor] = e.target.value;
             setGameDetails(newGameDetails);
-            setInitialized(true);
-          }}
-          onKeyDown={(e) => {
-            setInitialized(true);
           }}
           value={gameDetails[accessor]}
           placeholder={placeholder}

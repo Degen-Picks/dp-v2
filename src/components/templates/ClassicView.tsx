@@ -355,6 +355,7 @@ const Classic: FC<Props> = ({ gameId }) => {
       }
 
       setGameStatus(newGameStatus);
+
       setGameData(parsed);
 
       // Cut end date short to include last second picks
