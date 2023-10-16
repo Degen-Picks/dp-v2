@@ -8,7 +8,7 @@ const nextConfig = {
       "cdn.freebiesupply.com",
       "shdw-drive.genesysgo.net",
     ],
-  }
+  },
 };
 
 module.exports = nextConfig;
