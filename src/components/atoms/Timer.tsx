@@ -3,9 +3,10 @@ import { FC, useEffect, useState } from "react";
 interface Props {
   status: string;
   gameTime: number;
+  winner: string | null;
 }
 
-const Timer: FC<Props> = ({ status, gameTime }) => {
+const Timer: FC<Props> = ({ status, gameTime, winner }) => {
   const [timeRemaining, setTimeRemaining] = useState("");
   const [closeToEnd, setCloseToEnd] = useState(false);
 
@@ -51,7 +52,7 @@ const Timer: FC<Props> = ({ status, gameTime }) => {
         <p className="">Picks Closed</p>
       ) : status === "completed" ? (
         <div className="flex items-center gap-1">
-          <p className="text-correct">Airdrops</p>
+          <p className="text-correct">{winner}</p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="10"

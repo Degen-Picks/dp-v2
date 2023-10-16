@@ -1,15 +1,14 @@
-import { FC } from "react";
+import { useEffect, useState, FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { getCurrencyIcon, getWagers } from "@/utils";
 import {
   Navbar,
   GameFilter,
   Timer,
-  VerifiedBadge,
   AlertBanner,
   FallbackImage,
+  Crown,
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
@@ -24,6 +23,7 @@ interface Props {
   gameTime: number;
   creator: WagerUser;
   token: string | null;
+  winner: string | null;
 }
 
 export const PropSection: FC<Props> = ({
@@ -34,6 +34,7 @@ export const PropSection: FC<Props> = ({
   gameTime,
   creator,
   token,
+  winner,
 }) => {
   return (
     <Link className="w-full" passHref href={`/${encodeURI(slug)}`}>
@@ -49,8 +50,13 @@ export const PropSection: FC<Props> = ({
           <div className="flex items-center justify-center gap-2 mt-[10px]">
             {creator?.roles?.includes("ADMIN") ? (
               <div className="flex items-center gap-[5px]">
-                <VerifiedBadge />
-                <p className="uppercase">degen picks team</p>
+                <Image
+                  src="/images/team_icon.png"
+                  width={16}
+                  height={16}
+                  alt="dp team icon"
+                />
+                <p className="uppercase text-lg">dp team</p>
               </div>
             ) : creator?.twitterData ? (
               <div className="flex items-center gap-[5px]">
@@ -65,7 +71,7 @@ export const PropSection: FC<Props> = ({
               </div>
             ) : null}
             {creator && <div className="h-5 w-[1px] bg-greyscale4" />}
-            <Timer status={status} gameTime={gameTime} />
+            <Timer status={status} gameTime={gameTime} winner={winner} />
           </div>
         </div>
         <Image
@@ -129,6 +135,11 @@ const GameQueue = () => {
             gameTime={game.endDate}
             creator={game.creator}
             token={game.token}
+            winner={
+              game.selections.filter(
+                (selection) => selection.winner === true
+              )[0]?.title
+            }
           />
         );
       }
@@ -149,6 +160,10 @@ const GameQueue = () => {
           gameTime={game.endDate}
           creator={game.creator}
           token={game.token}
+          winner={
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
+          }
         />
       );
     });
@@ -167,6 +182,10 @@ const GameQueue = () => {
           gameTime={game.endDate}
           creator={game.creator}
           token={game.token}
+          winner={
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
+          }
         />
       );
     });
@@ -189,6 +208,10 @@ const GameQueue = () => {
           gameTime={game.endDate}
           creator={game.creator}
           token={game.token}
+          winner={
+            game.selections.filter((selection) => selection.winner === true)[0]
+              ?.title
+          }
         />
       );
     });

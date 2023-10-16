@@ -8,6 +8,7 @@ import {
   CreateModal,
   AgreeCheckbox,
   TwitterLoginButton,
+  CreationTextFieldLong,
 } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { getTimezoneStr } from "../utils/dateUtil";
@@ -63,6 +64,7 @@ const GameSetup = () => {
     gameTime: "",
     collection: "",
     token: "",
+    info: "",
   });
 
   const [validGame, setValidGame] = useState(false);
@@ -182,6 +184,10 @@ const GameSetup = () => {
       setShowModal(true);
     }
   }, [publicKey]);
+
+  useEffect(() => {
+    console.log("wager user", wagerUser);
+  }, [wagerUser]);
 
   return (
     <>
@@ -339,6 +345,17 @@ const GameSetup = () => {
                   disabled={!wagerUser.twitterData}
                   limit={72}
                 />
+                <CreationTextFieldLong
+                  gameDetails={gameDetails}
+                  setGameDetails={setGameDetails}
+                  accessor="info"
+                  placeholder="If you need more room to explain your pool..."
+                  fullWidth={true}
+                  textLeft={true}
+                  title="Pool details (optional)"
+                  disabled={!wagerUser.twitterData}
+                  limit={300}
+                />
                 <CreationTextField
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
@@ -365,7 +382,7 @@ const GameSetup = () => {
                   league={leagues.find(
                     (league) => league.league === gameDetails.league
                   )}
-                  list={["DUST", "SOL", "USDC"]}
+                  list={["DUST", "SOL", "USDC", "CROWN"]}
                   gameDetails={gameDetails}
                   setGameDetails={setGameDetails}
                   accessor="token"

@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { ClassicGameOptions } from "../../types";
 
 interface Props {
@@ -9,12 +9,11 @@ interface Props {
   placeholder?: string;
   fullWidth?: boolean;
   textLeft?: boolean;
-  type?: string;
   disabled?: boolean;
   limit?: number;
 }
 
-const CreationTextField: FC<Props> = ({
+const CreationTextFieldLong: FC<Props> = ({
   gameDetails,
   setGameDetails,
   accessor,
@@ -22,40 +21,31 @@ const CreationTextField: FC<Props> = ({
   placeholder = "Enter text",
   fullWidth = true,
   textLeft = false,
-  type = "text",
   disabled = false,
   limit,
 }) => {
-  const [initialized, setInitialized] = useState<boolean>(false);
-
   return (
-    <div className={`relative h-[50px] ${fullWidth ? "w-full" : "w-[80px]"}`}>
+    <div className={`relative ${fullWidth ? "w-full" : "w-[80px]"}`}>
       {title && (
         <p
-          className="absolute -translate-x-[290px] w-[250px] top-1/2 -translate-y-1/2
+          className="absolute -translate-x-[290px] w-[250px] top-[12.5px]
           text-greyscale4 whitespace-nowrap text-right"
         >
           {title}
         </p>
       )}
-      <form id="text-area" className="h-full">
-        <input
-          className={`w-full h-full bg-greyscale1 hover:bg-gray-50 placeholder:text-greyscale4
-          flex items-center py-3 focus:outline-none border-2 border-transparent placeholder:opacity-100
+      <form id="text-area">
+        <textarea
+          className={`w-full min-h-[50px] max-h-[400px] bg-greyscale1 hover:bg-gray-50 resize-y
+          flex items-center py-3 focus:outline-none border-2 border-transparent placeholder:text-greyscale4
           focus:border-purple1 disabled:cursor-not-allowed disabled:text-greyscale4
-          ${accessor === "gameTime" && !initialized ? "text-greyscale4" : ""}
           ${textLeft ? "text-left px-4" : "text-center"}`}
           disabled={disabled}
           maxLength={limit ? limit : undefined}
-          type={type}
           onChange={(e) => {
             const newGameDetails: ClassicGameOptions = { ...gameDetails };
             newGameDetails[accessor] = e.target.value;
             setGameDetails(newGameDetails);
-            setInitialized(true);
-          }}
-          onKeyDown={(e) => {
-            setInitialized(true);
           }}
           value={gameDetails[accessor]}
           placeholder={placeholder}
@@ -65,4 +55,4 @@ const CreationTextField: FC<Props> = ({
   );
 };
 
-export default CreationTextField;
+export default CreationTextFieldLong;

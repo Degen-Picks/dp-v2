@@ -5,7 +5,7 @@ export const generalConfig = {
   apiUrl: "https://api.degenpicks.xyz",
   appUrl: "https://app.degenpicks.xyz",
   discordUrl: "https://discord.gg/TGTam7epH6",
-  useDevAPI: false,
+  useDevAPI: true,
   useDevNet: false,
 
   tweetText(winningTeam: string, losingTeam: string, roundedBetAmount: string) {

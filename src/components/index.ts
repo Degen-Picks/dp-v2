@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 // icons
 const CaratDown = dynamic(() => import("./@icons/CaratDown"));
 const Close = dynamic(() => import("./@icons/Close"));
+const Crown = dynamic(() => import("./@icons/Crown"));
 const Discord = dynamic(() => import("./@icons/Discord"));
 const DiscordFooter = dynamic(() => import("./@icons/DiscordFooter"));
 const ExternalLink = dynamic(() => import("./@icons/ExternalLink"));
@@ -22,7 +23,6 @@ const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
-const Footer = dynamic(() => import("./atoms/Footer"));
 const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
@@ -37,6 +37,9 @@ const ActivityItem = dynamic(() => import("./molecules/ActivityItem"));
 const CreationDropMenu = dynamic(() => import("./molecules/CreationDropMenu"));
 const CreationTextField = dynamic(
   () => import("./molecules/CreationTextField")
+);
+const CreationTextFieldLong = dynamic(
+  () => import("./molecules/CreationTextFieldLong")
 );
 const Friends = dynamic(() => import("./molecules/Friends"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
@@ -64,6 +67,7 @@ const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
+const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
 
@@ -76,6 +80,7 @@ export {
   // icons
   CaratDown,
   Close,
+  Crown,
   Discord,
   DiscordFooter,
   ExternalLink,
@@ -95,7 +100,6 @@ export {
   DataPoint,
   Divider,
   FallbackImage,
-  Footer,
   ForwardButton,
   Friend,
   GameFilter,
@@ -109,6 +113,7 @@ export {
   ActivityItem,
   CreationDropMenu,
   CreationTextField,
+  CreationTextFieldLong,
   Friends,
   GameMetadata,
   GameOptions,
@@ -131,6 +136,7 @@ export {
   CreateModal,
   InfoModal,
   ManageStats,
+  PoolDetailsModal,
   RewardPool,
   RulesModal,
 

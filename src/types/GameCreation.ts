@@ -1,3 +1,5 @@
+import { info } from "console";
+
 export interface ClassicGameOptions {
   league: string;
   team1Name: string;
@@ -9,6 +11,7 @@ export interface ClassicGameOptions {
   gameTime: string;
   collection: string;
   token: string;
+  info?: string;
 }
 
 export type ClassicGameBody = {
@@ -22,6 +25,7 @@ export type ClassicGameBody = {
   selection2Record: string;
   gameDate: number;
   token: string;
+  info: string;
 };
 
 export type ClassicGameCreateResponse = {

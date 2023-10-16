@@ -30,6 +30,7 @@ export interface GameInfoClass {
   startDate: number;
   status: string;
   title: string;
+  info?: string;
   creator?: WagerUser | null;
   dateStr: string;
   timeStr: string;
