@@ -14,14 +14,14 @@ const MegaMenuButton: FC<Props> = ({ userData }) => {
   if (!publicKey) return null;
 
   return (
-    <div className="relative hover:bg-white hover:cursor-pointer w-[183px] h-[50px] px-2.5 py-[5px] flex items-center justify-center">
+    <div className="relative hover:bg-white hover:cursor-pointer sm:w-[183px] h-[50px] px-2.5 py-[5px] flex items-center justify-center">
       <div className="w-full flex items-center gap-2.5">
         {!userData?.twitterData ? (
           <>
             <div className="w-10 h-10 flex items-center justify-center rounded-full border border-greyscale4">
               <UserIcon color="#A89FA8" />
             </div>
-            <p className="text-lg whitespace-nowrap">
+            <p className="hidden sm:block text-lg whitespace-nowrap">
               {publicKey.toBase58().slice(0, 4) +
                 " ... " +
                 publicKey.toBase58().slice(-4)}
@@ -36,7 +36,9 @@ const MegaMenuButton: FC<Props> = ({ userData }) => {
               height={33}
               alt="Twitter Profile Image"
             />
-            <p className="text-lg">{userData?.twitterData!.username}</p>
+            <p className="text-lg hidden sm:block">
+              {userData?.twitterData!.username}
+            </p>
           </>
         )}
         <div className="w-5 h-5 flex items-center justify-center">

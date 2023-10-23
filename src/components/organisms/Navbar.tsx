@@ -76,9 +76,9 @@ const Navbar: FC<Props> = ({ landing = false }) => {
 
   return (
     <>
-      <div className={`relative bg-greyscale1 md:bg-transparent z-20`}>
+      <div className={`bg-greyscale1 md:bg-transparent z-20`}>
         <div
-          className="relative flex justify-center md:justify-between 
+          className="relative flex justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
         >
           <Link href="https://degenpicks.xyz/">
@@ -90,7 +90,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
               priority
             />
           </Link>
-          <div className="hidden lg:flex items-center gap-4 justify-end">
+          <div className="relative flex items-center gap-4 justify-end">
             {landing ? (
               <motion.button
                 className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
@@ -101,16 +101,16 @@ const Navbar: FC<Props> = ({ landing = false }) => {
             ) : null}
 
             {!landing && renderMenu()}
+            {open && (
+              <MegaMenu
+                userData={userData}
+                setUserData={setUserData}
+                setIsOpen={setOpen}
+              />
+            )}
           </div>
         </div>
       </div>
-      {open && (
-        <MegaMenu
-          userData={userData}
-          setUserData={setUserData}
-          setIsOpen={setOpen}
-        />
-      )}
     </>
   );
 };
