@@ -45,6 +45,12 @@ const Friends = dynamic(() => import("./molecules/Friends"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
 const HowItWorksView = dynamic(() => import("./molecules/HowItWorksView"));
+const LeaderboardCardPool = dynamic(
+  () => import("./molecules/LeaderboardCardPool")
+);
+const LeaderboardCardUser = dynamic(
+  () => import("./molecules/LeaderboardCardUser")
+);
 const LinkTwitterView = dynamic(() => import("./molecules/LinkTwitterView"));
 const MobileMenu = dynamic(() => import("./molecules/MobileMenu"));
 const Navbar = dynamic(() => import("./molecules/Navbar"));
@@ -66,6 +72,7 @@ const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
+const LeaderboardTable = dynamic(() => import("./organisms/LeaderboardTable"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
 const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
@@ -118,6 +125,8 @@ export {
   GameMetadata,
   GameOptions,
   HowItWorksView,
+  LeaderboardCardPool,
+  LeaderboardCardUser,
   LinkTwitterView,
   MobileMenu,
   Navbar,
@@ -135,6 +144,7 @@ export {
   ClassicVersusBox,
   CreateModal,
   InfoModal,
+  LeaderboardTable,
   ManageStats,
   PoolDetailsModal,
   RewardPool,
