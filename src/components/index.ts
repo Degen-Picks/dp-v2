@@ -27,6 +27,7 @@ const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
 const ImageShimmer = dynamic(() => import("./atoms/ImageShimmer"));
+const MovingData = dynamic(() => import("./atoms/MovingData"));
 const RoadmapObject = dynamic(() => import("./atoms/RoadmapObject"));
 const StepCircle = dynamic(() => import("./atoms/StepCircle"));
 const Timer = dynamic(() => import("./atoms/Timer"));
@@ -105,6 +106,7 @@ export {
   Friend,
   GameFilter,
   ImageShimmer,
+  MovingData,
   RoadmapObject,
   StepCircle,
   Timer,
