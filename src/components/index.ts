@@ -46,8 +46,8 @@ const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
 const HowItWorksView = dynamic(() => import("./molecules/HowItWorksView"));
 const LinkTwitterView = dynamic(() => import("./molecules/LinkTwitterView"));
-const MobileMenu = dynamic(() => import("./molecules/MobileMenu"));
-const Navbar = dynamic(() => import("./molecules/Navbar"));
+const MegaMenu = dynamic(() => import("./molecules/MegaMenu"));
+const MegaMenuButton = dynamic(() => import("./molecules/MegaMenuButton"));
 const PlayResponsiblyView = dynamic(
   () => import("./molecules/PlayResponsiblyView")
 );
@@ -67,6 +67,7 @@ const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
+const Navbar = dynamic(() => import("./organisms/Navbar"));
 const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
@@ -119,8 +120,8 @@ export {
   GameOptions,
   HowItWorksView,
   LinkTwitterView,
-  MobileMenu,
-  Navbar,
+  MegaMenu,
+  MegaMenuButton,
   PlayResponsiblyView,
   RewardCircle,
   Roadmap,
@@ -136,6 +137,7 @@ export {
   CreateModal,
   InfoModal,
   ManageStats,
+  Navbar,
   PoolDetailsModal,
   RewardPool,
   RulesModal,

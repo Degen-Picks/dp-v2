@@ -54,7 +54,7 @@ const ConnectButton = () => {
             ? publicKey.toBase58().slice(0, 4) +
               " ... " +
               publicKey.toBase58().slice(-4)
-            : "Connect"}
+            : "Connect Wallet"}
         </p>
       </WalletMultiButton>
     </div>
