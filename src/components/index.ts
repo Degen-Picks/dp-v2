@@ -20,6 +20,8 @@ const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
 const AlertBanner2 = dynamic(() => import("./atoms/AlertBanner2"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
+const DataBar = dynamic(() => import("./atoms/DataBar"));
+const DataBarMobile = dynamic(() => import("./atoms/DataBarMobile"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
@@ -99,6 +101,8 @@ export {
   AlertBanner2,
   BackButton,
   ConnectButton,
+  DataBar,
+  DataBarMobile,
   DataPoint,
   Divider,
   FallbackImage,

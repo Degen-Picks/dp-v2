@@ -8,13 +8,14 @@ import {
   Timer,
   AlertBanner,
   FallbackImage,
-  Crown,
-  MovingData,
+  DataBar,
+  DataBarMobile,
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {
   title: string;
@@ -93,6 +94,9 @@ const GameQueue = () => {
   const [loading, setLoading] = useState(true);
 
   const { publicKey } = useWallet();
+
+  const [width] = useWindowSize();
+  const isMobile = width < 768;
 
   // this function fetches the status for each game
   const loadGameData = async () => {
@@ -292,93 +296,7 @@ const GameQueue = () => {
           )}
         </div>
       )}
-      <div className="fixed bottom-0 left-0 w-screen z-10">
-        {/* <MovingData> */}
-        <div className="w-screen bg-[#1B1B1B] flex items-center justify-between px-[50px]">
-          <div className="flex items-center">
-            <div className="flex items-center justify-center gap-2 border-x border-greyscale1/20 p-5">
-              <div className="animate-pulse">
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="5" cy="5" r="2" fill="#14F195" />
-                  <circle
-                    cx="5"
-                    cy="5"
-                    r="3.5"
-                    stroke="#14F195"
-                    stroke-opacity="0.15"
-                    stroke-width="3"
-                  />
-                </svg>
-              </div>
-              <p className="text-greyscale1 text-lg">Live</p>
-            </div>
-            <div className="flex items-center justify-center gap-5 border-r border-greyscale1/20 p-5">
-              <p className="text-greyscale1 text-lg">
-                69 <span className="text-greyscale4">pools</span>
-              </p>
-              <p className="text-greyscale1 text-lg">
-                42 <span className="text-greyscale4">players</span>
-              </p>
-              <p className="text-greyscale1 text-lg">
-                420 <span className="text-greyscale4">picks</span>
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-5 border-x border-greyscale1/20 p-5">
-            <div className="flex items-center gap-[5px]">
-              <Image
-                src="/images/icons/solana.png"
-                width={24}
-                height={24}
-                alt="solana"
-              />
-              <p className="text-greyscale1 text-lg">
-                240 <span className="text-greyscale4">SOL</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-[5px]">
-              <Image
-                src="/images/icons/dust.png"
-                width={24}
-                height={24}
-                alt="dust"
-              />
-              <p className="text-greyscale1 text-lg">
-                42036 <span className="text-greyscale4">DUST</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-[5px]">
-              <Image
-                src="/images/icons/usdc.png"
-                width={24}
-                height={24}
-                alt="usdc"
-              />
-              <p className="text-greyscale1 text-lg">
-                420 <span className="text-greyscale4">USDC</span>
-              </p>
-            </div>
-            <div className="flex items-center gap-[5px]">
-              <Image
-                src="/images/icons/crown-logo.png"
-                width={24}
-                height={24}
-                alt="crown"
-              />
-              <p className="text-greyscale1 text-lg">
-                40 <span className="text-greyscale4">CROWN</span>
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* </MovingData> */}
-      </div>
+      {isMobile ? <DataBarMobile /> : <DataBar />}
     </div>
   );
 };
