@@ -1,3 +1,4 @@
+import { WagerUser } from "@/types/Wagers";
 import {
   TableContainer,
   Table,
@@ -8,7 +9,11 @@ import {
 } from "@mui/material";
 import { FC } from "react";
 
-const LeaderboardTable: FC = () => {
+interface Props {
+  users: WagerUser[];
+}
+
+const LeaderboardTable: FC<Props> = ({ users }) => {
   function createData(
     name: string,
     calories: number,
@@ -39,20 +44,20 @@ const LeaderboardTable: FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {users.map((row) => (
               <TableRow
-                key={row.name}
+                key={row.publicKey}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   backgroundColor: "white",
                 }}
               >
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.publicKey}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
+                <TableCell align="right">{row.stats?.totalPoints ?? 0}</TableCell>
+                <TableCell align="right">{row.stats?.winStreak ?? 0}</TableCell>
+                <TableCell align="right">{Math.floor(row.stats?.totalWins ?? 0 / row.stats?.totalGamesPlayed ?? 0)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

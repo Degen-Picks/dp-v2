@@ -591,10 +591,7 @@ const Classic: FC<Props> = ({ gameId }) => {
   useEffect(() => {
     async function loadPick() {
       await loadGameData();
-      // show loader for 2 seconds more than needed
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setLoading(false);
     }
 
     loadPick();

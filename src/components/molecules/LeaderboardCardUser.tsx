@@ -6,10 +6,11 @@ import { FallbackImage } from "@/components";
 interface Props {
   user: WagerUser;
   title: string;
-  dataTitle?: string;
+  dataTitle: string;
+  dataValue: number;
 }
 
-const LeaderboardCardUser: FC<Props> = ({ user, title, dataTitle }) => {
+const LeaderboardCardUser: FC<Props> = ({ user, title, dataTitle, dataValue }) => {
   return (
     <div className="flex flex-col gap-2.5">
       <p>{title}</p>
@@ -51,7 +52,7 @@ const LeaderboardCardUser: FC<Props> = ({ user, title, dataTitle }) => {
         <div className="w-20 h-[60px] flex items-center justify-center border-l border-greyscale4/50">
           <div className="flex flex-col items-center justify-center">
             {/* <p className="text-lg">{user?.points}</p> */}
-            <p className="text-lg leading-5">{69}</p>
+            <p className="text-lg leading-5">{dataValue}</p>
             <p className="text-lg leading-5">{dataTitle}</p>
           </div>
         </div>
