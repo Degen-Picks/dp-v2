@@ -25,7 +25,7 @@ const LeaderboardCardUser: FC<Props> = ({
   return (
     <div className="flex flex-col gap-2.5">
       <p>{title}</p>
-      <div className="w-[300px] h-20 bg-greyscale1 flex items-center justify-between pl-5 py-2.5">
+      <div className="w-full sm:w-[300px] h-20 bg-greyscale1 flex items-center justify-between pl-5 py-2.5">
         <div className="flex items-center gap-2">
           {user.twitterData ? (
             <a

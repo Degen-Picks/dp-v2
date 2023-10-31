@@ -11,6 +11,7 @@ import {
 import { FC, useState } from "react";
 import FallbackImage from "../atoms/FallbackImage";
 import { InfoIcon, InfoModal } from "@/components";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {
   users: WagerUser[];
@@ -18,6 +19,9 @@ interface Props {
 
 const LeaderboardTable: FC<Props> = ({ users }) => {
   const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const [width] = useWindowSize();
+  const isMobile = width < 640;
 
   const getTrophy = (place: number) => {
     switch (place) {
@@ -34,9 +38,14 @@ const LeaderboardTable: FC<Props> = ({ users }) => {
 
   return (
     <>
-      <div className="w-full mb-20">
-        <TableContainer sx={{ fontFamily: "pixel" }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <div className="w-full sm:mb-20">
+        <TableContainer
+          sx={{ fontFamily: "pixel", paddingX: isMobile ? "20px" : "0px" }}
+        >
+          <Table
+            sx={{ minWidth: isMobile ? 300 : 640 }}
+            aria-label="simple table"
+          >
             <TableHead>
               <TableRow className="bg-transparent h-fit">
                 <TableCell align="right" />

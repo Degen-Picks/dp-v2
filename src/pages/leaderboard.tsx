@@ -15,9 +15,9 @@ import { BarLoader } from "react-spinners";
 import { LeaderboardData } from "@/types/LeaderboardData";
 
 const Leaderboard: FC = () => {
-
   const [loading, setLoading] = useState(true);
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
+  const [leaderboardData, setLeaderboardData] =
+    useState<LeaderboardData | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -25,9 +25,9 @@ const Leaderboard: FC = () => {
     getLeaderboard().then((data) => {
       setLeaderboardData(data);
       setLoading(false);
+      console.log("leaderboard data", data);
     });
   }, []);
-
 
   return (
     <div className="relative bg-greyscale3 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
@@ -47,11 +47,11 @@ const Leaderboard: FC = () => {
           <BarLoader color="black" />
         </div>
       )}
-      <div className="w-full max-w-[940px] mx-auto mt-10 flex flex-col gap-20">
+      <div className="w-full max-w-[940px] mx-auto mt-10 flex flex-col gap-5 sm:gap-10">
         {leaderboardData && (
           // {!loading && wagerUser && (
           <>
-            <div className="w-full grid grid-cols-3 gap-5">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-5 sm:px-0">
               <LeaderboardCardUser
                 user={leaderboardData.mostWins}
                 title="Most wins"
@@ -77,7 +77,7 @@ const Leaderboard: FC = () => {
                 dataValue={leaderboardData.mostWins.stats.totalGamesCreated}
               />
               {/* <LeaderboardCardPool
-              gameData={}
+              gameData={leaderboardData.hottestPool}
               title="Hottest pool"
               dataTitle="players"
             />
@@ -86,7 +86,6 @@ const Leaderboard: FC = () => {
             <LeaderboardTable users={leaderboardData.users} />
           </>
         )}
-        
       </div>
     </div>
   );
