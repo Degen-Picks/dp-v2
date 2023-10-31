@@ -103,21 +103,8 @@ const GameQueue = () => {
       return;
     }
 
-    gameData = gameData.filter((game: Wager) => {
-      if (game.metadata && game.metadata.length > 0) {
-        const isHiddenData = game.metadata.find((data: any) => data.is_hidden);
-        if (isHiddenData && isHiddenData.is_hidden) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-
     setGames(gameData ?? []);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+    setLoading(false);
   };
 
   const activeLiveGames = games

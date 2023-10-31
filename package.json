@@ -12,7 +12,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@metaplex/js": "^4.12.0",
-    "@mui/material": "^5.13.7",
+    "@mui/material": "^5.14.14",
     "@solana/wallet-adapter-base": "^0.9.22",
     "@solana/wallet-adapter-react": "^0.15.32",
     "@solana/wallet-adapter-react-ui": "^0.9.31",

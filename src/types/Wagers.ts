@@ -31,8 +31,21 @@ export interface Selection {
 type Roles = Role[];
 type Role = "ADMIN" | "CREATOR" | "DEFAULT";
 
-export type WagerUser = {
+interface Stats {
+  totalWins: number;
+  totalGamesCreated: number;
+  totalGamesPlayed: number;
+  totalGamesAirDropped: number;
+  totalPoints: number;
+  winStreak: number;
+  longestWinStreak: number;
+  _id: string;
+}
+
+
+export interface WagerUser {
   publicKey: string;
   twitterData: TwitterData | null;
   roles: Roles;
+  stats: Stats;
 };

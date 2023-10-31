@@ -2,6 +2,7 @@ import { generalConfig } from "@/configs";
 import { LeaguesArray, Pickem, Wager, Stats, WagerUser } from "@/types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { handleWalletLogin } from "../walletUtils";
+import { LeaderboardData } from "@/types/LeaderboardData";
 
 export async function getWagers() {
   try {
@@ -38,6 +39,16 @@ export async function getAssets() {
     const response = await fetch(`${generalConfig.apiUrl}/api/assets`);
     const assets = await response.json();
     return assets.data as LeaguesArray;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getLeaderboard() {
+  try {
+    const response = await fetch(`${generalConfig.apiUrl}/api/leaderboard`);
+    const leaderboard = await response.json();
+    return leaderboard.data as LeaderboardData;
   } catch (err) {
     return null;
   }
