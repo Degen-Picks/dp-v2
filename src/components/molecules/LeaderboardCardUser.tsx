@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 import { WagerUser } from "@/types";
 import { FallbackImage } from "@/components";
@@ -10,7 +10,18 @@ interface Props {
   dataValue: number;
 }
 
-const LeaderboardCardUser: FC<Props> = ({ user, title, dataTitle, dataValue }) => {
+const LeaderboardCardUser: FC<Props> = ({
+  user,
+  title,
+  dataTitle,
+  dataValue,
+}) => {
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  if (!user) return null;
+
   return (
     <div className="flex flex-col gap-2.5">
       <p>{title}</p>
