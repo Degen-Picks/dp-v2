@@ -163,11 +163,16 @@ const LeaderboardTable: FC<Props> = ({ users }) => {
           flex flex-col items-center justify-center"
         >
           <p className="text-xl sm:text-2xl font-base-b text-center">
-            Your potential payout
+            Degen Picks Points™ (DPP)
           </p>
-          <p className="max-w-[400px] mx-auto text-base sm:text-lg">
-            Your payout is determined by the multiplier. Multipliers are highly
-            volatile when the pool is live, and lock when the pool closes.
+          <p className="max-w-[400px] mx-auto text-base sm:text-lg text-left">
+            (1) point per day in a top spot
+            <br />
+            (1) point per game played
+            <br />
+            (1) point per win
+            <br />
+            (1) point per pool airdropped
           </p>
           <button
             className="ml-auto text-purple1 hover:text-purple2 text-lg"
