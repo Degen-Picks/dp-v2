@@ -18,8 +18,10 @@ const MegaMenuButton: FC<Props> = ({ userData }) => {
       <div className="w-full flex items-center gap-2.5">
         {!userData?.twitterData ? (
           <>
-            <div className="w-10 h-10 flex items-center justify-center rounded-full border border-greyscale4">
-              <UserIcon color="#A89FA8" />
+            <div className="rounded-full border border-greyscale4">
+              <div className="w-10 h-10 flex items-center justify-center">
+                <UserIcon color="#A89FA8" size={24} />
+              </div>
             </div>
             <p className="hidden sm:block text-lg whitespace-nowrap">
               {publicKey.toBase58().slice(0, 4) +

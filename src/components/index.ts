@@ -20,6 +20,8 @@ const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
 const AlertBanner2 = dynamic(() => import("./atoms/AlertBanner2"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
+const DataBar = dynamic(() => import("./atoms/DataBar"));
+const DataBarMobile = dynamic(() => import("./atoms/DataBarMobile"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
@@ -27,6 +29,7 @@ const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
 const ImageShimmer = dynamic(() => import("./atoms/ImageShimmer"));
+const MovingData = dynamic(() => import("./atoms/MovingData"));
 const RoadmapObject = dynamic(() => import("./atoms/RoadmapObject"));
 const StepCircle = dynamic(() => import("./atoms/StepCircle"));
 const Timer = dynamic(() => import("./atoms/Timer"));
@@ -105,6 +108,8 @@ export {
   AlertBanner2,
   BackButton,
   ConnectButton,
+  DataBar,
+  DataBarMobile,
   DataPoint,
   Divider,
   FallbackImage,
@@ -112,6 +117,7 @@ export {
   Friend,
   GameFilter,
   ImageShimmer,
+  MovingData,
   RoadmapObject,
   StepCircle,
   Timer,

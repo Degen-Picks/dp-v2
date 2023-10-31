@@ -8,12 +8,14 @@ import {
   Timer,
   AlertBanner,
   FallbackImage,
-  Crown,
+  DataBar,
+  DataBarMobile,
 } from "@/components";
 import { Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {
   title: string;
@@ -92,6 +94,9 @@ const GameQueue = () => {
   const [loading, setLoading] = useState(true);
 
   const { publicKey } = useWallet();
+
+  const [width] = useWindowSize();
+  const isMobile = width < 768;
 
   // this function fetches the status for each game
   const loadGameData = async () => {
@@ -278,6 +283,7 @@ const GameQueue = () => {
           )}
         </div>
       )}
+      {isMobile ? <DataBarMobile /> : <DataBar />}
     </div>
   );
 };
