@@ -19,8 +19,8 @@ const MegaMenuButton: FC<Props> = ({ userData }) => {
         {!userData?.twitterData ? (
           <>
             <div className="rounded-full border border-greyscale4">
-              <div className="w-10 h-10 flex items-center justify-center">
-                <UserIcon color="#A89FA8" size={24} />
+              <div className="w-10 h-10 flex items-center justify-center rounded-full border-[0.5px] border-greyscale4">
+                <UserIcon color="#A89FA8" />
               </div>
             </div>
             <p className="hidden sm:block text-lg whitespace-nowrap">
