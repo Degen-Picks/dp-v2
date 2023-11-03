@@ -87,7 +87,7 @@ const Leaderboard: FC = () => {
                 title="Craziest upset"
                 dataTitle=""
                 dataValue={
-                  leaderboardData.craziestUpset.stats.craziestUpset.toFixed(1) +
+                  leaderboardData.craziestUpset.stats.craziestUpset.toFixed(2) +
                   "x"
                 }
               />
