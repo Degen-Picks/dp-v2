@@ -85,30 +85,32 @@ const LeaderboardTable: FC<Props> = ({ users }) => {
                           {index + 1 > 3 ? index + 1 : getTrophy(index + 1)}
                         </p>
                         {row.twitterData ? (
-                          <a
-                            href={`https://twitter.com/${row.twitterData.username}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center gap-2.5"
-                          >
-                            <div className="rounded-full w-[40px] h-[40px] overflow-hidden">
-                              <FallbackImage
-                                src={row.twitterData.profileImage}
-                                fallbackSrc={"/images/icons/user-alt.png"}
-                                width={40}
-                                height={40}
-                                alt="user image"
-                              />
-                            </div>
-                            <div className="flex flex-col gap-2.5">
-                              <p className="text-lg leading-4">
-                                {row.twitterData.username}
-                              </p>
-                              <p className="text-greyscale4 leading-4">
-                                {row.stats.totalGamesPlayed} games
-                              </p>
-                            </div>
-                          </a>
+                          <div className="group flex items-center gap-5">
+                            <a
+                              href={`https://twitter.com/${row.twitterData.username}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-2.5 group-hover:text-purple1"
+                            >
+                              <div className="rounded-full border-2 border-transparent group-hover:border-purple1 w-[44px] h-[44px] overflow-hidden">
+                                <FallbackImage
+                                  src={row.twitterData.profileImage}
+                                  fallbackSrc={"/images/icons/user-alt.png"}
+                                  width={40}
+                                  height={40}
+                                  alt="user image"
+                                />
+                              </div>
+                              <div className="flex flex-col gap-2.5">
+                                <p className="text-lg leading-4 group-hover:underline">
+                                  {row.twitterData.username}
+                                </p>
+                                <p className="text-greyscale4 leading-4">
+                                  {row.stats.totalGamesPlayed} games
+                                </p>
+                              </div>
+                            </a>
+                          </div>
                         ) : (
                           <div className="flex items-center gap-2.5">
                             <Image
