@@ -7,7 +7,7 @@ interface Props {
   user: WagerUser;
   title: string;
   dataTitle: string;
-  dataValue: number;
+  dataValue: number | string;
 }
 
 const LeaderboardCardUser: FC<Props> = ({

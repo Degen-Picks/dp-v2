@@ -32,20 +32,21 @@ type Roles = Role[];
 type Role = "ADMIN" | "CREATOR" | "DEFAULT";
 
 interface Stats {
-  totalWins: number;
+  craziestUpset: number;
+  hottestPool: number;
+  longestWinStreak: number;
+  totalGamesAirDropped: number;
   totalGamesCreated: number;
   totalGamesPlayed: number;
-  totalGamesAirDropped: number;
   totalPoints: number;
+  totalWins: number;
   winStreak: number;
-  longestWinStreak: number;
   _id: string;
 }
-
 
 export interface WagerUser {
   publicKey: string;
   twitterData: TwitterData | null;
   roles: Roles;
   stats: Stats;
-};
+}

@@ -1,16 +1,11 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   LeaderboardCardPool,
   LeaderboardCardUser,
   LeaderboardTable,
   Navbar,
 } from "@/components";
-import {
-  WagerUserContext,
-  WagerUserContextType,
-} from "@/components/stores/WagerUserStore";
-import { Wager } from "@/types";
-import { getLeaderboard, getWagers } from "@/utils";
+import { getLeaderboard } from "@/utils";
 import { BarLoader } from "react-spinners";
 import { LeaderboardData } from "@/types/LeaderboardData";
 
@@ -49,7 +44,6 @@ const Leaderboard: FC = () => {
       )}
       <div className="w-full max-w-[940px] mx-auto mt-10 flex flex-col gap-5 sm:gap-10">
         {leaderboardData && (
-          // {!loading && wagerUser && (
           <>
             <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 px-5 sm:px-0">
               <LeaderboardCardUser
@@ -82,6 +76,21 @@ const Leaderboard: FC = () => {
               dataTitle="players"
             />
             <LeaderboardCardPool gameData={} title="Craziest upset" /> */}
+              <LeaderboardCardUser
+                user={leaderboardData.hottestPool}
+                title="Hottest pool"
+                dataTitle="players"
+                dataValue={leaderboardData.hottestPool.stats.hottestPool}
+              />
+              <LeaderboardCardUser
+                user={leaderboardData.craziestUpset}
+                title="Craziest upset"
+                dataTitle=""
+                dataValue={
+                  leaderboardData.craziestUpset.stats.craziestUpset.toFixed(1) +
+                  "x"
+                }
+              />
             </div>
             <LeaderboardTable users={leaderboardData.users} />
           </>
