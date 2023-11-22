@@ -1,7 +1,7 @@
 import { useEffect, useState, FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getCurrencyIcon, getWagers } from "@/utils";
+import { getCurrencyIcon, getStats, getWagers } from "@/utils";
 import {
   Navbar,
   GameFilter,
@@ -11,7 +11,7 @@ import {
   DataBar,
   DataBarMobile,
 } from "@/components";
-import { Wager, WagerUser } from "@/types";
+import { Stats, Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
@@ -92,12 +92,28 @@ const GameQueue = () => {
   const [games, setGames] = useState<Wager[]>([]);
   const [activeFilter, setActiveFilter] = useState(true);
   const [loading, setLoading] = useState(true);
-
+  const [statData, setStatData] = useState<Stats | null>(null);
+  
   const { publicKey } = useWallet();
 
   const [width] = useWindowSize();
   const isMobile = width < 768;
 
+  const loadStatData = async () => {
+    const statData: Stats | null = await getStats();
+    if (statData === null) return;
+
+    setStatData(statData);
+  };
+
+  useEffect(() => {
+    async function loadStats() {
+      await loadStatData();
+    }
+
+    loadStats();
+  }, []);
+  
   // this function fetches the status for each game
   const loadGameData = async () => {
     setLoading(true);
@@ -283,7 +299,7 @@ const GameQueue = () => {
           )}
         </div>
       )}
-      {isMobile ? <DataBarMobile /> : <DataBar />}
+      {statData && (isMobile ? <DataBarMobile stats={statData} /> : <DataBar stats={statData}/>)}
     </div>
   );
 };

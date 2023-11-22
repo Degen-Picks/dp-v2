@@ -1,14 +1,22 @@
 import { FC, useState } from "react";
 import Image from "next/image";
 import { ChevronsUpDown } from "lucide-react";
+import { Stats } from "@/types";
+import TokenDisplay from "./TokenDisplay";
 
 export enum DataType {
   LIVE,
   TOTAL,
 }
 
-const DataBar: FC = () => {
+interface Props {
+  stats: Stats;
+}
+
+const DataBar: FC<Props> = ({ stats }) => {
   const [dataType, setDataType] = useState<DataType>(DataType.LIVE);
+
+  const dataToUse = dataType === DataType.LIVE ? stats.live.totalVolume : stats.total.totalVolume;  
 
   return (
     <div className="fixed bottom-0 left-0 w-screen z-10">
@@ -54,68 +62,24 @@ const DataBar: FC = () => {
           </div>
           <div className="flex items-center justify-center gap-5 border-r border-greyscale1/20 p-5">
             <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "5" : "420"}{" "}
+            {dataType === DataType.LIVE ? stats.live.gamesHosted : stats.total.gamesHosted}{" "}
               <span className="text-greyscale4">pools</span>
             </p>
             <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "25" : "946"}{" "}
+            {dataType === DataType.LIVE ? stats.live.uniquePlayers : stats.total.uniquePlayers}{" "}
               <span className="text-greyscale4">players</span>
             </p>
             <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "30" : "1043"}{" "}
+            {dataType === DataType.LIVE ? stats.live.totalPicks : stats.total.totalPicks}{" "}
               <span className="text-greyscale4">picks</span>
             </p>
           </div>
         </div>
         <div className="flex items-center justify-center gap-5 border-x border-greyscale1/20 p-5">
-          <div className="flex items-center gap-[5px]">
-            <Image
-              src="/images/icons/solana.png"
-              width={24}
-              height={24}
-              alt="solana"
-            />
-            <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "69" : "420"}{" "}
-              <span className="text-greyscale4">SOL</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-[5px]">
-            <Image
-              src="/images/icons/dust.png"
-              width={24}
-              height={24}
-              alt="dust"
-            />
-            <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "69" : "420"}{" "}
-              <span className="text-greyscale4">DUST</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-[5px]">
-            <Image
-              src="/images/icons/usdc.png"
-              width={24}
-              height={24}
-              alt="usdc"
-            />
-            <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "69" : "420"}{" "}
-              <span className="text-greyscale4">USDC</span>
-            </p>
-          </div>
-          <div className="flex items-center gap-[5px]">
-            <Image
-              src="/images/icons/crown-logo.png"
-              width={24}
-              height={24}
-              alt="crown"
-            />
-            <p className="text-greyscale1 text-lg">
-              {dataType === DataType.LIVE ? "69" : "420"}{" "}
-              <span className="text-greyscale4">CROWN</span>
-            </p>
-          </div>
+          <TokenDisplay token="SOL" data={dataToUse} />
+          <TokenDisplay token="DUST" data={dataToUse} />
+          <TokenDisplay token="USDC" data={dataToUse} />
+          <TokenDisplay token="CROWN" data={dataToUse} />
         </div>
       </div>
     </div>

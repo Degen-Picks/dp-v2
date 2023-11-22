@@ -47,7 +47,7 @@ const TeamMember: FC<TeamProps> = ({ handle, image }) => {
 };
 
 const Landing = () => {
-  const [statData, setStatData] = useState<Stats>();
+  const [statData, setStatData] = useState<Stats | null>(null);
   const [mounted, setMounted] = useState(false);
 
   const [winWidth] = useWindowSize();
@@ -57,13 +57,7 @@ const Landing = () => {
     const statData: Stats | null = await getStats();
     if (statData === null) return;
 
-    const { gamesHosted, uniquePlayers, totalVolume } = statData;
-
-    setStatData({
-      gamesHosted: gamesHosted,
-      uniquePlayers: uniquePlayers,
-      totalVolume: totalVolume,
-    });
+    setStatData(statData);
   };
 
   useEffect(() => {
@@ -131,7 +125,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      {isMobile ? <DataBarMobile /> : <DataBar />}
+      {statData !== null && (isMobile ? <DataBarMobile stats={statData}/> : <DataBar stats={statData}/>)}
     </div>
   );
 };

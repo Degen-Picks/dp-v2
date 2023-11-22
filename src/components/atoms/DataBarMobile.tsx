@@ -3,6 +3,8 @@ import Image from "next/image";
 import { ChevronsUpDown } from "lucide-react";
 import { DataType } from "./DataBar";
 import { AnimatePresence, motion } from "framer-motion";
+import { Stats, Volume } from "@/types";
+import TokenDisplay from "./TokenDisplay";
 
 export enum DataInView {
   POOLS,
@@ -10,7 +12,11 @@ export enum DataInView {
   TOKENS2,
 }
 
-const DataBarMobile: FC = () => {
+interface Props {
+  stats: Stats;
+}
+
+const DataBarMobile: FC<Props> = ({ stats }) => {
   const [dataType, setDataType] = useState<DataType>(DataType.LIVE);
   const [dataInView, setDataInView] = useState<DataInView>(DataInView.POOLS);
 
@@ -38,6 +44,8 @@ const DataBarMobile: FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+  
+  const dataToUse = dataType === DataType.LIVE ? stats.live.totalVolume : stats.total.totalVolume;  
 
   return (
     <div className="fixed bottom-0 left-0 w-screen z-10">
@@ -92,15 +100,15 @@ const DataBarMobile: FC = () => {
                 key={"pools"}
               >
                 <p className="text-greyscale1 text-lg leading-4">
-                  {dataType === DataType.LIVE ? "5" : "420"}{" "}
+                  {dataType === DataType.LIVE ? stats.live.gamesHosted : stats.total.gamesHosted}{" "}
                   <span className="text-greyscale4">pools</span>
                 </p>
                 <p className="text-greyscale1 text-lg leading-4">
-                  {dataType === DataType.LIVE ? "25" : "946"}{" "}
+                  {dataType === DataType.LIVE ? stats.live.uniquePlayers : stats.total.uniquePlayers}{" "}
                   <span className="text-greyscale4">players</span>
                 </p>
                 <p className="text-greyscale1 text-lg leading-4">
-                  {dataType === DataType.LIVE ? "30" : "1043"}{" "}
+                  {dataType === DataType.LIVE ? stats.live.totalPicks : stats.total.totalPicks}{" "}
                   <span className="text-greyscale4">picks</span>
                 </p>
               </motion.div>
@@ -114,30 +122,8 @@ const DataBarMobile: FC = () => {
                 transition={{ duration: 0.8 }}
                 key="tokens1"
               >
-                <div className="flex items-center gap-[5px]">
-                  <Image
-                    src="/images/icons/solana.png"
-                    width={24}
-                    height={24}
-                    alt="solana"
-                  />
-                  <p className="text-greyscale1 text-lg">
-                    {dataType === DataType.LIVE ? "69" : "420"}{" "}
-                    <span className="text-greyscale4">SOL</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-[5px]">
-                  <Image
-                    src="/images/icons/dust.png"
-                    width={24}
-                    height={24}
-                    alt="dust"
-                  />
-                  <p className="text-greyscale1 text-lg">
-                    {dataType === DataType.LIVE ? "69" : "420"}{" "}
-                    <span className="text-greyscale4">DUST</span>
-                  </p>
-                </div>
+                <TokenDisplay token="SOL" data={dataToUse} />
+                <TokenDisplay token="DUST" data={dataToUse} />
               </motion.div>
             )}
             {dataInView === DataInView.TOKENS2 && (
@@ -149,30 +135,8 @@ const DataBarMobile: FC = () => {
                 transition={{ duration: 0.8 }}
                 key="tokens2"
               >
-                <div className="flex items-center gap-[5px]">
-                  <Image
-                    src="/images/icons/usdc.png"
-                    width={24}
-                    height={24}
-                    alt="usdc"
-                  />
-                  <p className="text-greyscale1 text-lg">
-                    {dataType === DataType.LIVE ? "69" : "420"}{" "}
-                    <span className="text-greyscale4">USDC</span>
-                  </p>
-                </div>
-                <div className="flex items-center gap-[5px]">
-                  <Image
-                    src="/images/icons/crown-logo.png"
-                    width={24}
-                    height={24}
-                    alt="crown"
-                  />
-                  <p className="text-greyscale1 text-lg">
-                    {dataType === DataType.LIVE ? "69" : "420"}{" "}
-                    <span className="text-greyscale4">CROWN</span>
-                  </p>
-                </div>
+                <TokenDisplay token="USDC" data={dataToUse} />
+                <TokenDisplay token="CROWN" data={dataToUse} />
               </motion.div>
             )}
           </AnimatePresence>
