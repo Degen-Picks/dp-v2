@@ -15,31 +15,6 @@ const ConnectButton = () => {
   const wallet = useWallet();
   const { publicKey } = wallet;
 
-  useEffect(() => {
-    async function load() {
-      const loginUser = await login(wallet);
-      if (loginUser !== null) {
-        setWagerUser(loginUser);
-      }
-    }
-
-    if (publicKey) {
-      load();
-    }
-  }, [publicKey]);
-
-  // Logout on disconnect/wallet change
-  useEffect(() => {
-    async function load() {
-      await logout();
-      setWagerUser(null);
-    }
-
-    if (!publicKey) {
-      load();
-    }
-  }, [publicKey]);
-
   return (
     <div
       className="!bg-black !relative !w-full sm:!w-fit flex items-center justify-center

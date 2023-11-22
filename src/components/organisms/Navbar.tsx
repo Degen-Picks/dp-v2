@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ConnectButton, MegaMenu, MegaMenuButton } from "@/components";
@@ -9,21 +9,56 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { AlignJustify } from "lucide-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
+import { login, logout } from "@/utils";
+import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
 
 interface Props {
   landing?: boolean;
 }
 
 const Navbar: FC<Props> = ({ landing = false }) => {
+  const { wagerUser, setWagerUser } = useContext(
+    WagerUserContext
+  ) as WagerUserContextType;
+  
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<WagerUser | undefined>();
 
-  const { publicKey } = useWallet();
+  const wallet = useWallet();
+  const { publicKey } = wallet;
   const router = useRouter();
 
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 1024;
+
+
+  // Handle login
+  useEffect(() => {
+    async function load() {
+      const loginUser = await login(wallet);
+      if (loginUser !== null) {
+        setWagerUser(loginUser);
+      }
+    }
+
+    console.log("pubkeydsfhsdjhf", publicKey)
+    if (publicKey) {
+      load();
+    }
+  }, [publicKey]);
+
+  // Logout on disconnect/wallet change
+  useEffect(() => {
+    async function load() {
+      await logout();
+      setWagerUser(null);
+    }
+
+    if (!publicKey) {
+      load();
+    }
+  }, [publicKey]);
 
   const loadUserData = async () => {
     try {
