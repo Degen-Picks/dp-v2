@@ -27,7 +27,7 @@ const GameQueue = () => {
   const { publicKey } = useWallet();
 
   const [width] = useWindowSize();
-  const isMobile = width < 768;
+  const isMobile = width < 1024;
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -119,7 +119,7 @@ const GameQueue = () => {
       ) : (
         <div
           className="flex flex-col gap-5 items-center w-[90%] 
-          md:w-fit mx-auto justify-center mb-20 z-20"
+          md:w-fit mx-auto justify-center mb-40 z-20"
         >
           <div
             className={`hidden md:block absolute ${
