@@ -45,6 +45,7 @@ const CreationTextFieldLong = dynamic(
   () => import("./molecules/CreationTextFieldLong")
 );
 const Friends = dynamic(() => import("./molecules/Friends"));
+const GameCard = dynamic(() => import("./molecules/GameCard"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
 const HowItWorksView = dynamic(() => import("./molecules/HowItWorksView"));
@@ -129,6 +130,7 @@ export {
   CreationTextField,
   CreationTextFieldLong,
   Friends,
+  GameCard,
   GameMetadata,
   GameOptions,
   HowItWorksView,
