@@ -125,7 +125,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      {statData !== null && (isMobile ? <DataBarMobile stats={statData}/> : <DataBar stats={statData}/>)}
+      {/* {statData !== null && (isMobile ? <DataBarMobile stats={statData}/> : <DataBar stats={statData}/>)} */}
     </div>
   );
 };

@@ -16,7 +16,10 @@ interface Props {
 const DataBar: FC<Props> = ({ stats }) => {
   const [dataType, setDataType] = useState<DataType>(DataType.LIVE);
 
-  const dataToUse = dataType === DataType.LIVE ? stats.live.totalVolume : stats.total.totalVolume;  
+  const dataToUse =
+    dataType === DataType.LIVE
+      ? stats.live?.totalVolume
+      : stats.total?.totalVolume;
 
   return (
     <div className="fixed bottom-0 left-0 w-screen z-10">
@@ -62,15 +65,21 @@ const DataBar: FC<Props> = ({ stats }) => {
           </div>
           <div className="flex items-center justify-center gap-5 border-r border-greyscale1/20 p-5">
             <p className="text-greyscale1 text-lg">
-            {dataType === DataType.LIVE ? stats.live.gamesHosted : stats.total.gamesHosted}{" "}
+              {dataType === DataType.LIVE
+                ? stats.live.gamesHosted
+                : stats.total.gamesHosted}{" "}
               <span className="text-greyscale4">pools</span>
             </p>
             <p className="text-greyscale1 text-lg">
-            {dataType === DataType.LIVE ? stats.live.uniquePlayers : stats.total.uniquePlayers}{" "}
+              {dataType === DataType.LIVE
+                ? stats.live.uniquePlayers
+                : stats.total.uniquePlayers}{" "}
               <span className="text-greyscale4">players</span>
             </p>
             <p className="text-greyscale1 text-lg">
-            {dataType === DataType.LIVE ? stats.live.totalPicks : stats.total.totalPicks}{" "}
+              {dataType === DataType.LIVE
+                ? stats.live.totalPicks
+                : stats.total.totalPicks}{" "}
               <span className="text-greyscale4">picks</span>
             </p>
           </div>
