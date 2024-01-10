@@ -166,12 +166,12 @@ const GameQueue = () => {
           )}
         </div>
       )}
-      {statData &&
+      {/* {statData &&
         (isMobile ? (
           <DataBarMobile stats={statData} />
         ) : (
           <DataBar stats={statData} />
-        ))}
+        ))} */}
     </div>
   );
 };
