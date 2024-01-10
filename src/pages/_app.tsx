@@ -17,6 +17,7 @@ import Head from "next/head";
 import { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { WagerUserContextProvider } from "@/components/stores/WagerUserStore";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -43,6 +44,16 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     ],
     [network]
   );
+
+  const THEME = createTheme({
+    typography: {
+      fontFamily: `"pixel", "-apple-system", "system-ui", "monospace"`,
+      fontSize: 16,
+      fontWeightLight: 300,
+      fontWeightRegular: 400,
+      fontWeightMedium: 500,
+    },
+  });
 
   return (
     <>
@@ -83,15 +94,17 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
       </Head>
-      <WagerUserContextProvider>
-        <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>
-              <Component {...pageProps} />
-            </WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
-      </WagerUserContextProvider>
+      <ThemeProvider theme={THEME}>
+        <WagerUserContextProvider>
+          <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider wallets={wallets} autoConnect>
+              <WalletModalProvider>
+                <Component {...pageProps} />
+              </WalletModalProvider>
+            </WalletProvider>
+          </ConnectionProvider>
+        </WagerUserContextProvider>
+      </ThemeProvider>
       <Toaster />
     </>
   );

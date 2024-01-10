@@ -20,6 +20,8 @@ const AlertBanner = dynamic(() => import("./atoms/AlertBanner"));
 const AlertBanner2 = dynamic(() => import("./atoms/AlertBanner2"));
 const BackButton = dynamic(() => import("./atoms/BackButton"));
 const ConnectButton = dynamic(() => import("./atoms/ConnectButton"));
+const DataBar = dynamic(() => import("./atoms/DataBar"));
+const DataBarMobile = dynamic(() => import("./atoms/DataBarMobile"));
 const DataPoint = dynamic(() => import("./atoms/DataPoint"));
 const Divider = dynamic(() => import("./atoms/Divider"));
 const FallbackImage = dynamic(() => import("./atoms/FallbackImage"));
@@ -27,6 +29,7 @@ const ForwardButton = dynamic(() => import("./atoms/ForwardButton"));
 const Friend = dynamic(() => import("./atoms/Friend"));
 const GameFilter = dynamic(() => import("./atoms/GameFilter"));
 const ImageShimmer = dynamic(() => import("./atoms/ImageShimmer"));
+const MovingData = dynamic(() => import("./atoms/MovingData"));
 const RoadmapObject = dynamic(() => import("./atoms/RoadmapObject"));
 const StepCircle = dynamic(() => import("./atoms/StepCircle"));
 const Timer = dynamic(() => import("./atoms/Timer"));
@@ -42,12 +45,19 @@ const CreationTextFieldLong = dynamic(
   () => import("./molecules/CreationTextFieldLong")
 );
 const Friends = dynamic(() => import("./molecules/Friends"));
+const GameCard = dynamic(() => import("./molecules/GameCard"));
 const GameMetadata = dynamic(() => import("./molecules/GameMetadata"));
 const GameOptions = dynamic(() => import("./molecules/GameOptions"));
 const HowItWorksView = dynamic(() => import("./molecules/HowItWorksView"));
+const LeaderboardCardPool = dynamic(
+  () => import("./molecules/LeaderboardCardPool")
+);
+const LeaderboardCardUser = dynamic(
+  () => import("./molecules/LeaderboardCardUser")
+);
 const LinkTwitterView = dynamic(() => import("./molecules/LinkTwitterView"));
-const MobileMenu = dynamic(() => import("./molecules/MobileMenu"));
-const Navbar = dynamic(() => import("./molecules/Navbar"));
+const MegaMenu = dynamic(() => import("./molecules/MegaMenu"));
+const MegaMenuButton = dynamic(() => import("./molecules/MegaMenuButton"));
 const PlayResponsiblyView = dynamic(
   () => import("./molecules/PlayResponsiblyView")
 );
@@ -66,7 +76,9 @@ const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
+const LeaderboardTable = dynamic(() => import("./organisms/LeaderboardTable"));
 const ManageStats = dynamic(() => import("./organisms/ManageStats"));
+const Navbar = dynamic(() => import("./organisms/Navbar"));
 const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
@@ -97,6 +109,8 @@ export {
   AlertBanner2,
   BackButton,
   ConnectButton,
+  DataBar,
+  DataBarMobile,
   DataPoint,
   Divider,
   FallbackImage,
@@ -104,6 +118,7 @@ export {
   Friend,
   GameFilter,
   ImageShimmer,
+  MovingData,
   RoadmapObject,
   StepCircle,
   Timer,
@@ -115,12 +130,15 @@ export {
   CreationTextField,
   CreationTextFieldLong,
   Friends,
+  GameCard,
   GameMetadata,
   GameOptions,
   HowItWorksView,
+  LeaderboardCardPool,
+  LeaderboardCardUser,
   LinkTwitterView,
-  MobileMenu,
-  Navbar,
+  MegaMenu,
+  MegaMenuButton,
   PlayResponsiblyView,
   RewardCircle,
   Roadmap,
@@ -135,7 +153,9 @@ export {
   ClassicVersusBox,
   CreateModal,
   InfoModal,
+  LeaderboardTable,
   ManageStats,
+  Navbar,
   PoolDetailsModal,
   RewardPool,
   RulesModal,

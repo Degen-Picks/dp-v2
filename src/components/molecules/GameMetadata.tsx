@@ -59,11 +59,6 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
           <Timer
             status={gameData.gameInfo.status}
             gameTime={gameData.gameInfo.gameDate}
-            winner={
-              gameData.team1.winner
-                ? gameData.team1.teamName
-                : gameData.team2.teamName
-            }
           />
         </div>
       )}
