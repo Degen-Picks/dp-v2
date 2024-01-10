@@ -73,6 +73,7 @@ const ViewToggle = dynamic(() => import("./molecules/ViewToggle"));
 
 // organisms
 const ClassicHero = dynamic(() => import("./organisms/ClassicHero"));
+const ClassicSetup = dynamic(() => import("./organisms/ClassicSetup"));
 const ClassicVersusBox = dynamic(() => import("./organisms/ClassicVersusBox"));
 const CreateModal = dynamic(() => import("./organisms/CreateModal"));
 const InfoModal = dynamic(() => import("./organisms/InfoModal"));
@@ -82,10 +83,12 @@ const Navbar = dynamic(() => import("./organisms/Navbar"));
 const PoolDetailsModal = dynamic(() => import("./organisms/PoolDetailsModal"));
 const RewardPool = dynamic(() => import("./organisms/RewardPool"));
 const RulesModal = dynamic(() => import("./organisms/RulesModal"));
+const SuperbowlSetup = dynamic(() => import("./organisms/SuperbowlSetup"));
 
 // templates
 const ActivityFeed = dynamic(() => import("./templates/ActivityFeed"));
 const ClassicView = dynamic(() => import("./templates/ClassicView"));
+const GameSetup = dynamic(() => import("./templates/GameSetup"));
 const ManageGame = dynamic(() => import("./templates/ManageGame"));
 
 export {
@@ -150,6 +153,7 @@ export {
 
   // organisms
   ClassicHero,
+  ClassicSetup,
   ClassicVersusBox,
   CreateModal,
   InfoModal,
@@ -159,9 +163,11 @@ export {
   PoolDetailsModal,
   RewardPool,
   RulesModal,
+  SuperbowlSetup,
 
   // templates
   ActivityFeed,
   ClassicView,
+  GameSetup,
   ManageGame,
 };
