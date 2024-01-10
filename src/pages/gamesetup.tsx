@@ -1,8 +1,9 @@
+import { GameSetup } from "@/components";
 import { withRedirect } from "@/utils/withRedirect";
 
-const GameSetup = () => {
+const GameSetupPage = () => {
   return <GameSetup />;
 };
 
 export const getServerSideProps = withRedirect();
-export default GameSetup;
+export default GameSetupPage;

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   BackButton,
   Navbar,
@@ -10,6 +10,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { generalConfig } from "@/configs";
 import { motion } from "framer-motion";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 export enum SetupTabs {
   CLASSIC = "Classic",
@@ -17,21 +21,20 @@ export enum SetupTabs {
 }
 
 const GameSetup: FC = () => {
-  // wallet variables
-  const wallet = useWallet();
-  const { publicKey } = wallet;
+  // hooks
+  const { publicKey } = useWallet();
+  const router = useRouter();
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
 
   // state
   const [tab, setTab] = useState<SetupTabs>(SetupTabs.CLASSIC);
   const [showModal, setShowModal] = useState(false);
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (publicKey) {
-      setShowModal(true);
-    }
-  }, [publicKey]);
+  // useEffect(() => {
+  //   if (publicKey) {
+  //     setShowModal(true);
+  //   }
+  // }, [publicKey]);
 
   return (
     <>
@@ -53,7 +56,7 @@ const GameSetup: FC = () => {
                   tab === SetupTabs.CLASSIC
                     ? "bg-greyscale5 text-greyscale1"
                     : "bg-transparent hover:bg-greyscale2"
-                } w-[80px] h-[30px] flex flex-col items-center justify-center`}
+                } w-[120px] h-[40px] flex flex-col items-center justify-center`}
                 onClick={() => setTab(SetupTabs.CLASSIC)}
               >
                 Classic
@@ -63,7 +66,7 @@ const GameSetup: FC = () => {
                   tab === SetupTabs.SUPERBOWL
                     ? "bg-greyscale5 text-greyscale1"
                     : "bg-transparent  hover:bg-greyscale2"
-                } w-[80px] h-[30px] flex flex-col items-center justify-center`}
+                } w-[120px] h-[40px] flex flex-col items-center justify-center`}
                 onClick={() => setTab(SetupTabs.SUPERBOWL)}
               >
                 SuperBowl LVIII
@@ -82,10 +85,15 @@ const GameSetup: FC = () => {
               Connect your wallet & Twitter/X to create a pool.
             </div>
           )}
-          {tab === SetupTabs.CLASSIC ? (
-            <ClassicSetup setShowModal={setShowModal} />
-          ) : (
-            <SuperbowlSetup setShowModal={setShowModal} />
+          {publicKey && !!wagerUser && wagerUser?.roles.includes("CREATOR") && (
+            <>
+              <div className={`${tab !== SetupTabs.CLASSIC && "hidden"}`}>
+                <ClassicSetup setShowModal={setShowModal} />
+              </div>
+              <div className={`${tab !== SetupTabs.SUPERBOWL && "hidden"} `}>
+                <SuperbowlSetup setShowModal={setShowModal} />
+              </div>
+            </>
           )}
         </div>
       </div>
