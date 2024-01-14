@@ -16,35 +16,7 @@ import { getCurrencyIcon } from "@/utils";
 import { motion } from "framer-motion";
 import { generalConfig } from "@/configs";
 import { useWindowSize } from "@/hooks/useWindowSize";
-
-interface TeamProps {
-  handle: string;
-  image: string;
-}
-
-const TeamMember: FC<TeamProps> = ({ handle, image }) => {
-  return (
-    <motion.button
-      className="flex items-center gap-2 w-fit group"
-      onClick={() =>
-        window.open(
-          `https://twitter.com/${handle}`,
-          "_blank",
-          "noopener noreferrer"
-        )
-      }
-    >
-      <Image
-        src={image}
-        width={33}
-        height={33}
-        alt="user image"
-        className="rounded-full border border-transparent group-hover:border-purple1"
-      />
-      <p className="group-hover:text-purple1">{handle}</p>
-    </motion.button>
-  );
-};
+import Superbowl from "./superbowl";
 
 const Landing = () => {
   const [statData, setStatData] = useState<Stats | null>(null);
@@ -90,12 +62,12 @@ const Landing = () => {
                 className="w-[90%] max-w-[370px] mx-auto"
               />
               <div className="w-full flex justify-center items-center px-5">
-                <motion.button
+                <motion.a
+                  href="https://superbowl.degenpicks.xyz"
                   className="bg-purple1 text-greyscale1 w-full max-w-[370px] h-[50px] text-lg"
-                  onClick={() => window.open(generalConfig.appUrl)}
                 >
                   Launch app
-                </motion.button>
+                </motion.a>
               </div>
             </div>
           </div>
@@ -113,7 +85,7 @@ const Landing = () => {
             </div>
           </div>
         )}
-        <div className="w-full mb-20">
+        <div className="w-full">
           <div className="max-w-[1600px] mx-auto text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
             <p>© 2023 Degen Picks</p>
             <div className="hidden sm:flex items-center gap-4">
@@ -138,6 +110,10 @@ interface HomePageProps {
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
   if (host === "app.degenpicks.xyz" || host === "app.staging.degenpicks.xyz") {
     return <GameQueue />;
+  }
+
+  if (host === "superbowl.degenpicks.xyz") {
+    return <Superbowl />;
   }
 
   return <Landing />;

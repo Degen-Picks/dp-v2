@@ -30,7 +30,6 @@ module.exports = {
       },
       colors: {
         border: "#E0E0E0",
-
         greyscale1: "#FFFFFF",
         greyscale2: "#F5F4F5",
         greyscale3: "#ECEAEC",
@@ -43,6 +42,7 @@ module.exports = {
         pending: "#FCF6C6",
         disabled: "#979797",
         data: "#FECE00",
+        superbowlBg: "#1B1B1B",
       },
       screens: {
         xs: "281px",
@@ -70,6 +70,19 @@ module.exports = {
     fontFamily: {
       base: ["pixel", "-apple-system", "system-ui", "monospace"],
       "base-b": ["pixel-bold", "-apple-system", "system-ui", "monospace"],
+      figtree: ["figtree", "-apple-system", "system-ui", "monospace"],
+      "figtree-semi": [
+        "figtree-semibold",
+        "-apple-system",
+        "system-ui",
+        "monospace",
+      ],
+      "figtree-bold": [
+        "figtree-bold",
+        "-apple-system",
+        "system-ui",
+        "monospace",
+      ],
     },
   },
   plugins: [],

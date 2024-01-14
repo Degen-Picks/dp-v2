@@ -12,15 +12,29 @@
   src: url("/fonts/PixelOperator-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: figtree;
+  src: url("/fonts/Figtree-Regular") format("truetype");
+}
+
+@font-face {
+  font-family: figtree-semibold;
+  src: url("/fonts/Figtree-Semibold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: figtree-bold;
+  src: url("/fonts/Figtree-Bold.ttf") format("truetype");
+}
+
 /* Sets top level div background */
 @layer base {
   body {
-    @apply bg-greyscale3 text-lg;
+    @apply bg-greyscale3 text-lg font-figtree;
   }
 }
 
 * {
-  font-family: pixel;
   padding: 0;
   margin: 0;
 }

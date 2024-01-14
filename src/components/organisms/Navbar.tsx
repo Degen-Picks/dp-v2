@@ -10,17 +10,24 @@ import { AlignJustify } from "lucide-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
 import { login, logout } from "@/utils";
-import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
+import SuperbowlToggle from "../molecules/SuperbowlToggle";
+import { View } from "@/pages/superbowl";
 
 interface Props {
   landing?: boolean;
+  view?: View;
+  setView?: (view: View) => void;
 }
 
-const Navbar: FC<Props> = ({ landing = false }) => {
+const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
   ) as WagerUserContextType;
-  
+
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<WagerUser | undefined>();
@@ -32,7 +39,6 @@ const Navbar: FC<Props> = ({ landing = false }) => {
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 1024;
 
-
   // Handle login
   useEffect(() => {
     async function load() {
@@ -42,7 +48,6 @@ const Navbar: FC<Props> = ({ landing = false }) => {
       }
     }
 
-    console.log("pubkeydsfhsdjhf", publicKey)
     if (publicKey) {
       load();
     }
@@ -89,7 +94,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
             className="w-[50px] h-[50px] flex items-center justify-center"
             onClick={() => setOpen(true)}
           >
-            <AlignJustify />
+            <AlignJustify color="white" />
           </button>
         </div>
       );
@@ -135,7 +140,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
               </motion.button>
             ) : null}
 
-            {!landing && renderMenu()}
+            {!landing && <ConnectButton />}
             {open && (
               <MegaMenu
                 userData={userData}
@@ -144,6 +149,9 @@ const Navbar: FC<Props> = ({ landing = false }) => {
               />
             )}
           </div>
+          {!landing && view && setView && (
+            <SuperbowlToggle view={view} setView={setView} />
+          )}
         </div>
       </div>
     </>

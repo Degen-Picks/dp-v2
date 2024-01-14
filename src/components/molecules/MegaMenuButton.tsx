@@ -14,7 +14,7 @@ const MegaMenuButton: FC<Props> = ({ userData }) => {
   if (!publicKey) return null;
 
   return (
-    <div className="relative hover:bg-white hover:cursor-pointer sm:w-[183px] h-[50px] px-2.5 py-[5px] flex items-center justify-center">
+    <div className="relative bg-white hover:cursor-pointer sm:w-[183px] h-[50px] px-2.5 py-[5px] flex items-center justify-center">
       <div className="w-full flex items-center gap-2.5">
         {!userData?.twitterData ? (
           <>
