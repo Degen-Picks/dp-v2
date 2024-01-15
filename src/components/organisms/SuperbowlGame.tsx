@@ -1,26 +1,46 @@
 import { FC, useState } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import SuperbowlPick from "../atoms/SuperbowlPick";
-
-export type BinaryPick = 1 | 2 | null;
-
-export type SuperbowlGameCard = {
-  anthem: BinaryPick;
-  coinToss: BinaryPick;
-  firstScore: BinaryPick;
-  gameWinner: BinaryPick;
-  tiebreaker: number | undefined;
-};
+import { SuperbowlGameCard } from "@/types/Superbowl";
 
 const SuperbowlGame: FC = () => {
   const [gameCard, setGameCard] = useState<SuperbowlGameCard>({
-    anthem: null,
-    coinToss: null,
-    firstScore: null,
-    gameWinner: null,
-    tiebreaker: undefined,
+    anthem: {
+      title: "National Anthem",
+      answer: null,
+      option1: "Over",
+      option2: "Under",
+    },
+    coinToss: {
+      title: "Coin Toss",
+      answer: null,
+      option1: "Heads",
+      option2: "Tails",
+    },
+    firstScore: {
+      title: "First Touchdown",
+      answer: null,
+      option1: "Bills",
+      option2: "49ers",
+    },
+    halftime: {
+      title: "Halftime Show ft. Usher",
+      answer: null,
+      option1: "Over",
+      option2: "Under",
+    },
+    gameWinner: {
+      title: "Game Winner",
+      answer: null,
+      option1: "Bills",
+      option2: "49ers",
+    },
+    tiebreaker: {
+      title: "TIEBREAKER: Total Points",
+      answer: "",
+    },
   });
+
   return (
     <motion.div
       className="w-fit mx-auto h-full flex flex-col flex-1 gap-[60px] items-center justify-center"
@@ -29,7 +49,32 @@ const SuperbowlGame: FC = () => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
       <div className="grid grid-flow-row grid-cols-2 md:grid-cols-2 md:gap-x-5 md:gap-y-8">
-        <SuperbowlPick
+        {Object.keys(gameCard).map((key) => {
+          const card = gameCard[key as keyof SuperbowlGameCard];
+          if (typeof card.answer === "string")
+            return (
+              <SuperbowlPick
+                key={key}
+                accessor={key as keyof SuperbowlGameCard}
+                title={card.title}
+                gameCard={gameCard}
+                setGameCard={setGameCard}
+              />
+            );
+
+          return (
+            <SuperbowlPick
+              key={key}
+              accessor={key as keyof SuperbowlGameCard}
+              title={card.title}
+              option1={card.option1}
+              option2={card.option2}
+              gameCard={gameCard}
+              setGameCard={setGameCard}
+            />
+          );
+        })}
+        {/* <SuperbowlPick
           title="National Anthem"
           option1="Over"
           option2="Under"
@@ -64,7 +109,7 @@ const SuperbowlGame: FC = () => {
           option1="Bills"
           option2="49ers"
           setGameCard={setGameCard}
-        />
+        /> */}
       </div>
       <button
         className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
