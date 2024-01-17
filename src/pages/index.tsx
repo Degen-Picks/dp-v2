@@ -112,7 +112,7 @@ const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
     return <GameQueue />;
   }
 
-  if (host === "superbowl.degenpicks.xyz") {
+  if (host === "superbowl.degenpicks.xyz" || host === "superbowl.staging.degenpicks.xyz") {
     return <Superbowl />;
   }
 

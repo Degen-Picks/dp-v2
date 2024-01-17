@@ -19,6 +19,8 @@ export interface PickemSelection {
   _id: string;
   totalScore: number;
   isTiebreaker?: boolean;
+  title: string;
+  name: string;
 }
 
 export interface PickemTeam {

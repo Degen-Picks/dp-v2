@@ -1,38 +1,15 @@
 export type BinaryPick = 1 | 2 | null;
 
+export type SuperbowlOption = {
+  title: string;
+  _id: string;
+}
+
 export type SuperbowlGameCard = {
-  anthem: {
+  [key: string]: {
     title: string;
-    answer: BinaryPick;
-    option1: string;
-    option2: string;
-  };
-  coinToss: {
-    title: string;
-    answer: BinaryPick;
-    option1: string;
-    option2: string;
-  };
-  firstScore: {
-    title: string;
-    answer: BinaryPick;
-    option1: string;
-    option2: string;
-  };
-  halftime: {
-    title: string;
-    answer: BinaryPick;
-    option1: string;
-    option2: string;
-  };
-  gameWinner: {
-    title: string;
-    answer: BinaryPick;
-    option1: string;
-    option2: string;
-  };
-  tiebreaker: {
-    title: string;
-    answer: string;
+    answer: string | null;
+    option1?: SuperbowlOption;
+    option2?: SuperbowlOption;
   };
 };

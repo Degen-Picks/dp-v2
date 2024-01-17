@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { SuperbowlGameCard } from "@/types/Superbowl";
+import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
 
 interface Props {
   accessor: keyof SuperbowlGameCard;
   title: string;
-  option1?: string;
-  option2?: string;
+  option1?: SuperbowlOption;
+  option2?: SuperbowlOption;
   gameCard: SuperbowlGameCard;
   setGameCard: (card: SuperbowlGameCard) => void;
 }
@@ -18,7 +18,7 @@ const SuperbowlPick: FC<Props> = ({
   gameCard,
   setGameCard,
 }) => {
-  const handleSelect = (option: 1 | 2) => {
+  const handleSelect = (option: string) => {
     if (gameCard[accessor]["answer"] === option) {
       setGameCard({
         ...gameCard,
@@ -39,24 +39,24 @@ const SuperbowlPick: FC<Props> = ({
           <button
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-r-none ${
-              gameCard[accessor]["answer"] === 1
+              gameCard[accessor]["answer"] === option1._id
                 ? "bg-greyscale1 text-greyscale5"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
-            onClick={() => handleSelect(1)}
+            onClick={() => handleSelect(option1._id)}
           >
-            {option1}
+            {option1.title}
           </button>
           <button
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-l-none ${
-              gameCard[accessor]["answer"] === 2
+              gameCard[accessor]["answer"] === option2._id
                 ? "bg-greyscale1 text-greyscale5"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
-            onClick={() => handleSelect(2)}
+            onClick={() => handleSelect(option2._id)}
           >
-            {option2}
+            {option2.title}
           </button>
         </div>
       ) : (
