@@ -37,3 +37,38 @@ export async function refundClassic(game: GameInfo): Promise<ServerResponse> {
     };
   }
 }
+
+export async function updatePick(pickId: string, winningSelectionIds: string[], tiebreaker?: number) {
+  try {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const requestOptions: RequestInit = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        pickId,
+        winningSelectionIds,
+        tiebreaker
+      }),
+      credentials: "include",
+    };
+
+    const response = await fetch(
+      `${generalConfig.apiUrl}/protected/updatePick`,
+      requestOptions
+    );
+
+    const body = await response.json();
+
+    return {
+      success: response.status === 200,
+      message: body.message,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Error updating pick",
+    };
+  }
+}

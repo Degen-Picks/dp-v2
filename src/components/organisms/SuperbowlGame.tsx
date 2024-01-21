@@ -3,12 +3,16 @@ import { motion } from "framer-motion";
 import SuperbowlPick from "../atoms/SuperbowlPick";
 import { SuperbowlGameCard } from "@/types/Superbowl";
 import { Pickem } from "@/types";
-import { getPickems, sleep } from "@/utils";
+import { getPickems, sleep, updatePick } from "@/utils";
 import sendTransaction from "@/utils/sendTransaction";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { generalConfig } from "@/configs";
 
-const SuperbowlGame: FC = () => {
+interface Props {
+  isAdmin?: boolean;
+}
+
+const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
   
@@ -144,10 +148,20 @@ const SuperbowlGame: FC = () => {
     data.selections.forEach(selection => {
       const gameCardKey = selection.name;
 
+      // If admin, show already selected options
+      let answer = null;
+      if(isAdmin) {
+        for(const team of selection.teams) {
+          if(team.winner) {
+            answer = team._id;
+          }
+        }
+      }
+
       // TODO: will need to change if we do 3+ options
       gameCard[gameCardKey] = {
         title: selection.title,
-        answer: null,
+        answer,
         option1: { title: selection.teams[0]?.name, _id: selection.teams[0]?._id },
         option2: { title: selection.teams[1]?.name, _id: selection.teams[1]?._id },
       };
@@ -162,6 +176,27 @@ const SuperbowlGame: FC = () => {
   
     return gameCard;
   };
+
+  const handleUpdatePickem = async () => {
+    if(!currentPick) return;
+
+    const pickId = currentPick._id;
+    
+    // get all team ids that are selected
+    const selectedTeams = Object.keys(gameCard).reduce((acc, key) => {
+      if (key !== "tiebreaker") {
+        const card = gameCard[key as keyof SuperbowlGameCard];
+        if (card.answer !== null && card.answer !== undefined) {
+          acc.push(card.answer);
+        }
+      }
+      return acc;
+    }, [] as string[]);
+
+    const tieBreaker = parseInt(gameCard.tiebreaker.answer!) > 0 ? parseInt(gameCard.tiebreaker.answer!) : undefined; // TODO: patch (!)
+    const result = await updatePick(pickId, selectedTeams, tieBreaker);
+    alert(result.message);
+  }
 
   const handlePayToken = async () => {
     if (!currentPick) return;
@@ -293,13 +328,26 @@ const SuperbowlGame: FC = () => {
           );
         })}
       </div>
-      <button
-        className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
-        hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
-        onClick={() => handlePayToken()}
-      >
-        Submit Pick&apos;em Entry
-      </button>
+      {/* If admin show save button */}
+      {isAdmin && (
+        <button
+          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
+          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
+          onClick={() => handleUpdatePickem()}
+        >
+          UPDATE WINNERS
+        </button>
+      )}
+      {/* If not admin show submit button */}
+      {!isAdmin && (
+        <button
+          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
+          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
+          onClick={() => handlePayToken()}
+        >
+          Submit Pick&apos;em Entry
+        </button>
+      )}
     </motion.div>
   );
 };

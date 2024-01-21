@@ -18,6 +18,7 @@ const Superbowl: FC = () => {
       <Navbar view={view} setView={setView} />
       {view === View.RULES && <SuperbowlRules />}
       {view === View.GAME && <SuperbowlGame />}
+      {view === View.ADMIN && <SuperbowlGame isAdmin={true} />}
     </div>
   );
 };
