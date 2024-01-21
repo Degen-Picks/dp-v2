@@ -97,6 +97,9 @@ dependencies:
     version: 5.1.6
 
 devDependencies:
+  '@types/bn.js':
+    specifier: ^5.1.5
+    version: 5.1.5
   '@types/node':
     specifier: ^20.4.2
     version: 20.11.5
@@ -4474,6 +4477,12 @@ packages:
     dependencies:
       '@types/node': 20.11.5
     dev: false
+
+  /@types/bn.js@5.1.5:
+    resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
+    dependencies:
+      '@types/node': 20.11.5
+    dev: true
 
   /@types/bs58@4.0.4:
     resolution: {integrity: sha512-0IEpMFXXQi2zXaXl9GJ3sRwQo0uEkD+yFOv+FnAU5lkPtcu6h61xb7jc2CFPEZ5BUOaiP13ThuGc9HD4R8lR5g==}
