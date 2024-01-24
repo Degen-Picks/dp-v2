@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { handleConfirmAction, refundClassic } from "@/utils";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { GameInfo, Team } from "../../types";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { GameStatus } from "./ClassicView";

@@ -18,7 +18,7 @@ import {
 // solana wallet + utils
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { getTokenBalance } from "../../utils/getTokenBalance";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { generalConfig } from "@/configs";
 import { getDateStr, getTimeStr, getDayTime } from "../../utils/dateUtil";
 import { getCurrencyIcon, pickFee, sleep } from "../../utils";

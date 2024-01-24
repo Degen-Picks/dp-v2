@@ -1,7 +1,7 @@
 import { useState, useEffect, FC, useContext } from "react";
 import { generalConfig } from "@/configs";
 import { useWallet } from "@solana/wallet-adapter-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import Image from "next/image";
 import { FallbackImage } from "@/components";
 import { WagerUser } from "@/types";

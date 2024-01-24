@@ -20,7 +20,7 @@ import {
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import { ClassicGameOptions, League, LeaguesArray } from "@/types";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { getAssets, getTimezoneStr, handleConfirmAction } from "@/utils";
 import createClassic from "@/utils/api/classic/create";
 import { useRouter } from "next/router";

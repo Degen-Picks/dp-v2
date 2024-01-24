@@ -15,10 +15,10 @@ import {
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 import { WagerUserContextProvider } from "@/components/stores/WagerUserStore";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { GoogleAnalytics } from '@next/third-parties/google'
+// import { GoogleAnalytics } from '@next/third-parties/google'
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -95,7 +95,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
       </Head>
-      <GoogleAnalytics gaId={generalConfig.gaId} />
+
       <ThemeProvider theme={THEME}>
         <WagerUserContextProvider>
           <ConnectionProvider endpoint={endpoint}>
