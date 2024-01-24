@@ -6,7 +6,7 @@ import { Divider, FallbackImage } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   WagerUserContext,
   WagerUserContextType,

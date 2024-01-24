@@ -4,8 +4,7 @@ import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
 interface Props {
   accessor: keyof SuperbowlGameCard;
   title: string;
-  option1?: SuperbowlOption;
-  option2?: SuperbowlOption;
+  options?: SuperbowlOption[];
   gameCard: SuperbowlGameCard;
   setGameCard: (card: SuperbowlGameCard) => void;
 }
@@ -13,8 +12,7 @@ interface Props {
 const SuperbowlPick: FC<Props> = ({
   accessor,
   title,
-  option1,
-  option2,
+  options,
   gameCard,
   setGameCard,
 }) => {
@@ -34,29 +32,29 @@ const SuperbowlPick: FC<Props> = ({
   return (
     <div className="w-[460px] flex flex-col gap-2.5">
       <p className="text-greyscale1/50 font-figtree-semi">{title}</p>
-      {!!option1 && !!option2 ? (
+      {!!options && options.length > 0 ? (
         <div className="w-full flex gap-0.5">
           <button
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-r-none ${
-              gameCard[accessor]["answer"] === option1._id
+              gameCard[accessor]["answer"] === options[0]._id
                 ? "bg-greyscale1 text-greyscale5"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
-            onClick={() => handleSelect(option1._id)}
+            onClick={() => handleSelect(options[0]._id)}
           >
-            {option1.title}
+            {options[0].title}
           </button>
           <button
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-l-none ${
-              gameCard[accessor]["answer"] === option2._id
+              gameCard[accessor]["answer"] === options[1]._id
                 ? "bg-greyscale1 text-greyscale5"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
-            onClick={() => handleSelect(option2._id)}
+            onClick={() => handleSelect(options[1]._id)}
           >
-            {option2.title}
+            {options[1].title}
           </button>
         </div>
       ) : (

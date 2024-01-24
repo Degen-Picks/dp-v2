@@ -15,73 +15,8 @@ interface Props {
 const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
-  
-  const [gameCard, setGameCard] = useState<SuperbowlGameCard>({
-    anthem: {
-      title: "National Anthem",
-      answer: null,
-      option1: {
-        title: "Over",
-        _id: "1"
-      },
-      option2: {
-        title: "Under",
-        _id: "2"
-      }
-    },
-    coinToss: {
-      title: "Coin Toss",
-      answer: null,
-      option1: {
-        title: "Heads",
-        _id: "1"
-      },
-      option2: {
-        title: "Tails",
-        _id: "2"
-      }
-    },
-    firstScore: {
-      title: "First Touchdown",
-      answer: null,
-      option1: {
-        title: "Bills",
-        _id: "1"
-      },
-      option2: {
-        title: "49ers",
-        _id: "2"
-      }
-    },
-    halftime: {
-      title: "Halftime Show ft. Usher",
-      answer: null,
-      option1: {
-        title: "Over",
-        _id: "1"
-      },
-      option2: {
-        title: "Under",
-        _id: "2"
-      }
-    },
-    gameWinner: {
-      title: "Game Winner",
-      answer: null,
-      option1: {
-        title: "Bills",
-        _id: "1"
-      },
-      option2: {
-        title: "49ers",
-        _id: "2"
-      }
-    },
-    tiebreaker: {
-      title: "TIEBREAKER: Total Points",
-      answer: ""
-    }
-  });
+
+  const [gameCard, setGameCard] = useState<SuperbowlGameCard>();
 
   const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
   const [placedPicks, setPlacedPicks] = useState<any[]>([]); // TODO: implement (fetch users selections from db)
@@ -91,10 +26,10 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
     const loadPickems = async () => {
       const pickems = await getPickems();
       if (pickems === null) return;
-      if(pickems.length === 0) return;      
+      if (pickems.length === 0) return;
 
       const currPick = pickems[pickems.length - 1];
-      console.log(`Found ya pickem:`,currPick);
+      console.log(`Found ya pickem:`, currPick);
 
       setCurrentPick(currPick);
 
@@ -140,19 +75,19 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
     } catch (err) {
       console.log(`Error loading user pick ${err}`);
     }
-  }
+  };
 
   const convertToGameCard = (data: Pickem) => {
     const gameCard: SuperbowlGameCard = {};
-  
-    data.selections.forEach(selection => {
+
+    data.selections.forEach((selection) => {
       const gameCardKey = selection.name;
 
       // If admin, show already selected options
       let answer = null;
-      if(isAdmin) {
-        for(const team of selection.teams) {
-          if(team.winner) {
+      if (isAdmin) {
+        for (const team of selection.teams) {
+          if (team.winner) {
             answer = team._id;
           }
         }
@@ -162,26 +97,32 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       gameCard[gameCardKey] = {
         title: selection.title,
         answer,
-        option1: { title: selection.teams[0]?.name, _id: selection.teams[0]?._id },
-        option2: { title: selection.teams[1]?.name, _id: selection.teams[1]?._id },
+        option1: {
+          title: selection.teams[0]?.name,
+          _id: selection.teams[0]?._id,
+        },
+        option2: {
+          title: selection.teams[1]?.name,
+          _id: selection.teams[1]?._id,
+        },
       };
-  
-      if (gameCardKey === 'tiebreaker') {
+
+      if (gameCardKey === "tiebreaker") {
         gameCard[gameCardKey] = {
           title: selection.title,
-          answer: '',
+          answer: "",
         };
       }
     });
-  
+
     return gameCard;
   };
 
   const handleUpdatePickem = async () => {
-    if(!currentPick) return;
+    if (!currentPick || !gameCard) return;
 
     const pickId = currentPick._id;
-    
+
     // get all team ids that are selected
     const selectedTeams = Object.keys(gameCard).reduce((acc, key) => {
       if (key !== "tiebreaker") {
@@ -193,13 +134,16 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       return acc;
     }, [] as string[]);
 
-    const tieBreaker = parseInt(gameCard.tiebreaker.answer!) > 0 ? parseInt(gameCard.tiebreaker.answer!) : undefined; // TODO: patch (!)
+    const tieBreaker =
+      parseInt(gameCard.tiebreaker.answer!) > 0
+        ? parseInt(gameCard.tiebreaker.answer!)
+        : undefined; // TODO: patch (!)
     const result = await updatePick(pickId, selectedTeams, tieBreaker);
     alert(result.message);
-  }
+  };
 
   const handlePayToken = async () => {
-    if (!currentPick) return;
+    if (!currentPick || !gameCard) return;
 
     console.log("Submitting pickem entry...");
     console.log(gameCard, currentPick);
@@ -207,7 +151,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
     // Do we want toasts?
 
     // We wanna make sure every input is filled out
-  
+
     // Send dust to our wallet
     const txHash = await sendTransaction(
       publicKey!,
@@ -232,11 +176,14 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
     const tieBreaker = parseInt(gameCard.tiebreaker.answer!); // TODO: patch (!)
 
     // Check tx went through
-    if (txHash && (await sendPlaceBet(txHash, (selectedTeams as string[]), tieBreaker, 0))) {
-        await loadUserPicks();
-        alert("Success!");
-      } else {
-        alert("Something went wrong, please try again later.");
+    if (
+      txHash &&
+      (await sendPlaceBet(txHash, selectedTeams as string[], tieBreaker, 0))
+    ) {
+      await loadUserPicks();
+      alert("Success!");
+    } else {
+      alert("Something went wrong, please try again later.");
     }
   };
 
@@ -259,7 +206,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
           pickId: currentPick._id,
           pickedTeams,
           tieBreaker,
-          signature
+          signature,
         }),
       };
 
@@ -276,7 +223,12 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
           console.log("Should retry!");
 
           await sleep(1000);
-          return await sendPlaceBet(signature, pickedTeams, tieBreaker, retries + 1);
+          return await sendPlaceBet(
+            signature,
+            pickedTeams,
+            tieBreaker,
+            retries + 1
+          );
         }
 
         // TODO: toast?
@@ -288,7 +240,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       return false;
     }
   };
-  
+
   return (
     <motion.div
       className="w-fit mx-auto h-full flex flex-col flex-1 gap-[60px] items-center justify-center"
@@ -297,36 +249,38 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
       {currentPick && (
-          <p className="text-greyscale1/50 font-figtree-semi text-center">
-            DEBUG: You have {placedPicks.length} picks submitted worth {placedPicks.length * currentPick!.entryFee} total
-          </p>
+        <p className="text-greyscale1/50 font-figtree-semi text-center">
+          DEBUG: You have {placedPicks.length} picks submitted worth{" "}
+          {placedPicks.length * currentPick!.entryFee} total
+        </p>
       )}
-      <div className="grid grid-flow-row grid-cols-2 md:grid-cols-2 md:gap-x-5 md:gap-y-8">   
-        {Object.keys(gameCard).map((key) => {
-          const card = gameCard[key as keyof SuperbowlGameCard];
-          if (key === "tiebreaker")
+      <div className="grid grid-flow-row grid-cols-2 md:grid-cols-2 md:gap-x-5 md:gap-y-8">
+        {gameCard &&
+          Object.keys(gameCard).map((key) => {
+            const card = gameCard[key as keyof SuperbowlGameCard];
+            if (!card.option1 || !card.option2) {
+              return (
+                <SuperbowlPick
+                  key={key}
+                  accessor={key as keyof SuperbowlGameCard}
+                  title={card.title}
+                  gameCard={gameCard}
+                  setGameCard={setGameCard}
+                />
+              );
+            }
+
             return (
               <SuperbowlPick
                 key={key}
                 accessor={key as keyof SuperbowlGameCard}
                 title={card.title}
+                options={[card.option1, card.option2]}
                 gameCard={gameCard}
                 setGameCard={setGameCard}
               />
             );
-
-          return (
-            <SuperbowlPick
-              key={key}
-              accessor={key as keyof SuperbowlGameCard}
-              title={card.title}
-              option1={card.option1}
-              option2={card.option2}
-              gameCard={gameCard}
-              setGameCard={setGameCard}
-            />
-          );
-        })}
+          })}
       </div>
       {/* If admin show save button */}
       {isAdmin && (
