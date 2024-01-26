@@ -42,7 +42,7 @@ module.exports = {
         incorrect: "#E1233D",
         pending: "#FCF6C6",
         disabled: "#979797",
-        data: "#FECE00",
+        data: "#FFCF00",
         superbowlBg: "#1B1B1B",
         phantom: "#9C85EC",
       },

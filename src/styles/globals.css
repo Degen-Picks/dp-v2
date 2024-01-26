@@ -93,3 +93,11 @@ input::placeholder {
 
   grid-area: 1 / 1 / 2 / 2;
 }
+
+.superbowl-button {
+  border-radius: 20px;
+  background: var(
+    --gradient,
+    linear-gradient(262deg, #ffcf00 0%, #ff6b6b 35%, #1bcea3 66%, #2f8eff 100%)
+  );
+}

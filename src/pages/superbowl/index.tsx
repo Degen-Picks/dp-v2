@@ -3,6 +3,7 @@ import Navbar from "@/components/organisms/Navbar";
 import SuperbowlRules from "@/components/organisms/SuperbowlRules";
 import SuperbowlGame from "@/components/organisms/SuperbowlGame";
 import SuperbowlStandings from "@/components/organisms/SuperbowlStandings";
+import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
 
 export enum View {
   RULES = "Rules",
@@ -13,6 +14,7 @@ export enum View {
 
 const Superbowl: FC = () => {
   const [view, setView] = useState<View>(View.RULES);
+  const [numPicks, setNumPicks] = useState<number>(0);
 
   return (
     <div className="w-screen min-h-screen flex flex-col bg-greyscale6">
@@ -23,6 +25,7 @@ const Superbowl: FC = () => {
         {view === View.STANDINGS && <SuperbowlStandings isAdmin={true} />}
         {view === View.ADMIN && <SuperbowlGame isAdmin={true} />}
       </div>
+      {view === View.GAME && <SuperbowlFooter numPicks={numPicks} />}
     </div>
   );
 };
