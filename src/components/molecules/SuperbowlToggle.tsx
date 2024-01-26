@@ -1,11 +1,4 @@
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   WagerUserContext,
   WagerUserContextType,
@@ -37,18 +30,18 @@ const SuperbowlToggle: FC<Props> = ({ view, setView }) => {
       className={`absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`}
     >
       <div
-        className={`h-[55px] flex items-center gap-2.5 p-[5px] bg-greyscale1/5 rounded-[10px]`}
+        className={`h-[50px] flex items-center gap-1 p-1.5 bg-greyscale5 rounded-[82px]`}
       >
         {Object.values(View).map((v) => (
           <motion.button
             key={v}
             className={`${
               view === v
-                ? "bg-greyscale1 text-greyscale5"
-                : "bg-transparent hover:bg-greyscale1/10 text-white"
+                ? "bg-greyscale1 text-greyscale6"
+                : "bg-transparent hover:bg-greyscale6/20 text-white"
             } ${
               !isAdmin && v === View.ADMIN && "hidden"
-            } w-[120px] h-[45px] flex items-center justify-center font-figtree-semi rounded-[7px]`}
+            } w-[100px] h-[38px] flex items-center justify-center font-figtree-semi rounded-[70px]`}
             onClick={() => setView(v)}
           >
             {v}
