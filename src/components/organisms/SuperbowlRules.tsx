@@ -28,7 +28,7 @@ const SuperbowlRules: FC = () => {
           />
         </div>
         <div className="w-1/2 flex items-center justify-center">
-          <p className="text-greyscale5 text-xl font-figtree-semi">
+          <p className="text-greyscale6 text-xl font-figtree-semi">
             Winner gets this y00t.
           </p>
         </div>

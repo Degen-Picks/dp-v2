@@ -34,7 +34,8 @@ module.exports = {
         greyscale2: "#F5F4F5",
         greyscale3: "#ECEAEC",
         greyscale4: "#A89FA8",
-        greyscale5: "#000000",
+        greyscale5: "#1D1D24",
+        greyscale6: "#000000",
         purple1: "#651FFF",
         purple2: "#4C17BF",
         correct: "#43A047",
@@ -43,6 +44,7 @@ module.exports = {
         disabled: "#979797",
         data: "#FECE00",
         superbowlBg: "#1B1B1B",
+        phantom: "#9C85EC",
       },
       screens: {
         xs: "281px",

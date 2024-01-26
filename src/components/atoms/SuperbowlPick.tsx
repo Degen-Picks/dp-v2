@@ -38,7 +38,7 @@ const SuperbowlPick: FC<Props> = ({
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-r-none ${
               gameCard[accessor]["answer"] === options[0]._id
-                ? "bg-greyscale1 text-greyscale5"
+                ? "bg-greyscale1 text-greyscale6"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
             onClick={() => handleSelect(options[0]._id)}
@@ -49,7 +49,7 @@ const SuperbowlPick: FC<Props> = ({
             className={`p-2.5 w-full h-full
             font-figtree-semi text-lg rounded-[10px] rounded-l-none ${
               gameCard[accessor]["answer"] === options[1]._id
-                ? "bg-greyscale1 text-greyscale5"
+                ? "bg-greyscale1 text-greyscale6"
                 : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
             }`}
             onClick={() => handleSelect(options[1]._id)}

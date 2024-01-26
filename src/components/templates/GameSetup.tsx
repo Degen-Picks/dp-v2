@@ -54,7 +54,7 @@ const GameSetup: FC = () => {
               <motion.button
                 className={`${
                   tab === SetupTabs.CLASSIC
-                    ? "bg-greyscale5 text-greyscale1"
+                    ? "bg-greyscale6 text-greyscale1"
                     : "bg-transparent hover:bg-greyscale2"
                 } w-[120px] h-[40px] flex flex-col items-center justify-center`}
                 onClick={() => setTab(SetupTabs.CLASSIC)}
@@ -64,7 +64,7 @@ const GameSetup: FC = () => {
               <motion.button
                 className={`${
                   tab === SetupTabs.SUPERBOWL
-                    ? "bg-greyscale5 text-greyscale1"
+                    ? "bg-greyscale6 text-greyscale1"
                     : "bg-transparent  hover:bg-greyscale2"
                 } w-[120px] h-[40px] flex flex-col items-center justify-center`}
                 onClick={() => setTab(SetupTabs.SUPERBOWL)}

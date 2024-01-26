@@ -147,7 +147,7 @@ const ViewToggle: FC<Props> = ({
           <motion.button
             className={`${
               toggleConfig.selected === "option1"
-                ? "bg-greyscale5 text-greyscale1"
+                ? "bg-greyscale6 text-greyscale1"
                 : "bg-transparent hover:bg-greyscale2"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option1")}
@@ -172,7 +172,7 @@ const ViewToggle: FC<Props> = ({
           <motion.button
             className={`${
               toggleConfig.selected === "option2"
-                ? "bg-greyscale5 text-greyscale1"
+                ? "bg-greyscale6 text-greyscale1"
                 : "bg-transparent  hover:bg-greyscale2"
             } w-[80px] h-[30px] flex flex-col items-center justify-center`}
             onClick={() => handleClick("option2")}
@@ -197,7 +197,7 @@ const ViewToggle: FC<Props> = ({
             <motion.button
               className={`${
                 toggleConfig.selected === "option3"
-                  ? "bg-greyscale5 text-greyscale1"
+                  ? "bg-greyscale6 text-greyscale1"
                   : "bg-transparent  hover:bg-greyscale2"
               } w-[80px] h-[30px] flex flex-col items-center justify-center`}
               onClick={() => handleClick("option3")}

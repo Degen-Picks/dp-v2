@@ -285,7 +285,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       {/* If admin show save button */}
       {isAdmin && (
         <button
-          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
+          className="bg-data text-greyscale6 text-lg w-[460px] h-[60px] 
           hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
           onClick={() => handleUpdatePickem()}
         >
@@ -295,7 +295,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
       {/* If not admin show submit button */}
       {!isAdmin && (
         <button
-          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
+          className="bg-data text-greyscale6 text-lg w-[460px] h-[60px] 
           hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
           onClick={() => handlePayToken()}
         >

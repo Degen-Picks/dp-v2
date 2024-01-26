@@ -89,7 +89,7 @@ const GameOptions: FC<Props> = ({ classicLive, pickemLive }) => {
           )} */}
           <div
             className="absolute text-sm top-4 lg:top-10 left-1/2 -translate-x-1/2 
-            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-greyscale5"
+            flex flex-row items-center px-3 py-1 rounded-lg border text-[#795548] bg-greyscale6"
           >
             Season ended
           </div>
