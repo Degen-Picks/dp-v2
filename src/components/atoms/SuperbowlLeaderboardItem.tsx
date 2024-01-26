@@ -1,9 +1,13 @@
 import Image from "next/image";
 import { FC } from "react";
 
-interface Props {}
+interface Props {
+  publicKey: string;
+  points: number;
+  numSelections: number;
+}
 
-const SuperbowlLeaderboardItem: FC = () => {
+const SuperbowlLeaderboardItem: FC<Props> = ({ publicKey, points, numSelections }) => {
   return (
     <div className="w-full h-[60px] rounded-[10px] bg-greyscale1/5 px-[30px] py-[15px] flex items-center">
       <p className="text-white w-10">1</p>
@@ -15,9 +19,9 @@ const SuperbowlLeaderboardItem: FC = () => {
           alt="user icon"
           className="rounded-full overflow-hidden"
         />
-        <p className="text-white">User</p>
+        <p className="text-white">{publicKey}</p>
       </p>
-      <p className="w-20 text-white">9 of 10</p>
+      <p className="w-20 text-white">{points} of {numSelections}</p>
     </div>
   );
 };

@@ -10,113 +10,16 @@ import { generalConfig } from "@/configs";
 
 interface Props {
   isAdmin?: boolean;
+  gameCard: SuperbowlGameCard | null;
+  setGameCard:  (gameCard: SuperbowlGameCard) => void;
+  currentPick: Pickem | null;
+  placedPicks: any[];
+  loadUserPicks: () => void;
 }
 
-const SuperbowlGame: FC<Props> = ({ isAdmin }) => {
+const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick, placedPicks, loadUserPicks }) => {
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
-
-  const [gameCard, setGameCard] = useState<SuperbowlGameCard>();
-
-  const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
-  const [placedPicks, setPlacedPicks] = useState<any[]>([]); // TODO: implement (fetch users selections from db)
-
-  // For popup
-  useEffect(() => {
-    const loadPickems = async () => {
-      const pickems = await getPickems();
-      if (pickems === null) return;
-      if (pickems.length === 0) return;
-
-      const currPick = pickems[pickems.length - 1];
-      console.log(`Found ya pickem:`, currPick);
-
-      setCurrentPick(currPick);
-
-      // Convert to gameCard
-      const gameCard = convertToGameCard(currPick);
-      setGameCard(gameCard);
-    };
-
-    loadPickems();
-  }, []);
-
-  useEffect(() => {
-    if (!currentPick || !publicKey) return;
-
-    loadUserPicks();
-  }, [currentPick, publicKey]);
-
-  const loadUserPicks = async () => {
-    try {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      const requestOptions = {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          pickId: currentPick?._id,
-          publicKey,
-        }),
-      };
-
-      const response = await fetch(
-        `${generalConfig.apiUrl}/api/getUserPick`,
-        requestOptions
-      );
-      const body = await response.json();
-
-      if (response.status === 200 && body.data.length >= 1) {
-        const userPicks = body.data;
-        console.log("User picks:", userPicks);
-        setPlacedPicks(userPicks);
-      }
-    } catch (err) {
-      console.log(`Error loading user pick ${err}`);
-    }
-  };
-
-  const convertToGameCard = (data: Pickem) => {
-    const gameCard: SuperbowlGameCard = {};
-
-    data.selections.forEach((selection) => {
-      const gameCardKey = selection.name;
-
-      // If admin, show already selected options
-      let answer = null;
-      if (isAdmin) {
-        for (const team of selection.teams) {
-          if (team.winner) {
-            answer = team._id;
-          }
-        }
-      }
-
-      // TODO: will need to change if we do 3+ options
-      gameCard[gameCardKey] = {
-        title: selection.title,
-        answer,
-        option1: {
-          title: selection.teams[0]?.name,
-          _id: selection.teams[0]?._id,
-        },
-        option2: {
-          title: selection.teams[1]?.name,
-          _id: selection.teams[1]?._id,
-        },
-      };
-
-      if (gameCardKey === "tiebreaker") {
-        gameCard[gameCardKey] = {
-          title: selection.title,
-          answer: "",
-        };
-      }
-    });
-
-    return gameCard;
-  };
 
   const handleUpdatePickem = async () => {
     if (!currentPick || !gameCard) return;
