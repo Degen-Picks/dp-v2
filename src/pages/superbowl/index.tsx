@@ -8,6 +8,7 @@ import { generalConfig } from "@/configs";
 import { Pickem } from "@/types";
 import { SuperbowlGameCard } from "@/types/Superbowl";
 import { getPickems } from "@/utils";
+import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
 
 export enum View {
   RULES = "Rules",
@@ -20,6 +21,7 @@ const Superbowl: FC = () => {
   const { publicKey } = useWallet();
 
   const [view, setView] = useState<View>(View.RULES);
+  const [numPicks, setNumPicks] = useState<number>(0);
 
   const [gameCard, setGameCard] = useState<SuperbowlGameCard | null>(null);
   const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
@@ -131,7 +133,7 @@ const Superbowl: FC = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-superbowlBg">
+    <div className="w-screen min-h-screen flex flex-col bg-greyscale6">
       <Navbar view={view} setView={setView} />
       <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
         {view === View.RULES && <SuperbowlRules />}
@@ -146,6 +148,7 @@ const Superbowl: FC = () => {
                 placedPicks={placedPicks}
                 loadUserPicks={loadUserPicks} />}
       </div>
+      {view === View.GAME && <SuperbowlFooter numPicks={numPicks} />}
     </div>
   );
 };

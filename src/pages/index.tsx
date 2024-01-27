@@ -86,13 +86,13 @@ const Landing = () => {
           </div>
         )}
         <div className="w-full">
-          <div className="max-w-[1600px] mx-auto text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
+          <div className="max-w-[1600px] mx-auto text-greyscale6 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
             <p>© 2023 Degen Picks</p>
             <div className="hidden sm:flex items-center gap-4">
               <p className="">Follow us</p>
               {/* icons here */}
-              <Twitter className="fill-greyscale5 hover:fill-[#333333]" />
-              <Discord className="fill-greyscale5 hover:fill-[#333333]" />
+              <Twitter className="fill-greyscale6 hover:fill-[#333333]" />
+              <Discord className="fill-greyscale6 hover:fill-[#333333]" />
             </div>
           </div>
         </div>
@@ -112,7 +112,10 @@ const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
     return <GameQueue />;
   }
 
-  if (host === "superbowl.degenpicks.xyz" || host === "superbowl.staging.degenpicks.xyz") {
+  if (
+    host === "superbowl.degenpicks.xyz" ||
+    host === "superbowl.staging.degenpicks.xyz"
+  ) {
     return <Superbowl />;
   }
 

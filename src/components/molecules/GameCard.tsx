@@ -53,7 +53,7 @@ const GameCard: FC<Props> = ({ game }) => {
                 }}
               />
               <div
-                className={`absolute w-full h-full border border-greyscale5
+                className={`absolute w-full h-full border border-greyscale6
                 ${
                   game.selections[0].winner
                     ? "bg-[#5CB85C59]"
@@ -78,7 +78,7 @@ const GameCard: FC<Props> = ({ game }) => {
                 }}
               />
               <div
-                className={`absolute w-full h-full border border-greyscale5
+                className={`absolute w-full h-full border border-greyscale6
                 ${
                   game.selections[1].winner
                     ? "bg-[#5CB85C59]"

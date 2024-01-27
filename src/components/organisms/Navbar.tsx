@@ -116,10 +116,10 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
 
   return (
     <>
-      <div className={`bg-greyscale1 md:bg-transparent z-20`}>
+      <div className={`border-b border-[#404040] z-20 h-20`}>
         <div
-          className="relative flex justify-between 
-          py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
+          className="relative flex justify-between items-center
+          max-w-[1600px] mx-auto px-4 lg:px-10"
         >
           <Link href="https://degenpicks.xyz/">
             <Image

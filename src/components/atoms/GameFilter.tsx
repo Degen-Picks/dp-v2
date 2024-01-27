@@ -12,7 +12,7 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
       <motion.button
         className={`w-[80px] h-[30px] flex items-center justify-center ${
           activeFilter
-            ? "bg-greyscale5 text-greyscale1"
+            ? "bg-greyscale6 text-greyscale1"
             : "bg-transparent  hover:bg-greyscale2"
         }`}
         onClick={() => setActiveFilter(true)}
@@ -22,7 +22,7 @@ const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
       <motion.button
         className={`w-[80px] h-[30px] flex items-center justify-center ${
           !activeFilter
-            ? "bg-greyscale5 text-greyscale1"
+            ? "bg-greyscale6 text-greyscale1"
             : "bg-transparent  hover:bg-greyscale2"
         }`}
         onClick={() => setActiveFilter(false)}

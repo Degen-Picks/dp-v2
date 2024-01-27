@@ -30,36 +30,74 @@ const SuperbowlPick: FC<Props> = ({
     }
   };
   return (
-    <div className="w-[460px] flex flex-col gap-2.5">
-      <p className="text-greyscale1/50 font-figtree-semi">{title}</p>
+    <div className="w-full md:w-[620px] mx-auto flex flex-col gap-2.5 font-figtree">
+      <p className="text-[#808080]">{title}</p>
       {!!options && options.length > 0 ? (
-        <div className="w-full flex gap-0.5">
-          <button
-            className={`p-2.5 w-full h-full
-            font-figtree-semi text-lg rounded-[10px] rounded-r-none ${
-              gameCard[accessor]["answer"] === options[0]._id
-                ? "bg-greyscale1 text-greyscale5"
-                : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
-            }`}
-            onClick={() => handleSelect(options[0]._id)}
-          >
-            {options[0].title}
-          </button>
-          <button
-            className={`p-2.5 w-full h-full
-            font-figtree-semi text-lg rounded-[10px] rounded-l-none ${
-              gameCard[accessor]["answer"] === options[1]._id
-                ? "bg-greyscale1 text-greyscale5"
-                : "bg-greyscale1/5 hover:bg-greyscale1/10 text-greyscale1"
-            }`}
-            onClick={() => handleSelect(options[1]._id)}
-          >
-            {options[1].title}
-          </button>
-        </div>
+        <>
+          {options.length === 2 && (
+            <div className="w-full flex gap-0.5 h-[70px] text-greyscale1">
+              {options.map((o, index) => (
+                <button
+                  key={o._id}
+                  className={`p-2.5 w-full h-full rounded-[20px] ${
+                    index < 1 && "rounded-r-none"
+                  } ${index > 0 && "rounded-l-none"} ${
+                    gameCard[accessor]["answer"] === o._id
+                      ? "bg-[#282622] border border-data"
+                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                  }`}
+                  onClick={() => handleSelect(o._id)}
+                >
+                  {o.title}
+                </button>
+              ))}
+            </div>
+          )}
+          {options.length === 3 && (
+            <div className="w-full flex gap-0.5 h-[70px] text-greyscale1">
+              {options.map((o, index) => (
+                <button
+                  key={o._id}
+                  className={`p-2.5 w-full h-full rounded-[20px] ${
+                    index < 2 && "rounded-r-none"
+                  } ${index > 1 && "rounded-l-none"} ${
+                    gameCard[accessor]["answer"] === o._id
+                      ? "bg-[#282622] border border-data"
+                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                  }`}
+                  onClick={() => handleSelect(o._id)}
+                >
+                  {o.title}
+                </button>
+              ))}
+            </div>
+          )}
+          {options.length >= 4 && (
+            <div className="grid grid-cols-2 gap-0.5 text-greyscale1">
+              {options.map((o, index) => (
+                <button
+                  key={o._id}
+                  // assumes even number of options (4, 6, 8)
+                  className={`p-2.5 w-full h-full ${
+                    index === 0 && "rounded-tl-[20px]"
+                  } ${index === 1 && "rounded-tr-[20px]"} ${
+                    index === options.length - 1 && "rounded-br-[20px]"
+                  } ${index === options.length - 2 && "rounded-bl-[20px]"} ${
+                    gameCard[accessor]["answer"] === o._id
+                      ? "bg-[#282622] border border-data"
+                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                  }`}
+                  onClick={() => handleSelect(o._id)}
+                >
+                  {o.title}
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       ) : (
         <input
-          className="w-full h-[45px] p-2.5 bg-greyscale1/5 rounded-[10px] font-figtree-semi text-lg text-greyscale1 text-center"
+          className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
           type="number"
           value={gameCard[accessor]["answer"] as string}
           onChange={(e) =>

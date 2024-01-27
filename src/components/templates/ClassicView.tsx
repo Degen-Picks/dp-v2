@@ -865,7 +865,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                 {/* betting box */}
                 <div className="bg-greyscale1 w-full md:w-[620px] mx-auto">
                   {/* header */}
-                  {/* <div className="relative h-[50px] flex items-center justify-center bg-greyscale5">
+                  {/* <div className="relative h-[50px] flex items-center justify-center bg-greyscale6">
                     <p className="font-base-b text-center text-greyscale1">
                       {`Make your pick`}
                     </p>

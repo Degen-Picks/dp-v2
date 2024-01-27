@@ -157,7 +157,7 @@ const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick,
           {placedPicks.length * currentPick!.entryFee} total
         </p>
       )}
-      <div className="grid grid-flow-row grid-cols-2 md:grid-cols-2 md:gap-x-5 md:gap-y-8">
+      <div className="flex flex-col items-center gap-5">
         {gameCard &&
           Object.keys(gameCard).map((key) => {
             const card = gameCard[key as keyof SuperbowlGameCard];
@@ -188,8 +188,8 @@ const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick,
       {/* If admin show save button */}
       {isAdmin && (
         <button
-          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
-          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
+          className="bg-data text-greyscale6 text-lg w-[460px] h-[60px] 
+          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[20px]"
           onClick={() => handleUpdatePickem()}
         >
           UPDATE WINNERS
@@ -198,8 +198,8 @@ const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick,
       {/* If not admin show submit button */}
       {!isAdmin && (
         <button
-          className="bg-data text-greyscale5 text-lg w-[460px] h-[60px] 
-          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[10px]"
+          className="bg-data text-greyscale6 text-lg w-[460px] h-[60px] 
+          hover:bg-data/80 font-figtree-semi p-2.5 rounded-[20px] mb-20"
           onClick={() => handlePayToken()}
         >
           Submit Pick&apos;em Entry

@@ -25,7 +25,7 @@ const AlertBanner: FC<Props> = ({ text, ctaLink, ctaText }) => {
       <p className="text-lg  leading-[19px] px-6 sm:px-0">{text} </p>
       <motion.button
         className="bg-greyscale1 h-10 w-32 flex items-center justify-center
-        border border-transparent hover:border-greyscale5"
+        border border-transparent hover:border-greyscale6"
         onClick={() => router.push("/gamesetup")}
       >
         Create game

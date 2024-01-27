@@ -115,7 +115,7 @@ const CreationDropMenu: FC<Props> = ({
             <p className="text-disabled">{placeholder}</p>
           )}
           <CaratDown
-            className={`mr-2 ${disabled ? "fill-disabled" : "fill-greyscale5"}`}
+            className={`mr-2 ${disabled ? "fill-disabled" : "fill-greyscale6"}`}
           />
         </button>
 
