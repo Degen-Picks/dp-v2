@@ -6,7 +6,7 @@ import SuperbowlStandings from "@/components/organisms/SuperbowlStandings";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { generalConfig } from "@/configs";
 import { Pickem } from "@/types";
-import { SuperbowlGameCard } from "@/types/Superbowl";
+import { SuperbowlGameCard, SuperbowlLeaderboard } from "@/types/Superbowl";
 import { getPickems } from "@/utils";
 import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
 
@@ -26,6 +26,7 @@ const Superbowl: FC = () => {
   const [gameCard, setGameCard] = useState<SuperbowlGameCard | null>(null);
   const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
   const [placedPicks, setPlacedPicks] = useState<any[]>([]);
+  const [leaderboard, setLeaderboard] = useState<SuperbowlLeaderboard | null>(null); 
 
    // For popup
   useEffect(() => {
@@ -36,6 +37,9 @@ const Superbowl: FC = () => {
 
       const currPick = pickems[pickems.length - 1];
       console.log(`Found ya pickem:`, currPick);
+
+      // Load leaderboard for pick
+      loadLeaderboard(currPick);
      
       // Convert to gameCard
       const gameCard = convertToGameCard(currPick, false);
@@ -47,11 +51,15 @@ const Superbowl: FC = () => {
     loadPickems();
   }, []);
 
-  // TODO: Might want to reload picks here?
   useEffect(() => {
-    if(view === View.ADMIN && currentPick) {
+    if(!currentPick) return;
+
+    // Kind of janky right now... but only for admins 
+    if(view === View.ADMIN) {
       const gameCard = convertToGameCard(currentPick, true);
       setGameCard(gameCard);
+    } else if(view === View.STANDINGS) { // Reload leaderboard on view switch
+      loadLeaderboard(currentPick);
     }
   }, [view]);
 
@@ -90,6 +98,31 @@ const Superbowl: FC = () => {
       console.log(`Error loading user pick ${err}`);
     }
   };
+
+  const loadLeaderboard = async (pick: Pickem) => {
+    try {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      const requestOptions = {
+        method: "GET",
+        headers: headers,
+      };
+
+      const response = await fetch(
+        `${generalConfig.apiUrl}/api/leaderboard_pickem?pickId=${pick._id}`,
+        requestOptions
+      );
+      const body = await response.json();
+
+      if (response.status === 200 && body.data.length >= 1) {
+        const leaderboard = body.data;
+        setLeaderboard(leaderboard);
+      }
+    } catch (err) {
+      console.log(`Error loading leaderboard for pick ${pick._id} ${err}`);
+    }
+  }
 
   const convertToGameCard = (data: Pickem, isAdmin: boolean) => {
     const gameCard: SuperbowlGameCard = {};
@@ -137,7 +170,7 @@ const Superbowl: FC = () => {
       <Navbar view={view} setView={setView} />
       <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
         {view === View.RULES && <SuperbowlRules />}
-        {view === View.STANDINGS && <SuperbowlStandings currentPick={currentPick}/>}
+        {view === View.STANDINGS && <SuperbowlStandings leaderboard={leaderboard}/>}
         
         {(view === View.GAME || view === View.ADMIN)
           && <SuperbowlGame 
