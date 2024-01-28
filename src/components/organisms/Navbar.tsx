@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ConnectButton, MegaMenu, MegaMenuButton } from "@/components";
@@ -39,6 +39,16 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 1024;
 
+  // const previousPublicKeyRef = useRef<PublicKey | null>();
+  const [canLogout, setCanLogout] = useState(false);
+
+  // Public key state tracking
+  useEffect(() => {
+    if(publicKey) {
+      setCanLogout(true);
+    }
+  }, [publicKey]);
+
   // Handle login
   useEffect(() => {
     async function load() {
@@ -56,11 +66,13 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   // Logout on disconnect/wallet change
   useEffect(() => {
     async function load() {
-      await logout();
+      console.log("eee logging users out")
       setWagerUser(null);
+      await logout();
     }
 
-    if (!publicKey) {
+    // Check if publicKey changed from not null to null
+    if (canLogout && !publicKey) {
       load();
     }
   }, [publicKey]);
@@ -141,6 +153,16 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             ) : null}
 
             {!landing && <ConnectButton />}
+
+            {!landing && (
+              <motion.button
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold h-[50px] px-5"
+                onClick={() => {/* Handle Connect DeID click event */}}
+              >
+                Connect DeID
+              </motion.button>
+            )}
+
             {open && (
               <MegaMenu
                 userData={userData}
