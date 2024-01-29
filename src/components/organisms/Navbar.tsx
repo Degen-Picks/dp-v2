@@ -66,7 +66,6 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   // Logout on disconnect/wallet change
   useEffect(() => {
     async function load() {
-      console.log("eee logging users out")
       setWagerUser(null);
       await logout();
     }
