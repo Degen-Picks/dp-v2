@@ -1,4 +1,5 @@
 import { TwitterData } from "./TwitterData";
+import { DeIDData } from "./DeIDData";
 
 export interface Wager {
   finalScore: string;
@@ -47,6 +48,7 @@ interface Stats {
 export interface WagerUser {
   publicKey: string;
   twitterData: TwitterData | null;
+  deidData: DeIDData | null;
   roles: Roles;
   stats: Stats;
 }

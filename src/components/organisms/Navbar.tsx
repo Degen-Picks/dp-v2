@@ -15,6 +15,7 @@ import {
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import SuperbowlToggle from "../molecules/SuperbowlToggle";
+import DeIDLoginButton from "../molecules/DeIDLoginButton";
 import { View } from "@/pages/superbowl";
 
 interface Props {
@@ -151,16 +152,10 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
               </motion.button>
             ) : null}
 
+            {!landing && <DeIDLoginButton />}
+
             {!landing && <ConnectButton />}
 
-            {!landing && (
-              <motion.button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold h-[50px] px-5"
-                onClick={() => {/* Handle Connect DeID click event */}}
-              >
-                Connect DeID
-              </motion.button>
-            )}
 
             {open && (
               <MegaMenu

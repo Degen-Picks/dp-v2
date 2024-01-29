@@ -12,13 +12,13 @@ export const generalConfig = {
     return `I picked ${winningTeam} to beat ${losingTeam} with ${roundedBetAmount} DUST on @degenpicksxyz \n\nMake your pick 👇 \n\ndegenpicks.xyz/classic`;
   },
   WALLET_SIGN_MESSAGE_LOGIN:
-    "Sign this message to confirm ownership of your wallet. You will be prompted to link your Twitter.",
+    "Sign this message to confirm ownership of your wallet. You will be prompted to link your account.",
   WALLET_SIGN_MESSAGE_LOGOUT:
-    "Sign this message to confirm ownership of your wallet. This will unlink your Twitter.",
+    "Sign this message to confirm ownership of your wallet. This will unlink your account.",
 };
 
 generalConfig["apiUrl"] = generalConfig.useDevAPI
-  ? "https://staging-api.degenpicks.xyz"
+  ? "http://localhost:3001"
   : "https://api.degenpicks.xyz";
 
 generalConfig["appUrl"] = generalConfig.useDevAPI
