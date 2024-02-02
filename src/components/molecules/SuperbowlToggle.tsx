@@ -41,7 +41,7 @@ const SuperbowlToggle: FC<Props> = ({ view, setView }) => {
                 : "bg-transparent hover:bg-greyscale6/20 text-white"
             } ${
               !isAdmin && v === View.ADMIN && "hidden"
-            } w-[100px] h-[38px] flex items-center justify-center font-figtree-semi rounded-[70px]`}
+            } w-[100px] h-[38px] flex items-center justify-center rounded-[70px]`}
             onClick={() => setView(v)}
           >
             {v}
