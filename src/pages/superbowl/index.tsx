@@ -129,36 +129,30 @@ const Superbowl: FC = () => {
 
     data.selections.forEach((selection) => {
       const gameCardKey = selection.name;
+      let answer: string | null = null;
 
       // If admin, show already selected options
-      let answer = null;
       if (isAdmin) {
-        for (const team of selection.teams) {
-          if (team.winner) {
-            answer = team._id;
-          }
-        }
+        const winningTeam = selection.teams.find((team) => team.winner);
+        answer = winningTeam ? winningTeam._id : null;
       }
 
-      // TODO: will need to change if we do 3+ options
+      // initialize gameCard
       gameCard[gameCardKey] = {
         title: selection.title,
         answer,
-        option1: {
-          title: selection.teams[0]?.name,
-          _id: selection.teams[0]?._id,
-        },
-        option2: {
-          title: selection.teams[1]?.name,
-          _id: selection.teams[1]?._id,
-        },
       };
 
-      if (gameCardKey === "tiebreaker") {
-        gameCard[gameCardKey] = {
-          title: selection.title,
-          answer: "",
+      selection.teams.forEach((team, index) => {
+        const optionKey = `option${index + 1}` as `option${number}`;
+        gameCard[gameCardKey][optionKey] = {
+          title: team.name,
+          _id: team._id,
         };
+      });
+
+      if (gameCardKey === "tiebreaker") {
+        gameCard[gameCardKey].answer = "";
       }
     });
 
