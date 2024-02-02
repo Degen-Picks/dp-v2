@@ -7,17 +7,25 @@ import { getPickems, sleep, updatePick } from "@/utils";
 import sendTransaction from "@/utils/sendTransaction";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { generalConfig } from "@/configs";
+import { Star } from "lucide-react";
 
 interface Props {
   isAdmin?: boolean;
   gameCard: SuperbowlGameCard | null;
-  setGameCard:  (gameCard: SuperbowlGameCard) => void;
+  setGameCard: (gameCard: SuperbowlGameCard) => void;
   currentPick: Pickem | null;
   placedPicks: any[];
   loadUserPicks: () => void;
 }
 
-const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick, placedPicks, loadUserPicks }) => {
+const SuperbowlGame: FC<Props> = ({
+  isAdmin,
+  gameCard,
+  setGameCard,
+  currentPick,
+  placedPicks,
+  loadUserPicks,
+}) => {
   const { connection } = useConnection();
   const { publicKey, signTransaction } = useWallet();
 
@@ -146,18 +154,12 @@ const SuperbowlGame: FC<Props> = ({ isAdmin, gameCard, setGameCard, currentPick,
 
   return (
     <motion.div
-      className="w-fit mx-auto h-full flex flex-col flex-1 gap-[60px] items-center justify-center"
+      className="md:w-fit mx-auto h-full flex flex-col flex-1 gap-[60px] items-center justify-center mt-12"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      {currentPick && (
-        <p className="text-greyscale1/50 font-figtree-semi text-center">
-          DEBUG: You have {placedPicks.length} picks submitted worth{" "}
-          {placedPicks.length * currentPick!.entryFee} total
-        </p>
-      )}
-      <div className="flex flex-col items-center gap-5">
+      <div className="w-full flex flex-col items-center gap-5 mt-12">
         {gameCard &&
           Object.keys(gameCard).map((key) => {
             const card = gameCard[key as keyof SuperbowlGameCard];

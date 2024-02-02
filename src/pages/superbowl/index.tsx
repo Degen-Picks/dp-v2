@@ -9,10 +9,11 @@ import { Pickem } from "@/types";
 import { SuperbowlGameCard, SuperbowlLeaderboard } from "@/types/Superbowl";
 import { getPickems } from "@/utils";
 import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
+import { useQuery } from "@tanstack/react-query";
 
 export enum View {
-  RULES = "Rules",
-  GAME = "Game",
+  RULES = "Home",
+  GAME = "Play",
   STANDINGS = "Standings",
   ADMIN = "Admin",
 }
@@ -25,79 +26,82 @@ const Superbowl: FC = () => {
 
   const [gameCard, setGameCard] = useState<SuperbowlGameCard | null>(null);
   const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
-  const [placedPicks, setPlacedPicks] = useState<any[]>([]);
-  const [leaderboard, setLeaderboard] = useState<SuperbowlLeaderboard | null>(null); 
+  const [leaderboard, setLeaderboard] = useState<SuperbowlLeaderboard | null>(
+    null
+  );
 
-   // For popup
+  const {
+    data: pickemData,
+    isLoading: pickemLoading,
+    refetch: reloadUserPicks,
+  } = useQuery({
+    queryKey: ["pickems"],
+    queryFn: getPickems,
+  });
+
+  const { data: placedPicks, isLoading: placedPicksLoading } = useQuery({
+    queryKey: ["placedPicks", currentPick?._id],
+    queryFn: async () => {
+      try {
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        const requestOptions = {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({
+            pickId: currentPick?._id,
+            publicKey,
+          }),
+        };
+
+        const response = await fetch(
+          `${generalConfig.apiUrl}/api/getUserPick`,
+          requestOptions
+        );
+        const body = await response.json();
+
+        if (response.status === 200) {
+          const userPicks = body.data;
+          console.log("User picks:", userPicks);
+          return userPicks;
+        }
+      } catch (err) {
+        console.log(`Error loading user pick ${err}`);
+      }
+    },
+    enabled: !!currentPick && !!publicKey,
+  });
+
+  // For popup
   useEffect(() => {
-    const loadPickems = async () => {
-      const pickems = await getPickems();
-      if (pickems === null) return;
-      if (pickems.length === 0) return;
+    if (!pickemData || pickemData.length === 0) return;
 
-      const currPick = pickems[pickems.length - 1];
-      console.log(`Found ya pickem:`, currPick);
+    const currPick = pickemData[pickemData.length - 1];
+    console.log(`Found this pickem:`, currPick);
 
-      // Load leaderboard for pick
-      loadLeaderboard(currPick);
-     
-      // Convert to gameCard
-      const gameCard = convertToGameCard(currPick, false);
+    // Load leaderboard for pick
+    loadLeaderboard(currPick);
 
-      setCurrentPick(currPick);     
-      setGameCard(gameCard);
-    };
+    // Convert to gameCard
+    const gameCard = convertToGameCard(currPick, false);
 
-    loadPickems();
-  }, []);
+    setCurrentPick(currPick);
+    setGameCard(gameCard);
+  }, [pickemData]);
 
   useEffect(() => {
-    if(!currentPick) return;
+    if (!currentPick) return;
 
-    // Kind of janky right now... but only for admins 
-    if(view === View.ADMIN) {
+    // Kind of janky right now... but only for admins
+    if (view === View.ADMIN) {
       const gameCard = convertToGameCard(currentPick, true);
       setGameCard(gameCard);
-    } else if(view === View.STANDINGS) { // Reload leaderboard on view switch
+    } else if (view === View.STANDINGS) {
+      // Reload leaderboard on view switch
       loadLeaderboard(currentPick);
     }
-  }, [view]);
-
-  useEffect(() => {
-    if (!currentPick || !publicKey) return;
-
-    loadUserPicks();
-  }, [currentPick, publicKey]);
-
-  const loadUserPicks = async () => {
-    try {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      const requestOptions = {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify({
-          pickId: currentPick?._id,
-          publicKey,
-        }),
-      };
-
-      const response = await fetch(
-        `${generalConfig.apiUrl}/api/getUserPick`,
-        requestOptions
-      );
-      const body = await response.json();
-
-      if (response.status === 200 && body.data.length >= 1) {
-        const userPicks = body.data;
-        console.log("User picks:", userPicks);
-        setPlacedPicks(userPicks);
-      }
-    } catch (err) {
-      console.log(`Error loading user pick ${err}`);
-    }
-  };
+  }, [view, currentPick]);
 
   const loadLeaderboard = async (pick: Pickem) => {
     try {
@@ -122,7 +126,7 @@ const Superbowl: FC = () => {
     } catch (err) {
       console.log(`Error loading leaderboard for pick ${pick._id} ${err}`);
     }
-  }
+  };
 
   const convertToGameCard = (data: Pickem, isAdmin: boolean) => {
     const gameCard: SuperbowlGameCard = {};
@@ -164,16 +168,20 @@ const Superbowl: FC = () => {
       <Navbar view={view} setView={setView} />
       <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
         {view === View.RULES && <SuperbowlRules />}
-        {view === View.STANDINGS && <SuperbowlStandings leaderboard={leaderboard}/>}
-        
-        {(view === View.GAME || view === View.ADMIN)
-          && <SuperbowlGame 
-                isAdmin={view === View.ADMIN} 
-                gameCard={gameCard}
-                setGameCard={setGameCard}
-                currentPick={currentPick}
-                placedPicks={placedPicks}
-                loadUserPicks={loadUserPicks} />}
+        {view === View.STANDINGS && (
+          <SuperbowlStandings leaderboard={leaderboard} />
+        )}
+
+        {(view === View.GAME || view === View.ADMIN) && (
+          <SuperbowlGame
+            isAdmin={view === View.ADMIN}
+            gameCard={gameCard}
+            setGameCard={setGameCard}
+            currentPick={currentPick}
+            placedPicks={placedPicks}
+            loadUserPicks={reloadUserPicks}
+          />
+        )}
       </div>
       {view === View.GAME && <SuperbowlFooter numPicks={numPicks} />}
     </div>

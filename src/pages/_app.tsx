@@ -18,10 +18,19 @@ import { AppProps } from "next/app";
 import { Toaster } from "sonner";
 import { WagerUserContextProvider } from "@/components/stores/WagerUserStore";
 import { ThemeProvider, createTheme } from "@mui/material";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 // import { GoogleAnalytics } from '@next/third-parties/google'
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
+
+const queryClient = new QueryClient();
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
@@ -95,19 +104,20 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
         />
       </Head>
-
-      <ThemeProvider theme={THEME}>
-        <WagerUserContextProvider>
-          <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
-              <WalletModalProvider>
-                <Component {...pageProps} />
-              </WalletModalProvider>
-            </WalletProvider>
-          </ConnectionProvider>
-        </WagerUserContextProvider>
-      </ThemeProvider>
-      <Toaster />
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={THEME}>
+          <WagerUserContextProvider>
+            <ConnectionProvider endpoint={endpoint}>
+              <WalletProvider wallets={wallets} autoConnect>
+                <WalletModalProvider>
+                  <Component {...pageProps} />
+                  <Toaster />
+                </WalletModalProvider>
+              </WalletProvider>
+            </ConnectionProvider>
+          </WagerUserContextProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   );
 };
