@@ -101,3 +101,26 @@ input::placeholder {
     linear-gradient(262deg, #ffcf00 0%, #ff6b6b 35%, #1bcea3 66%, #2f8eff 100%)
   );
 }
+
+.button-wrapper {
+  position: relative;
+  display: block;
+}
+
+.button-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  border-radius: 22px; /* Button's border-radius + border thickness */
+  z-index: -1;
+  background: white;
+  transition: opacity 0.3s ease;
+}
+
+.button-wrapper:hover::before {
+  background: linear-gradient(to right, #1bcea3, #ff6b6b, #2f8eff);
+  transition: opacity 0.3s ease;
+}

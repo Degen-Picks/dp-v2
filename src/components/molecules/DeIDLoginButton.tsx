@@ -7,6 +7,7 @@ import {
 import Image from "next/image";
 import { DeIDData } from "@/types/DeIDData";
 import { generalConfig } from "@/configs";
+import { Trash } from "lucide-react";
 
 const getUsernameFromDeID = (deid: DeIDData) => {
   return (
@@ -153,16 +154,18 @@ const DeIDLoginButton: FC = () => {
   };
 
   return (
-    <>
+    <div className={`${!wagerUser?.deidData && "button-wrapper"}`}>
       {publicKey && (
         <button
           onClick={wagerUser?.deidData ? handleDeIDUnlink : handleDeIDLogin}
-          className={`group bg-transparent border border-white text-sm text-white ${
+          className={`group bg-black border text-sm text-white ${
             !!wagerUser?.deidData
-              ? "hover:border-[#f14668] hover:bg-[#f14668] hover:text-white"
-              : "hover:bg-greyscale1 hover:text-black"
-          } h-[50px] flex justify-center items-center w-auto max-w-[200px]
-          rounded-full px-5 py-2.5 gap-2 transition-all duration-300 font-figtree-semi`}
+              ? "hover:border-[#f14668] border-foregroundDark"
+              : "border-transparent"
+          } h-[50px] flex ${
+            !wagerUser?.deidData ? "flex-row" : "flex-row-reverse"
+          } justify-center items-center w-auto max-w-[200px]
+          rounded-full px-5 py-2.5 gap-2 font-figtree-semi`}
           style={{
             minWidth: "100px",
             borderWidth: "2px",
@@ -178,25 +181,26 @@ const DeIDLoginButton: FC = () => {
             Connect
           </p>
           {wagerUser?.deidData && (
-            <>
-              <p className="text-lg leading-6 hidden group-hover:inline">
-                Unlink
-              </p>
-              <p className="text-lg leading-6 inline group-hover:hidden truncate">
-                {getUsernameFromDeID(wagerUser?.deidData!)}
-              </p>
-            </>
+            <p className="text-lg leading-6 inline truncate">
+              {getUsernameFromDeID(wagerUser?.deidData!)}
+            </p>
           )}
           <Image
             src="/images/icons/deid.svg"
             width={18}
             height={18}
             alt="deid icon"
-            className="order-last"
+            className={`${!!wagerUser?.deidData && "group-hover:hidden"}`}
+          />
+          <Trash
+            size={18}
+            fill="#FF6B6B"
+            color="#FF6B6B"
+            className={`hidden ${!!wagerUser?.deidData && "group-hover:block"}`}
           />
         </button>
       )}
-    </>
+    </div>
   );
 };
 
