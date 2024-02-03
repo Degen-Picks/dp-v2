@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Close } from "@/components";
 import { useOutsideAlerter } from "../../hooks/useOutsideAlerter";
 
@@ -14,6 +21,15 @@ const InfoModal: FC<ModalProps> = ({ showModal, setShowModal, children }) => {
     setShowModal(false);
   });
 
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
+
   return (
     <>
       {showModal ? (
@@ -24,12 +40,12 @@ const InfoModal: FC<ModalProps> = ({ showModal, setShowModal, children }) => {
             focus:outline-none mx-4"
           >
             <div
-              className="relative w-full sm:w-[90%] lg:w-2/3 xl:w-1/2 my-6 mx-auto max-w-lg h-fit"
+              className="relative w-full sm:w-[90%] lg:w-2/3 xl:w-1/2 my-6 mx-auto max-w-[620px] h-fit"
               ref={wrapperRef}
             >
               <div
-                className="relative p-5 border-0
-                shadow-lg flex flex-col w-full bg-greyscale1"
+                className="relative py-5 border border-white rounded-[30px]
+                shadow-lg flex flex-col w-full bg-black"
               >
                 {/* header */}
                 <div className="w-full">
@@ -39,7 +55,7 @@ const InfoModal: FC<ModalProps> = ({ showModal, setShowModal, children }) => {
                       setShowModal(false);
                     }}
                   >
-                    <Close className="fill-black" />
+                    <Close />
                   </button>
                 </div>
                 {/* content body */}

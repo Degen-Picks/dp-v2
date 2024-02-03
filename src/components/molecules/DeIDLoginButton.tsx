@@ -10,9 +10,7 @@ import { generalConfig } from "@/configs";
 
 const getUsernameFromDeID = (deid: DeIDData) => {
   return (
-    deid.username ||
     deid.twitterHandle ||
-    deid.discordUsername ||
     (deid.wallets?.length
       ? `${deid.wallets[0].address.slice(
           0,

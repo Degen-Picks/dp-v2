@@ -24,7 +24,7 @@ type TransferData = {
   _id: string;
 };
 
-type SuperbowlLeaderboardEntry = {
+export type SuperbowlLeaderboardEntry = {
   publicKey: string;
   pickedTeams: string[];
   tieBreaker: number;

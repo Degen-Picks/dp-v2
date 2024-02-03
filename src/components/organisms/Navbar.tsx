@@ -38,14 +38,14 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   const router = useRouter();
 
   const [winWidth] = useWindowSize();
-  const isMobile = winWidth < 1024;
+  const isMobile = winWidth < 768;
 
   // const previousPublicKeyRef = useRef<PublicKey | null>();
   const [canLogout, setCanLogout] = useState(false);
 
   // Public key state tracking
   useEffect(() => {
-    if(publicKey) {
+    if (publicKey) {
       setCanLogout(true);
     }
   }, [publicKey]);
@@ -97,27 +97,6 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
     }
   }, [publicKey]);
 
-  const renderMenu = () => {
-    if (!publicKey) {
-      return (
-        <div className="flex items-center gap-2.5">
-          <ConnectButton />
-          <button
-            className="w-[50px] h-[50px] flex items-center justify-center"
-            onClick={() => setOpen(true)}
-          >
-            <AlignJustify color="white" />
-          </button>
-        </div>
-      );
-    }
-    return (
-      <button onClick={() => setOpen(true)}>
-        <MegaMenuButton userData={userData} />
-      </button>
-    );
-  };
-
   useEffect(() => {
     if (router.isReady) {
       setMounted(true);
@@ -127,10 +106,12 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   if (!mounted) return null;
 
   return (
-    <>
-      <div className={`border-b border-[#404040] z-20 h-20`}>
+    <div className="w-full flex flex-col gap-10 items-center">
+      <div
+        className={`w-full border-b md:border-none border-[#404040] z-20 h-24`}
+      >
         <div
-          className="relative flex justify-between items-center
+          className="w-full h-full relative flex justify-center md:justify-between items-center
           max-w-[1600px] mx-auto px-4 lg:px-10"
         >
           <Link href="https://degenpicks.xyz/">
@@ -142,7 +123,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
               priority
             />
           </Link>
-          <div className="relative flex items-center gap-4 justify-end">
+          <div className="hidden relative lg:flex items-center gap-4 justify-end">
             {landing ? (
               <motion.button
                 className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
@@ -156,7 +137,6 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
 
             {!landing && <ConnectButton />}
 
-
             {open && (
               <MegaMenu
                 userData={userData}
@@ -165,12 +145,15 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
               />
             )}
           </div>
-          {!landing && view && setView && (
+          {!landing && view && setView && !isMobile && (
             <SuperbowlToggle view={view} setView={setView} />
           )}
         </div>
       </div>
-    </>
+      {!landing && view && setView && isMobile && (
+        <SuperbowlToggle view={view} setView={setView} />
+      )}
+    </div>
   );
 };
 

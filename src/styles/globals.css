@@ -30,7 +30,7 @@
 /* Sets top level div background */
 @layer base {
   body {
-    @apply bg-greyscale6 text-lg font-figtree;
+    @apply bg-greyscale6 font-figtree;
   }
 }
 

@@ -45,6 +45,18 @@ module.exports = {
         data: "#FFCF00",
         superbowlBg: "#1B1B1B",
         phantom: "#9C85EC",
+
+        // New colors
+        background1: "#000000",
+        background2: "#1D1D24",
+        foregroundLight: "#FFFFFF",
+        foregroundMed: "#808080",
+        foregroundDark: "#404040",
+        primary: "#FFCF00",
+        secondaryGreen: "#1BCEA3",
+        secondaryRed: "#FF6B6B",
+        secondaryBlue: "#2F8EFF",
+        selected: "#282622",
       },
       screens: {
         xs: "281px",

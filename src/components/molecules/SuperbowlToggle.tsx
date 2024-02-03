@@ -27,7 +27,7 @@ const SuperbowlToggle: FC<Props> = ({ view, setView }) => {
 
   return (
     <div
-      className={`absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`}
+      className={`md:absolute md:top-1/2 md:-translate-y-1/2 md:left-1/2 md:-translate-x-1/2`}
     >
       <div
         className={`h-[50px] flex items-center gap-1 p-1.5 bg-greyscale5 rounded-[82px]`}
@@ -40,7 +40,8 @@ const SuperbowlToggle: FC<Props> = ({ view, setView }) => {
                 ? "bg-greyscale1 text-greyscale6"
                 : "bg-transparent hover:bg-greyscale6/20 text-white"
             } ${
-              !isAdmin && v === View.ADMIN && "hidden"
+              // !isAdmin && v === View.ADMIN && "hidden"
+              isAdmin && v === View.ADMIN && "hidden"
             } w-[100px] h-[38px] flex items-center justify-center rounded-[70px]`}
             onClick={() => setView(v)}
           >

@@ -3,13 +3,14 @@ import Navbar from "@/components/organisms/Navbar";
 import SuperbowlRules from "@/components/organisms/SuperbowlRules";
 import SuperbowlGame from "@/components/organisms/SuperbowlGame";
 import SuperbowlStandings from "@/components/organisms/SuperbowlStandings";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { generalConfig } from "@/configs";
 import { Pickem } from "@/types";
 import { SuperbowlGameCard, SuperbowlLeaderboard } from "@/types/Superbowl";
-import { getPickems } from "@/utils";
+import { getPickems, sleep } from "@/utils";
 import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
 import { useQuery } from "@tanstack/react-query";
+import sendTransaction from "@/utils/sendTransaction";
 
 export enum View {
   RULES = "Home",
@@ -19,7 +20,8 @@ export enum View {
 }
 
 const Superbowl: FC = () => {
-  const { publicKey } = useWallet();
+  const { publicKey, signTransaction } = useWallet();
+  const { connection } = useConnection();
 
   const [view, setView] = useState<View>(View.RULES);
   const [numPicks, setNumPicks] = useState<number>(0);
@@ -163,27 +165,123 @@ const Superbowl: FC = () => {
     return gameCard;
   };
 
+  const sendPlaceBet = async (
+    signature: string,
+    pickedTeams: Array<string>,
+    tieBreaker: number,
+    retries: number
+  ): Promise<any> => {
+    if (!currentPick || !publicKey) return;
+
+    try {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      const requestOptions = {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          pickId: currentPick._id,
+          pickedTeams,
+          tieBreaker,
+          signature,
+        }),
+      };
+
+      const response = await fetch(
+        `${generalConfig.apiUrl}/api/placePick`,
+        requestOptions
+      );
+      const body = await response.json();
+
+      if (response.status === 200) {
+        return true;
+      } else {
+        if (body.message === "Invalid transaction signature" || retries < 5) {
+          console.log("Should retry!");
+
+          await sleep(1000);
+          return await sendPlaceBet(
+            signature,
+            pickedTeams,
+            tieBreaker,
+            retries + 1
+          );
+        }
+
+        // TODO: toast?
+        // toast.error(body.message);
+        return false;
+      }
+    } catch (err) {
+      console.log(`Error placing bet ${err}`);
+      return false;
+    }
+  };
+
+  const handlePayToken = async () => {
+    if (!currentPick || !gameCard) return;
+
+    console.log("Submitting pickem entry...");
+    console.log(gameCard, currentPick);
+
+    // Do we want toasts?
+
+    // We wanna make sure every input is filled out
+
+    // Send dust to our wallet
+    const txHash = await sendTransaction(
+      publicKey!,
+      signTransaction,
+      connection,
+      currentPick.entryFee,
+      currentPick.publicKey,
+      "DUST"
+    );
+
+    const selectedTeams = Object.keys(gameCard).reduce((acc, key) => {
+      if (key !== "tiebreaker") {
+        const card = gameCard[key as keyof SuperbowlGameCard];
+        if (card.answer !== null && card.answer !== undefined) {
+          acc.push(card.answer);
+        }
+      }
+      return acc;
+    }, [] as string[]);
+
+    // TODO: Make sure we have tiebreaker.answer
+    const tieBreaker = parseInt(gameCard.tiebreaker.answer!); // TODO: patch (!)
+
+    // Check tx went through
+    if (
+      txHash &&
+      (await sendPlaceBet(txHash, selectedTeams as string[], tieBreaker, 0))
+    ) {
+      await reloadUserPicks();
+      alert("Success!");
+    } else {
+      alert("Something went wrong, please try again later.");
+    }
+  };
+
   return (
     <div className="w-screen min-h-screen flex flex-col bg-greyscale6">
       <Navbar view={view} setView={setView} />
       <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
         {view === View.RULES && <SuperbowlRules />}
-        {view === View.STANDINGS && (
-          <SuperbowlStandings leaderboard={leaderboard} />
-        )}
-
         {(view === View.GAME || view === View.ADMIN) && (
           <SuperbowlGame
             isAdmin={view === View.ADMIN}
             gameCard={gameCard}
             setGameCard={setGameCard}
             currentPick={currentPick}
-            placedPicks={placedPicks}
-            loadUserPicks={reloadUserPicks}
           />
         )}
+        {view === View.STANDINGS && (
+          <SuperbowlStandings leaderboard={leaderboard} />
+        )}
       </div>
-      {view === View.GAME && <SuperbowlFooter numPicks={numPicks} />}
+      <SuperbowlFooter numPicks={numPicks} handlePayToken={handlePayToken} />
     </div>
   );
 };
