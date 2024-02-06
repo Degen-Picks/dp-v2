@@ -20,7 +20,7 @@ const ConnectButton = () => {
       className="!w-full md:!w-fit !flex !justify-center hover:!bg-transparent !border !border-white/50"
       startIcon={undefined}
     >
-      <p className="!font-figtree-semi !text-xl !whitespace-nowrap !text-white">
+      <p className="!font-figtree-semi !text-base !whitespace-nowrap !text-white">
         {publicKey
           ? publicKey.toBase58().slice(0, 4) +
             " ... " +

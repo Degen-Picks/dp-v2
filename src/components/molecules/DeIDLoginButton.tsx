@@ -1,16 +1,19 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
   WagerUserContext,
   WagerUserContextType,
 } from "../stores/WagerUserStore";
 import Image from "next/image";
-import { DeIDData } from "@/types/DeIDData";
 import { generalConfig } from "@/configs";
 import { Trash } from "lucide-react";
 import { getUsernameFromDeID } from "@/utils";
 
-const DeIDLoginButton: FC = () => {
+interface Props {
+  type?: "modal" | "nav";
+}
+
+const DeIDLoginButton: FC<Props> = ({ type = "nav" }) => {
   const { publicKey } = useWallet();
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
@@ -150,6 +153,8 @@ const DeIDLoginButton: FC = () => {
           className={`group bg-black border text-sm text-white ${
             !!wagerUser?.deidData
               ? "hover:border-[#f14668] border-foregroundDark"
+              : type === "modal"
+              ? "border-white"
               : "border-transparent"
           } h-[50px] flex ${
             !wagerUser?.deidData ? "flex-row" : "flex-row-reverse"

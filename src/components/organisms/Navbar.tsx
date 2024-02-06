@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { motion } from "framer-motion";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { AlignJustify } from "lucide-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
 import { login, logout } from "@/utils";
@@ -17,6 +16,7 @@ import {
 import SuperbowlToggle from "../molecules/SuperbowlToggle";
 import DeIDLoginButton from "../molecules/DeIDLoginButton";
 import { View } from "@/pages/superbowl";
+import InfoModal from "./InfoModal";
 
 interface Props {
   landing?: boolean;
@@ -28,14 +28,14 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
   ) as WagerUserContextType;
+  const wallet = useWallet();
+  const { publicKey } = wallet;
+  const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<WagerUser | undefined>();
-
-  const wallet = useWallet();
-  const { publicKey } = wallet;
-  const router = useRouter();
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 768;
@@ -91,6 +91,11 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
     }
   };
 
+  const handleModalDismiss = () => {
+    setShowInfoModal(false);
+    sessionStorage.setItem("infoModalShown", "true");
+  };
+
   useEffect(() => {
     if (publicKey) {
       loadUserData();
@@ -103,57 +108,80 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
     }
   }, [router.isReady]);
 
+  useEffect(() => {
+    const modalShown = sessionStorage.getItem("infoModalShown");
+
+    if (publicKey && !wagerUser?.deidData && !modalShown) {
+      setShowInfoModal(true);
+    }
+  }, [publicKey, wagerUser]);
+
   if (!mounted) return null;
 
   return (
-    <div className="w-full flex flex-col gap-10 items-center">
-      <div
-        className={`w-full border-b md:border-none border-[#404040] z-20 h-24`}
-      >
+    <>
+      <div className="w-full flex flex-col gap-10 items-center">
         <div
-          className="w-full h-full relative flex justify-center md:justify-between items-center
-          max-w-[1600px] mx-auto px-4 lg:px-10"
+          className={`w-full border-b md:border-none border-[#404040] z-20 h-24`}
         >
-          <Link href="https://degenpicks.xyz/">
-            <Image
-              src="/images/logo_new.png"
-              width={isMobile ? 60 : 70}
-              height={isMobile ? 60 : 70}
-              alt="degen picks logo"
-              priority
-            />
-          </Link>
-          <div className="hidden relative lg:flex items-center gap-4 justify-end">
-            {landing ? (
-              <motion.button
-                className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
-                onClick={() => router.push("https://app.degenpicks.xyz/")}
-              >
-                Launch app
-              </motion.button>
-            ) : null}
-
-            {!landing && publicKey && <DeIDLoginButton />}
-
-            {!landing && <ConnectButton />}
-
-            {open && (
-              <MegaMenu
-                userData={userData}
-                setUserData={setUserData}
-                setIsOpen={setOpen}
+          <div
+            className="w-full h-full relative flex justify-center md:justify-between items-center
+          max-w-[1600px] mx-auto px-4 lg:px-10"
+          >
+            <Link href="https://degenpicks.xyz/">
+              <Image
+                src="/images/logo_new.png"
+                width={isMobile ? 60 : 70}
+                height={isMobile ? 60 : 70}
+                alt="degen picks logo"
+                priority
               />
+            </Link>
+            <div className="hidden relative lg:flex items-center gap-4 justify-end">
+              {landing ? (
+                <motion.button
+                  className="bg-purple1 hover:bg-purple2 text-greyscale1 h-[50px] px-5"
+                  onClick={() => router.push("https://app.degenpicks.xyz/")}
+                >
+                  Launch app
+                </motion.button>
+              ) : null}
+
+              {!landing && publicKey && <DeIDLoginButton />}
+
+              {!landing && <ConnectButton />}
+
+              {open && (
+                <MegaMenu
+                  userData={userData}
+                  setUserData={setUserData}
+                  setIsOpen={setOpen}
+                />
+              )}
+            </div>
+            {!landing && view && setView && !isMobile && (
+              <SuperbowlToggle view={view} setView={setView} />
             )}
           </div>
-          {!landing && view && setView && !isMobile && (
-            <SuperbowlToggle view={view} setView={setView} />
-          )}
         </div>
+        {!landing && view && setView && isMobile && (
+          <SuperbowlToggle view={view} setView={setView} />
+        )}
       </div>
-      {!landing && view && setView && isMobile && (
-        <SuperbowlToggle view={view} setView={setView} />
-      )}
-    </div>
+      <InfoModal showModal={showInfoModal} setShowModal={handleModalDismiss}>
+        <div className="w-full pt-4 text-center gap-2.5 flex flex-col items-center justify-center">
+          <p className="text-xl sm:text-2xl text-center text-white">
+            Connect your de[id]
+          </p>
+          <p className="max-w-[400px] mx-auto text-base text-center text-foregroundMed">
+            Powered by De Labs
+          </p>
+          <div className="my-8">
+            <DeIDLoginButton type="modal" />
+          </div>
+        </div>
+      </InfoModal>
+    </>
   );
 };
 
