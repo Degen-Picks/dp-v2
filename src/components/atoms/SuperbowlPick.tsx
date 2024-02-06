@@ -59,8 +59,10 @@ const SuperbowlPick: FC<Props> = ({
                 <button
                   key={o._id}
                   className={`p-2.5 w-full h-full rounded-[20px] ${
-                    index < 2 && "rounded-r-none"
-                  } ${index > 1 && "rounded-l-none"} ${
+                    index === 1 && "rounded-none"
+                  } ${index === 0 && "rounded-r-none"} ${
+                    index === 2 && "rounded-l-none"
+                  } ${
                     gameCard[accessor]["answer"] === o._id
                       ? "bg-[#282622] border border-data"
                       : "bg-greyscale5 hover:bg-greyscale1/10"
@@ -73,7 +75,7 @@ const SuperbowlPick: FC<Props> = ({
             </div>
           )}
           {options.length >= 4 && (
-            <div className="grid grid-cols-2 gap-0.5 text-greyscale1">
+            <div className="grid grid-cols-2 gap-0.5 h-[140px] text-greyscale1">
               {options.map((o, index) => (
                 <button
                   key={o._id}

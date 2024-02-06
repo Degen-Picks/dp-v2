@@ -1,7 +1,7 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { motion } from "framer-motion";
 import SuperbowlPick from "../atoms/SuperbowlPick";
-import { SuperbowlGameCard } from "@/types/Superbowl";
+import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
 import { Pickem } from "@/types";
 import { updatePick } from "@/utils";
 
@@ -42,6 +42,10 @@ const SuperbowlGame: FC<Props> = ({
     alert(result.message);
   };
 
+  useEffect(() => {
+    console.log("game card", gameCard);
+  }, [gameCard]);
+
   return (
     <motion.div
       className="w-full md:w-fit mx-auto h-full flex flex-col 
@@ -54,7 +58,12 @@ const SuperbowlGame: FC<Props> = ({
         {gameCard &&
           Object.keys(gameCard).map((key) => {
             const card = gameCard[key as keyof SuperbowlGameCard];
-            if (!card.option1 || !card.option2) {
+            const options = Object.keys(card)
+              .filter((key): key is keyof typeof card =>
+                key.startsWith("option")
+              )
+              .map((key) => card[key as keyof typeof card]);
+            if (options === null) {
               return (
                 <SuperbowlPick
                   key={key}
@@ -71,7 +80,7 @@ const SuperbowlGame: FC<Props> = ({
                 key={key}
                 accessor={key as keyof SuperbowlGameCard}
                 title={card.title}
-                options={[card.option1, card.option2]}
+                options={options as SuperbowlOption[]}
                 gameCard={gameCard}
                 setGameCard={setGameCard}
               />
