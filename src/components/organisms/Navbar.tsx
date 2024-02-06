@@ -133,7 +133,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
               </motion.button>
             ) : null}
 
-            {!landing && <DeIDLoginButton />}
+            {!landing && publicKey && <DeIDLoginButton />}
 
             {!landing && <ConnectButton />}
 

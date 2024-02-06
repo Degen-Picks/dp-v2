@@ -22,6 +22,7 @@ const BuyDustButton: FC = () => {
         width={30}
         height={30}
         alt="jupiter logo"
+        className="-mr-1"
       />
     </button>
   );

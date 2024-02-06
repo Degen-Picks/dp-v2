@@ -29,10 +29,26 @@ const SuperbowlPick: FC<Props> = ({
       });
     }
   };
+
+  if (title === "Tiebreaker")
+    return (
+      <input
+        className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
+        type="number"
+        value={gameCard[accessor]["answer"] as string}
+        onChange={(e) =>
+          setGameCard({
+            ...gameCard,
+            [accessor]: { ...gameCard[accessor], answer: e.target.value },
+          })
+        }
+      />
+    );
+
   return (
     <div className="w-full md:w-[620px] mx-auto flex flex-col gap-2.5 font-figtree">
       <p className="text-[#808080]">{title}</p>
-      {!!options && options.length > 0 ? (
+      {!!options && options.length > 0 && (
         <>
           {options.length === 2 && (
             <div className="w-full flex gap-0.5 h-[70px] text-greyscale1">
@@ -97,18 +113,6 @@ const SuperbowlPick: FC<Props> = ({
             </div>
           )}
         </>
-      ) : (
-        <input
-          className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
-          type="number"
-          value={gameCard[accessor]["answer"] as string}
-          onChange={(e) =>
-            setGameCard({
-              ...gameCard,
-              [accessor]: { ...gameCard[accessor], answer: e.target.value },
-            })
-          }
-        />
       )}
     </div>
   );

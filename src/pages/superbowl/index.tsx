@@ -11,6 +11,7 @@ import { getPickems, sleep } from "@/utils";
 import SuperbowlFooter from "@/components/organisms/SuperbowlFooter";
 import { useQuery } from "@tanstack/react-query";
 import sendTransaction from "@/utils/sendTransaction";
+import { toast } from "sonner";
 
 export enum View {
   RULES = "Home",
@@ -24,8 +25,6 @@ const Superbowl: FC = () => {
   const { connection } = useConnection();
 
   const [view, setView] = useState<View>(View.RULES);
-  const [numPicks, setNumPicks] = useState<number>(0);
-
   const [gameCard, setGameCard] = useState<SuperbowlGameCard | null>(null);
   const [currentPick, setCurrentPick] = useState<Pickem | null>(null);
   const [leaderboard, setLeaderboard] = useState<SuperbowlLeaderboard | null>(
@@ -74,38 +73,6 @@ const Superbowl: FC = () => {
     },
     enabled: !!currentPick && !!publicKey,
   });
-
-  // For popup
-  useEffect(() => {
-    if (!pickemData || pickemData.length === 0) return;
-
-    const currPick = pickemData[pickemData.length - 1];
-    console.log(`Found this pickem:`, currPick);
-
-    // Load leaderboard for pick
-    loadLeaderboard(currPick._id);
-
-    // Convert to gameCard
-    const gameCard = convertToGameCard(currPick, false);
-
-    setCurrentPick(currPick);
-    setGameCard(gameCard);
-  }, [pickemData]);
-
-  useEffect(() => {
-    if (!currentPick) return;
-
-    // Kind of janky right now... but only for admins
-    if (view === View.ADMIN) {
-      const gameCard = convertToGameCard(currentPick, true);
-      setGameCard(gameCard);
-    } else if (view === View.STANDINGS) {
-      // Reload leaderboard on view switch
-      
-      // TODO: reload currentPick to update winners?
-      loadLeaderboard(currentPick._id);
-    }
-  }, [view, currentPick]);
 
   const loadLeaderboard = async (pickId: string) => {
     try {
@@ -221,15 +188,54 @@ const Superbowl: FC = () => {
     }
   };
 
+  // For popup
+  useEffect(() => {
+    if (!pickemData || pickemData.length === 0) return;
+
+    const currPick = pickemData[pickemData.length - 1];
+    console.log(`Found this pickem:`, currPick);
+
+    // Load leaderboard for pick
+    loadLeaderboard(currPick._id);
+
+    // Convert to gameCard
+    const gameCard = convertToGameCard(currPick, false);
+
+    setCurrentPick(currPick);
+    setGameCard(gameCard);
+  }, [pickemData]);
+
+  useEffect(() => {
+    if (!currentPick) return;
+
+    // Kind of janky right now... but only for admins
+    if (view === View.ADMIN) {
+      const gameCard = convertToGameCard(currentPick, true);
+      setGameCard(gameCard);
+    } else if (view === View.STANDINGS) {
+      // Reload leaderboard on view switch
+
+      // TODO: reload currentPick to update winners?
+      loadLeaderboard(currentPick._id);
+    }
+  }, [view, currentPick]);
+
   const handlePayToken = async () => {
-    if (!currentPick || !gameCard) return;
+    if (!currentPick) return "No picks found";
+    if (!gameCard) return "No game card found";
 
-    console.log("Submitting pickem entry...");
-    console.log(gameCard, currentPick);
+    const cardFilled = Object.keys(gameCard).every((key) => {
+      const card = gameCard[key as keyof SuperbowlGameCard];
+      return (
+        card.answer !== null && card.answer !== undefined && card.answer !== ""
+      );
+    });
 
-    // Do we want toasts?
+    if (!cardFilled) {
+      return "Please fill out all fields";
+    }
 
-    // We wanna make sure every input is filled out
+    console.log("Submitting pickem entry...", gameCard, currentPick);
 
     // Send dust to our wallet
     const txHash = await sendTransaction(
@@ -260,10 +266,21 @@ const Superbowl: FC = () => {
       (await sendPlaceBet(txHash, selectedTeams as string[], tieBreaker, 0))
     ) {
       await reloadUserPicks();
-      alert("Success!");
+      return "Picks submitted!";
     } else {
-      alert("Something went wrong, please try again later.");
+      return "Something went wrong, please try again later.";
     }
+  };
+
+  const onClick = async () => {
+    toast.promise(handlePayToken(), {
+      loading: "Submitting picks...",
+      success: (data) => data,
+      error: (error) => {
+        console.log("error", `${error?.message}`);
+        return error.message;
+      },
+    });
   };
 
   return (
@@ -280,10 +297,18 @@ const Superbowl: FC = () => {
           />
         )}
         {view === View.STANDINGS && (
-          <SuperbowlStandings leaderboard={leaderboard} currentPick={currentPick} />
+          <SuperbowlStandings
+            leaderboard={leaderboard}
+            currentPick={currentPick}
+          />
         )}
       </div>
-      <SuperbowlFooter numPicks={numPicks} handlePayToken={handlePayToken} />
+      <SuperbowlFooter
+        gameCard={gameCard}
+        startDate={currentPick?.startDate}
+        endDate={currentPick?.endDate}
+        handlePayToken={onClick}
+      />
     </div>
   );
 };
