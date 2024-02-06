@@ -8,18 +8,7 @@ import Image from "next/image";
 import { DeIDData } from "@/types/DeIDData";
 import { generalConfig } from "@/configs";
 import { Trash } from "lucide-react";
-
-const getUsernameFromDeID = (deid: DeIDData) => {
-  return (
-    deid.twitterHandle ||
-    (deid.wallets?.length
-      ? `${deid.wallets[0].address.slice(
-          0,
-          4
-        )}...${deid.wallets[0].address.slice(-4)}`
-      : null)
-  );
-};
+import { getUsernameFromDeID } from "@/utils";
 
 const DeIDLoginButton: FC = () => {
   const { publicKey } = useWallet();

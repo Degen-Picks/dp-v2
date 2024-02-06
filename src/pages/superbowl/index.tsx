@@ -83,7 +83,7 @@ const Superbowl: FC = () => {
     console.log(`Found this pickem:`, currPick);
 
     // Load leaderboard for pick
-    loadLeaderboard(currPick);
+    loadLeaderboard(currPick._id);
 
     // Convert to gameCard
     const gameCard = convertToGameCard(currPick, false);
@@ -101,11 +101,13 @@ const Superbowl: FC = () => {
       setGameCard(gameCard);
     } else if (view === View.STANDINGS) {
       // Reload leaderboard on view switch
-      loadLeaderboard(currentPick);
+      
+      // TODO: reload currentPick to update winners?
+      loadLeaderboard(currentPick._id);
     }
   }, [view, currentPick]);
 
-  const loadLeaderboard = async (pick: Pickem) => {
+  const loadLeaderboard = async (pickId: string) => {
     try {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -116,7 +118,7 @@ const Superbowl: FC = () => {
       };
 
       const response = await fetch(
-        `${generalConfig.apiUrl}/api/leaderboard_pickem?pickId=${pick._id}`,
+        `${generalConfig.apiUrl}/api/leaderboard_pickem?pickId=${pickId}`,
         requestOptions
       );
       const body = await response.json();
@@ -126,7 +128,7 @@ const Superbowl: FC = () => {
         setLeaderboard(leaderboard);
       }
     } catch (err) {
-      console.log(`Error loading leaderboard for pick ${pick._id} ${err}`);
+      console.log(`Error loading leaderboard for pick ${pickId} ${err}`);
     }
   };
 
@@ -278,7 +280,7 @@ const Superbowl: FC = () => {
           />
         )}
         {view === View.STANDINGS && (
-          <SuperbowlStandings leaderboard={leaderboard} />
+          <SuperbowlStandings leaderboard={leaderboard} currentPick={currentPick} />
         )}
       </div>
       <SuperbowlFooter numPicks={numPicks} handlePayToken={handlePayToken} />

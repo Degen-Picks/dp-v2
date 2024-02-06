@@ -7,12 +7,15 @@ import {
   SuperbowlLeaderboardEntry,
 } from "@/types/Superbowl";
 import InfoModal from "./InfoModal";
+import { Pickem } from "@/types";
+import { getProfileImageFromDeID, getUsernameFromDeID } from "@/utils";
 
 interface Props {
   leaderboard: SuperbowlLeaderboard | null;
+  currentPick: Pickem | null;
 }
 
-const SuperbowlStandings: FC<Props> = ({ leaderboard }) => {
+const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
   const [selectedEntry, setSelectedEntry] =
     useState<SuperbowlLeaderboardEntry | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -38,7 +41,7 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard }) => {
             ))}
         </div>
       </motion.div>
-      {leaderboard && selectedEntry && showModal && (
+      {leaderboard && currentPick && selectedEntry && showModal && (
         <InfoModal showModal={showModal} setShowModal={setShowModal}>
           <div
             className={`mt-[70px] w-full h-[72px] py-[15px] border-y border-foregroundDark 
@@ -50,15 +53,13 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard }) => {
             </p>
             <div className="w-full flex items-center gap-2.5">
               <Image
-                src="/images/icons/user-alt.svg"
+                src={getProfileImageFromDeID(selectedEntry.wagerUserDetails?.deidData!)}
                 width={40}
                 height={40}
                 alt="user icon"
               />
               <p className="text-white">
-                {selectedEntry.publicKey.slice(0, 4) +
-                  "..." +
-                  selectedEntry.publicKey.slice(-4)}
+                {getUsernameFromDeID(selectedEntry.wagerUserDetails?.deidData!, selectedEntry.publicKey)}
               </p>
             </div>
             <p className="text-center w-20 text-white pr-5">
@@ -66,14 +67,45 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard }) => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 p-5">
-            {selectedEntry.pickedTeams.map((team, index) => (
-              <div
-                key={index}
-                className="h-[50px] rounded-[20px] flex items-center justify-center px-5 py-2.5 border border-foregroundDark"
-              >
-                <p className={`text-foregroundMed`}>test</p>
-              </div>
-            ))}
+            {selectedEntry.pickedTeams.map((pickedTeamId, index) => {
+                // Find the selection that contains the picked team
+                const selection = currentPick.selections.find(selection => 
+                  selection.teams.some(team => team._id === pickedTeamId)
+                );
+
+                // Find the team details from the selection
+                const teamDetails = selection?.teams.find(team => team._id === pickedTeamId);
+
+                let styles = {
+                  borderColor: '#404040', 
+                  borderWidth: '1px',
+                  borderStyle: 'solid'
+                };
+
+                let textStyle = {
+                  color: '#808080' 
+                };
+
+                if (selection && teamDetails) {
+                  const isWinnerSet = selection.teams.some(team => team.winner === true);
+                  if (isWinnerSet) {
+                    const didPlayerPickCorrectly = teamDetails.winner === true;
+                    styles.borderColor = didPlayerPickCorrectly ? "#1BCEA3" : "#FF6B6B"; 
+                    textStyle.color = didPlayerPickCorrectly ? "#1BCEA3" : "#FF6B6B"; 
+                  }
+                }
+
+                return (
+                  <div
+                    key={index}
+                    style={styles} // Apply styles here
+                    className={`h-[50px] rounded-[20px] flex items-center justify-center px-5 py-2.5 ${styles.borderColor === 'inherit' ? 'border-foregroundDark' : ''}`}
+                  >
+                    <p style={textStyle} className="text-foregroundMed">{teamDetails ? teamDetails.name : "Team not found"}</p>
+                  </div>
+                );
+              })
+            }
           </div>
         </InfoModal>
       )}

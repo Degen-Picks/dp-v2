@@ -1,4 +1,5 @@
 import { SuperbowlLeaderboardEntry } from "@/types/Superbowl";
+import { getProfileImageFromDeID, getUsernameFromDeID } from "@/utils";
 import Image from "next/image";
 import { FC } from "react";
 
@@ -27,13 +28,13 @@ const SuperbowlLeaderboardItem: FC<Props> = ({
       <p className="text-[#808080] text-center w-10">{rank}</p>
       <div className="w-full flex items-center gap-2.5">
         <Image
-          src="/images/icons/user-alt.svg"
+          src={getProfileImageFromDeID(entry.wagerUserDetails?.deidData!)}
           width={40}
           height={40}
           alt="user icon"
         />
         <p className="text-white">
-          {entry.publicKey.slice(0, 4) + "..." + entry.publicKey.slice(-4)}
+          {getUsernameFromDeID(entry.wagerUserDetails?.deidData!, entry.publicKey)}
         </p>
       </div>
       <p className="text-center w-20 text-[#808080]">

@@ -1,3 +1,5 @@
+import { WagerUser } from "./Wagers";
+
 export type BinaryPick = 1 | 2 | null;
 
 export type SuperbowlOption = {
@@ -34,6 +36,7 @@ export type SuperbowlLeaderboardEntry = {
   amounts: Amount[];
   transferData: TransferData;
   points: number;
+  wagerUserDetails: WagerUser | null;
   _id: string;
 };
 
