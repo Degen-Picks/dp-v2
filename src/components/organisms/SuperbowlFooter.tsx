@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import BuyDustButton from "../atoms/BuyDustButton";
 import SuperbowlButton from "../atoms/SuperbowlButton";
 import { SuperbowlGameCard } from "@/types/Superbowl";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   gameCard: SuperbowlGameCard | null;
@@ -16,10 +17,16 @@ const SuperbowlFooter: FC<Props> = ({
   endDate,
   handlePayToken,
 }) => {
+  const { publicKey } = useWallet();
+
   const [buttonText, setButtonText] = useState<string>("One sec...");
 
   const disabled =
-    !startDate || !endDate || Date.now() > endDate || buttonText !== "Submit";
+    !publicKey ||
+    !startDate ||
+    !endDate ||
+    Date.now() > endDate ||
+    buttonText !== "Submit";
 
   useEffect(() => {
     const updateButtonText = () => {

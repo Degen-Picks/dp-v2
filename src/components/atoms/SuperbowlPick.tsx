@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   accessor: keyof SuperbowlGameCard;
@@ -16,6 +17,8 @@ const SuperbowlPick: FC<Props> = ({
   gameCard,
   setGameCard,
 }) => {
+  const { publicKey } = useWallet();
+
   const handleSelect = (option: string) => {
     if (gameCard[accessor]["answer"] === option) {
       setGameCard({
@@ -38,6 +41,7 @@ const SuperbowlPick: FC<Props> = ({
           className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[20px] text-greyscale1 text-center"
           type="number"
           min={0}
+          disabled={!publicKey}
           value={gameCard[accessor]["answer"] as string}
           placeholder="Type here..."
           onChange={(e) =>
@@ -60,7 +64,8 @@ const SuperbowlPick: FC<Props> = ({
               {options.map((o, index) => (
                 <button
                   key={o._id}
-                  className={`p-2.5 w-full h-full rounded-[20px] ${
+                  disabled={!publicKey}
+                  className={`p-2.5 w-full h-full rounded-[20px] disabled:cursor-not-allowed ${
                     index < 1 && "rounded-r-none"
                   } ${index > 0 && "rounded-l-none"} ${
                     gameCard[accessor]["answer"] === o._id
@@ -79,7 +84,8 @@ const SuperbowlPick: FC<Props> = ({
               {options.map((o, index) => (
                 <button
                   key={o._id}
-                  className={`p-2.5 w-full h-full rounded-[20px] ${
+                  disabled={!publicKey}
+                  className={`p-2.5 w-full h-full rounded-[20px] disabled:cursor-not-allowed ${
                     index === 1 && "rounded-none"
                   } ${index === 0 && "rounded-r-none"} ${
                     index === 2 && "rounded-l-none"
@@ -100,8 +106,9 @@ const SuperbowlPick: FC<Props> = ({
               {options.map((o, index) => (
                 <button
                   key={o._id}
+                  disabled={!publicKey}
                   // assumes even number of options (4, 6, 8)
-                  className={`p-2.5 w-full h-full ${
+                  className={`p-2.5 w-full h-full disabled:cursor-not-allowed ${
                     index === 0 && "rounded-tl-[20px]"
                   } ${index === 1 && "rounded-tr-[20px]"} ${
                     index === options.length - 1 && "rounded-br-[20px]"
