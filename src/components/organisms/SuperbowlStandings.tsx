@@ -61,7 +61,7 @@ const SuperbowlStandings: FC<Props> = ({
       >
         {leaderboard && (
           <div className="w-full flex flex-col gap-2.5 py-10 md:pt-0">
-            <p className="text-white">Submissions: {leaderboard.length}</p>
+            <p className="text-white">Players: {leaderboard.length}</p>
             {leaderboard.map((entry, index) => {
               return (
                 <SuperbowlLeaderboardItem
