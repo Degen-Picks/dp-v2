@@ -163,7 +163,7 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
             } justify-center items-center ${
               full ? "w-full" : "w-auto max-w-[200px]"
             }
-            rounded-full px-5 py-2.5 gap-2 font-figtree-semi`}
+            rounded-full px-5 py-2.5 gap-2 font-figtree`}
             style={{
               minWidth: "100px",
               borderWidth: "2px",

@@ -35,7 +35,7 @@ const ConnectButton: FC<Props> = ({ full = false }) => {
               height={18}
               alt="wallet icon"
             />
-            <p className="font-figtree-semi text-base whitespace-nowrap">
+            <p className="font-figtree text-base whitespace-nowrap">
               {publicKey.toBase58().slice(0, 4) +
                 " ... " +
                 publicKey.toBase58().slice(-4)}

@@ -59,9 +59,10 @@ const SuperbowlStandings: FC<Props> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div className="w-full flex flex-col gap-2.5 items-center py-10 md:pt-0">
-          {leaderboard &&
-            leaderboard.map((entry, index) => {
+        {leaderboard && (
+          <div className="w-full flex flex-col gap-2.5 py-10 md:pt-0">
+            <p className="text-white">Submissions: {leaderboard.length}</p>
+            {leaderboard.map((entry, index) => {
               return (
                 <SuperbowlLeaderboardItem
                   key={entry._id}
@@ -73,7 +74,8 @@ const SuperbowlStandings: FC<Props> = ({
                 />
               );
             })}
-        </div>
+          </div>
+        )}
       </motion.div>
       {leaderboard && currentPick && selectedEntry && showModal && (
         <InfoModal showModal={showModal} setShowModal={setShowModal}>
