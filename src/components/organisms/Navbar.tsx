@@ -171,13 +171,17 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
           />
         )}
       </AnimatePresence>
-      <InfoModal showModal={showInfoModal} setShowModal={handleModalDismiss}>
+      <InfoModal
+        width="w-full md:w-[480px]"
+        showModal={showInfoModal}
+        setShowModal={handleModalDismiss}
+      >
         <div className="w-full pt-4 text-center gap-2.5 flex flex-col items-center justify-center">
           <p className="text-xl sm:text-2xl text-center text-white">
             Connect your de[id]
           </p>
           <p className="max-w-[400px] mx-auto text-base text-center text-foregroundMed">
-            Powered by De Labs
+            Powered by DeLabs
           </p>
           <div className="my-8">
             <DeIDLoginButton type="modal" />

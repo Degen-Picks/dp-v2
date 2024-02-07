@@ -41,40 +41,6 @@ const Superbowl: FC = () => {
     queryFn: getPickems,
   });
 
-  const { data: placedPicks, isLoading: placedPicksLoading } = useQuery({
-    queryKey: ["placedPicks", currentPick?._id],
-    queryFn: async () => {
-      try {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-
-        const requestOptions = {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify({
-            pickId: currentPick?._id,
-            publicKey,
-          }),
-        };
-
-        const response = await fetch(
-          `${generalConfig.apiUrl}/api/getUserPick`,
-          requestOptions
-        );
-        const body = await response.json();
-
-        if (response.status === 200) {
-          const userPicks = body.data;
-          console.log("User picks:", userPicks);
-          return userPicks;
-        }
-      } catch (err) {
-        console.log(`Error loading user pick ${err}`);
-      }
-    },
-    enabled: !!currentPick && !!publicKey,
-  });
-
   const loadLeaderboard = async (pickId: string) => {
     try {
       const headers = new Headers();

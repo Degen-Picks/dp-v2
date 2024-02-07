@@ -4,7 +4,7 @@ import { FC } from "react";
 const BuyDustButton: FC = () => {
   return (
     <button
-      className="h-[50px] w-[153px] py-2.5 flex items-center justify-center gap-2.5
+      className="h-[50px] w-[160px] py-2.5 flex items-center justify-center gap-2.5
       rounded-[20px] border border-[#404040] hover:border-greyscale1"
       onClick={() =>
         window.open(

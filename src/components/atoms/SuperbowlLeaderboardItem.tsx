@@ -20,7 +20,7 @@ const SuperbowlLeaderboardItem: FC<Props> = ({
 }) => {
   return (
     <div
-      className={`w-full h-[60px] rounded-[10px] bg-greyscale5 px-2.5 py-[15px] cursor-pointer
+      className={`w-full h-[70px] rounded-[20px] bg-greyscale5 px-2.5 py-[15px] cursor-pointer
       border border-transparent hover:border-data hover:bg-[#282622] flex items-center gap-2.5`}
       onClick={() => {
         setSelectedEntry(entry);
