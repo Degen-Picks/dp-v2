@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const SuperbowlRules: FC = () => {
   return (
     <motion.div
-      className="w-fit mx-auto h-full flex flex-col flex-1 gap-10 items-center justify-center pb-20"
+      className="w-fit mx-auto h-full flex flex-col flex-1 gap-10 items-center justify-center pb-20 px-5"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -26,6 +26,14 @@ const SuperbowlRules: FC = () => {
         width={620}
         height={260}
         alt="Superbowl"
+        className="hidden lg:block"
+      />
+      <Image
+        src="/images/landing/superbowl_landing_mobile.png"
+        width={700}
+        height={744}
+        alt="Superbowl"
+        className="lg:hidden"
       />
       <div className="flex items-center justify-center gap-5">
         <div className="flex flex-col items-center justify-center gap-[5px] w-[120px]">
