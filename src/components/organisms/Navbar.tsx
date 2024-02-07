@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { ConnectButton, MegaMenu, MegaMenuButton } from "@/components";
 import Link from "next/link";
 import { useWindowSize } from "@/hooks/useWindowSize";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
@@ -123,7 +123,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
     <>
       <div className="relative w-full flex flex-col gap-6 items-center">
         <div
-          className={`w-full border-b md:border-none border-[#404040] z-20 h-24`}
+          className={`w-full border-b md:border-none border-[#404040] z-20 h-20`}
         >
           <div
             className="w-full h-full relative flex justify-between items-center
@@ -135,8 +135,8 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             <Link href="https://degenpicks.xyz/">
               <Image
                 src="/images/logo_og.png"
-                width={isMobile ? 60 : 70}
-                height={isMobile ? 60 : 70}
+                width={70}
+                height={70}
                 alt="degen picks logo"
                 priority
               />
@@ -152,14 +152,6 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             <div className="hidden relative lg:flex items-center gap-4 justify-end">
               {!landing && publicKey && <DeIDLoginButton />}
               {!landing && <ConnectButton />}
-
-              {open && (
-                <MegaMenu
-                  userData={userData}
-                  setUserData={setUserData}
-                  setIsOpen={setOpen}
-                />
-              )}
             </div>
             {!landing && view && setView && !isMobile && (
               <SuperbowlToggle view={view} setView={setView} />
@@ -170,6 +162,15 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
           <SuperbowlToggle view={view} setView={setView} />
         )}
       </div>
+      <AnimatePresence mode="wait">
+        {open && (
+          <MegaMenu
+            userData={userData}
+            setUserData={setUserData}
+            setIsOpen={setOpen}
+          />
+        )}
+      </AnimatePresence>
       <InfoModal showModal={showInfoModal} setShowModal={handleModalDismiss}>
         <div className="w-full pt-4 text-center gap-2.5 flex flex-col items-center justify-center">
           <p className="text-xl sm:text-2xl text-center text-white">

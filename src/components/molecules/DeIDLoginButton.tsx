@@ -11,9 +11,10 @@ import { getUsernameFromDeID } from "@/utils";
 
 interface Props {
   type?: "modal" | "nav";
+  full?: boolean;
 }
 
-const DeIDLoginButton: FC<Props> = ({ type = "nav" }) => {
+const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
   const { publicKey } = useWallet();
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
@@ -146,55 +147,61 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav" }) => {
   };
 
   return (
-    <div className={`${!wagerUser?.deidData && "button-wrapper"}`}>
+    <>
       {publicKey && (
-        <button
-          onClick={wagerUser?.deidData ? handleDeIDUnlink : handleDeIDLogin}
-          className={`group bg-black border text-sm text-white ${
-            !!wagerUser?.deidData
-              ? "hover:border-[#f14668] border-foregroundDark"
-              : type === "modal"
-              ? "border-white"
-              : "border-transparent"
-          } h-[50px] flex ${
-            !wagerUser?.deidData ? "flex-row" : "flex-row-reverse"
-          } justify-center items-center w-auto max-w-[200px]
-          rounded-full px-5 py-2.5 gap-2 font-figtree-semi`}
-          style={{
-            minWidth: "100px",
-            borderWidth: "2px",
-            borderRadius: "20px",
-            padding: "10px 20px",
-          }}
-        >
-          <p
-            className={`leading-6 ${
-              !!wagerUser?.deidData ? "hidden" : "inline"
-            }`}
+        <div className={`${!wagerUser?.deidData && "button-wrapper"} w-full`}>
+          <button
+            onClick={wagerUser?.deidData ? handleDeIDUnlink : handleDeIDLogin}
+            className={`group bg-black border text-white ${
+              !!wagerUser?.deidData
+                ? "hover:border-[#f14668] border-foregroundDark"
+                : type === "modal"
+                ? "border-white"
+                : "border-transparent"
+            } h-[50px] flex ${
+              !wagerUser?.deidData ? "flex-row" : "flex-row-reverse"
+            } justify-center items-center ${
+              full ? "w-full" : "w-auto max-w-[200px]"
+            }
+            rounded-full px-5 py-2.5 gap-2 font-figtree-semi`}
+            style={{
+              minWidth: "100px",
+              borderWidth: "2px",
+              borderRadius: "20px",
+              padding: "10px 20px",
+            }}
           >
-            Connect
-          </p>
-          {wagerUser?.deidData && (
-            <p className="leading-6 inline truncate">
-              {getUsernameFromDeID(wagerUser?.deidData!)}
+            <p
+              className={`leading-6 ${
+                !!wagerUser?.deidData ? "hidden" : "inline"
+              }`}
+            >
+              Connect
             </p>
-          )}
-          <Image
-            src="/images/icons/deid.svg"
-            width={18}
-            height={18}
-            alt="deid icon"
-            className={`${!!wagerUser?.deidData && "group-hover:hidden"}`}
-          />
-          <Trash
-            size={18}
-            fill="#FF6B6B"
-            color="#FF6B6B"
-            className={`hidden ${!!wagerUser?.deidData && "group-hover:block"}`}
-          />
-        </button>
+            {wagerUser?.deidData && (
+              <p className="leading-6 inline truncate">
+                {getUsernameFromDeID(wagerUser?.deidData!)}
+              </p>
+            )}
+            <Image
+              src="/images/icons/deid.svg"
+              width={18}
+              height={18}
+              alt="deid icon"
+              className={`${!!wagerUser?.deidData && "group-hover:hidden"}`}
+            />
+            <Trash
+              size={18}
+              fill="#FF6B6B"
+              color="#FF6B6B"
+              className={`hidden ${
+                !!wagerUser?.deidData && "group-hover:block"
+              }`}
+            />
+          </button>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

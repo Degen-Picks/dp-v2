@@ -122,10 +122,10 @@ input::placeholder {
 .button-wrapper::before {
   content: "";
   position: absolute;
-  top: -2px;
-  right: -2px;
-  bottom: -2px;
-  left: -2px;
+  top: -1.5px;
+  right: -1.5px;
+  bottom: -1.5px;
+  left: -1.5px;
   border-radius: 22px; /* Button's border-radius + border thickness */
   z-index: -1;
   background: white;
