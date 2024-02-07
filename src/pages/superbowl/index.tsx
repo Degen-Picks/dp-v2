@@ -30,6 +30,7 @@ const Superbowl: FC = () => {
   const [leaderboard, setLeaderboard] = useState<SuperbowlLeaderboard | null>(
     null
   );
+  const [celebrateSubmit, setCelebrateSubmit] = useState(false);
 
   const {
     data: pickemData,
@@ -177,9 +178,6 @@ const Superbowl: FC = () => {
             retries + 1
           );
         }
-
-        // TODO: toast?
-        // toast.error(body.message);
         return false;
       }
     } catch (err) {
@@ -282,11 +280,22 @@ const Superbowl: FC = () => {
         return error.message;
       },
     });
+    setCelebrateSubmit(true);
   };
+
+  useEffect(() => {
+    if (celebrateSubmit) {
+      const timer = setTimeout(() => {
+        setCelebrateSubmit(false);
+      }, 15000);
+      return () => clearTimeout(timer);
+    }
+  }, [celebrateSubmit]);
 
   return (
     <div className="w-screen min-h-screen flex flex-col bg-greyscale6">
       <Navbar view={view} setView={setView} />
+
       <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
         {view === View.RULES && <SuperbowlRules />}
         {(view === View.GAME || view === View.ADMIN) && (
@@ -301,6 +310,7 @@ const Superbowl: FC = () => {
           <SuperbowlStandings
             leaderboard={leaderboard}
             currentPick={currentPick}
+            celebrateSubmit={celebrateSubmit}
           />
         )}
       </div>

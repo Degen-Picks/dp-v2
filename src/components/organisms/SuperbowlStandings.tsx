@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SuperbowlLeaderboardItem from "../atoms/SuperbowlLeaderboardItem";
@@ -9,19 +9,48 @@ import {
 import InfoModal from "./InfoModal";
 import { Pickem } from "@/types";
 import { getProfileImageFromDeID, getUsernameFromDeID } from "@/utils";
+import Confetti from "react-confetti";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 interface Props {
   leaderboard: SuperbowlLeaderboard | null;
   currentPick: Pickem | null;
+  celebrateSubmit: boolean;
 }
 
-const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
+const SuperbowlStandings: FC<Props> = ({
+  leaderboard,
+  currentPick,
+  celebrateSubmit,
+}) => {
   const [selectedEntry, setSelectedEntry] =
     useState<SuperbowlLeaderboardEntry | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [numPicksSet, setNumPicksSet] = useState<number>(0);
+
+  const [width, height] = useWindowSize();
+
+  useEffect(() => {
+    if (currentPick) {
+      setNumPicksSet(
+        currentPick.selections.filter((selection) =>
+          selection.teams.some((team) => team.winner === true)
+        ).length
+      );
+    }
+  }, [currentPick]);
 
   return (
     <>
+      {celebrateSubmit ? (
+        <Confetti
+          width={width}
+          height={1.6 * height}
+          recycle={false}
+          numberOfPieces={400}
+          tweenDuration={10000}
+        />
+      ) : null}
       <motion.div
         className="w-full h-full flex flex-col flex-1 items-center px-5 pb-20 md:px-0 md:py-20"
         initial={{ opacity: 0, y: 50 }}
@@ -30,15 +59,18 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
       >
         <div className="w-full flex flex-col gap-2.5 items-center py-10 md:pt-0">
           {leaderboard &&
-            leaderboard.map((entry, index) => (
-              <SuperbowlLeaderboardItem
-                key={entry._id}
-                rank={index + 1}
-                entry={entry}
-                setSelectedEntry={setSelectedEntry}
-                setShowModal={setShowModal}
-              />
-            ))}
+            leaderboard.map((entry, index) => {
+              return (
+                <SuperbowlLeaderboardItem
+                  key={entry._id}
+                  rank={index + 1}
+                  entry={entry}
+                  setSelectedEntry={setSelectedEntry}
+                  setShowModal={setShowModal}
+                  numPicksSet={numPicksSet}
+                />
+              );
+            })}
         </div>
       </motion.div>
       {leaderboard && currentPick && selectedEntry && showModal && (
@@ -69,7 +101,7 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
               </p>
             </div>
             <p className="text-center w-20 text-white pr-5 whitespace-nowrap">
-              {selectedEntry.points} of {selectedEntry.pickedTeams.length}
+              {selectedEntry.points} of {numPicksSet}
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 p-5">

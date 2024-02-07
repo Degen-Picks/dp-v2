@@ -8,6 +8,7 @@ interface Props {
   entry: SuperbowlLeaderboardEntry;
   setSelectedEntry: (entry: SuperbowlLeaderboardEntry | null) => void;
   setShowModal: (showModal: boolean) => void;
+  numPicksSet: number;
 }
 
 const SuperbowlLeaderboardItem: FC<Props> = ({
@@ -15,6 +16,7 @@ const SuperbowlLeaderboardItem: FC<Props> = ({
   entry,
   setSelectedEntry,
   setShowModal,
+  numPicksSet,
 }) => {
   return (
     <div
@@ -42,7 +44,7 @@ const SuperbowlLeaderboardItem: FC<Props> = ({
         </p>
       </div>
       <p className="text-center w-20 text-[#808080]">
-        {entry.points} of {entry.pickedTeams.length}
+        {entry.points} of {numPicksSet}
       </p>
     </div>
   );
