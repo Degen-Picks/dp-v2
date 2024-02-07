@@ -130,7 +130,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             max-w-[1600px] mx-auto px-4 lg:px-10"
           >
             {/* left */}
-            <div className="lg:hidden w-[50px]" />
+            <div className="md:hidden w-[50px]" />
             {/* middle, or left on desktop */}
             <Link href="https://degenpicks.xyz/">
               <Image

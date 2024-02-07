@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const SuperbowlRules: FC = () => {
   return (
     <motion.div
-      className="w-fit mx-auto min-h-[800px] h-full flex flex-col flex-1 gap-10 items-center justify-center pb-20 px-5"
+      className="w-fit mx-auto min-h-[800px] sm:min-h-full h-full flex flex-col flex-1 gap-10 items-center justify-center pb-24 px-5"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}

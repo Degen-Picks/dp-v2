@@ -102,7 +102,10 @@ const SuperbowlPick: FC<Props> = ({
             </div>
           )}
           {options.length >= 4 && (
-            <div className="grid grid-cols-2 gap-0.5 h-[140px] text-greyscale1">
+            <div
+              className="grid grid-cols-2 gap-0.5 text-greyscale1"
+              style={{ height: (options.length / 2) * 70 }}
+            >
               {options.map((o, index) => (
                 <button
                   key={o._id}

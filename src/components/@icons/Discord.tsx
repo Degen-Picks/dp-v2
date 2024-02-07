@@ -7,8 +7,6 @@ const Discord: FC<DiscordProps> = ({ ...componentProps }: DiscordProps) => (
   <a href={generalConfig.discordUrl} target="_blank" rel="noreferrer">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height={14}
-      width={18}
       {...componentProps}
       viewBox="0 0 640 512"
     >

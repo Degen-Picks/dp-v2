@@ -3,6 +3,8 @@ import BuyDustButton from "../atoms/BuyDustButton";
 import SuperbowlButton from "../atoms/SuperbowlButton";
 import { SuperbowlGameCard } from "@/types/Superbowl";
 import { useWallet } from "@solana/wallet-adapter-react";
+import Twitter from "../@icons/Twitter";
+import Discord from "../@icons/Discord";
 
 interface Props {
   gameCard: SuperbowlGameCard | null;
@@ -87,10 +89,11 @@ const SuperbowlFooter: FC<Props> = ({
       <div className="md:px-[50px] flex items-center h-full">
         <BuyDustButton />
       </div>
-      <div className="hidden md:flex w-full items-center justify-center h-full">
-        <p className="text-[#404040]">Built by Degen Picks</p>
-      </div>
-      <div className="md:px-[50px] flex items-center h-full">
+      <div className="md:px-[50px] flex items-center gap-8 h-full">
+        <div className="items-center gap-5 hidden md:flex">
+          <Twitter width={20} fill="#808080" />
+          <Discord width={25} fill="#808080" />
+        </div>
         <SuperbowlButton
           disabled={disabled}
           buttonText={buttonText}
