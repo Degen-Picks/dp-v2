@@ -204,18 +204,25 @@ const Superbowl: FC = () => {
   }, [pickemData]);
 
   useEffect(() => {
-    if (!currentPick) return;
-
-    // Kind of janky right now... but only for admins
-    if (view === View.ADMIN) {
-      const gameCard = convertToGameCard(currentPick, true);
-      setGameCard(gameCard);
-    } else if (view === View.STANDINGS) {
-      // Reload leaderboard on view switch
-
-      // TODO: reload currentPick to update winners?
-      loadLeaderboard(currentPick._id);
+    async function handleViewChange() {
+      if (!currentPick) return;
+      // Kind of janky right now... but only for admins
+      if (view === View.ADMIN) {
+        const gameCard = convertToGameCard(currentPick, true);
+        setGameCard(gameCard);
+      } else if (view === View.STANDINGS) {
+        // Reload leaderboard on view switch
+        const newPickems = await getPickems();
+        if(newPickems !== null) {
+          setCurrentPick(newPickems[newPickems.length - 1]);
+          loadLeaderboard(newPickems[newPickems.length - 1]._id);
+        } else {
+          loadLeaderboard(currentPick._id);
+        }
+      }
     }
+
+    handleViewChange();
   }, [view, currentPick]);
 
   const handlePayToken = async () => {
