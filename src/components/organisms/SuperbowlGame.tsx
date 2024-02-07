@@ -50,7 +50,11 @@ const SuperbowlGame: FC<Props> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
-      <div className="w-full flex flex-col items-center gap-5 pb-20">
+      <div
+        className={`w-full flex flex-col items-center gap-5 ${
+          !isAdmin && "pb-20"
+        }`}
+      >
         {gameCard &&
           Object.keys(gameCard).map((key) => {
             const card = gameCard[key as keyof SuperbowlGameCard];
@@ -85,9 +89,9 @@ const SuperbowlGame: FC<Props> = ({
       </div>
       {/* If admin show save button */}
       {isAdmin && (
-        <div className="w-full pb-20">
+        <div className="w-full flex items-center justify-center pb-20">
           <button
-            className="-mt-20 bg-data text-greyscale6 w-[460px] h-[60px] 
+            className="bg-data text-greyscale6 w-[460px] h-[60px] 
             hover:bg-data/80 font-figtree-semi p-2.5 rounded-[20px]"
             onClick={() => handleUpdatePickem()}
           >
