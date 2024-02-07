@@ -16,18 +16,23 @@ const ConnectButton = () => {
   const { publicKey } = wallet;
 
   return (
-    <WalletMultiButton
-      className="!w-full md:!w-fit !flex !justify-center hover:!bg-transparent !border !border-white/50"
-      startIcon={undefined}
+    <div
+      className="!bg-black !border !border-white !relative !w-full sm:!w-fit flex items-center justify-center
+        md:!px-0 !h-auto !rounded-[20px] !z-50"
     >
-      <p className="!font-figtree-semi !text-base !whitespace-nowrap !text-white">
-        {publicKey
-          ? publicKey.toBase58().slice(0, 4) +
-            " ... " +
-            publicKey.toBase58().slice(-4)
-          : "Connect Wallet"}
-      </p>
-    </WalletMultiButton>
+      <WalletMultiButton
+        className="!w-full md:!w-fit !flex !justify-center"
+        // startIcon={undefined}
+      >
+        <p className="!font-base !text-lg !whitespace-nowrap">
+          {publicKey
+            ? publicKey.toBase58().slice(0, 4) +
+              " ... " +
+              publicKey.toBase58().slice(-4)
+            : "Connect Wallet"}
+        </p>
+      </WalletMultiButton>
+    </div>
   );
 };
 
