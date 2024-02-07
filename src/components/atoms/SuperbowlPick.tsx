@@ -32,19 +32,22 @@ const SuperbowlPick: FC<Props> = ({
 
   if (accessor === "tiebreaker")
     return (
-      // TODO: Title here?
-      <input
-        className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
-        type="number"
-        value={gameCard[accessor]["answer"] as string}
-        placeholder="Type here..."
-        onChange={(e) =>
-          setGameCard({
-            ...gameCard,
-            [accessor]: { ...gameCard[accessor], answer: e.target.value },
-          })
-        }
-      />
+      <div className="w-full md:w-[620px] mx-auto flex flex-col gap-2.5 font-figtree">
+        <p className="text-[#808080]">{title}</p>
+        <input
+          className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
+          type="number"
+          min={0}
+          value={gameCard[accessor]["answer"] as string}
+          placeholder="Type here..."
+          onChange={(e) =>
+            setGameCard({
+              ...gameCard,
+              [accessor]: { ...gameCard[accessor], answer: e.target.value },
+            })
+          }
+        />
+      </div>
     );
 
   return (
