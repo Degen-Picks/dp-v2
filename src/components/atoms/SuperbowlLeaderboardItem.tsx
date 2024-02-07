@@ -32,9 +32,13 @@ const SuperbowlLeaderboardItem: FC<Props> = ({
           width={40}
           height={40}
           alt="user icon"
+          className="rounded-full"
         />
         <p className="text-white">
-          {getUsernameFromDeID(entry.wagerUserDetails?.deidData!, entry.publicKey)}
+          {getUsernameFromDeID(
+            entry.wagerUserDetails?.deidData!,
+            entry.publicKey
+          )}
         </p>
       </div>
       <p className="text-center w-20 text-[#808080]">

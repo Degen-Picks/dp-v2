@@ -23,7 +23,7 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
   return (
     <>
       <motion.div
-        className="w-full h-full flex flex-col flex-1 items-center justify-center px-5 pb-20 md:px-0 md:py-20"
+        className="w-full h-full flex flex-col flex-1 items-center px-5 pb-20 md:px-0 md:py-20"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -53,59 +53,78 @@ const SuperbowlStandings: FC<Props> = ({ leaderboard, currentPick }) => {
             </p>
             <div className="w-full flex items-center gap-2.5">
               <Image
-                src={getProfileImageFromDeID(selectedEntry.wagerUserDetails?.deidData!)}
+                src={getProfileImageFromDeID(
+                  selectedEntry.wagerUserDetails?.deidData!
+                )}
                 width={40}
                 height={40}
                 alt="user icon"
+                className="rounded-full"
               />
               <p className="text-white">
-                {getUsernameFromDeID(selectedEntry.wagerUserDetails?.deidData!, selectedEntry.publicKey)}
+                {getUsernameFromDeID(
+                  selectedEntry.wagerUserDetails?.deidData!,
+                  selectedEntry.publicKey
+                )}
               </p>
             </div>
-            <p className="text-center w-20 text-white pr-5">
+            <p className="text-center w-20 text-white pr-5 whitespace-nowrap">
               {selectedEntry.points} of {selectedEntry.pickedTeams.length}
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 p-5">
             {selectedEntry.pickedTeams.map((pickedTeamId, index) => {
-                // Find the selection that contains the picked team
-                const selection = currentPick.selections.find(selection => 
-                  selection.teams.some(team => team._id === pickedTeamId)
+              // Find the selection that contains the picked team
+              const selection = currentPick.selections.find((selection) =>
+                selection.teams.some((team) => team._id === pickedTeamId)
+              );
+
+              // Find the team details from the selection
+              const teamDetails = selection?.teams.find(
+                (team) => team._id === pickedTeamId
+              );
+
+              let styles = {
+                borderColor: "#404040",
+                borderWidth: "1px",
+                borderStyle: "solid",
+              };
+
+              let textStyle = {
+                color: "#808080",
+              };
+
+              if (selection && teamDetails) {
+                const isWinnerSet = selection.teams.some(
+                  (team) => team.winner === true
                 );
-
-                // Find the team details from the selection
-                const teamDetails = selection?.teams.find(team => team._id === pickedTeamId);
-
-                let styles = {
-                  borderColor: '#404040', 
-                  borderWidth: '1px',
-                  borderStyle: 'solid'
-                };
-
-                let textStyle = {
-                  color: '#808080' 
-                };
-
-                if (selection && teamDetails) {
-                  const isWinnerSet = selection.teams.some(team => team.winner === true);
-                  if (isWinnerSet) {
-                    const didPlayerPickCorrectly = teamDetails.winner === true;
-                    styles.borderColor = didPlayerPickCorrectly ? "#1BCEA3" : "#FF6B6B"; 
-                    textStyle.color = didPlayerPickCorrectly ? "#1BCEA3" : "#FF6B6B"; 
-                  }
+                if (isWinnerSet) {
+                  const didPlayerPickCorrectly = teamDetails.winner === true;
+                  styles.borderColor = didPlayerPickCorrectly
+                    ? "#1BCEA3"
+                    : "#FF6B6B";
+                  textStyle.color = didPlayerPickCorrectly
+                    ? "#1BCEA3"
+                    : "#FF6B6B";
                 }
+              }
 
-                return (
-                  <div
-                    key={index}
-                    style={styles} // Apply styles here
-                    className={`h-[50px] rounded-[20px] flex items-center justify-center px-5 py-2.5 ${styles.borderColor === 'inherit' ? 'border-foregroundDark' : ''}`}
-                  >
-                    <p style={textStyle} className="text-foregroundMed">{teamDetails ? teamDetails.name : "Team not found"}</p>
-                  </div>
-                );
-              })
-            }
+              return (
+                <div
+                  key={index}
+                  style={styles} // Apply styles here
+                  className={`h-[50px] rounded-[20px] flex items-center justify-center px-5 py-2.5 ${
+                    styles.borderColor === "inherit"
+                      ? "border-foregroundDark"
+                      : ""
+                  }`}
+                >
+                  <p style={textStyle} className="text-foregroundMed">
+                    {teamDetails ? teamDetails.name : "Team not found"}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </InfoModal>
       )}
