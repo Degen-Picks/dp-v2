@@ -43,13 +43,15 @@ const SuperbowlStandings: FC<Props> = ({
   return (
     <>
       {celebrateSubmit ? (
-        <Confetti
-          width={width}
-          height={1.6 * height}
-          recycle={false}
-          numberOfPieces={400}
-          tweenDuration={10000}
-        />
+        <div className="fixed inset-0 z-50">
+          <Confetti
+            width={width}
+            height={height}
+            recycle={false}
+            numberOfPieces={400}
+            tweenDuration={10000}
+          />
+        </div>
       ) : null}
       <motion.div
         className="w-full h-full flex flex-col flex-1 items-center px-5 pb-20 md:px-0 md:py-20"
