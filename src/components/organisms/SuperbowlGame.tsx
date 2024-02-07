@@ -42,10 +42,6 @@ const SuperbowlGame: FC<Props> = ({
     alert(result.message);
   };
 
-  useEffect(() => {
-    console.log("game card", gameCard);
-  }, [gameCard]);
-
   return (
     <motion.div
       className="w-full md:w-fit mx-auto h-full flex flex-col 

@@ -30,12 +30,14 @@ const SuperbowlPick: FC<Props> = ({
     }
   };
 
-  if (title === "Tiebreaker")
+  if (accessor === "tiebreaker")
     return (
+      // TODO: Title here?
       <input
         className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
         type="number"
         value={gameCard[accessor]["answer"] as string}
+        placeholder="Type here..."
         onChange={(e) =>
           setGameCard({
             ...gameCard,
