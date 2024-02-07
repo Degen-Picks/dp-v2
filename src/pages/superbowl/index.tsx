@@ -266,6 +266,7 @@ const Superbowl: FC = () => {
       (await sendPlaceBet(txHash, selectedTeams as string[], tieBreaker, 0))
     ) {
       await reloadUserPicks();
+      setView(View.STANDINGS);
       return "Picks submitted!";
     } else {
       return "Something went wrong, please try again later.";
