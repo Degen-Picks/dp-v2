@@ -134,7 +134,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             {/* middle, or left on desktop */}
             <Link href="https://degenpicks.xyz/">
               <Image
-                src="/images/logo_new.png"
+                src="/images/logo_og.png"
                 width={isMobile ? 60 : 70}
                 height={isMobile ? 60 : 70}
                 alt="degen picks logo"

@@ -27,6 +27,7 @@ const SuperbowlRules: FC = () => {
         height={260}
         alt="Superbowl"
         className="hidden lg:block px-5"
+        priority
       />
       <Image
         src="/images/landing/superbowl_landing_mobile.png"
@@ -34,6 +35,7 @@ const SuperbowlRules: FC = () => {
         height={744}
         alt="Superbowl"
         className="lg:hidden"
+        priority
       />
       <div className="flex items-center justify-center gap-5">
         <div className="flex flex-col items-center justify-center gap-[5px] w-[120px]">
