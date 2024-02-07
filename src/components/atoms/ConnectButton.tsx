@@ -18,13 +18,13 @@ const ConnectButton = () => {
   return (
     <div
       className="!bg-black !border !border-white !relative !w-full sm:!w-fit flex items-center justify-center
-        md:!px-0 !h-auto !rounded-[20px] !z-50"
+        md:!px-0 !h-auto !rounded-[20px] !z-50 !overflow-hidden"
     >
       <WalletMultiButton
-        className="!w-full md:!w-fit !flex !justify-center"
+        className="!w-full md:!w-fit !flex !justify-center !bg-inherit hover:!bg-black"
         // startIcon={undefined}
       >
-        <p className="!font-base !text-lg !whitespace-nowrap">
+        <p className="!font-figtree-semi !text-lg !whitespace-nowrap ">
           {publicKey
             ? publicKey.toBase58().slice(0, 4) +
               " ... " +
