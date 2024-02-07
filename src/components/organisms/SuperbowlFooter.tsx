@@ -91,8 +91,8 @@ const SuperbowlFooter: FC<Props> = ({
       </div>
       <div className="md:px-[50px] flex items-center gap-8 h-full">
         <div className="items-center gap-5 hidden md:flex">
-          <Twitter width={20} fill="#808080" />
-          <Discord width={25} fill="#808080" />
+          <Twitter width={20} className="fill-foregroundMed hover:fill-white" />
+          <Discord width={25} className="fill-foregroundMed hover:fill-white" />
         </div>
         <SuperbowlButton
           disabled={disabled}

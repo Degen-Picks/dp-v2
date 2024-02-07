@@ -54,7 +54,7 @@ const SuperbowlRules: FC = () => {
           <p className="text-foregroundMed">Only on</p>
           <div className="flex items-center gap-[5px]">
             <Image
-              src="/images/icons/solana.png"
+              src="/images/icons/sol.png"
               width={16}
               height={16}
               alt="DUST"

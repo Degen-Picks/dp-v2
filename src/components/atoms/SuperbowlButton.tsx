@@ -14,7 +14,7 @@ const SuperbowlButton: FC<Props> = ({
   return (
     <div className="superbowl-button-wrapper">
       <button
-        className={`w-[153px] h-[50px] flex items-center justify-center rounded-[20px] ${
+        className={`w-[160px] h-[50px] flex items-center justify-center rounded-[20px] ${
           disabled ? "bg-black" : "bg-transparent"
         }
         superbowl-button text-white disabled:cursor-not-allowed`}

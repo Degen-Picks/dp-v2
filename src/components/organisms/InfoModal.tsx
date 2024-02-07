@@ -13,9 +13,15 @@ interface ModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   children: React.ReactNode;
+  width?: string;
 }
 
-const InfoModal: FC<ModalProps> = ({ showModal, setShowModal, children }) => {
+const InfoModal: FC<ModalProps> = ({
+  showModal,
+  setShowModal,
+  children,
+  width,
+}) => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, () => {
     setShowModal(false);
@@ -40,7 +46,10 @@ const InfoModal: FC<ModalProps> = ({ showModal, setShowModal, children }) => {
             focus:outline-none mx-4"
           >
             <div
-              className="relative w-full sm:w-[90%] lg:w-2/3 xl:w-1/2 my-6 mx-auto max-w-[620px] h-fit"
+              className={`relative ${
+                width ? width : "w-full sm:w-[90%] lg:w-2/3 xl:w-1/2"
+              }  
+              my-6 mx-auto max-w-[620px] h-fit`}
               ref={wrapperRef}
             >
               <div
