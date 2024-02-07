@@ -26,7 +26,7 @@ const SuperbowlRules: FC = () => {
         width={620}
         height={260}
         alt="Superbowl"
-        className="hidden lg:block px-5"
+        className="hidden lg:block px-8"
         priority
       />
       <Image
@@ -34,7 +34,7 @@ const SuperbowlRules: FC = () => {
         width={700}
         height={744}
         alt="Superbowl"
-        className="lg:hidden"
+        className="lg:hidden px-5"
         priority
       />
       <div className="flex items-center justify-center gap-5">

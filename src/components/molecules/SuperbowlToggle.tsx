@@ -27,7 +27,7 @@ const SuperbowlToggle: FC<Props> = ({ view, setView }) => {
 
   return (
     <div
-      className={`md:absolute md:top-1/2 md:-translate-y-1/2 md:left-1/2 md:-translate-x-1/2`}
+      className={`pb-6 md:pb-0 md:absolute md:top-1/2 md:-translate-y-1/2 md:left-1/2 md:-translate-x-1/2`}
     >
       <div
         className={`h-[50px] flex items-center gap-1 p-1.5 bg-greyscale5 rounded-[82px]`}

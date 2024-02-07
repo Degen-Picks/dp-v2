@@ -121,7 +121,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
 
   return (
     <>
-      <div className="relative w-full flex flex-col gap-10 items-center">
+      <div className="relative w-full flex flex-col gap-6 items-center">
         <div
           className={`w-full border-b md:border-none border-[#404040] z-20 h-24`}
         >
@@ -166,9 +166,9 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             )}
           </div>
         </div>
-        {/* {!landing && view && setView && isMobile && (
+        {!landing && view && setView && isMobile && (
           <SuperbowlToggle view={view} setView={setView} />
-        )} */}
+        )}
       </div>
       <InfoModal showModal={showInfoModal} setShowModal={handleModalDismiss}>
         <div className="w-full pt-4 text-center gap-2.5 flex flex-col items-center justify-center">
