@@ -168,14 +168,14 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav" }) => {
           }}
         >
           <p
-            className={`text-lg leading-6 ${
+            className={`leading-6 ${
               !!wagerUser?.deidData ? "hidden" : "inline"
             }`}
           >
             Connect
           </p>
           {wagerUser?.deidData && (
-            <p className="text-lg leading-6 inline truncate">
+            <p className="leading-6 inline truncate">
               {getUsernameFromDeID(wagerUser?.deidData!)}
             </p>
           )}

@@ -86,7 +86,7 @@ const SuperbowlGame: FC<Props> = ({
       {/* If admin show save button */}
       {isAdmin && (
         <button
-          className="-mt-20 bg-data text-greyscale6 text-lg w-[460px] h-[60px] 
+          className="-mt-20 bg-data text-greyscale6 w-[460px] h-[60px] 
           hover:bg-data/80 font-figtree-semi p-2.5 rounded-[20px]"
           onClick={() => handleUpdatePickem()}
         >

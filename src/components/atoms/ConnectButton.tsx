@@ -24,12 +24,12 @@ const ConnectButton = () => {
         className="!w-full md:!w-fit !flex !justify-center !bg-inherit hover:!bg-black"
         // startIcon={undefined}
       >
-        <p className="!font-figtree-semi !text-lg !whitespace-nowrap ">
+        <p className="!font-figtree !text-base !whitespace-nowrap">
           {publicKey
             ? publicKey.toBase58().slice(0, 4) +
               " ... " +
               publicKey.toBase58().slice(-4)
-            : "Connect Wallet"}
+            : "Connect"}
         </p>
       </WalletMultiButton>
     </div>
