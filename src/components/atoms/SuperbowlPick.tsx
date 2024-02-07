@@ -35,7 +35,7 @@ const SuperbowlPick: FC<Props> = ({
       <div className="w-full md:w-[620px] mx-auto flex flex-col gap-2.5 font-figtree">
         <p className="text-[#808080]">{title}</p>
         <input
-          className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[10px] text-greyscale1 text-center"
+          className="w-full h-[70px] p-2.5 bg-greyscale5 rounded-[20px] text-greyscale1 text-center"
           type="number"
           min={0}
           value={gameCard[accessor]["answer"] as string}
