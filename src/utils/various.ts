@@ -43,6 +43,6 @@ export const getUsernameFromDeID = (deid?: DeIDData, publicKey?: string) => {
 };
 
 export const getProfileImageFromDeID = (deid?: DeIDData) => {
-  if(!deid) return "/images/icons/user-alt.svg";
+  if(!deid || !deid.profileImage) return "/images/icons/user-alt.svg";
   return deid.profileImage;
 }
