@@ -196,7 +196,7 @@ const Superbowl: FC = () => {
     }
 
     handleViewChange();
-  }, [viewgit a]);  
+  }, [view]);  
 
   const handlePayToken = async () => {
     if (!currentPick) return "No picks found";
