@@ -41,7 +41,7 @@ const Superbowl: FC = () => {
     queryFn: getPickems,
   });
 
-  const loadLeaderboard = async (pickId: string) => {
+  const loadLeaderboard = async (pick: Pickem) => {
     try {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -52,17 +52,22 @@ const Superbowl: FC = () => {
       };
 
       const response = await fetch(
-        `${generalConfig.apiUrl}/api/leaderboard_pickem?pickId=${pickId}`,
+        `${generalConfig.apiUrl}/api/leaderboard_pickem?pickId=${pick._id}`,
         requestOptions
       );
       const body = await response.json();
 
       if (response.status === 200 && body.data.length >= 1) {
         const leaderboard = body.data;
-        setLeaderboard(leaderboard);
+
+        if(pick.status === "live") {
+          setLeaderboard(leaderboard.reverse()); 
+        } else {
+          setLeaderboard(leaderboard);
+        }
       }
     } catch (err) {
-      console.log(`Error loading leaderboard for pick ${pickId} ${err}`);
+      console.log(`Error loading leaderboard for pick ${pick._id} ${err}`);
     }
   };
 
@@ -160,7 +165,7 @@ const Superbowl: FC = () => {
     console.log(`Found this pickem:`, currPick);
 
     // Load leaderboard for pick
-    loadLeaderboard(currPick._id);
+    loadLeaderboard(currPick);
 
     // Convert to gameCard
     const gameCard = convertToGameCard(currPick, false);
@@ -181,9 +186,9 @@ const Superbowl: FC = () => {
         const newPickems = await getPickems();
         if(newPickems !== null) {
           setCurrentPick(newPickems[newPickems.length - 1]);
-          loadLeaderboard(newPickems[newPickems.length - 1]._id);
+          loadLeaderboard(newPickems[newPickems.length - 1]);
         } else {
-          loadLeaderboard(currentPick._id);
+          loadLeaderboard(currentPick);
         }
       }
     }
