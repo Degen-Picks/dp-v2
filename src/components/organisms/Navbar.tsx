@@ -132,15 +132,13 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
             {/* left */}
             <div className="md:hidden w-[50px]" />
             {/* middle, or left on desktop */}
-            <Link href="https://degenpicks.xyz/">
-              <Image
-                src="/images/logo_og.png"
-                width={70}
-                height={70}
-                alt="degen picks logo"
-                priority
-              />
-            </Link>
+            <Image
+              src="/images/logo_og.png"
+              width={70}
+              height={70}
+              alt="degen picks logo"
+              priority
+            />
             {/* right mobile */}
             <button
               onClick={() => setOpen(true)}
