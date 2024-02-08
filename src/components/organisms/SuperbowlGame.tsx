@@ -4,6 +4,7 @@ import SuperbowlPick from "../atoms/SuperbowlPick";
 import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
 import { Pickem } from "@/types";
 import { updatePick } from "@/utils";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Props {
   isAdmin?: boolean;
@@ -18,6 +19,8 @@ const SuperbowlGame: FC<Props> = ({
   setGameCard,
   currentPick,
 }) => {
+  const { publicKey } = useWallet();
+
   const handleUpdatePickem = async () => {
     if (!currentPick || !gameCard) return;
 
@@ -50,6 +53,9 @@ const SuperbowlGame: FC<Props> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
+      {!publicKey && (
+        <p className="text-white">Connect wallet in menu to play.</p>
+      )}
       <div
         className={`w-full flex flex-col items-center gap-5 ${
           !isAdmin && "pb-20"
