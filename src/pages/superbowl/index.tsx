@@ -60,8 +60,8 @@ const Superbowl: FC = () => {
       if (response.status === 200 && body.data.length >= 1) {
         const leaderboard = body.data;
 
-        if(pick.status === "live") {
-          setLeaderboard(leaderboard.reverse()); 
+        if (pick.status === "live") {
+          setLeaderboard(leaderboard.reverse());
         } else {
           setLeaderboard(leaderboard);
         }
@@ -186,7 +186,7 @@ const Superbowl: FC = () => {
       } else if (view === View.STANDINGS) {
         // Reload leaderboard on view switch
         const newPickems = await getPickems();
-        if(newPickems !== null) {
+        if (newPickems !== null) {
           setCurrentPick(newPickems[newPickems.length - 1]);
           loadLeaderboard(newPickems[newPickems.length - 1]);
         } else {
