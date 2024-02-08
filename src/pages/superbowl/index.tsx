@@ -177,6 +177,8 @@ const Superbowl: FC = () => {
   useEffect(() => {
     async function handleViewChange() {
       if (!currentPick) return;
+
+      console.log("view is changing to ", view, currentPick);
       // Kind of janky right now... but only for admins
       if (view === View.ADMIN) {
         const gameCard = convertToGameCard(currentPick, true);
@@ -194,7 +196,7 @@ const Superbowl: FC = () => {
     }
 
     handleViewChange();
-  }, [view, currentPick]);
+  }, [viewgit a]);  
 
   const handlePayToken = async () => {
     if (!currentPick) return "No picks found";
