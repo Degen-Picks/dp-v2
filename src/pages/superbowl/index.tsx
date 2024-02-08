@@ -162,7 +162,6 @@ const Superbowl: FC = () => {
     if (!pickemData || pickemData.length === 0) return;
 
     const currPick = pickemData[pickemData.length - 1];
-    console.log(`Found this pickem:`, currPick);
 
     // Load leaderboard for pick
     loadLeaderboard(currPick);
@@ -178,7 +177,6 @@ const Superbowl: FC = () => {
     async function handleViewChange() {
       if (!currentPick) return;
 
-      console.log("view is changing to ", view, currentPick);
       // Kind of janky right now... but only for admins
       if (view === View.ADMIN) {
         const gameCard = convertToGameCard(currentPick, true);
