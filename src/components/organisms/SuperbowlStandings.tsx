@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import SuperbowlLeaderboardItem from "../atoms/SuperbowlLeaderboardItem";
@@ -16,16 +16,19 @@ interface Props {
   leaderboard: SuperbowlLeaderboard | null;
   currentPick: Pickem | null;
   celebrateSubmit: boolean;
+  showModal: boolean;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
 const SuperbowlStandings: FC<Props> = ({
   leaderboard,
   currentPick,
   celebrateSubmit,
+  showModal,
+  setShowModal,
 }) => {
   const [selectedEntry, setSelectedEntry] =
     useState<SuperbowlLeaderboardEntry | null>(null);
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [numPicksSet, setNumPicksSet] = useState<number>(0);
 
   const [width, height] = useWindowSize();
@@ -58,7 +61,9 @@ const SuperbowlStandings: FC<Props> = ({
         </div>
       ) : null}
       <motion.div
-        className="w-full h-full flex flex-col flex-1 items-center px-5 pb-20 md:px-0 md:py-20"
+        className={`w-full h-full flex flex-col flex-1 items-center px-5 pb-20 md:px-0 md:py-20 ${
+          showModal && "blur-sm"
+        }`}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}

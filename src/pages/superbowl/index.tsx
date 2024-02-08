@@ -32,6 +32,11 @@ const Superbowl: FC = () => {
   );
   const [celebrateSubmit, setCelebrateSubmit] = useState(false);
 
+  // modal logic
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showStandingsModal, setShowStandingsModal] = useState(false);
+
   const {
     data: pickemData,
     isLoading: pickemLoading,
@@ -194,7 +199,7 @@ const Superbowl: FC = () => {
     }
 
     handleViewChange();
-  }, [view]);  
+  }, [view]);
 
   const handlePayToken = async () => {
     if (!currentPick) return "No picks found";
@@ -271,10 +276,21 @@ const Superbowl: FC = () => {
   }, [celebrateSubmit]);
 
   return (
-    <div className="w-screen min-h-screen flex flex-col bg-greyscale6">
-      <Navbar view={view} setView={setView} />
+    <div className={`w-screen min-h-screen flex flex-col bg-greyscale6`}>
+      <Navbar
+        view={view}
+        setView={setView}
+        showInfoModal={showInfoModal}
+        setShowInfoModal={setShowInfoModal}
+        open={mobileMenuOpen}
+        setOpen={setMobileMenuOpen}
+      />
 
-      <div className="w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center">
+      <div
+        className={`w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center ${
+          (mobileMenuOpen || showInfoModal) && "blur-sm"
+        }`}
+      >
         {view === View.RULES && <SuperbowlRules />}
         {(view === View.GAME || view === View.ADMIN) && (
           <SuperbowlGame
@@ -289,6 +305,8 @@ const Superbowl: FC = () => {
             leaderboard={leaderboard}
             currentPick={currentPick}
             celebrateSubmit={celebrateSubmit}
+            showModal={showStandingsModal}
+            setShowModal={setShowStandingsModal}
           />
         )}
       </div>

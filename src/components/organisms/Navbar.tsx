@@ -20,12 +20,24 @@ import InfoModal from "./InfoModal";
 import { AlignJustify } from "lucide-react";
 
 interface Props {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  showInfoModal: boolean;
+  setShowInfoModal: (show: boolean) => void;
   landing?: boolean;
   view?: View;
   setView?: (view: View) => void;
 }
 
-const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
+const Navbar: FC<Props> = ({
+  open,
+  setOpen,
+  showInfoModal,
+  setShowInfoModal,
+  landing = false,
+  view,
+  setView,
+}) => {
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
   ) as WagerUserContextType;
@@ -34,9 +46,7 @@ const Navbar: FC<Props> = ({ landing = false, view, setView }) => {
   const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<WagerUser | undefined>();
-  const [showInfoModal, setShowInfoModal] = useState(false);
 
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 768;
