@@ -31,7 +31,7 @@ const SuperbowlFooter: FC<Props> = ({
     buttonText !== "Submit";
 
   useEffect(() => {
-    const updateButtonText = () => {
+    const updateButtonText = (timer: number) => {
       if (gameCard) {
         const numPicks = Object.keys(gameCard).reduce((acc, key) => {
           const card = gameCard[key as keyof SuperbowlGameCard];
@@ -61,6 +61,7 @@ const SuperbowlFooter: FC<Props> = ({
             // Update the button text
             setButtonText(`${days}d ${hours}h ${minutes}m`);
           } else {
+            setButtonText("Game is live");
             clearInterval(timer);
           }
         } else if (numPicks < Object.keys(gameCard).length) {
@@ -73,10 +74,9 @@ const SuperbowlFooter: FC<Props> = ({
       }
     };
 
-    // call once immediately and set an interval for updates
-    updateButtonText();
     const timer = setInterval(updateButtonText, 1000); // update every second
-
+    // call once immediately and set an interval for updates
+    updateButtonText(timer);
     // cleanup interval on component unmount
     return () => clearInterval(timer);
   }, [gameCard, endDate]);
