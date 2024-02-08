@@ -180,7 +180,7 @@ const Navbar: FC<Props> = ({
         )}
       </AnimatePresence>
       <InfoModal
-        width="w-full md:w-[480px]"
+        width="w-full md:w-[380px]"
         showModal={showInfoModal}
         setShowModal={handleModalDismiss}
       >

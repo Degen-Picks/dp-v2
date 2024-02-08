@@ -23,8 +23,8 @@ const SuperbowlRules: FC = () => {
       </div>
       <Image
         src="/images/landing/superbowl_landing.png"
-        width={620}
-        height={260}
+        width={780}
+        height={325}
         alt="Superbowl"
         className="hidden lg:block px-8"
         priority

@@ -287,7 +287,7 @@ const Superbowl: FC = () => {
       />
 
       <div
-        className={`w-full max-w-[620px] mx-auto flex flex-col flex-1 items-center ${
+        className={`w-full max-w-[780px] mx-auto flex flex-col flex-1 items-center ${
           (mobileMenuOpen || showInfoModal) && "blur-sm"
         }`}
       >
