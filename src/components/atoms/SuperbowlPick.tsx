@@ -60,7 +60,11 @@ const SuperbowlPick: FC<Props> = ({
       {!!options && options.length > 0 && (
         <>
           {options.length === 2 && (
-            <div className="w-full flex gap-0.5 h-[70px] text-greyscale1">
+            <div
+              className={`w-full flex gap-0.5 h-[70px] ${
+                !publicKey ? "text-greyscale1/50" : "text-greyscale1"
+              }`}
+            >
               {options.map((o, index) => (
                 <button
                   key={o._id}
@@ -70,7 +74,7 @@ const SuperbowlPick: FC<Props> = ({
                   } ${index > 0 && "rounded-l-none"} ${
                     gameCard[accessor]["answer"] === o._id
                       ? "bg-[#282622] border border-data"
-                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                      : "bg-greyscale5 hover:bg-greyscale1/10 disabled:hover:bg-greyscale5"
                   }`}
                   onClick={() => handleSelect(o._id)}
                 >
@@ -80,7 +84,11 @@ const SuperbowlPick: FC<Props> = ({
             </div>
           )}
           {options.length === 3 && (
-            <div className="w-full flex gap-0.5 h-[70px] text-greyscale1">
+            <div
+              className={`w-full flex gap-0.5 h-[70px] ${
+                !publicKey ? "text-greyscale1/50" : "text-greyscale1"
+              }`}
+            >
               {options.map((o, index) => (
                 <button
                   key={o._id}
@@ -92,7 +100,7 @@ const SuperbowlPick: FC<Props> = ({
                   } ${
                     gameCard[accessor]["answer"] === o._id
                       ? "bg-[#282622] border border-data"
-                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                      : "bg-greyscale5 hover:bg-greyscale1/10 disabled:hover:bg-greyscale5"
                   }`}
                   onClick={() => handleSelect(o._id)}
                 >
@@ -103,7 +111,9 @@ const SuperbowlPick: FC<Props> = ({
           )}
           {options.length >= 4 && (
             <div
-              className="grid grid-cols-2 gap-0.5 text-greyscale1"
+              className={`grid grid-cols-2 gap-0.5 ${
+                !publicKey ? "text-greyscale1/50" : "text-greyscale1"
+              }`}
               style={{ height: (options.length / 2) * 70 }}
             >
               {options.map((o, index) => (
@@ -118,7 +128,7 @@ const SuperbowlPick: FC<Props> = ({
                   } ${index === options.length - 2 && "rounded-bl-[20px]"} ${
                     gameCard[accessor]["answer"] === o._id
                       ? "bg-[#282622] border border-data"
-                      : "bg-greyscale5 hover:bg-greyscale1/10"
+                      : "bg-greyscale5 hover:bg-greyscale1/10 disabled:hover:bg-greyscale5"
                   }`}
                   onClick={() => handleSelect(o._id)}
                 >

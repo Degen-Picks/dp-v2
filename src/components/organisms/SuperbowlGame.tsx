@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, use, useEffect } from "react";
 import { motion } from "framer-motion";
 import SuperbowlPick from "../atoms/SuperbowlPick";
 import { SuperbowlGameCard, SuperbowlOption } from "@/types/Superbowl";
@@ -44,6 +44,23 @@ const SuperbowlGame: FC<Props> = ({
     const result = await updatePick(pickId, selectedTeams, tieBreaker);
     alert(result.message);
   };
+
+  useEffect(() => {
+    if (!publicKey && gameCard) {
+      const emptyGameCard = Object.keys(gameCard).reduce((acc, key) => {
+        const game = gameCard[key];
+        return {
+          ...acc,
+          [key]: {
+            ...game,
+            answer: null,
+          },
+        };
+      }, {} as SuperbowlGameCard);
+
+      setGameCard(emptyGameCard);
+    }
+  }, [publicKey]);
 
   return (
     <motion.div
