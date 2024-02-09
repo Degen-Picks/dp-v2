@@ -1,8 +1,13 @@
 import { FC } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Pickem } from "@/types";
 
-const SuperbowlRules: FC = () => {
+interface Props {
+  currentPick: Pickem | null;
+}
+
+const SuperbowlRules: FC<Props> = ({ currentPick }) => {
   return (
     <motion.div
       className="w-fit mx-auto min-h-[800px] sm:min-h-full h-full flex flex-col flex-1 gap-10 items-center justify-center pb-24 px-5"
@@ -61,6 +66,34 @@ const SuperbowlRules: FC = () => {
             />
             <p className="text-white">Solana</p>
           </div>
+        </div>
+        <div className="hidden md:flex bg-background2 rounded-[20px] h-20 px-[60px] flex-col items-center justify-center gap-[5px]">
+          <p className="text-foregroundMed">Dust in pool</p>
+          <div className="flex items-center gap-[5px]">
+            <Image
+              src="/images/icons/dust_gold.png"
+              width={16}
+              height={16}
+              alt="DUST"
+            />
+            <p className="text-primary">
+              {currentPick?.totalSpent.toLocaleString() ?? 0}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex md:hidden bg-background2 rounded-[20px] h-20 px-[80px] flex-col items-center justify-center gap-[5px]">
+        <p className="text-foregroundMed">Dust in pool</p>
+        <div className="flex items-center gap-[5px]">
+          <Image
+            src="/images/icons/dust_gold.png"
+            width={16}
+            height={16}
+            alt="DUST"
+          />
+          <p className="text-primary">
+            {currentPick?.totalSpent.toLocaleString() ?? 0}
+          </p>
         </div>
       </div>
     </motion.div>

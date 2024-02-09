@@ -291,7 +291,7 @@ const Superbowl: FC = () => {
           (mobileMenuOpen || showInfoModal) && "blur-sm"
         }`}
       >
-        {view === View.RULES && <SuperbowlRules />}
+        {view === View.RULES && <SuperbowlRules currentPick={currentPick} />}
         {(view === View.GAME || view === View.ADMIN) && (
           <SuperbowlGame
             isAdmin={view === View.ADMIN}
