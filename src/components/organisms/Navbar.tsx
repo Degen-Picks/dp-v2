@@ -188,8 +188,10 @@ const Navbar: FC<Props> = ({
           <p className="text-xl sm:text-2xl text-center text-white">
             Connect your de[id]
           </p>
-          <p className="max-w-[400px] mx-auto text-base text-center text-foregroundMed">
-            For ultimate bragging rights.
+          <p className="max-w-[400px] mx-auto text-base text-center text-foregroundMed px-5">
+            Flex your pfp in the standings.
+            <br />
+            Not required to play.
           </p>
           <div className="my-8">
             <DeIDLoginButton type="modal" />
