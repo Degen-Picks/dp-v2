@@ -109,7 +109,7 @@ interface HomePageProps {
 
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
   // SUPERBOWL ONLY
-  if(host === "degenpicks.xyz") {
+  if(host === "www.degenpicks.xyz") {
     return <Superbowl />;
   }
 
