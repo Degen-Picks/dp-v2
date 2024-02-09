@@ -37,9 +37,9 @@ const MegaMenu: FC<Props> = ({ setIsOpen, userData, setUserData }) => {
               <div className="w-[50px] h-[50px]" />
               <Link href="https://degenpicks.xyz/">
                 <Image
-                  src="/images/logo_og.png"
-                  width={70}
-                  height={70}
+                  src="/images/logo_new.png"
+                  width={50}
+                  height={50}
                   alt="degen picks logo"
                   priority
                 />

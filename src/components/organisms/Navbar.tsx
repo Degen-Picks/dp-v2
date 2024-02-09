@@ -143,9 +143,9 @@ const Navbar: FC<Props> = ({
             <div className="md:hidden w-[50px]" />
             {/* middle, or left on desktop */}
             <Image
-              src="/images/logo_og.png"
-              width={70}
-              height={70}
+              src="/images/logo_new.png"
+              width={50}
+              height={50}
               alt="degen picks logo"
               priority
             />
