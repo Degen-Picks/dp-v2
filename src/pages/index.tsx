@@ -108,6 +108,11 @@ interface HomePageProps {
 }
 
 const HomePage: NextPage<HomePageProps> = ({ host, path }) => {
+  // SUPERBOWL ONLY
+  if(host === "degenpicks.xyz") {
+    return <Superbowl />;
+  }
+
   if (host === "app.degenpicks.xyz" || host === "app.staging.degenpicks.xyz") {
     return <GameQueue />;
   }
