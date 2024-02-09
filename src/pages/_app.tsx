@@ -70,39 +70,33 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       <Head>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         {/* <!-- Primary Meta Tags --> */}
-        <title>Degen Picks</title>
-        <meta name="title" content={`Degen Picks`} />
+        <title>de[superbowl]</title>
+        <meta name="title" content={`de[superbowl]`} />
         <meta
           name="description"
-          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
+          content={`de[superbowl]: The ultimate Superbowl experience on Solana. Built by Degen Picks, sponsored by DeLabs.`}
         />
 
         {/* <!-- Open Graph / Facebook --> */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://${generalConfig.baseUrl}`} />
-        <meta property="og:title" content={`Degen Picks`} />
+        <meta property="og:title" content={`de[superbowl]`} />
         <meta
           property="og:description"
-          content={`PvP betting pools built on Solana. Make a pick or create a pool today.`}
+          content={`de[superbowl]: The ultimate Superbowl experience on Solana. Built by Degen Picks, sponsored by DeLabs.`}
         />
-        <meta
-          property="og:image"
-          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
-        />
+        <meta property="og:image" content={`/images/share_img.png`} />
         <meta property="og:image:width" content="1800" />
         <meta property="og:image:height" content="941" />
 
         {/* <!-- Twitter --> */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:title" content={`Degen Picks`} />
+        <meta property="twitter:title" content={`de[superbowl]`} />
         <meta
           property="twitter:description"
-          content={`Degen Picks: An all-or-nothing sports prediction game with DUST.`}
+          content={`de[superbowl]: The ultimate Superbowl experience on Solana. Built by Degen Picks, sponsored by DeLabs.`}
         />
-        <meta
-          property="twitter:image"
-          content={`https://shdw-drive.genesysgo.net/Faa2qSmx1E6W7eE8JuxPUW5Vg1EoPxkmJANFbAfUThmN/dp-social-share.png`}
-        />
+        <meta property="twitter:image" content={`/images/share_img.png`} />
       </Head>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={THEME}>
