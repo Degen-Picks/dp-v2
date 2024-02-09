@@ -189,7 +189,7 @@ const Navbar: FC<Props> = ({
             Connect your de[id]
           </p>
           <p className="max-w-[400px] mx-auto text-base text-center text-foregroundMed">
-            Powered by DeLabs
+            For ultimate bragging rights.
           </p>
           <div className="my-8">
             <DeIDLoginButton type="modal" />
