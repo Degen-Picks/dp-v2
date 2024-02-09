@@ -108,7 +108,7 @@ const GameQueue = () => {
             ctaText={"Learn More"}
             ctaLink={"https://degenpicks.xyz"}
           />
-          <Navbar />
+          {/* <Navbar /> */}
         </>
       )}
 

@@ -49,7 +49,7 @@ const Landing = () => {
   return (
     <div className="w-full relative overflow-y-auto h-screen bg-greyscale3">
       <div className="h-full w-full flex flex-col gap-5">
-        <Navbar landing={true} />
+        {/* <Navbar landing={true} /> */}
         {isMobile ? (
           <div className="w-full h-full flex flex-col flex-1">
             <div className="h-full flex flex-col items-center justify-center gap-5">

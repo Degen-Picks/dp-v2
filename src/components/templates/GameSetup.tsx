@@ -39,7 +39,7 @@ const GameSetup: FC = () => {
   return (
     <>
       <div className="w-full min-h-screen">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="relative sm:w-[400px] mx-auto pb-20 px-4 sm:px-0">
           <div className="absolute left-4 md:-left-32 -top-14">
             <BackButton

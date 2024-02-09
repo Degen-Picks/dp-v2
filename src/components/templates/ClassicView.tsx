@@ -813,7 +813,7 @@ const Classic: FC<Props> = ({ gameId }) => {
           : null}
         {!loading ? (
           <>
-            <Navbar />
+            {/* <Navbar /> */}
             <ViewToggle
               toggleConfig={toggleConfig}
               setToggleConfig={setToggleConfig}

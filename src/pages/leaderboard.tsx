@@ -26,7 +26,7 @@ const Leaderboard: FC = () => {
 
   return (
     <div className="relative bg-greyscale3 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
-      <Navbar landing={false} />
+      {/* <Navbar landing={false} /> */}
       <div className="w-full max-w-[620px] mx-auto mt-[60px]">
         <div className="w-full flex flex-col items-center justify-center gap-1">
           <div className="font-base-b text-center text-[32px] leading-[33px] text-black">
