@@ -11,6 +11,7 @@ import { Pickem } from "@/types";
 import { getProfileImageFromDeID, getUsernameFromDeID } from "@/utils";
 import Confetti from "react-confetti";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import TwitterNoLink from "../@icons/Twitter_NoLink";
 
 interface Props {
   leaderboard: SuperbowlLeaderboard | null;
@@ -46,6 +47,12 @@ const SuperbowlStandings: FC<Props> = ({
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (selectedEntry) {
+      console.log("Selected entry: ", selectedEntry);
+    }
+  }, [selectedEntry]);
 
   return (
     <>
@@ -112,6 +119,19 @@ const SuperbowlStandings: FC<Props> = ({
                   selectedEntry.publicKey
                 )}
               </p>
+              {selectedEntry.wagerUserDetails?.deidData?.twitterHandle && (
+                <a
+                  href={`https://twitter.com/${selectedEntry.wagerUserDetails.deidData.twitterHandle}`}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <TwitterNoLink
+                    width={16}
+                    fill="#808080"
+                    className="hover:fill-white"
+                  />
+                </a>
+              )}
             </div>
             <p className="text-center w-20 text-white pr-5 whitespace-nowrap">
               {selectedEntry.points} of {numPicksSet}
