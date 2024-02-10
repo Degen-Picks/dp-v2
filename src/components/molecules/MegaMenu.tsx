@@ -267,12 +267,12 @@ const MegaMenu: FC<Props> = ({ setIsOpen, userData, setUserData }) => {
             >
               Games
             </a>
-            <button
+            {/* <button
               className="text-lg w-fit hover:text-purple1"
               onClick={() => router.push("/leaderboard")}
             >
               Leaderboard
-            </button>
+            </button> */}
             <div className="flex items-center gap-1.5">
               <button
                 className="text-lg w-fit hover:text-purple1"
