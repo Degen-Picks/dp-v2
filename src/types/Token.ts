@@ -22,7 +22,7 @@ export const TOKEN_MAP: Record<SplToken, TokenDetails> = generalConfig.useDevNet
         minimum: 1
     },
     CROWN: {
-        publicKey: new PublicKey(""),
+        publicKey: new PublicKey("94Ab85gYry4raFhHsLbVJK7W7iR4cS8jyeFr7oZQcgAA"),
         decimals: -1,
         minimum: 1
       }
