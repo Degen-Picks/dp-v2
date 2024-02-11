@@ -10,13 +10,9 @@ interface Props {
 
 const FallbackImage: FC<Props> = ({ src, fallbackSrc, width, height, alt }) => {
   const [imageSrc, setImageSrc] = useState(src);
-  const [finalWidth, setFinalWidth] = useState(width);
-  const [finalHeight, setFinalHeight] = useState(height);
 
   const handleError = () => {
     setImageSrc(fallbackSrc);
-    setFinalWidth(24);
-    setFinalHeight(24);
   };
 
   return (
@@ -24,8 +20,8 @@ const FallbackImage: FC<Props> = ({ src, fallbackSrc, width, height, alt }) => {
       <img
         src={imageSrc}
         onError={handleError}
-        width={finalWidth}
-        height={finalHeight}
+        width={width}
+        height={height}
         alt={alt}
       />
     </div>

@@ -101,7 +101,7 @@ const GameCard: FC<Props> = ({ game }) => {
                 height={16}
                 alt="dp team icon"
               />
-              <p className="uppercase text-lg">dp team</p>
+              <p className="uppercase text-lg">team</p>
             </div>
           ) : game.creator?.twitterData ? (
             <div className="flex items-center gap-[5px]">

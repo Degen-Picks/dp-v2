@@ -25,7 +25,7 @@ const GameMetadata: FC<Props> = ({ gameStatus, gameData }) => {
             height={16}
             alt="dp team icon"
           />
-          <p className="uppercase text-lg">dp team</p>
+          <p className="uppercase text-lg">team</p>
         </div>
       ) : gameData?.gameInfo?.creator?.twitterData ? (
         <motion.button

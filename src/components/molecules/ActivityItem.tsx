@@ -28,28 +28,16 @@ const ActivityItem: FC<Props> = ({ item, gameData }) => {
             target="_blank"
             rel="noreferrer"
           >
-            <div
-              className="border border-greyscale3 bg-greyscale3 flex items-center justify-center 
-              rounded-full w-[40px] h-[40px] overflow-hidden"
-            >
-              <FallbackImage
-                src={item.userImage}
-                fallbackSrc={"/images/icons/user-alt.png"}
-                width={45}
-                height={45}
-                alt="user image"
-              />
-            </div>
-          </a>
-        ) : (
-          <div className="border border-greyscale3 bg-greyscale3 flex items-center justify-center rounded-full w-[40px] h-[40px] overflow-hidden">
-            <Image
+            <FallbackImage
               src={item.userImage}
+              fallbackSrc={"/images/icons/user-alt.png"}
               width={45}
               height={45}
               alt="user image"
             />
-          </div>
+          </a>
+        ) : (
+          <Image src={item.userImage} width={45} height={45} alt="user image" />
         )}
 
         <div className="flex flex-col items-start gap-1">
