@@ -113,7 +113,7 @@ const Landing = () => {
             </div>
           </div>
         )}
-        <div className="w-full mb-20">
+        <div className="w-full">
           <div className="max-w-[1600px] mx-auto text-greyscale5 text-lg flex items-center justify-center sm:justify-between px-4 sm:px-10 py-5">
             <p>© 2023 Degen Picks</p>
             <div className="hidden sm:flex items-center gap-4">

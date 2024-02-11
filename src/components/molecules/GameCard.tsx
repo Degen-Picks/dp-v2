@@ -74,7 +74,6 @@ const GameCard: FC<Props> = ({ game }) => {
                 )}`}
                 style={{
                   width: `${100 - winningPercent()}%`,
-                  backgroundColor: "transparent",
                 }}
               />
               <div
