@@ -8,22 +8,22 @@ interface Props {
 
 const GameFilter: FC<Props> = ({ activeFilter, setActiveFilter }) => {
   return (
-    <div className="relative h-[38px] flex items-center gap-1 z-40 bg-greyscale1 p-1">
+    <div className="relative flex items-center gap-2.5 z-40 mr-auto">
       <motion.button
-        className={`w-[80px] h-[30px] flex items-center justify-center ${
+        className={`h-[30px] px-[15px] rounded-[10px] flex items-center justify-center ${
           activeFilter
-            ? "bg-greyscale5 text-greyscale1"
-            : "bg-transparent  hover:bg-greyscale2"
+            ? "bg-data text-black"
+            : "bg-transparent text-white hover:bg-data/70 hover:text-black/70"
         }`}
         onClick={() => setActiveFilter(true)}
       >
         <p>Live</p>
       </motion.button>
       <motion.button
-        className={`w-[80px] h-[30px] flex items-center justify-center ${
+        className={`h-[30px] px-[15px] rounded-[10px] flex items-center justify-center ${
           !activeFilter
-            ? "bg-greyscale5 text-greyscale1"
-            : "bg-transparent  hover:bg-greyscale2"
+            ? "bg-data text-black"
+            : "bg-transparent text-white hover:bg-data/70 hover:text-black/70"
         }`}
         onClick={() => setActiveFilter(false)}
       >

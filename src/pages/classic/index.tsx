@@ -14,20 +14,17 @@ import {
 } from "@/components";
 import { Stats, Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { BarLoader } from "react-spinners";
-import { useWindowSize } from "@/hooks/useWindowSize";
+import { AnimatePresence, motion } from "framer-motion";
 
 const GameQueue = () => {
   const [games, setGames] = useState<Wager[]>([]);
   const [activeFilter, setActiveFilter] = useState(true);
   const [loading, setLoading] = useState(true);
   const [statData, setStatData] = useState<Stats | null>(null);
-
-  const { publicKey } = useWallet();
-
-  const [width] = useWindowSize();
-  const isMobile = width < 1024;
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState<Wager | null>(null);
+  // const [firstItemWidth, setFirstItemWidth] = useState("90%");
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -63,7 +60,15 @@ const GameQueue = () => {
     .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
     .map(
       (game, index) => {
-        return <GameCard key={index} game={game} />;
+        return (
+          <GameCard
+            key={index}
+            game={game}
+            setDrawerOpen={setDrawerOpen}
+            activeCard={activeCard}
+            setActiveCard={setActiveCard}
+          />
+        );
       }
       // now, sort upcoming games by date
     );
@@ -72,14 +77,30 @@ const GameQueue = () => {
     ?.filter((game) => activeFilter === true && game.status === "closed")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return <GameCard key={index} game={game} />;
+      return (
+        <GameCard
+          key={index}
+          game={game}
+          setDrawerOpen={setDrawerOpen}
+          activeCard={activeCard}
+          setActiveCard={setActiveCard}
+        />
+      );
     });
 
   const activeUpcomingGames = games
     ?.filter((game) => activeFilter === true && game.status === "upcoming")
     .sort((a: Wager, b: Wager) => b.endDate - a.endDate)
     .map((game, index) => {
-      return <GameCard key={index} game={game} />;
+      return (
+        <GameCard
+          key={index}
+          game={game}
+          setDrawerOpen={setDrawerOpen}
+          activeCard={activeCard}
+          setActiveCard={setActiveCard}
+        />
+      );
     });
 
   const pastGames = games
@@ -90,15 +111,27 @@ const GameQueue = () => {
     )
     .reverse()
     .map((game, index) => {
-      return <GameCard key={index} game={game} />;
+      return (
+        <GameCard
+          key={index}
+          game={game}
+          setDrawerOpen={setDrawerOpen}
+          activeCard={activeCard}
+          setActiveCard={setActiveCard}
+        />
+      );
     });
+
+  // useEffect(() => {
+  //   setFirstItemWidth(drawerOpen ? "calc(100% - 600px)" : "90%");
+  // }, [drawerOpen]);
 
   useEffect(() => {
     loadGameData();
   }, []);
 
   return (
-    <div className="relative bg-greyscale3 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
+    <div className="relative bg-greyscale5 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       {!loading && (
         <>
           <AlertBanner
@@ -117,54 +150,49 @@ const GameQueue = () => {
           <BarLoader color="black" />
         </div>
       ) : (
-        <div
-          className="flex flex-col gap-5 items-center w-[90%] 
-          md:w-fit mx-auto justify-center mb-40 z-20"
-        >
-          <div
-            className={`hidden md:block absolute ${
-              publicKey ? "top-[92px]" : "top-7"
-            }  left-1/2 -translate-x-1/2`}
-          >
-            <GameFilter
-              activeFilter={activeFilter}
-              setActiveFilter={setActiveFilter}
-            />
+        <AnimatePresence mode="wait">
+          <div className="w-full flex items-start justify-between">
+            <motion.div className="flex flex-col gap-5 items-center mx-auto justify-center mt-12 mb-40 z-20">
+              <GameFilter
+                activeFilter={activeFilter}
+                setActiveFilter={setActiveFilter}
+              />
+              {/* Conditional rendering based on filters and game status */}
+              {games?.filter((game) =>
+                activeFilter
+                  ? ["live", "closed", "upcoming"].includes(game.status)
+                  : ["completed", "cancelled"].includes(game.status)
+              ).length === 0 && (
+                <div className="w-full md:w-[620px] flex flex-col items-center justify-center pt-10">
+                  <p className="text-center text-lg pt-5">
+                    No live games right now.
+                  </p>
+                </div>
+              )}
+              {/* Render games based on filter status */}
+              {activeFilter ? (
+                <div className="w-full grid grid-cols-1 gap-2">
+                  {activeLiveGames}
+                  {activeUpcomingGames}
+                  {activeClosedGames}
+                </div>
+              ) : (
+                <div className="w-full grid grid-cols-1 gap-2">{pastGames}</div>
+              )}
+            </motion.div>
+            {drawerOpen && (
+              <motion.div
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ duration: 0.5 }}
+                className="w-[600px] min-h-screen h-full border-l border-border z-40"
+              >
+                Some content
+              </motion.div>
+            )}
           </div>
-          <div className="md:hidden mt-6">
-            <GameFilter
-              activeFilter={activeFilter}
-              setActiveFilter={setActiveFilter}
-            />
-          </div>
-          {games?.filter(
-            (game) =>
-              (activeFilter === true &&
-                (game.status === "live" ||
-                  game.status === "closed" ||
-                  game.status === "upcoming")) ||
-              (activeFilter === false &&
-                (game.status === "completed" || game.status === "cancelled"))
-          ).length === 0 && (
-            <div className="w-full md:w-[620px] flex flex-col items-center justify-center pt-10">
-              <p className="text-center text-lg pt-5">
-                No live games right now.
-              </p>
-            </div>
-          )}
-          {/* live games always go first, sorted by date */}
-          {activeFilter === true ? (
-            <div className={`w-full grid grid-cols-1 gap-1 mt-10`}>
-              {activeLiveGames}
-              {activeUpcomingGames}
-              {activeClosedGames}
-            </div>
-          ) : (
-            <div className="w-full grid grid-cols-1 gap-1 mt-10">
-              {pastGames}
-            </div>
-          )}
-        </div>
+        </AnimatePresence>
       )}
       {/* {statData &&
         (isMobile ? (

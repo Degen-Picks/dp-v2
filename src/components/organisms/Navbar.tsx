@@ -10,7 +10,10 @@ import { AlignJustify } from "lucide-react";
 import { WagerUser } from "@/types";
 import { generalConfig } from "@/configs";
 import { login, logout } from "@/utils";
-import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import {
+  WagerUserContext,
+  WagerUserContextType,
+} from "../stores/WagerUserStore";
 
 interface Props {
   landing?: boolean;
@@ -20,7 +23,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
   const { wagerUser, setWagerUser } = useContext(
     WagerUserContext
   ) as WagerUserContextType;
-  
+
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState<WagerUser | undefined>();
@@ -32,7 +35,6 @@ const Navbar: FC<Props> = ({ landing = false }) => {
   const [winWidth] = useWindowSize();
   const isMobile = winWidth < 1024;
 
-
   // Handle login
   useEffect(() => {
     async function load() {
@@ -42,7 +44,7 @@ const Navbar: FC<Props> = ({ landing = false }) => {
       }
     }
 
-    console.log("pubkeydsfhsdjhf", publicKey)
+    console.log("pubkeydsfhsdjhf", publicKey);
     if (publicKey) {
       load();
     }
@@ -111,16 +113,16 @@ const Navbar: FC<Props> = ({ landing = false }) => {
 
   return (
     <>
-      <div className={`bg-greyscale1 md:bg-transparent z-20`}>
+      <div className={`border-b border-border z-20`}>
         <div
-          className="relative flex justify-between 
+          className="relative flex items-center justify-between 
           py-4 max-w-[1600px] mx-auto px-4 lg:px-10"
         >
           <Link href="https://degenpicks.xyz/">
             <Image
               src="/images/logo_new.png"
-              width={isMobile ? 60 : 70}
-              height={isMobile ? 60 : 70}
+              width={40}
+              height={40}
               alt="degen picks logo"
               priority
             />
