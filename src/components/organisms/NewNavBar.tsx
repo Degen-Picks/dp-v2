@@ -155,7 +155,10 @@ const NewNavbar: FC<Props> = ({
               {!landing && <ConnectButton />}
             </div>
           </div>
+          {/* Add the top border */}
+            <div className="w-full border-t border-border"></div>
         </div>
+        
       </div>
       <AnimatePresence mode="wait">
         {open && (
