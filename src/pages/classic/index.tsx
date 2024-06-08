@@ -21,7 +21,7 @@ const GameQueue = () => {
   const [statData, setStatData] = useState<Stats | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [activeCard, setActiveCard] = useState<Wager | null>(null);
-  const [drawerState, setDrawerState] = useState<DrawerState | null>(null);
+  const [drawerState, setDrawerState] = useState<DrawerState>(DrawerState.Activity);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showStandingsModal, setShowStandingsModal] = useState(false);
