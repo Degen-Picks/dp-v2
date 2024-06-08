@@ -152,24 +152,12 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
         <div className={`${!wagerUser?.deidData && "button-wrapper"} w-full`}>
           <button
             onClick={wagerUser?.deidData ? handleDeIDUnlink : handleDeIDLogin}
-            className={`group bg-black border text-white ${
-              !!wagerUser?.deidData
-                ? "hover:border-[#f14668] border-foregroundDark"
-                : type === "modal"
-                ? "border-white"
-                : "border-transparent"
-            } h-[50px] flex ${
+            className={`group bg-[#1D1E26] text-white hover:bg-[#2C2D33] h-[50px] flex ${
               !wagerUser?.deidData ? "flex-row" : "flex-row-reverse"
             } justify-center items-center ${
               full ? "w-full" : "w-auto max-w-[200px]"
             }
-            rounded-full px-5 py-2.5 gap-2 font-figtree`}
-            style={{
-              minWidth: "100px",
-              borderWidth: "2px",
-              borderRadius: "20px",
-              padding: "10px 20px",
-            }}
+            rounded-[10px] px-[15px] py-[10px] gap-2 font-figtree`}
           >
             <p
               className={`leading-6 ${
@@ -194,15 +182,13 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
               size={18}
               fill="#FF6B6B"
               color="#FF6B6B"
-              className={`hidden ${
-                !!wagerUser?.deidData && "group-hover:block"
-              }`}
+              className={`hidden ${!!wagerUser?.deidData && "group-hover:block"}`}
             />
           </button>
         </div>
       )}
     </>
   );
-};
+}
 
 export default DeIDLoginButton;
