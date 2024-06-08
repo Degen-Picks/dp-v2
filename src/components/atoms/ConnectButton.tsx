@@ -1,37 +1,53 @@
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { FC } from "react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useContext, useEffect } from "react";
-import { login, logout } from "@/utils";
-import {
-  WagerUserContext,
-  WagerUserContextType,
-} from "../stores/WagerUserStore";
+import Image from "next/image";
 
-const ConnectButton = () => {
-  const { wagerUser, setWagerUser } = useContext(
-    WagerUserContext
-  ) as WagerUserContextType;
+interface Props {
+  full?: boolean;
+}
 
-  const wallet = useWallet();
-  const { publicKey } = wallet;
+const ConnectButton: FC<Props> = ({ full = false }) => {
+  const { publicKey, disconnect } = useWallet();
+  const modal = useWalletModal();
 
   return (
     <div
-      className="!bg-black !relative !w-full sm:!w-fit flex items-center justify-center
-        md:!px-0 !h-auto !rounded-none !z-50"
+      className={`border ${publicKey ? "border-foregroundDark" : "border-white"}
+      bg-black text-white cursor-pointer ${
+        full ? "w-full" : "w-auto"
+      } flex items-center justify-center h-[50px] rounded-[20px] hover:bg-background2 group`}
     >
-      <WalletMultiButton
-        className="!w-full md:!w-fit !flex !justify-center"
-        // startIcon={undefined}
-      >
-        <p className="!font-base !text-lg !whitespace-nowrap">
-          {publicKey
-            ? publicKey.toBase58().slice(0, 4) +
-              " ... " +
-              publicKey.toBase58().slice(-4)
-            : "Connect Wallet"}
-        </p>
-      </WalletMultiButton>
+      {publicKey ? (
+        <button
+          onClick={() => disconnect()}
+          className={`py-3 px-4 ${
+            full ? "w-full" : "w-[160px]"
+          } h-full flex items-center justify-center`}
+        >
+          <div className="flex items-center gap-2 group-hover:hidden">
+            <Image
+              src="/images/icons/phantom.png"
+              width={18}
+              height={18}
+              alt="wallet icon"
+            />
+            <p className="font-figtree text-base whitespace-nowrap">
+              {publicKey.toBase58().slice(0, 4) +
+                " ... " +
+                publicKey.toBase58().slice(-4)}
+            </p>
+          </div>
+          <p className="hidden group-hover:block">Disconnect</p>
+        </button>
+      ) : (
+        <button
+          onClick={() => modal.setVisible(true)}
+          className="w-full py-3 px-4"
+        >
+          Connect Wallet
+        </button>
+      )}
     </div>
   );
 };

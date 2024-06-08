@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCurrencyIcon, getStats, getWagers } from "@/utils";
 import {
-  Navbar,
   GameFilter,
   Timer,
   AlertBanner,
@@ -16,15 +15,22 @@ import { Stats, Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { BarLoader } from "react-spinners";
 import { AnimatePresence, motion } from "framer-motion";
+import NewNavbar from "@/components/organisms/NewNavBar";
 
 const GameQueue = () => {
   const [games, setGames] = useState<Wager[]>([]);
   const [activeFilter, setActiveFilter] = useState(true);
   const [loading, setLoading] = useState(true);
   const [statData, setStatData] = useState<Stats | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(true);
   const [activeCard, setActiveCard] = useState<Wager | null>(null);
   // const [firstItemWidth, setFirstItemWidth] = useState("90%");
+
+  // modal logic
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showStandingsModal, setShowStandingsModal] = useState(false);
+
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -134,14 +140,12 @@ const GameQueue = () => {
     <div className="relative bg-greyscale5 w-full overflow-hidden min-h-screen pb-20 md:pb-0">
       {!loading && (
         <>
-          <AlertBanner
-            text={
-              "Now you can run your own Degen Picks™ pool, and get 50% of the fees."
-            }
-            ctaText={"Learn More"}
-            ctaLink={"https://degenpicks.xyz"}
+          <NewNavbar
+            open={mobileMenuOpen}
+            setOpen={setMobileMenuOpen}
+            showInfoModal={showInfoModal}
+            setShowInfoModal={setShowInfoModal}
           />
-          <Navbar />
         </>
       )}
 

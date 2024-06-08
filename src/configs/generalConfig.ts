@@ -5,8 +5,8 @@ export const generalConfig = {
   apiUrl: "https://api.degenpicks.xyz",
   appUrl: "https://app.degenpicks.xyz",
   discordUrl: "https://discord.gg/TGTam7epH6",
-  useDevAPI: false,
-  useDevNet: false,
+  useDevAPI: true, 
+  useDevNet: true,
   gaId: "G-TFWGBB8QGD",
   tweetText(winningTeam: string, losingTeam: string, roundedBetAmount: string) {
     return `I picked ${winningTeam} to beat ${losingTeam} with ${roundedBetAmount} DUST on @degenpicksxyz \n\nMake your pick 👇 \n\ndegenpicks.xyz/classic`;
@@ -18,7 +18,7 @@ export const generalConfig = {
 };
 
 generalConfig["apiUrl"] = generalConfig.useDevAPI
-  ? "https://staging-api.degenpicks.xyz"
+  ? "http://localhost:3001"
   : "https://api.degenpicks.xyz";
 
 generalConfig["appUrl"] = generalConfig.useDevAPI
