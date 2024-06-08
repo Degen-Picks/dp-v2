@@ -18,7 +18,7 @@ export const generalConfig = {
 };
 
 generalConfig["apiUrl"] = generalConfig.useDevAPI
-  ? "http://localhost:3001"
+  ? "https://staging-api.degenpicks.xyz"
   : "https://api.degenpicks.xyz";
 
 generalConfig["appUrl"] = generalConfig.useDevAPI
