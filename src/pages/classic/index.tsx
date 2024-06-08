@@ -1,21 +1,18 @@
 import { useEffect, useState, FC } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { getCurrencyIcon, getStats, getWagers } from "@/utils";
-import {
-  GameFilter,
-  Timer,
-  AlertBanner,
-  FallbackImage,
-  DataBar,
-  DataBarMobile,
-  GameCard,
-} from "@/components";
+import { getStats, getWagers } from "@/utils";
+import { GameFilter, GameCard } from "@/components";
 import { Stats, Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { BarLoader } from "react-spinners";
 import { AnimatePresence, motion } from "framer-motion";
 import NewNavbar from "@/components/organisms/NewNavBar";
+
+export enum DrawerState {
+  SelectedGame,
+  Activity,
+  PersonalStats,
+  CreateGame,
+}
 
 const GameQueue = () => {
   const [games, setGames] = useState<Wager[]>([]);
@@ -24,13 +21,10 @@ const GameQueue = () => {
   const [statData, setStatData] = useState<Stats | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [activeCard, setActiveCard] = useState<Wager | null>(null);
-  // const [firstItemWidth, setFirstItemWidth] = useState("90%");
-
-  // modal logic
+  const [drawerState, setDrawerState] = useState<DrawerState | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showStandingsModal, setShowStandingsModal] = useState(false);
-
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -47,7 +41,6 @@ const GameQueue = () => {
     loadStats();
   }, []);
 
-  // this function fetches the status for each game
   const loadGameData = async () => {
     setLoading(true);
     let gameData: Wager[] | null = await getWagers();
@@ -64,20 +57,18 @@ const GameQueue = () => {
   const activeLiveGames = games
     ?.filter((game: Wager) => activeFilter === true && game.status === "live")
     .sort((a: Wager, b: Wager) => a.endDate - b.endDate)
-    .map(
-      (game, index) => {
-        return (
-          <GameCard
-            key={index}
-            game={game}
-            setDrawerOpen={setDrawerOpen}
-            activeCard={activeCard}
-            setActiveCard={setActiveCard}
-          />
-        );
-      }
-      // now, sort upcoming games by date
-    );
+    .map((game, index) => {
+      return (
+        <GameCard
+          key={index}
+          game={game}
+          setDrawerOpen={setDrawerOpen}
+          activeCard={activeCard}
+          setActiveCard={setActiveCard}
+          setDrawerState={setDrawerState}
+        />
+      );
+    });
 
   const activeClosedGames = games
     ?.filter((game) => activeFilter === true && game.status === "closed")
@@ -90,6 +81,7 @@ const GameQueue = () => {
           setDrawerOpen={setDrawerOpen}
           activeCard={activeCard}
           setActiveCard={setActiveCard}
+          setDrawerState={setDrawerState}
         />
       );
     });
@@ -105,6 +97,7 @@ const GameQueue = () => {
           setDrawerOpen={setDrawerOpen}
           activeCard={activeCard}
           setActiveCard={setActiveCard}
+          setDrawerState={setDrawerState}
         />
       );
     });
@@ -124,13 +117,10 @@ const GameQueue = () => {
           setDrawerOpen={setDrawerOpen}
           activeCard={activeCard}
           setActiveCard={setActiveCard}
+          setDrawerState={setDrawerState}
         />
       );
     });
-
-  // useEffect(() => {
-  //   setFirstItemWidth(drawerOpen ? "calc(100% - 600px)" : "90%");
-  // }, [drawerOpen]);
 
   useEffect(() => {
     loadGameData();
@@ -148,20 +138,19 @@ const GameQueue = () => {
           />
         </>
       )}
-
+  
       {loading ? (
         <div className="w-fit mx-auto flex flex-col items-center mt-56">
           <BarLoader color="black" />
         </div>
       ) : (
         <AnimatePresence mode="wait">
-          <div className="w-full flex items-start justify-between">
+          <div className="w-full flex items-start justify-between pt-20">
             <motion.div className="flex flex-col gap-5 items-center mx-auto justify-center mt-12 mb-40 z-20">
               <GameFilter
                 activeFilter={activeFilter}
                 setActiveFilter={setActiveFilter}
               />
-              {/* Conditional rendering based on filters and game status */}
               {games?.filter((game) =>
                 activeFilter
                   ? ["live", "closed", "upcoming"].includes(game.status)
@@ -173,7 +162,6 @@ const GameQueue = () => {
                   </p>
                 </div>
               )}
-              {/* Render games based on filter status */}
               {activeFilter ? (
                 <div className="w-full grid grid-cols-1 gap-2">
                   {activeLiveGames}
@@ -184,26 +172,78 @@ const GameQueue = () => {
                 <div className="w-full grid grid-cols-1 gap-2">{pastGames}</div>
               )}
             </motion.div>
+            <div className="fixed top-20 right-[600px] z-50 flex flex-col space-y-4">
+              <button
+                onClick={() => setDrawerState(DrawerState.Activity)}
+                className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
+                  drawerState === DrawerState.Activity ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                }`}
+              >
+                <img
+                  src={drawerState === DrawerState.Activity ? "/images/icons/chart-bar-solid-sel.svg" : "/images/icons/chart-bar-solid.svg"}
+                  alt="Activity"
+                  className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+                />
+              </button>
+              <button
+                onClick={() => setDrawerState(DrawerState.PersonalStats)}
+                className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
+                  drawerState === DrawerState.PersonalStats ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                }`}
+              >
+                <img
+                  src={drawerState === DrawerState.PersonalStats ? "/images/icons/user-solid-sel.svg" : "/images/icons/user-solid.svg"}
+                  alt="Personal Stats"
+                  className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+                />
+              </button>
+              {true && (
+                <button
+                  onClick={() => setDrawerState(DrawerState.CreateGame)}
+                  className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
+                    drawerState === DrawerState.CreateGame ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                  }`}
+                >
+                  <img
+                    src={drawerState === DrawerState.CreateGame ? "/images/icons/plus-solid-sel.svg" : "images/icons/plus-solid.svg"}
+                    alt="Create Game"
+                    className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+                  />
+                </button>
+              )}
+            </div>
             {drawerOpen && (
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ duration: 0.5 }}
-                className="w-[600px] min-h-screen h-full border-l border-border z-40"
+                className="fixed top-20 right-0 w-[600px] min-h-screen h-full border-l border-border z-40"
               >
-                Some content
+                {drawerState === DrawerState.SelectedGame && activeCard ? (
+                  <div>
+                    <h2>Selected Game: {activeCard.title}</h2>
+                  </div>
+                ) : drawerState === DrawerState.Activity ? (
+                  <div>
+                    <h2>Activity</h2>
+                  </div>
+                ) : drawerState === DrawerState.PersonalStats ? (
+                  <div>
+                    <h2>Personal Stats</h2>
+                  </div>
+                ) : drawerState === DrawerState.CreateGame ? (
+                  <div>
+                    <h2>Create Game</h2>
+                  </div>
+                ) : (
+                  <div>No content selected</div>
+                )}
               </motion.div>
             )}
           </div>
         </AnimatePresence>
       )}
-      {/* {statData &&
-        (isMobile ? (
-          <DataBarMobile stats={statData} />
-        ) : (
-          <DataBar stats={statData} />
-        ))} */}
     </div>
   );
 };

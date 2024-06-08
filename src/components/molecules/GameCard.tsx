@@ -4,12 +4,14 @@ import Link from "next/link";
 import { FallbackImage, Timer } from "@/components";
 import { Wager } from "@/types";
 import { getCurrencyIcon } from "@/utils";
+import { DrawerState } from "@/pages/classic";
 
 interface Props {
   game: Wager;
   setDrawerOpen: (value: boolean) => void;
   activeCard: Wager | null;
   setActiveCard: (value: Wager) => void;
+  setDrawerState: (value: DrawerState) => void;
 }
 
 const GameCard: FC<Props> = ({
@@ -17,6 +19,7 @@ const GameCard: FC<Props> = ({
   setDrawerOpen,
   activeCard,
   setActiveCard,
+  setDrawerState,
 }) => {
   const winningPercent = () => {
     const total = game.selections[0].totalSpent + game.selections[1].totalSpent;
@@ -50,6 +53,7 @@ const GameCard: FC<Props> = ({
       onClick={() => {
         setActiveCard(game);
         setDrawerOpen(true);
+        setDrawerState(DrawerState.SelectedGame)
       }}
     >
       <p className="text-[22px] leading-[21px] font-base-b">{game.title}</p>

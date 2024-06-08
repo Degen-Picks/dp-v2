@@ -124,7 +124,7 @@ const NewNavbar: FC<Props> = ({
 
   return (
     <>
-      <div className="relative w-full flex flex-col gap-6 items-center">
+      <div className="fixed w-full flex flex-col gap-6 items-center">
         <div
           className={`w-full border-b md:border-none border-[#404040] z-20 h-20`}
         >
