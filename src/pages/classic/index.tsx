@@ -6,6 +6,10 @@ import { withRedirect } from "@/utils/withRedirect";
 import { BarLoader } from "react-spinners";
 import { AnimatePresence, motion } from "framer-motion";
 import NewNavbar from "@/components/organisms/NewNavBar";
+import io from 'socket.io-client';
+import { ActivityFeedItem } from "@/types/ActivityFeed";
+import { generalConfig } from "@/configs";
+import ActivityFeedList from "@/components/molecules/ActivityFeedList";
 
 export enum DrawerState {
   None,
@@ -25,6 +29,19 @@ const GameQueue = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showStandingsModal, setShowStandingsModal] = useState(false);
+  const [activityFeed, setActivityFeed] = useState<ActivityFeedItem[]>([]);
+
+  useEffect(() => {
+    const socket = io(generalConfig.wsUrl);
+
+    socket.on('activityFeed', (activity: ActivityFeedItem) => {
+      setActivityFeed((prevFeed) => [activity, ...prevFeed]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const loadStatData = async () => {
     const statData: Stats | null = await getStats();
@@ -198,6 +215,7 @@ const GameQueue = () => {
                   ) : drawerState === DrawerState.Activity ? (
                     <div>
                       <h2>Activity</h2>
+                      <ActivityFeedList activityFeed={activityFeed} />
                     </div>
                   ) : drawerState === DrawerState.PersonalStats ? (
                     <div>
