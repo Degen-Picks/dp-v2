@@ -1,15 +1,29 @@
 import { useEffect, useState, FC } from "react";
-import { getStats, getWagers } from "@/utils";
-import { GameCard } from "@/components";
+import Image from "next/image";
+import Link from "next/link";
+import { getCurrencyIcon, getStats, getWagers } from "@/utils";
+import {
+  Navbar,
+  GameFilter,
+  Timer,
+  AlertBanner,
+  FallbackImage,
+  DataBar,
+  DataBarMobile,
+  GameCard,
+  Close,
+} from "@/components";
 import { Stats, Wager, WagerUser } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { BarLoader } from "react-spinners";
 import { AnimatePresence, motion } from "framer-motion";
 import NewNavbar from "@/components/organisms/NewNavBar";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 import { ActivityFeedItem } from "@/types/ActivityFeed";
 import { generalConfig } from "@/configs";
 import ActivityFeedList from "@/components/molecules/ActivityFeedList";
+import { X } from "lucide-react";
+import Drawer from "@/components/organisms/Drawer";
 
 export enum DrawerState {
   None,
@@ -25,7 +39,9 @@ const GameQueue = () => {
   const [statData, setStatData] = useState<Stats | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [activeCard, setActiveCard] = useState<Wager | null>(null);
-  const [drawerState, setDrawerState] = useState<DrawerState>(DrawerState.Activity);
+  const [drawerState, setDrawerState] = useState<DrawerState>(
+    DrawerState.Activity
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showStandingsModal, setShowStandingsModal] = useState(false);
@@ -34,7 +50,7 @@ const GameQueue = () => {
   useEffect(() => {
     const socket = io(generalConfig.wsUrl);
 
-    socket.on('activityFeed', (activity: ActivityFeedItem) => {
+    socket.on("activityFeed", (activity: ActivityFeedItem) => {
       setActivityFeed((prevFeed) => [activity, ...prevFeed]);
     });
 
@@ -133,7 +149,7 @@ const GameQueue = () => {
           />
         </>
       )}
-  
+
       {loading ? (
         <div className="w-fit mx-auto flex flex-col items-center mt-56">
           <BarLoader color="black" />
@@ -170,38 +186,62 @@ const GameQueue = () => {
                     className="absolute top-8 -left-16 z-50 flex flex-col space-y-4"
                   >
                     <button
-                      onClick={() => handleDrawerStateChange(DrawerState.Activity)}
+                      onClick={() =>
+                        handleDrawerStateChange(DrawerState.Activity)
+                      }
                       className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
-                        drawerState === DrawerState.Activity ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                        drawerState === DrawerState.Activity
+                          ? "bg-[#DFB78D]"
+                          : "bg-[#1F2028]"
                       }`}
                     >
                       <img
-                        src={drawerState === DrawerState.Activity ? "/images/icons/chart-bar-solid-sel.svg" : "/images/icons/chart-bar-solid.svg"}
+                        src={
+                          drawerState === DrawerState.Activity
+                            ? "/images/icons/chart-bar-solid-sel.svg"
+                            : "/images/icons/chart-bar-solid.svg"
+                        }
                         alt="Activity"
                         className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
                       />
                     </button>
                     <button
-                      onClick={() => handleDrawerStateChange(DrawerState.PersonalStats)}
+                      onClick={() =>
+                        handleDrawerStateChange(DrawerState.PersonalStats)
+                      }
                       className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
-                        drawerState === DrawerState.PersonalStats ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                        drawerState === DrawerState.PersonalStats
+                          ? "bg-[#DFB78D]"
+                          : "bg-[#1F2028]"
                       }`}
                     >
                       <img
-                        src={drawerState === DrawerState.PersonalStats ? "/images/icons/user-solid-sel.svg" : "/images/icons/user-solid.svg"}
+                        src={
+                          drawerState === DrawerState.PersonalStats
+                            ? "/images/icons/user-solid-sel.svg"
+                            : "/images/icons/user-solid.svg"
+                        }
                         alt="Personal Stats"
                         className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
                       />
                     </button>
                     {true && (
                       <button
-                        onClick={() => handleDrawerStateChange(DrawerState.CreateGame)}
+                        onClick={() =>
+                          handleDrawerStateChange(DrawerState.CreateGame)
+                        }
                         className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
-                          drawerState === DrawerState.CreateGame ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+                          drawerState === DrawerState.CreateGame
+                            ? "bg-[#DFB78D]"
+                            : "bg-[#1F2028]"
                         }`}
                       >
                         <img
-                          src={drawerState === DrawerState.CreateGame ? "/images/icons/plus-solid-sel.svg" : "images/icons/plus-solid.svg"}
+                          src={
+                            drawerState === DrawerState.CreateGame
+                              ? "/images/icons/plus-solid-sel.svg"
+                              : "images/icons/plus-solid.svg"
+                          }
                           alt="Create Game"
                           className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
                         />
