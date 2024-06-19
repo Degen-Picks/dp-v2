@@ -128,10 +128,7 @@ const NewNavbar: FC<Props> = ({
         <div
           className={`w-full border-b md:border-none border-[#404040] z-20 h-20`}
         >
-          <div
-            className="w-full h-full relative flex justify-between items-center
-            max-w-[1600px] mx-auto px-4 lg:px-10"
-          >
+          <div className="w-full h-full relative flex justify-between items-center px-4 lg:px-10">
             {/* left */}
             <div className="md:hidden w-[50px]" />
             {/* middle, or left on desktop */}
@@ -156,9 +153,8 @@ const NewNavbar: FC<Props> = ({
             </div>
           </div>
           {/* Add the top border */}
-            <div className="w-full border-t border-border"></div>
+          <div className="w-full border-t border-border"></div>
         </div>
-        
       </div>
       <AnimatePresence mode="wait">
         {open && (

@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { FallbackImage, Timer } from "@/components";
 import { Wager } from "@/types";
 import { getCurrencyIcon } from "@/utils";
@@ -8,14 +7,16 @@ import { DrawerState } from "@/pages/classic";
 
 interface Props {
   game: Wager;
+  drawerOpen: boolean;
   setDrawerOpen: (value: boolean) => void;
   activeCard: Wager | null;
-  setActiveCard: (value: Wager) => void;
+  setActiveCard: (value: Wager | null) => void;
   setDrawerState: (value: DrawerState) => void;
 }
 
 const GameCard: FC<Props> = ({
   game,
+  drawerOpen,
   setDrawerOpen,
   activeCard,
   setActiveCard,
@@ -51,9 +52,15 @@ const GameCard: FC<Props> = ({
         px-[30px] py-[25px] mx-auto cursor-pointer border rounded-[10px] text-white
         ${activeCard?._id === game._id ? "border-data" : "border-border"}`}
       onClick={() => {
-        setActiveCard(game);
-        setDrawerOpen(true);
-        setDrawerState(DrawerState.SelectedGame)
+        if (activeCard?._id === game._id && drawerOpen) {
+          setDrawerOpen(false);
+          setDrawerState(DrawerState.None);
+          setActiveCard(null);
+        } else {
+          setDrawerOpen(true);
+          setDrawerState(DrawerState.SelectedGame);
+          setActiveCard(game);
+        }
       }}
     >
       <p className="text-[22px] leading-[21px] font-base-b">{game.title}</p>
