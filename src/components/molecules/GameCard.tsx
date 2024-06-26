@@ -32,14 +32,14 @@ const GameCard: FC<Props> = ({
   const getColor = (status: string, index: number) => {
     switch (status) {
       case "closed":
-        return "bg-greyscale4";
+        return "bg-data";
       case "completed":
-        if (!game.selections[index].winner) return "bg-white";
+        if (!game.selections[index].winner) return "bg-transparent";
         else return "bg-correct";
       case "cancelled":
-        return "bg-white";
+        return "bg-transparent";
       default:
-        return "bg-purple1";
+        return "bg-data";
     }
   };
 
@@ -48,7 +48,7 @@ const GameCard: FC<Props> = ({
   return (
     // <Link className="w-full" passHref href={`/${encodeURI(game._id)}`}>
     <div
-      className={`relative h-auto md:h-[180px] w-full md:w-[610px] flex flex-col gap-1 justify-center
+      className={`relative h-auto md:h-[180px] w-full md:w-[610px] flex flex-col gap-[15px] justify-center
         px-[30px] py-[25px] mx-auto cursor-pointer border rounded-[10px] text-white
         ${activeCard?._id === game._id ? "border-data" : "border-border"}`}
       onClick={() => {
@@ -64,11 +64,11 @@ const GameCard: FC<Props> = ({
       }}
     >
       <p className="text-[22px] leading-[21px] font-base-b">{game.title}</p>
-      <div className="flex flex-col gap-[15px]">
+      <div className="flex flex-col gap-2.5">
         <div className="flex items-center gap-2.5">
-          <div className="relative !w-[200px] sm:w-[300px] h-[9px]">
+          <div className="overflow-hidden relative !w-[200px] sm:w-[240px] h-[6px]">
             <div
-              className={`absolute w-full h-full transition-transform duration-500 ${getColor(
+              className={`absolute w-full h-full rounded-[10px] transition-transform duration-500 ${getColor(
                 game.status,
                 0
               )}`}
@@ -77,11 +77,9 @@ const GameCard: FC<Props> = ({
               }}
             />
             <div
-              className={`absolute w-full h-full border border-greyscale5
+              className={`absolute w-full h-full bg-white/10 rounded-[10px] 
                 ${
-                  game.selections[0].winner
-                    ? "bg-[#5CB85C59]"
-                    : "bg-transparent"
+                  game.selections[0].winner ? "bg-[#5CB85C59]" : "bg-white/10"
                 }`}
             />
           </div>
@@ -90,9 +88,9 @@ const GameCard: FC<Props> = ({
           </p>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="relative !w-[200px] sm:w-[300px] h-[9px]">
+          <div className="overflow-hidden relative !w-[200px] sm:w-[240px] h-[6px]">
             <div
-              className={`absolute w-full h-full transition-transform duration-500 ${getColor(
+              className={`absolute w-full h-full rounded-[10px] transition-transform duration-500 ${getColor(
                 game.status,
                 1
               )}`}
@@ -101,11 +99,9 @@ const GameCard: FC<Props> = ({
               }}
             />
             <div
-              className={`absolute w-full h-full border border-greyscale5
+              className={`absolute w-full h-full rounded-[10px] bg-white/10
                 ${
-                  game.selections[1].winner
-                    ? "bg-[#5CB85C59]"
-                    : "bg-transparent"
+                  game.selections[1].winner ? "bg-[#5CB85C59]" : "bg-white/10"
                 }`}
             />
           </div>
@@ -115,8 +111,8 @@ const GameCard: FC<Props> = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        {game.creator?.roles?.includes("ADMIN") ? (
+      <div className="flex items-center gap-[30px]">
+        {/* {game.creator?.roles?.includes("ADMIN") ? (
           <div className="flex items-center gap-[5px]">
             <Image
               src="/images/team_icon.png"
@@ -137,19 +133,26 @@ const GameCard: FC<Props> = ({
             />
             <p className="text-lg">{game.creator?.twitterData?.username}</p>
           </div>
-        ) : null}
-        <div className="h-5 w-[1px] bg-greyscale4/50" />
-        <div className="flex items-center gap-2">
+        ) : null} */}
+        {/* <div className="h-5 w-[1px] bg-greyscale4/50" /> */}
+        <div className="flex items-center gap-[5px]">
           <Image
-            src={getCurrencyIcon(game.token)}
-            width={16}
-            height={16}
-            alt="token icon"
+            src="/images/icons/new/money.png"
+            width={14}
+            height={14}
+            alt="money icon"
           />
-          <p className="text-lg">{game.token}</p>
+          <p className="text-sm">{`TODO ${game.token?.toUpperCase()}`}</p>
         </div>
-        {game.creator && <div className="h-5 w-[1px] bg-greyscale4/50" />}
-        <Timer status={game.status} gameTime={game.endDate} />
+        <div className="flex items-center gap-[5px]">
+          <Image
+            src="/images/icons/new/time.png"
+            width={14}
+            height={14}
+            alt="money icon"
+          />
+          <Timer status={game.status} gameTime={game.endDate} />
+        </div>
       </div>
     </div>
     // </Link>

@@ -1,5 +1,6 @@
 import { TwitterData } from "./TwitterData";
 import { DeIDData } from "./DeIDData";
+import { Token } from "./Token";
 
 export interface Wager {
   finalScore: string;
@@ -14,7 +15,7 @@ export interface Wager {
   metadata: any[];
   creator: WagerUser;
   description: string;
-  token: string | null;
+  token: Token;
 }
 
 export interface Selection {

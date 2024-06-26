@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
 import { getStats, getWagers } from "@/utils";
 import { GameFilter, GameCard } from "@/components";
 import { Stats, Wager } from "@/types";
@@ -186,11 +185,11 @@ const GameQueue = () => {
     handleDrawerStateChange(drawerState);
   }, [drawerState, handleDrawerStateChange]);
 
-  useEffect(() => {
-    console.log("active game", activeCard);
-    console.log("drawer state", drawerState);
-    console.log("drawer content", drawerContent);
-  }, [activeCard, drawerState, drawerContent]);
+  // useEffect(() => {
+  //   console.log("active game", activeCard);
+  //   console.log("drawer state", drawerState);
+  //   console.log("drawer content", drawerContent);
+  // }, [activeCard, drawerState, drawerContent]);
 
   return (
     <div className="relative flex flex-col bg-greyscale5 w-full h-screen pb-20 md:pb-0">
@@ -254,6 +253,7 @@ const GameQueue = () => {
                 data={drawerContent}
                 drawerState={drawerState}
                 setDrawerState={setDrawerState}
+                loadGameData={loadGameData}
               />
             </motion.div>
           </AnimatePresence>

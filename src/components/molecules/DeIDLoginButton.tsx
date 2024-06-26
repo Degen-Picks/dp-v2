@@ -157,7 +157,7 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
             } justify-center items-center ${
               full ? "w-full" : "w-auto max-w-[200px]"
             }
-            rounded-[10px] px-[15px] py-[10px] gap-2 font-figtree`}
+            rounded-[10px] px-[15px] py-2.5 gap-2 font-figtree`}
           >
             <p
               className={`leading-6 ${
@@ -182,13 +182,15 @@ const DeIDLoginButton: FC<Props> = ({ type = "nav", full = false }) => {
               size={18}
               fill="#FF6B6B"
               color="#FF6B6B"
-              className={`hidden ${!!wagerUser?.deidData && "group-hover:block"}`}
+              className={`hidden ${
+                !!wagerUser?.deidData && "group-hover:block"
+              }`}
             />
           </button>
         </div>
       )}
     </>
   );
-}
+};
 
 export default DeIDLoginButton;

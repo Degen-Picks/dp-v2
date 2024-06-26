@@ -4,13 +4,16 @@ import { Stats, Wager } from "@/types";
 import { ActivityFeedItem } from "@/types/ActivityFeed";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { Activity, X } from "lucide-react";
+import ActivityDrawerData from "../molecules/ActivityDrawerData";
+import SelectedGameData from "../molecules/SelectedGameData";
 
 interface Props {
   setDrawerOpen: (value: boolean) => void;
   data: ActivityFeedItem[] | Stats | Wager | null;
   drawerState: DrawerState;
   setDrawerState: (value: DrawerState) => void;
+  loadGameData?: () => void;
 }
 
 const Drawer: FC<Props> = ({
@@ -18,6 +21,7 @@ const Drawer: FC<Props> = ({
   data,
   drawerState,
   setDrawerState,
+  loadGameData,
 }) => {
   const wallet = useWallet();
   return (
@@ -40,43 +44,20 @@ const Drawer: FC<Props> = ({
             className="absolute top-8 right-8 cursor-pointer"
           />
           {/* Drawer content based on drawerState */}
-          {drawerState === DrawerState.SelectedGame && (data as Wager) && (
-            <div className="w-[400px] flex flex-col gap-5 justify-center">
-              <div className="flex flex-col gap-2 justify-center">
-                <p className="text-greyscale1 text-[18px] font-base-b pr-10">
-                  {(data as Wager).title}
-                </p>
-                {(data as Wager).description && (
-                  <p className="text-greyscale4 text-xs">
-                    {(data as Wager).description}
-                  </p>
-                )}
-              </div>
-              <div
-                className={`w-full flex gap-0.5 h-[70px] ${
-                  !wallet.publicKey ? "text-greyscale1/50" : "text-greyscale1"
-                }`}
-              >
-                {(data as Wager).selections?.map((o, index) => (
-                  <button
-                    key={o._id}
-                    disabled={!wallet.publicKey}
-                    className={`p-2.5 w-full h-full rounded-[20px] disabled:cursor-not-allowed ${
-                      index < 1 && "rounded-r-none"
-                    } ${index > 0 && "rounded-l-none"} ${
-                      (data as Wager).selections?.find((o) => o.winner)?._id ===
-                      o._id
-                        ? "bg-[#282622] border border-data"
-                        : "bg-greyscale5 hover:bg-greyscale1/10 disabled:hover:bg-greyscale5"
-                    }`}
-                    // onClick={() => handleSelect(o._id)}
-                  >
-                    {o.title}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          <div className="w-[400px] flex flex-col gap-[30px] justify-center">
+            {drawerState === DrawerState.SelectedGame &&
+              (data as Wager) &&
+              loadGameData && (
+                <SelectedGameData
+                  data={data as Wager}
+                  loadGameData={loadGameData}
+                />
+              )}
+            {drawerState === DrawerState.Activity &&
+              (data as ActivityFeedItem[]) && (
+                <ActivityDrawerData data={data as ActivityFeedItem[]} />
+              )}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

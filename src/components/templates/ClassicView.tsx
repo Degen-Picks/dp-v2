@@ -914,7 +914,7 @@ const Classic: FC<Props> = ({ gameId }) => {
                           bg-greyscale2 hover:bg-greyscale3 px-2 h-[50px] w-full text-center focus:outline-none 
                           focus:ring-2 focus:ring-purple1 rounded-none focus:bg-greyscale1"
                         />
-                        <div className="absolute left-2 top-[10px]">
+                        <div className="absolute left-2 top-2.5">
                           <Image
                             src={getCurrencyIcon(gameData.gameInfo.token)}
                             height={30}

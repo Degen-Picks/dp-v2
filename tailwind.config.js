@@ -35,6 +35,7 @@ module.exports = {
         greyscale3: "#ECEAEC",
         greyscale4: "#8E93B4",
         greyscale5: "#13141B",
+        greyscale6: "#1D1E26",
         purple1: "#651FFF",
         purple2: "#4C17BF",
         correct: "#43A047",

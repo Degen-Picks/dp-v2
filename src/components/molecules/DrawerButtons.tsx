@@ -33,7 +33,7 @@ const DrawerButtons: FC<Props> = ({
           }
         }}
         className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
-          drawerState === DrawerState.Activity ? "bg-[#DFB78D]" : "bg-[#1F2028]"
+          drawerState === DrawerState.Activity ? "bg-data" : "bg-greyscale6"
         }`}
       >
         <Image
@@ -45,7 +45,7 @@ const DrawerButtons: FC<Props> = ({
           width={13}
           height={14}
           alt="Activity"
-          className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+          className="w-[16px] h-[16x] fill-current text-greyscale4"
         />
       </button>
       <button
@@ -60,8 +60,8 @@ const DrawerButtons: FC<Props> = ({
         }}
         className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
           drawerState === DrawerState.PersonalStats
-            ? "bg-[#DFB78D]"
-            : "bg-[#1F2028]"
+            ? "bg-data"
+            : "bg-greyscale6"
         }`}
       >
         <Image
@@ -73,7 +73,7 @@ const DrawerButtons: FC<Props> = ({
           width={13}
           height={14}
           alt="Personal Stats"
-          className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+          className="w-[16px] h-[16x] fill-current text-greyscale4"
         />
       </button>
       {true && (
@@ -88,9 +88,7 @@ const DrawerButtons: FC<Props> = ({
             }
           }}
           className={`w-12 h-12 rounded-[10px] flex items-center justify-center ${
-            drawerState === DrawerState.CreateGame
-              ? "bg-[#DFB78D]"
-              : "bg-[#1F2028]"
+            drawerState === DrawerState.CreateGame ? "bg-data" : "bg-greyscale6"
           }`}
         >
           <Image
@@ -102,7 +100,7 @@ const DrawerButtons: FC<Props> = ({
             width={13}
             height={14}
             alt="Create Game"
-            className="w-[16px] h-[16x] fill-current text-[#8E93B4]"
+            className="w-[16px] h-[16x] fill-current text-greyscale4"
           />
         </button>
       )}

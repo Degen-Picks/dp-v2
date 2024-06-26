@@ -17,7 +17,7 @@ const ConnectButton: FC<Props> = ({ full = false }) => {
         className={`group bg-[#1D1E26] text-white hover:bg-[#2C2D33] h-[50px] flex justify-center items-center ${
           full ? "w-full" : "w-auto max-w-[200px]"
         }
-        rounded-[10px] px-[15px] py-[10px] gap-2 font-figtree`}
+        rounded-[10px] px-[15px] py-2.5 gap-2 font-figtree`}
       >
         {publicKey ? (
           <>

@@ -156,7 +156,7 @@ const MegaMenu: FC<Props> = ({ setIsOpen, userData, setUserData }) => {
   };
 
   return (
-    <div className="fixed w-full right-0 top-0 sm:w-auto sm:absolute sm:top-[10px] sm:right-0 z-50 shadow-lg">
+    <div className="fixed w-full right-0 top-0 sm:w-auto sm:absolute sm:top-2.5 sm:right-0 z-50 shadow-lg">
       <div className="relative w-full sm:w-[300px]" ref={wrapperRef}>
         <div className="relative flex flex-col w-full bg-greyscale1">
           {/* header */}
