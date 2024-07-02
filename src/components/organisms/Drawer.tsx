@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Activity, X } from "lucide-react";
 import ActivityDrawerData from "../molecules/ActivityDrawerData";
 import SelectedGameData from "../molecules/SelectedGameData";
+import CreatePool from "../molecules/CreatePool";
 
 interface Props {
   setDrawerOpen: (value: boolean) => void;
@@ -57,6 +58,9 @@ const Drawer: FC<Props> = ({
               (data as ActivityFeedItem[]) && (
                 <ActivityDrawerData data={data as ActivityFeedItem[]} />
               )}
+            {drawerState === DrawerState.CreateGame && (
+              <CreatePool />
+            )}
           </div>
         </motion.div>
       )}

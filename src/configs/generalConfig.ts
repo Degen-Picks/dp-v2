@@ -25,7 +25,7 @@ generalConfig["apiUrl"] = generalConfig.useDevAPI
 generalConfig["appUrl"] = generalConfig.useDevAPI
   ? "https://app.staging.degenpicks.xyz"
   : "https://app.degenpicks.xyz";
-
+  
 generalConfig["wsUrl"] = generalConfig.useDevAPI
   ? "https://staging-api.degenpicks.xyz"
   : "https://api.degenpicks.xyz";
