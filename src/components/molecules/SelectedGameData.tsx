@@ -30,7 +30,7 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
   const [selectedTeam, setSelectedTeam] = useState<Selection | null>(null);
   const [txn, setTxn] = useState("");
   const [success, setSuccess] = useState(false);
-  const [agree, setAgree] = useState(false);
+  const [agree, setAgree] = useState(true); // TODO: I dont think we have terms anymore? Seting default to true
   const [minimumBet, setMinimumBet] = useState(0.1);
   const [rewardEstimate, setRewardEstimate] = useState<string>("--");
 
@@ -77,7 +77,6 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
 
         // show success UX
         setSuccess(true);
-        setAgree(true);
         // document.body.scrollTop = document.documentElement.scrollTop = 0;
       } else {
         toast.error("Transaction cancelled or failed.", {
@@ -341,6 +340,7 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
           connection,
           data.token
         );
+        console.log("TOKEN BALANCE", balance)
         setTokenBalance(balance);
 
         // check if the user doesn't have enough token
