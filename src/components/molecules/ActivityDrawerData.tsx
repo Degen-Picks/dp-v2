@@ -1,47 +1,52 @@
-import { FC } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { ActivityFeedItem } from "@/types/ActivityFeed";
+import React from 'react';
+import Image from 'next/image';
+import { BetEventResponse } from "@/types";
+import { getProfileImageFromDeID, getUsernameFromDeID } from '@/utils';
 
 interface Props {
-  data: ActivityFeedItem[];
+  data: BetEventResponse;
 }
 
-const ActivityDrawerData: FC<Props> = ({ data }) => {
-  const wallet = useWallet();
-
+const ActivityDrawerData: React.FC<Props> = ({ data }) => {
   return (
-    <>
-      {/* <div className="flex flex-col gap-2 justify-center">
-        <p className="text-greyscale1 text-[18px] font-base-b pr-10">
-          {data.title}
-        </p>
-        {data.description && (
-          <p className="text-greyscale4 text-xs">{data.description}</p>
-        )}
-      </div>
-      <div
-        className={`w-full flex gap-0.5 h-[70px] ${
-          !wallet.publicKey ? "text-greyscale1/50" : "text-greyscale1"
-        }`}
-      >
-        {data.selections?.map((o, index) => (
-          <button
-            key={o._id}
-            disabled={!wallet.publicKey}
-            className={`p-2.5 w-full h-full rounded-[20px] disabled:cursor-not-allowed ${
-              index < 1 && "rounded-r-none"
-            } ${index > 0 && "rounded-l-none"} ${
-              data.selections?.find((o) => o.winner)?._id === o._id
-                ? "bg-[#282622] border border-data"
-                : "bg-greyscale5 hover:bg-greyscale1/10 disabled:hover:bg-greyscale5"
-            }`}
-            // onClick={() => handleSelect(o._id)}
-          >
-            {o.title}
-          </button>
+    <div className="w-full max-w-md bg-greyscale7 text-greyscale1">
+      <h2 className="text-[18px] font-bold mb-4">Activity/Personal Stats</h2>
+      <div className="space-y-4">
+        {data && data
+          .filter(event => event.event !== "testevnet" && event.event !== "event")
+          .map((event, index) => (
+          <div key={event._id} className="flex items-center space-x-3">
+            <div className="relative w-10 h-10">
+              <Image
+                src={getProfileImageFromDeID(event.user.deidData!)}
+                alt={'User profile picture'}
+                layout="fill"
+                className="rounded-full"
+              />
+            </div>
+            <div className="flex-grow">
+              <p className="text-sm">
+                <span className="font-semibold">
+                  {getUsernameFromDeID(event.user.deidData!)}
+                </span>
+                {' '}
+                {event.event === 'win' ? 'won' : 'picked'}{' '}
+                {event.event === 'win' ? (
+                  // TODO: Pull token type
+                  <span className="text-green-400">+{event.amount} SOL</span> 
+                ) : (
+                  // TODO: Pull selection name
+                  event.selection
+                )}
+              </p>
+              <p className="text-xs text-greyscale4">
+                {new Date(event.timestamp).toLocaleString()}
+              </p>
+            </div>
+          </div>
         ))}
-      </div> */}
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { generalConfig } from "@/configs";
-import { LeaguesArray, Pickem, Wager, Stats, WagerUser } from "@/types";
+import { LeaguesArray, Pickem, Wager, Stats, WagerUser, BetEventResponse } from "@/types";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { handleWalletLogin } from "../walletUtils";
 import { LeaderboardData } from "@/types/LeaderboardData";
@@ -29,6 +29,26 @@ export async function getStats() {
     const response = await fetch(`${generalConfig.apiUrl}/api/stats`);
     const stats = await response.json();
     return stats.data as Stats;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getPersonalActivityFeed(userId: string) {
+  try {
+    const response = await fetch(`${generalConfig.apiUrl}/api/activity-feed/${userId}`);
+    const assets = await response.json();
+    return assets.data as BetEventResponse;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function getGlobalActivityFeed() {
+  try {
+    const response = await fetch(`${generalConfig.apiUrl}/api/activity-feed`);
+    const assets = await response.json();
+    return assets.data as BetEventResponse;
   } catch (err) {
     return null;
   }

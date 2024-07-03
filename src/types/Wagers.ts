@@ -52,4 +52,5 @@ export interface WagerUser {
   deidData: DeIDData | null;
   roles: Roles;
   stats: Stats;
+  _id: string;
 }

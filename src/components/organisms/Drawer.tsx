@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { DrawerState } from "@/pages/classic";
-import { Stats, Wager } from "@/types";
+import { BetEventResponse, Stats, Wager } from "@/types";
 import { ActivityFeedItem } from "@/types/ActivityFeed";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -54,9 +54,9 @@ const Drawer: FC<Props> = ({
                   loadGameData={loadGameData}
                 />
               )}
-            {drawerState === DrawerState.Activity &&
-              (data as ActivityFeedItem[]) && (
-                <ActivityDrawerData data={data as ActivityFeedItem[]} />
+            {(drawerState === DrawerState.Activity || drawerState === DrawerState.PersonalStats)  &&
+              (data as BetEventResponse) && (
+                <ActivityDrawerData data={data as BetEventResponse} />
               )}
             {drawerState === DrawerState.CreateGame && (
               <CreatePool />

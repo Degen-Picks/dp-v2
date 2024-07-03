@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { getStats, getWagers } from "@/utils";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { getGlobalActivityFeed, getPersonalActivityFeed, getStats, getWagers } from "@/utils";
 import { GameFilter, GameCard } from "@/components";
-import { Stats, Wager } from "@/types";
+import { BetEvent, BetEventResponse, Stats, Wager } from "@/types";
 import { withRedirect } from "@/utils/withRedirect";
 import { BarLoader } from "react-spinners";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,6 +11,7 @@ import { ActivityFeedItem } from "@/types/ActivityFeed";
 import { generalConfig } from "@/configs";
 import Drawer from "@/components/organisms/Drawer";
 import DrawerButtons from "@/components/molecules/DrawerButtons";
+import { WagerUserContext, WagerUserContextType } from "@/components/stores/WagerUserStore";
 
 export enum DrawerState {
   None = "None",
@@ -21,27 +22,35 @@ export enum DrawerState {
 }
 
 const GameQueue = () => {
+  const { wagerUser, setWagerUser } = useContext(
+    WagerUserContext
+  ) as WagerUserContextType;
   const [games, setGames] = useState<Wager[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statData, setStatData] = useState<Stats | null>(null);
+  const [statData, setStatData] = useState<BetEventResponse | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<Wager | null>(null);
   const [drawerState, setDrawerState] = useState<DrawerState>(DrawerState.None);
   const [drawerContent, setDrawerContent] = useState<
-    ActivityFeedItem[] | Stats | Wager | null
+    BetEventResponse | Stats | Wager | null
   >(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   // const [showStandingsModal, setShowStandingsModal] = useState(false);
-  const [activityFeed, setActivityFeed] = useState<ActivityFeedItem[]>([]);
+  const [activityFeed, setActivityFeed] = useState<BetEventResponse>([]);
   const [activeFilter, setActiveFilter] = useState(true);
 
-  const loadStatData = async () => {
-    const statData: Stats | null = await getStats();
-    if (statData === null) return;
-
-    setStatData(statData);
+  const loadStatData = async (userId: string) => {
+    const personalStatData: BetEventResponse | null = await getPersonalActivityFeed(userId);
+    if (personalStatData === null) return;
+    setStatData(personalStatData);
   };
+
+  const loadActivityFeed = async () => {
+    const activityFeedData = await getGlobalActivityFeed();
+    if(activityFeedData === null) return;
+    setActivityFeed(activityFeedData);
+  }
 
   const loadGameData = async () => {
     setLoading(true);
@@ -74,11 +83,9 @@ const GameQueue = () => {
           break;
         case DrawerState.CreateGame:
           setActiveCard(null);
-          setDrawerContent(statData); // temp
           break;
         default:
           setActiveCard(null);
-          setDrawerContent(statData); // temp
           break;
       }
     },
@@ -163,16 +170,25 @@ const GameQueue = () => {
 
   useEffect(() => {
     async function loadStats() {
-      await loadStatData();
+      if(!wagerUser) return;
+      await loadStatData(wagerUser._id);
     }
 
     loadStats();
-  }, []);
+  }, [wagerUser]);
+
+  useEffect(() => {
+    async function loadFeed() {
+      await loadActivityFeed();
+    }
+
+    loadFeed();
+  }, [])
 
   useEffect(() => {
     const socket = io(generalConfig.wsUrl);
 
-    socket.on("activityFeed", (activity: ActivityFeedItem) => {
+    socket.on("activityFeed", (activity: BetEvent) => {
       setActivityFeed((prevFeed) => [activity, ...prevFeed]);
     });
 

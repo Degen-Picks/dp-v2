@@ -340,7 +340,6 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
           connection,
           data.token
         );
-        console.log("TOKEN BALANCE", balance)
         setTokenBalance(balance);
 
         // check if the user doesn't have enough token
