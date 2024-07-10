@@ -1,33 +1,22 @@
 import { FC } from "react";
-import { DrawerState } from "@/pages/classic";
-import { BetEventResponse, Stats, Wager } from "@/types";
-import { ActivityFeedItem } from "@/types/ActivityFeed";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Activity, X } from "lucide-react";
+import { X } from "lucide-react";
 import ActivityDrawerData from "../molecules/ActivityDrawerData";
 import SelectedGameData from "../molecules/SelectedGameData";
 import CreatePool from "../molecules/CreatePool";
+import { BetEventResponse, Stats, Wager } from "@/types";
+import { DrawerState } from "@/pages/classic";
 
 interface Props {
-  setDrawerOpen: (value: boolean) => void;
-  data: ActivityFeedItem[] | Stats | Wager | null;
   drawerState: DrawerState;
-  setDrawerState: (value: DrawerState) => void;
+  closeDrawer: () => void;
   loadGameData?: () => void;
 }
 
-const Drawer: FC<Props> = ({
-  setDrawerOpen,
-  data,
-  drawerState,
-  setDrawerState,
-  loadGameData,
-}) => {
-  const wallet = useWallet();
+const Drawer: FC<Props> = ({ drawerState, closeDrawer, loadGameData }) => {
   return (
     <AnimatePresence>
-      {drawerState !== DrawerState.None && (
+      {drawerState.isOpen && (
         <motion.div
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
@@ -38,27 +27,20 @@ const Drawer: FC<Props> = ({
           <X
             color="white"
             size={18}
-            onClick={() => {
-              setDrawerOpen(false);
-              setDrawerState(DrawerState.None);
-            }}
+            onClick={closeDrawer}
             className="absolute top-8 right-8 cursor-pointer"
           />
-          {/* Drawer content based on drawerState */}
           <div className="w-[400px] flex flex-col gap-[30px] justify-center">
-            {drawerState === DrawerState.SelectedGame &&
-              (data as Wager) &&
-              loadGameData && (
-                <SelectedGameData
-                  data={data as Wager}
-                  loadGameData={loadGameData}
-                />
-              )}
-            {(drawerState === DrawerState.Activity || drawerState === DrawerState.PersonalStats)  &&
-              (data as BetEventResponse) && (
-                <ActivityDrawerData data={data as BetEventResponse} />
-              )}
-            {drawerState === DrawerState.CreateGame && (
+            {drawerState.type === 'selectedGame' && drawerState.content && loadGameData && (
+              <SelectedGameData
+                data={drawerState.content as Wager}
+                loadGameData={loadGameData}
+              />
+            )}
+            {(drawerState.type === 'activity' || drawerState.type === 'personalStats') && drawerState.content && (
+              <ActivityDrawerData data={drawerState.content as BetEventResponse} />
+            )}
+            {drawerState.type === 'createGame' && (
               <CreatePool />
             )}
           </div>
