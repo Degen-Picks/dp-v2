@@ -5,7 +5,8 @@ import {
   Team,
 } from "@/types";
 
-export async function refundClassic(game: GameInfo): Promise<ServerResponse> {
+// export async function refundClassic(game: GameInfo): Promise<ServerResponse> {
+export async function refundClassic(wagerId: string): Promise<ServerResponse> {
   try {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -14,7 +15,7 @@ export async function refundClassic(game: GameInfo): Promise<ServerResponse> {
       method: "POST",
       headers: headers,
       body: JSON.stringify({
-        wagerId: game.gameInfo.id,
+        wagerId: wagerId
       }),
       credentials: "include",
     };

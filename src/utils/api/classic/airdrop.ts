@@ -1,9 +1,13 @@
 import { generalConfig } from "@/configs";
 import { GameInfo, ServerResponse, Team } from "@/types";
 
+// export async function airdropClassic(
+//     game: GameInfo,
+//     winner: Team
+//   ): Promise<ServerResponse> {
 export async function airdropClassic(
-    game: GameInfo,
-    winner: Team
+    gameId: string,
+    winnerId: string
   ): Promise<ServerResponse> {
     try {
       const headers = new Headers();
@@ -13,8 +17,8 @@ export async function airdropClassic(
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          wagerId: game.gameInfo.id,
-          selectionId: winner.id,
+          wagerId: gameId,
+          selectionId: winnerId,
         }),
         credentials: "include",
       };

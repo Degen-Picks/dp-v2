@@ -1,14 +1,16 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Selection, Wager } from "@/types";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import toast from "react-hot-toast";
 import sendTransaction from "@/utils/sendTransaction";
 import { generalConfig } from "@/configs";
-import { getCurrencyIcon, getTokenBalance, pickFee, sleep } from "@/utils";
+import { getCurrencyIcon, getTokenBalance, handleConfirmAction, pickFee, refundClassic, sleep } from "@/utils";
 import { GameStatus } from "../templates/ClassicView";
 import { TOKEN_MAP } from "@/types/Token";
 import { InfoIcon } from "lucide-react";
+import { WagerUserContext, WagerUserContextType } from "../stores/WagerUserStore";
+import { airdropClassic } from "@/utils/api/classic/airdrop";
 
 interface Props {
   data: Wager;
@@ -33,6 +35,19 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
   const [agree, setAgree] = useState(true); // TODO: I dont think we have terms anymore? Seting default to true
   const [minimumBet, setMinimumBet] = useState(0.1);
   const [rewardEstimate, setRewardEstimate] = useState<string>("--");
+  const [mode, setMode] = useState('play');
+  const { wagerUser } = useContext(WagerUserContext) as WagerUserContextType;
+  const [isAdmin, setIsAdmin] = useState(false);
+  const wallet = useWallet();
+
+  useEffect(() => {
+    if ((wagerUser && wagerUser.roles.includes("ADMIN"))) {
+      setIsAdmin(true);
+    } else {
+
+      setIsAdmin(false);
+    }
+  }, [wagerUser]);
 
   const buttonDisabled =
     !publicKey ||
@@ -354,12 +369,85 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
     fetchWalletData();
   }, [publicKey, tokenBet, connection, data.token]);
 
-  useEffect(() => {
-    console.log("selected team", selectedTeam);
-  }, [selectedTeam]);
+  const handleCancelGame = async () => {
+    if (wagerUser?.roles?.includes("ADMIN")) {
+      const confirmation = await handleConfirmAction(
+        wallet,
+        "Are you sure you want to cancel this game?"
+      );
+      if (!confirmation) return;
+
+      const toastId = toast.loading("Cancelling game...");
+
+      const { success, message } = await refundClassic(data._id);
+
+      success === true
+        ? toast.success("Game cancelled!")
+        : toast.error(message);
+
+      // Refresh game data
+      loadGameData();
+
+      toast.dismiss(toastId);
+    }
+  };
+
+  const handleAirDrop = async () => {
+    if (!selectedTeam) {
+      toast.error("Please select a winner first!");
+      return;
+    }
+
+    if (data.status !== GameStatus.CLOSED) {
+      toast.error("Game must be closed to airdrop winners!");
+      return;
+    }
+
+    const confirmation = await handleConfirmAction(
+      wallet,
+      `Are you sure you want to declare ${selectedTeam?.title} as the winner?`
+    );
+    if (!confirmation) return;
+
+    const toastId = toast.loading("Declaring winner...");
+
+    const { success, message } = await airdropClassic(data._id, selectedTeam?._id);
+
+    success === true
+      ? toast.success("Winner declared and initiated airdrop!")
+      : toast.error(message);
+
+    // Refresh game data
+    loadGameData();
+
+    toast.dismiss(toastId);
+  };
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
+      {isAdmin && (
+        <div className="w-full mb-4">
+          <div className="flex rounded-[10px] bg-greyscale6 p-0.5">
+            <button
+              className={`flex-1 py-2 px-4 rounded-[8px] text-sm ${
+                mode === 'play' ? 'bg-greyscale1 text-black' : 'text-greyscale1'
+              }`}
+              onClick={() => setMode('play')}
+            >
+              Play
+            </button>
+            <button
+              className={`flex-1 py-2 px-4 rounded-[8px] text-sm ${
+                mode === 'manage' ? 'bg-greyscale1 text-black' : 'text-greyscale1'
+              }`}
+              onClick={() => setMode('manage')}
+            >
+              Manage
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col gap-2.5 justify-center">
         <p className="text-greyscale1 text-[18px] font-base-b pr-10">
           {data.title}
@@ -368,96 +456,105 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
           <p className="text-greyscale4 text-xs">{data.description}</p>
         )}
       </div>
+
       <div className="flex flex-col gap-2.5">
-        <p className="text-greyscale4 text-xs">Pick</p>
-        <div
-          className={`w-full flex gap-0.5 ${
-            !publicKey ? "text-greyscale1/50" : "text-greyscale1"
-          }`}
-        >
+        <p className="text-greyscale4 text-xs">{mode === 'manage' ? 'Winner' : 'Pick'}</p>
+        <div className="w-full flex gap-0.5 text-greyscale1">
           {data.selections?.map((o, index) => (
             <button
               key={o._id}
-              disabled={!publicKey || data.status !== GameStatus.OPEN}
+              disabled={mode === 'play' && (!publicKey || data.status !== 'OPEN')}
               className={`flex flex-col items-center border gap-[5px] p-2.5 w-full h-full rounded-[10px] disabled:cursor-not-allowed ${
                 index < 1 && "rounded-r-none"
               } ${index > 0 && "rounded-l-none"} ${
-                data.selections?.find((o) => o.winner)?._id === o._id ||
                 selectedTeam?._id === o._id
                   ? "bg-greyscale6 border-data"
                   : "bg-greyscale6 hover:bg-greyscale1/10 disabled:hover:bg-greyscale6 border-transparent"
               }`}
-              onClick={() => {
-                if (selectedTeam === o) {
-                  setSelectedTeam(null);
-                } else {
-                  setSelectedTeam(o);
-                }
-              }}
+              onClick={() => setSelectedTeam(o)}
             >
               <p className="text-sm">{o.title}</p>
-              <p className="text-xs text-greyscale4">
-                {index === 0 ? multiplier.team1 : multiplier.team2}
-              </p>
+              {mode === 'play' && (
+                <p className="text-xs text-greyscale4">
+                  {index === 0 ? '1.67x' : '3.33x'}
+                </p>
+              )}
             </button>
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-2.5">
-        <p className="text-greyscale4 text-xs">Amount</p>
-        <form className="w-full relative">
-          <input
-            type="text"
-            inputMode="decimal"
-            disabled={!publicKey || data.status !== GameStatus.OPEN}
-            min="1"
-            max="1000000"
-            value={tokenBet === null ? "" : valueHandler()}
-            // TODO: fix decimal bug
-            onChange={(e) => handleBetInput(e)}
-            className="disabled:opacity-70 disabled:cursor-not-allowed rounded-[10px]
-              bg-greyscale6 hover:bg-greyscale1/10 disabled:hover:bg-greyscale6 p-[10px] w-full 
-              text-center focus:outline-none focus:ring-2 focus:ring-data focus:bg-greyscale1/10"
-          />
-          <div className="absolute left-2 top-2.5">
-            <Image
-              src={getCurrencyIcon(data.token)}
-              height={30}
-              width={30}
-              alt={data.token ?? "dust"}
-            />
-          </div>
-        </form>
-        {data.status === GameStatus.OPEN && (
-          <div className="w-full text-center text-sm">
-            <div className="relative w-fit mx-auto">
-              <p className="text-greyscale4">{`Potential payout: ${rewardEstimate} ${data.token}`}</p>
+
+      {mode === 'play' && (
+        <>
+          <div className="flex flex-col gap-2.5">
+            <p className="text-greyscale4 text-xs">Amount</p>
+            <form className="w-full relative">
+              <input
+                type="text"
+                inputMode="decimal"
+                disabled={!publicKey || data.status !== 'OPEN'}
+                value={tokenBet === null ? "" : tokenBet}
+                onChange={(e) => setTokenBet(e.target.value)}
+                className="disabled:opacity-70 disabled:cursor-not-allowed rounded-[10px]
+                  bg-greyscale6 hover:bg-greyscale1/10 disabled:hover:bg-greyscale6 p-[10px] w-full 
+                  text-center focus:outline-none focus:ring-2 focus:ring-data focus:bg-greyscale1/10"
+              />
+              <div className="absolute left-2 top-2.5">
+                <Image
+                  src={getCurrencyIcon(data.token)}
+                  height={30}
+                  width={30}
+                  alt="currency"
+                />
+              </div>
+            </form>
+            <div className="w-full text-center text-sm">
+              <div className="relative w-fit mx-auto">
+                <p className="text-greyscale4">{`Potential payout: ${rewardEstimate} ${data.token}`}</p>
+              </div>
             </div>
           </div>
-        )}
-      </div>
-      {data.status !== GameStatus.OPEN && (
-        <div className="w-full text-xs text-[#919DF8] rounded-[10px] py-2.5 px-[15px] bg-greyscale6 flex items-center gap-[15px]">
-          <Image
-            src="/images/icons/new/warn.png"
-            height={14}
-            width={14}
-            alt="warning"
-          />
-          <p className="flex flex-1">
-            Your potential payout can change, and is determined by the
-            multiplier when the pool closes.
-          </p>
-        </div>
+
+          <div className="w-full text-xs text-[#919DF8] rounded-[10px] py-2.5 px-[15px] bg-greyscale6 flex items-center gap-[15px]">
+            <Image
+              src="/images/icons/new/warn.png"
+              height={14}
+              width={14}
+              alt="warning"
+            />
+            <p className="flex flex-1">
+              Your potential payout can change, and is determined by the
+              multiplier when the pool closes.
+            </p>
+          </div>
+
+          <button
+            className="w-full p-2.5 bg-data text-black rounded-[10px] text-sm disabled:opacity-70 disabled:cursor-not-allowed"
+            disabled={buttonDisabled}
+            onClick={handlePayToken}
+          >
+            {buttonHandler()}
+          </button>
+        </>
       )}
-      <button
-        className="w-full p-2.5 bg-data text-black rounded-[10px] text-sm disabled:opacity-70 disabled:cursor-not-allowed"
-        disabled={buttonDisabled}
-        onClick={() => !buttonDisabled && handlePayToken()}
-      >
-        {buttonHandler()}
-      </button>
-    </>
+
+      {mode === 'manage' && (
+        <>
+          <button
+            className="w-full p-2.5 bg-data text-black rounded-[10px] text-sm"
+            onClick={handleAirDrop}
+          >
+            Airdrop winners
+          </button>
+          <button
+            className="w-full text-center text-red-500 text-sm"
+            onClick={handleCancelGame}
+          >
+            Cancel pool
+          </button>
+        </>
+      )}
+    </div>
   );
 };
 
