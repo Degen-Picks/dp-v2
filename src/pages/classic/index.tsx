@@ -87,6 +87,8 @@ const GameQueue = () => {
   useEffect(() => {
     if (wagerUser) {
       loadPersonalStats(wagerUser._id);
+    } else {
+      setPersonalStats(null);
     }
   }, [wagerUser]);
 
