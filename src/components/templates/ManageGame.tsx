@@ -84,7 +84,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
       const toastId = toast.loading("Cancelling game...");
       setLoading(true);
 
-      const { success, message } = await refundClassic(gameData);
+      const { success, message } = await refundClassic('gameData'); // TODO: TEMP FIX
 
       success === true
         ? toast.success("Game cancelled!")
@@ -122,7 +122,7 @@ const ManageGame: FC<Props> = ({ gameData, loadGameData, gameStatus }) => {
     const toastId = toast.loading("Declaring winner...");
     setLoading(true);
 
-    const { success, message } = await airdropClassic(gameData, selectedTeam);
+    const { success, message } = await airdropClassic('gameData', 'selectedTeam'); // TODO: TEMP FIX
 
     success === true
       ? toast.success("Winner declared and initiated airdrop!")
