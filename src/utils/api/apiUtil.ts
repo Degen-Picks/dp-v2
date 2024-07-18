@@ -37,6 +37,7 @@ export async function getStats() {
 export async function getPersonalActivityFeed(userId: string) {
   try {
     const response = await fetch(`${generalConfig.apiUrl}/api/activity-feed/${userId}`);
+    if (!response.ok) throw new Error();
     const assets = await response.json();
     return assets.data as BetEventResponse;
   } catch (err) {
@@ -47,6 +48,7 @@ export async function getPersonalActivityFeed(userId: string) {
 export async function getGlobalActivityFeed() {
   try {
     const response = await fetch(`${generalConfig.apiUrl}/api/activity-feed`);
+    if (!response.ok) throw new Error();
     const assets = await response.json();
     return assets.data as BetEventResponse;
   } catch (err) {
