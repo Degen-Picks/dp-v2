@@ -463,7 +463,7 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
           {data.selections?.map((o, index) => (
             <button
               key={o._id}
-              disabled={mode === 'play' && (!publicKey || data.status !== 'OPEN')}
+              disabled={mode === 'play' && (!publicKey || data.status !== GameStatus.OPEN)}
               className={`flex flex-col items-center border gap-[5px] p-2.5 w-full h-full rounded-[10px] disabled:cursor-not-allowed ${
                 index < 1 && "rounded-r-none"
               } ${index > 0 && "rounded-l-none"} ${
@@ -492,7 +492,7 @@ const SelectedGameData: FC<Props> = ({ data, loadGameData }) => {
               <input
                 type="text"
                 inputMode="decimal"
-                disabled={!publicKey || data.status !== 'OPEN'}
+                disabled={!publicKey || data.status !== GameStatus.OPEN}
                 value={tokenBet === null ? "" : tokenBet}
                 onChange={(e) => setTokenBet(e.target.value)}
                 className="disabled:opacity-70 disabled:cursor-not-allowed rounded-[10px]
