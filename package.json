@@ -31,7 +31,7 @@
     "loglevel": "^1.8.1",
     "lucide-react": "^0.288.0",
     "next": "13.4.9",
-    "postcss": "8.4.25",
+    "postcss": "8.4.31",
     "react": "18.2.0",
     "react-confetti": "^6.1.0",
     "react-dom": "18.2.0",
